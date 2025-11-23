@@ -8,7 +8,7 @@ export default function Document() {
         <meta charSet="UTF-8" />
         <meta name="titles" content="Timory" />
         <meta name="robots" content="index,follow" />
-        <link rel="icon" type="image/png" href="/img/logo/favicon.svg" />
+        <link rel="icon" type="image/png" href="/img/logo/Timorylogo.png" />
 
         {/** SEO */}
         <meta 

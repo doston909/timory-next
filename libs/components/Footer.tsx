@@ -13,16 +13,16 @@ const Footer = () => {
             <img src="/img/logo/logoWhite.svg" alt="" className={"logo"} />
           </Box>
           <Box component={"div"} className={"footer-box"}>
-            <span>total free custumer care</span>
+            <span>Total free custumer care</span>
             <p>+82 10 7640 9293</p>
           </Box>
           <Box component={"div"} className={"footer-box"}>
-            <span>nee live</span>
+            <span>Nee live</span>
             <p>+82 10 7640 9293</p>
             <span>Support?</span>
           </Box>
           <Box component={"div"} className={"footer-box"}>
-            <p>follow us on social media</p>
+            <p>Follow us on social media</p>
             <div className={"media-box"}>
               <FacebookOutlined />
               <TelegramIcon />
