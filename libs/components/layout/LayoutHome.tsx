@@ -2,6 +2,7 @@ import { Stack } from "@mui/material";
 import Head from "next/head";
 import Top from "../Top";
 import Footer from "../Footer";
+import HeroCarousel from "../HeroCarousel";
 
 const withLayoutMain = (Component: any) => {
   return (props: any) => {
@@ -10,20 +11,21 @@ const withLayoutMain = (Component: any) => {
         <Head>
           <title>Timory</title>
         </Head>
+
         <Stack id="pc-wrap">
-          <Stack id={"top"}>
+          <Stack id="top">
             <Top />
           </Stack>
-          <Stack className={"header-main"}>
-            <Stack className={"container"}>
-            </Stack>
+
+          <Stack className="header-main">
+            <HeroCarousel />
           </Stack>
-          
-          <Stack id={"main"}>
+
+          <Stack id="main">
             <Component {...props} />
           </Stack>
 
-          <Stack id={"footer"}>
+          <Stack id="footer">
             <Footer />
           </Stack>
         </Stack>
@@ -32,4 +34,4 @@ const withLayoutMain = (Component: any) => {
   };
 };
 
-export default withLayoutMain
+export default withLayoutMain;

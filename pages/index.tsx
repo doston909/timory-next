@@ -1,13 +1,13 @@
+
 import withLayoutMain from "@/libs/components/layout/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
+
 const Home: NextPage = () => {
   return (
       <Stack className={"home-page"}>
-        <Stack>
-          <Stack className="container">Popular Watches</Stack>
-        </Stack>
+       
         <Stack>
           <Stack className="container">Limited Editions Spotlight</Stack>
         </Stack>

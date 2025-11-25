@@ -76,8 +76,7 @@ const Top = () => {
   return (
     <>
       <Stack className={"navbar"}>
-        <Stack className={"navbar-main"}>
-          <Stack className={"container"}>
+        <Stack className={"container"}>
             <Box component={"div"} className={"logo-box"}>
               <Link href={"/"}>
                 <img src="/img/logo/Timorylogo.png" alt="Timory Logo" />
@@ -250,6 +249,8 @@ const Top = () => {
               </>
             </Box>
           </Stack>
+        <Stack className={"navbar-main"}>
+          
         </Stack>
       </Stack>
 

@@ -1,0 +1,31 @@
+@import "../../variables";
+
+.watch-detail-page {
+  .popular-watches {
+    background: transparent;
+    padding: 50px 0 20px;
+
+    .info-box .left {
+      span {
+        font-size: 12px;
+      }
+
+      p {
+        font-size: 30px;
+      }
+    }
+
+    .popular-watch-card {
+      box-shadow: none;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+
+      &:hover {
+        box-shadow: 0 22px 45px rgba(0, 0, 0, 0.08);
+      }
+
+      .preview {
+        height: 200px;
+      }
+    }
+  }
+}
