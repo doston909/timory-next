@@ -1,33 +1,30 @@
 import { Box, Stack } from "@mui/material";
 
-type PopularWatch = {
+export type PopularWatch = {
   id: number;
   brand: string;
   model: string;
-  price: string;
   image: string;
-  badge?: string;
-  specs: string[];
 };
 
-const PopularWatchesCard = ({ watch }: { watch: PopularWatch }) => (
-  <Stack className="popular-watch-card">
-    <Box className="preview">
-      <img src={watch.image} alt={`${watch.brand} ${watch.model}`} />
-      {watch.badge && <span className="badge">{watch.badge}</span>}
-    </Box>
-    <Stack className="details">
-      <span className="brand">{watch.brand}</span>
-      <h3>{watch.model}</h3>
-      <p className="price">{watch.price}</p>
+type Props = {
+  watch: PopularWatch;
+};
 
-      <div className="specs">
-        {watch.specs.map((spec) => (
-          <span key={spec}>{spec}</span>
-        ))}
-      </div>
+const PopularWatchesCard = ({ watch }: Props) => {
+  return (
+    <Stack className="popular-watch-card">
+      <Box className="image-box">
+        <img src={watch.image} alt={watch.model} />
+      </Box>
+
+      <Stack className="text-box">
+        <span className="brand">{watch.brand}</span>
+        <span className="model">{watch.model}</span>
+      </Stack>
     </Stack>
-  </Stack>
-);
+  );
+};
 
 export default PopularWatchesCard;
+
