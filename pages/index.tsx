@@ -1,5 +1,6 @@
 
 
+import LimitedEdition from "@/libs/components/homepage/LimitedEdition";
 import PopularWatches from "@/libs/components/homepage/PopularWatches";
 import withLayoutMain from "@/libs/components/layout/LayoutHome";
 import { Stack } from "@mui/material";
@@ -10,9 +11,8 @@ const Home: NextPage = () => {
   return (
       <Stack className={"home-page"}>
       <PopularWatches />
-        <Stack>
-          <Stack className="container">Limited Editions Spotlight</Stack>
-        </Stack>
+        
+        <LimitedEdition />
         <Stack>
           <Stack className="container">Top Brands</Stack>
         </Stack>
