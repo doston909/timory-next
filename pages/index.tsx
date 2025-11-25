@@ -2,6 +2,7 @@
 
 import LimitedEdition from "@/libs/components/homepage/LimitedEdition";
 import PopularWatches from "@/libs/components/homepage/PopularWatches";
+import TopBrands from "@/libs/components/homepage/TopBrands";
 import withLayoutMain from "@/libs/components/layout/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
@@ -13,9 +14,10 @@ const Home: NextPage = () => {
       <PopularWatches />
         
         <LimitedEdition />
-        <Stack>
-          <Stack className="container">Top Brands</Stack>
-        </Stack>
+       
+       <TopBrands />
+
+
         <Stack>
           <Stack className="container">Top Agents</Stack>
         </Stack>

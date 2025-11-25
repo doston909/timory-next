@@ -63,8 +63,6 @@ const LimitedEdition = () => {
               <Box className="image-box">
                 <img className="main-img" src={w.image} alt={w.model} />
                 <img className="hover-img" src={w.hoverImage} alt={w.model} />
-
-                
               </Box>
 
               <Stack className="info">
