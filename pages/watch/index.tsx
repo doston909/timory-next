@@ -1,12 +1,12 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import { Container, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import {NextPage} from "next";
 
 const WatchList: NextPage = () => {
   return (
-    <>
-      <Container>Watch LIST</Container>
-    </>
+   <div style={{ margin: "20px 0" }}>
+    <Stack className={"container"}>WATCH LIST</Stack>
+   </div>
   );
 };
 
