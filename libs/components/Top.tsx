@@ -17,7 +17,7 @@ const Top = () => {
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
     if (!isSearchOpen) {
-      // Search ochilganda inputga focus
+     
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 100);
@@ -27,9 +27,9 @@ const Top = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Search qilish logikasi
+     
       console.log("Searching for:", searchQuery);
-      // Masalan: router.push(`/search?q=${searchQuery}`);
+     
     }
   };
 
@@ -53,7 +53,7 @@ const Top = () => {
     };
   }, [activeDropdown]);
 
-  // ESC bosilganda search modalni yopish
+ 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isSearchOpen) {
@@ -63,7 +63,7 @@ const Top = () => {
 
     if (isSearchOpen) {
       document.addEventListener("keydown", handleEscape);
-      // Search modal ochilganda body scrollni o'chirish
+  
       document.body.style.overflow = "hidden";
     }
 
@@ -254,7 +254,7 @@ const Top = () => {
         </Stack>
       </Stack>
 
-      {/* Search Modal Overlay */}
+     
       {isSearchOpen && (
         <div 
           className="search-modal-overlay"

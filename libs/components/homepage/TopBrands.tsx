@@ -42,12 +42,12 @@ const topBrands: TopBrand[] = [
 const TopBrands = () => {
   return (
     <Stack className="top-brands-section">
-      <h2 className="section-title">Top Luxury Brands</h2>
+    
 
       {topBrands.length === 0 ? (
         <p className="empty-text">No Brands Available</p>
       ) : (
-        <Stack className="top-brands-wrapper">   {/* katta box */}
+        <Stack className="top-brands-wrapper"> 
           <Stack className="top-brands-grid">
             {topBrands.map((brand) => (
               <TopBrandsCard key={brand.id} brand={brand} />

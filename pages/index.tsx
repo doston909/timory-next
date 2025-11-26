@@ -1,11 +1,10 @@
-
-
 import LimitedEdition from "@/libs/components/homepage/LimitedEdition";
 import PopularWatches from "@/libs/components/homepage/PopularWatches";
 import TopBrands from "@/libs/components/homepage/TopBrands";
 import withLayoutMain from "@/libs/components/layout/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
+import TopDealers from "@/libs/components/homepage/TopDealers";
 
 
 const Home: NextPage = () => {
@@ -17,10 +16,7 @@ const Home: NextPage = () => {
        
        <TopBrands />
 
-
-        <Stack>
-          <Stack className="container">Top Agents</Stack>
-        </Stack>
+      <TopDealers />
         <Stack>
           <Stack className="container">Bestseller Watches</Stack>
         </Stack>

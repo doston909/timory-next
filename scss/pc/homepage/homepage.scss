@@ -323,8 +323,188 @@
   }
 }
 
+.top-dealers-section {
+  background-color: rgb(241, 241, 241);
+  width: 100%;
+  padding: 60px 0;
+  text-align: center;
+
+  .section-title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  /* ROW (left + right) */
+  .top-dealers-row {
+    width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+  }
+
+  /* LEFT BOX */
+  .dealer-box-left {
+    width: 50%;
+    height: 530px;
+    padding: 22px;
+    border-radius: 20px;
+   
+  }
+
+  /* ——— GRID OF CIRCLE CARDS ——— */
+  .dealer-left-inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+
+  /* CIRCLE CARD */
+  .dealer-circle-card {
+    
+    width: 270px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+    .circle-photo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+     
+    }
+
+    .circle-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .circle-city {
+      font-size: 16px;
+      color: #666;
+      
+      .city-icon {
+  font-size: 18px;
+  
+  text-align: center;
+  margin-right: 5px;
+  color: rgb(233, 86, 86);
+}
+    }
+
+    .circle-rating {
+      font-weight: 600;
+      color: #c9a86a;
+      margin-top: 4px;
+    }
+  }
+
+  /* RIGHT BOX */
+/* RIGHT BOX */
+.dealer-box-right {
+  width: 50%;
+  height: 500px;
+  border-radius: 20px;
+
+  /* 🔥 Qo‘shildi */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TOP DEALER CARD — faqat shu to‘g‘irlandi */
+.top-dealer-card {
+  /* 🔥 Qo‘shildi */
+  width: 100%;
+  height: 100%;
+}
+
+
+
+  /* LEFT */
+  .dealer-card-left {
+    width: 180px;
+    height: 180px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+
+    .dealer-card-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dealer-card-badge {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 6px 12px;
+      background: #cecdcd;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+  }
+
+  /* RIGHT */
+  .dealer-card-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    text-align: left;
+
+    .dealer-card-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .dealer-card-location {
+      font-size: 15px;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .loc-icon {
+        font-size: 18px;
+        color: #c9a86a;
+      }
+    }
+
+    .dealer-card-type {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ea8e16;
+    }
+
+    .dealer-card-brands,
+    .dealer-card-rating,
+    .dealer-card-inventory,
+    .dealer-card-years {
+      font-size: 15px;
+      color: #333;
+    }
   }
 }
+
+  }
+}
+
+
+
+
+
+
 
 
   

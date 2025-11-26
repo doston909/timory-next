@@ -2,7 +2,7 @@ import { Stack } from "@mui/material";
 import Head from "next/head";
 import Top from "../Top";
 import Footer from "../Footer";
-import HeroCarousel from "../HeroCarousel";
+import HeroCarousel from "../homepage/HeroCarousel";
 
 const withLayoutMain = (Component: any) => {
   return (props: any) => {

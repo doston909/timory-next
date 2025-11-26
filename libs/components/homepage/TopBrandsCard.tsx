@@ -14,11 +14,6 @@ const TopBrandsCard = ({ brand }: { brand: TopBrand }) => {
       <Box className="logo-box">
         <img src={brand.logo} alt={brand.name} />
       </Box>
-
-      <Stack className="brand-info">
-        <span className="brand-country">{brand.country}</span>
-        <span className="brand-founded">Since {brand.founded}</span>
-      </Stack>
     </Stack>
   );
 };
