@@ -47,6 +47,25 @@ const spotlightWatches: SpotlightWatch[] = [
     rarity: "Boutique-Only",
     price: "$310,000",
   },
+  {
+    id: 4,
+    title: "Richard Mille",
+    model: "RM 65-01",
+    image: "/img/watch/rasm1.png",
+    hoverImage: "/img/watch/rasm3.png",
+    rarity: "Boutique-Only",
+    price: "$310,000",
+  },
+   {
+    id: 3,
+    title: "Rolex",
+    model: "Daytona Meteorite Dial",
+    image: "/img/watch/rasm1.png",
+    hoverImage: "/img/watch/rasm3.png",
+    rarity: "Discontinued",
+    price: "$78,000",
+  },
+
 ];
 
 const LimitedEdition = () => {
@@ -66,7 +85,7 @@ const LimitedEdition = () => {
               </Box>
 
               <Stack className="info">
-                <span className="title">{w.title}</span>
+                
                 <p className="model">{w.model}</p>
                 <span className="price">{w.price}</span>
               </Stack>
