@@ -87,7 +87,7 @@ const LimitedEdition = () => {
               <Stack className="info">
                 
                 <p className="model">{w.model}</p>
-                <span className="price">{w.price}</span>
+                <span className="price">{w.title}</span>
               </Stack>
             </Stack>
           ))}
