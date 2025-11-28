@@ -1,8 +1,17 @@
 import { Stack, Box, Button } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import SellIcon from '@mui/icons-material/Sell';
+import StarRateIcon from '@mui/icons-material/StarRate';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+
+
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -14,6 +23,7 @@ type BestSellerWatch = {
   price: string;
   image: string;
   likes: number;
+  views: number;
 };
 
 const bestSellers: BestSellerWatch[] = [
@@ -23,7 +33,8 @@ const bestSellers: BestSellerWatch[] = [
     model: "Day-Date 40",
     price: "$42,900",
     image: "/img/watch/rasm3.png",
-    likes: 128,
+    likes: 0,
+    views: 2450,
   },
   {
     id: 2,
@@ -32,6 +43,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$119,400",
     image: "/img/watch/rasm3.png",
     likes: 96,
+    views: 1890,
   },
   {
     id: 3,
@@ -40,6 +52,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$38,700",
     image: "/img/watch/rasm3.png",
     likes: 87,
+    views: 1650,
   },
   {
     id: 4,
@@ -48,6 +61,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$189,000",
     image: "/img/watch/rasm3.png",
     likes: 103,
+    views: 21,
   },
   {
     id: 5,
@@ -56,6 +70,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$32,500",
     image: "/img/watch/rasm3.png",
     likes: 78,
+    views: 1420,
   },
   {
     id: 6,
@@ -64,6 +79,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$59,900",
     image: "/img/watch/rasm3.png",
     likes: 112,
+    views: 1980,
   },
   {
     id: 7,
@@ -72,6 +88,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$42,900",
     image: "/img/watch/rasm3.png",
     likes: 128,
+    views: 2450,
   },
   {
     id: 8,
@@ -80,6 +97,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$119,400",
     image: "/img/watch/rasm3.png",
     likes: 96,
+    views: 1890,
   },
   {
     id: 9,
@@ -88,6 +106,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$38,700",
     image: "/img/watch/rasm3.png",
     likes: 87,
+    views: 1650,
   },
   {
     id: 10,
@@ -96,6 +115,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$189,000",
     image: "/img/watch/rasm3.png",
     likes: 103,
+    views: 2100,
   },
   {
     id: 12,
@@ -104,6 +124,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$32,500",
     image: "/img/watch/rasm3.png",
     likes: 78,
+    views: 1420,
   },
   {
     id: 13,
@@ -112,6 +133,7 @@ const bestSellers: BestSellerWatch[] = [
     price: "$59,900",
     image: "/img/watch/rasm3.png",
     likes: 112,
+    views: 1980,
   },
 ];
 
@@ -139,12 +161,30 @@ const BestSeller = () => {
             <Box className="best-watch-card">
               <div className="image-box">
                 <img src={w.image} alt={w.model} />
+
+                {/* 👉 HOVER ICON ACTIONS */}
+                <div className="watch-actions">
+                  <div className="action-btn">
+                    <ShoppingBagOutlinedIcon
+                      sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                    />
+                  </div>
+                  <div className="action-btn action-btn-with-count">
+                    <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                    <span className="action-count">{w.likes}</span>
+                  </div>
+                  <div className="action-btn action-btn-with-count">
+                    <CheckCircleIcon
+                      sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                    />
+                    <span className="action-count">{w.views}</span>
+                  </div>
+                </div>
               </div>
 
               <div className="info">
                 <p className="brand">{w.brand}</p>
                 <p className="model">{w.model}</p>
-                <p className="likes">❤️ {w.likes}</p>
               </div>
             </Box>
           </SwiperSlide>
@@ -160,15 +200,18 @@ const BestSeller = () => {
         {/* ARROWS */}
         <Stack direction="row" gap={2}>
           <button className="scroll-btn best-prev-btn">
-            <ArrowBackIosIcon sx={{  color: "#fff" }} />
+            <ArrowBackIosIcon sx={{ color: "#fff" }} />
           </button>
 
           <button className="scroll-btn best-next-btn">
-            <ArrowForwardIosIcon sx={{  color: "#fff" }} />
+            <ArrowForwardIosIcon sx={{ color: "#fff" }} />
           </button>
         </Stack>
 
-        <Button className="see-all-btn">See All Watches <ArrowForwardIosIcon sx={{ fontSize: 22, color: "#fff" }} /></Button>
+        <Button className="see-all-btn">
+          See All Watches{" "}
+          <ArrowForwardIosIcon sx={{ fontSize: 22, color: "#fff" }} />
+        </Button>
       </Stack>
     </Stack>
   );

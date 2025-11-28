@@ -11,11 +11,13 @@ import BestSeller from "@/libs/components/homepage/BestSeller";
 const Home: NextPage = () => {
   return (
       <Stack className={"home-page"}>
+   <TopBrands />
+
       <PopularWatches />
         
         <LimitedEdition />
        
-       <TopBrands />
+    
 
       <TopDealers />
        
