@@ -28,12 +28,13 @@
           }
 
           .router-box {
-            margin-left: 50px;
+            margin-left: 0;
             width: 1000px;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 10px;
             position: relative;
 
             .nav-item {
