@@ -28,7 +28,7 @@ const watchStories: WatchStory[] = [
     title: "LUXURY TIMEKEEPING COLLECTION",
     description:
       "Torbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story.webp",
+    image: "/img/brand/st1.jpeg",
     imagePosition: "left",
     buttonText: "Full view",
   },
@@ -37,7 +37,7 @@ const watchStories: WatchStory[] = [
     title: "PRECISION ENGINEERING MASTERY",
     description:
       "Morbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story2.webp",
+    image: "/img/brand/st2.jpeg",
     imagePosition: "right",
     buttonText: "Full view",
   },
@@ -46,7 +46,7 @@ const watchStories: WatchStory[] = [
     title: "HERITAGE WATCHMAKING ART",
     description:
       "Torbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story.webp",
+    image: "/img/brand/st3.jpeg",
     imagePosition: "left",
     buttonText: "Full view",
   },
@@ -55,7 +55,7 @@ const watchStories: WatchStory[] = [
     title: "MODERN HOROLOGICAL INNOVATION",
     description:
       "Morbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story2.webp",
+    image: "/img/brand/st4.jpeg",
     imagePosition: "right",
     buttonText: "Full view",
   },
@@ -93,7 +93,7 @@ const WatchStories = () => {
           <ChevronLeftIcon />
         </IconButton>
 
-        <Box className="watch-story-content">
+        <Box className="watch-story-content" key={currentPage}>
           {currentStories.map((story) => (
             <WatchStoriesCard key={story.id} story={story} />
           ))}
