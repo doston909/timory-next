@@ -37,6 +37,10 @@
             gap: 10px;
             position: relative;
 
+            .nav-item-wrapper {
+              position: relative;
+            }
+
             .nav-item {
               position: relative;
               color: #090707ed;
@@ -79,6 +83,8 @@
                   visibility: visible;
                   transform: translateY(0);
                   pointer-events: auto;
+                  display: flex;
+                flex-direction: column;
                 }
               }
 
@@ -97,8 +103,7 @@
                 left: 0;
                 min-width: 220px;
                 max-width: 280px;
-                display: flex;
-                flex-direction: column;
+                
                 gap: 0;
                 background: white;
                 padding: 12px 0;
@@ -178,6 +183,25 @@
               display: flex;
               align-items: center;
               gap: 18px;
+
+             
+              button,
+              .MuiIconButton-root {
+                svg {
+                  width: 35px;  
+                  height: 35px;
+                  font-size: 30px;
+                }
+              }
+
+              
+              .lang-box {
+                svg {
+                  width: 24px; 
+                  height: 24px;
+                  font-size: 24px;
+                }
+              }
             }
 
             .icon-button {

@@ -1,6 +1,15 @@
-import { Box, Menu, MenuItem, Stack } from "@mui/material";
+import { Box, Menu, MenuItem, Stack, IconButton } from "@mui/material";
 import Link from "next/link";
-import { Logout, Close } from "@mui/icons-material";
+import {
+  Logout,
+  Close,
+  Search,
+  ShoppingBagOutlined,
+  NotificationsNoneOutlined,
+  DarkModeOutlined,
+  Language,
+  PersonOutline,
+} from "@mui/icons-material";
 import React, { useState, useEffect, useRef } from "react";
 
 const Top = () => {
@@ -10,14 +19,20 @@ const Top = () => {
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDropdownToggle = (menuName: string) => {
-    setActiveDropdown(activeDropdown === menuName ? null : menuName);
+
+
+  // Hover-based open/close for navbar dropdowns
+  const handleDropdownOpen = (menuName: string) => {
+    setActiveDropdown(menuName);
+  };
+
+  const handleDropdownClose = () => {
+    setActiveDropdown(null);
   };
 
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
     if (!isSearchOpen) {
-     
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 100);
@@ -27,13 +42,10 @@ const Top = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-     
       console.log("Searching for:", searchQuery);
-     
     }
   };
 
-  // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -53,7 +65,6 @@ const Top = () => {
     };
   }, [activeDropdown]);
 
- 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isSearchOpen) {
@@ -63,7 +74,7 @@ const Top = () => {
 
     if (isSearchOpen) {
       document.addEventListener("keydown", handleEscape);
-  
+
       document.body.style.overflow = "hidden";
     }
 
@@ -77,43 +88,56 @@ const Top = () => {
     <>
       <Stack className={"navbar"}>
         <Stack className={"container"}>
-            <Box component={"div"} className={"logo-box"}>
-              <Link href={"/"}>
-                <img src="/img/logo/Timorylogo.png" alt="Timory Logo" />
-              </Link>
-            </Box>
+          <Box component={"div"} className={"logo-box"}>
+            <Link href={"/"}>
+              <img src="/img/logo/Timorylogo.png" alt="Timory Logo" />
+            </Link>
+          </Box>
 
-            <Box 
-              component={"div"} 
-              className={"router-box"}
-              ref={routerBoxRef}
-            >
-              <div 
-                className={`nav-item ${activeDropdown === "home" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("home");
-                }}
+          <Box
+            component={"div"}
+            className={"router-box"}
+            ref={routerBoxRef}
+          >
+            <div className="nav-item-wrapper">
+              <div
+                className={`nav-item ${
+                  activeDropdown === "home" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("home")}
               >
                 <span>Home</span>
+
                 {activeDropdown === "home" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/">Home Page</Link>
                     <Link href="/?section=about">About</Link>
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "shop" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("shop");
-                }}
+            {/* SHOP */}
+            <div
+              className="nav-item-wrapper"
+            
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "shop" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("shop")}
               >
                 <span>Shop</span>
+
                 {activeDropdown === "shop" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/watch?type=men">Men Watches</Link>
                     <Link href="/watch?type=women">Women Watches</Link>
                     <Link href="/watch?type=unisex">Unisex</Link>
@@ -121,17 +145,26 @@ const Top = () => {
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "brands" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("brands");
-                }}
+            {/* BRANDS */}
+            <div
+              className="nav-item-wrapper"
+           
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "brands" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("brands")}
               >
                 <span>Brands</span>
+
                 {activeDropdown === "brands" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/brand/rolex">Rolex</Link>
                     <Link href="/brand/omega">Omega</Link>
                     <Link href="/brand/cartier">Cartier</Link>
@@ -140,17 +173,26 @@ const Top = () => {
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "watches" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("watches");
-                }}
+            {/* WATCHES */}
+            <div
+              className="nav-item-wrapper"
+             
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "watches" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("watches")}
               >
                 <span>Watches</span>
+
                 {activeDropdown === "watches" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/watch?sort=popular">Popular</Link>
                     <Link href="/watch?sort=new">New Arrivals</Link>
                     <Link href="/watch?sort=best">Best Sellers</Link>
@@ -158,51 +200,82 @@ const Top = () => {
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "agents" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("agents");
-                }}
+            {/* AGENTS */}
+            <div
+              className="nav-item-wrapper"
+             
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "agents" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("agents")}
               >
                 <span>Agents</span>
+
                 {activeDropdown === "agents" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/agent?type=premium">Premium Agents</Link>
                     <Link href="/agent?type=verified">Verified Agents</Link>
                     <Link href="/agent?type=all">All Agents</Link>
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "community" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("community");
-                }}
+            {/* COMMUNITY */}
+            <div
+              className="nav-item-wrapper"
+            
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "community" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("community")}
               >
                 <span>Community</span>
+
                 {activeDropdown === "community" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
-                    <Link href="/community?articleCategory=FREE">Free Board</Link>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Link href="/community?articleCategory=FREE">
+                      Free Board
+                    </Link>
                     <Link href="/community?articleCategory=NEWS">News</Link>
-                    <Link href="/community?articleCategory=REVIEW">Reviews</Link>
+                    <Link href="/community?articleCategory=REVIEW">
+                      Reviews
+                    </Link>
                   </div>
                 )}
               </div>
+            </div>
 
-              <div 
-                className={`nav-item dropdown ${activeDropdown === "pages" ? "active" : ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDropdownToggle("pages");
-                }}
+            {/* PAGES */}
+            <div
+              className="nav-item-wrapper"
+              
+            >
+              <div
+                className={`nav-item ${
+                  activeDropdown === "pages" ? "active" : ""
+                }`}
+                onMouseEnter={() => handleDropdownOpen("pages")}
               >
                 <span>Pages</span>
+
                 {activeDropdown === "pages" && (
-                  <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Link href="/cs">Customer Center</Link>
                     <Link href="/terms">Terms & Conditions</Link>
                     <Link href="/privacy">Privacy Policy</Link>
@@ -210,69 +283,163 @@ const Top = () => {
                   </div>
                 )}
               </div>
-            </Box>
+            </div>
+          </Box>
 
-            <Box component={"div"} className={"user-box"}>
-              <>
-                <div className="login-user">
-                  <button
-                    className="icon-button search-icon"
-                    onClick={handleSearchToggle}
-                    aria-label="Search"
+          <Box component={"div"} className={"user-box"}>
+            <>
+              <div className="login-user">
+                {/* SEARCH */}
+                <IconButton
+                  aria-label="Search"
+                  onClick={handleSearchToggle}
+                  sx={{
+                    color: "#000",
+                    p: 0,
+                    "&:hover": {
+                      color: "#E5C8A3",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <Search fontSize="large" />
+                </IconButton>
+
+                {/* BAG */}
+                <IconButton
+                  aria-label="Bag"
+                  sx={{
+                    color: "#000",
+                    p: 0,
+                    position: "relative",
+                    "&:hover": {
+                      color: "#E5C8A3",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <ShoppingBagOutlined fontSize='large'/>
+                  <Box
+                    component="span"
+                    sx={{
+                      position: "absolute",
+                      top: -4,
+                      right: -6,
+                      bgcolor: "#d6c6a4",
+                      color: "#fff",
+                      fontSize: "10px",
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 600,
+                    }}
                   >
-                    <img src="/img/logo/search.svg" alt="search" className="icon" />
-                  </button>
-                  <img src="/img/logo/user.svg" alt="user" className="icon" />
-                  <div className="bag-wrapper">
-                    <img src="/img/logo/bag.svg" alt="bag" className="icon" />
-                    <span className="bag-badge">0</span>
-                  </div>
-                  <div className="lang-box">
-                    <select>
-                      <option value="uz">UZ</option>
-                      <option value="kr">KR</option>
-                      <option value="en">EN</option>
-                      <option value="ru">RU</option>
-                    </select>
-                  </div>
-                </div>
+                    0
+                  </Box>
+                </IconButton>
 
-                <Menu id="basic-menu" sx={{ mt: "5px" }} open={false}>
-                  <MenuItem>
-                    <Logout
-                      fontSize="small"
-                      style={{ color: "#E5C28C", marginRight: "10px" }}
-                    />
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </>
-            </Box>
-          </Stack>
-        <Stack className={"navbar-main"}>
-          
+                {/* NOTIFICATION */}
+                <IconButton
+                  aria-label="Notifications"
+                  sx={{
+                    color: "#000",
+                    p: 0,
+                    "&:hover": {
+                      color: "#E5C8A3",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <NotificationsNoneOutlined />
+                </IconButton>
+
+                {/* DARK MODE */}
+                <IconButton
+                  aria-label="Dark mode"
+                  sx={{
+                    color: "#000",
+                    p: 0,
+                    "&:hover": {
+                      color: "#E5C8A3",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <DarkModeOutlined />
+                </IconButton>
+
+                {/* LANGUAGE */}
+                <Box
+                  className="lang-box"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                  }}
+                >
+                  <Language
+                    sx={{
+                      color: "#000",
+                      "&:hover": { color: "#E5C8A3", cursor: "pointer" },
+                    }}
+                  />
+                  
+                </Box>
+
+                {/* USER */}
+                <IconButton
+                  aria-label="User"
+                  sx={{
+                    color: "#000",
+                    p: 0,
+                    "&:hover": {
+                      color: "#E5C8A3",
+                      backgroundColor: "transparent",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <PersonOutline />
+                </IconButton>
+              </div>
+
+              <Menu id="basic-menu" sx={{ mt: "5px" }} open={false}>
+                <MenuItem>
+                  <Logout
+                    fontSize="small"
+                    style={{ color: "#E5C28C", marginRight: "10px" }}
+                  />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          </Box>
         </Stack>
+        <Stack className={"navbar-main"}></Stack>
       </Stack>
 
-     
       {isSearchOpen && (
-        <div 
+        <div
           className="search-modal-overlay"
           onClick={() => setIsSearchOpen(false)}
         >
-          <div 
+          <div
             className="search-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
-            
-            
-            
             <form onSubmit={handleSearchSubmit} className="search-form">
               <div className="search-input-wrapper">
-                <img 
-                  src="/img/logo/search.svg" 
-                  alt="search" 
-                  className="search-icon-large" 
+                <img
+                  src="/img/logo/search.svg"
+                  alt="search"
+                  className="search-icon-large"
                 />
                 <input
                   ref={searchInputRef}
@@ -294,7 +461,7 @@ const Top = () => {
                   </button>
                 )}
               </div>
-              
+
               <button type="submit" className="search-submit-button">
                 Search
               </button>
