@@ -50,6 +50,7 @@
       }
 
       .image-box {
+        position: relative;
         width: 100%;
         height: 340px;
         display: flex;
@@ -62,6 +63,83 @@
           object-fit: contain;
           filter: drop-shadow(0px 12px 22px rgba(97, 97, 97, 0.55));
           transition: 0.3s ease;
+        }
+
+        /* ACTION BUTTONS ON HOVER */
+        .watch-actions {
+          position: absolute;
+          top: 30%;
+          right: -20px;
+          transform: translateY(-50%) translateX(20px);
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.35s ease;
+          z-index: 10;
+        }
+      }
+
+      &:hover .image-box .watch-actions {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      .action-btn {
+        width: 48px;
+        height: 48px;
+        background: #eae8e8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.25s ease;
+        position: relative;
+
+        &:hover {
+          background: #6B5A51;
+        }
+
+        svg {
+          width: 28px;
+          height: 28px;
+          color: #000000;
+          transition: color 0.55s ease;
+          filter: contrast(0.9);
+          
+          path {
+            fill-opacity: 0.8;
+            stroke-width: 3;
+          }
+        }
+
+        &:hover svg {
+          color: #E5C8A3;
+          
+          path {
+            fill-opacity: 1;
+          }
+        }
+
+        &.action-btn-with-count {
+          .action-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #f3b748;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 2px 6px rgba(243, 151, 46, 0.4);
+          }
         }
       }
 
