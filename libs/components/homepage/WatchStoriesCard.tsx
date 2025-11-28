@@ -1,4 +1,5 @@
 import { Stack, Box, Button } from "@mui/material";
+import { useRouter } from "next/router";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export type WatchStory = {
@@ -11,6 +12,15 @@ export type WatchStory = {
 };
 
 const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    router.push({
+      pathname: "/watch-stories/[id]",
+      query: { id: story.id },
+    });
+  };
+
   return (
     <Box className="watch-story-card">
       {story.imagePosition === "left" ? (
@@ -21,7 +31,11 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
           <Box className="story-content-box">
             <h2 className="story-title">{story.title}</h2>
             <p className="story-description">{story.description}</p>
-            <Button className="story-button" variant="outlined">
+            <Button
+              className="story-button"
+              variant="outlined"
+              onClick={handleButtonClick}
+            >
               {story.buttonText}
               <ArrowForwardIcon sx={{ ml: 1, fontSize: 18 }} />
             </Button>
@@ -32,7 +46,11 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
           <Box className="story-content-box">
             <h2 className="story-title">{story.title}</h2>
             <p className="story-description">{story.description}</p>
-            <Button className="story-button" variant="outlined">
+            <Button
+              className="story-button"
+              variant="outlined"
+              onClick={handleButtonClick}
+            >
               {story.buttonText}
               <ArrowForwardIcon sx={{ ml: 1, fontSize: 18 }} />
             </Button>

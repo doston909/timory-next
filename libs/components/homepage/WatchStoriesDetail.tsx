@@ -1,8 +1,7 @@
-import { Stack, IconButton, Box } from "@mui/material";
-import { useState } from "react";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import WatchStoriesCard, { WatchStory } from "./WatchStoriesCard";
+import { Stack, Box, Button } from "@mui/material";
+import { useRouter } from "next/router";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { WatchStory } from "./WatchStoriesCard";
 
 const watchStories: WatchStory[] = [
   {
@@ -61,55 +60,51 @@ const watchStories: WatchStory[] = [
   },
 ];
 
-const STORIES_PER_PAGE = 2;
+const WatchStoriesDetail = () => {
+  const router = useRouter();
+  const { id } = router.query;
 
-const WatchStories = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = Math.ceil(watchStories.length / STORIES_PER_PAGE);
+  const story = watchStories.find(
+    (s) => s.id === parseInt(id as string, 10)
+  );
 
-  const handleNext = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
-
-  const handlePrev = () => {
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
-  };
-
-  const startIndex = currentPage * STORIES_PER_PAGE;
-  const endIndex = startIndex + STORIES_PER_PAGE;
-  const currentStories = watchStories.slice(startIndex, endIndex);
+  if (!story) {
+    return (
+      <Stack className="watch-story-detail">
+        <Box className="detail-container">
+          <p>Story not found</p>
+          <Button onClick={() => router.push("/")}>Go Back</Button>
+        </Box>
+      </Stack>
+    );
+  }
 
   return (
-    <Stack className="watch-story-section">
-      <h2 className="section-title">Brands Story</h2>
-      <p className="section-subtitle">History speaks about us</p>
-
-      <Box className="watch-story-container">
-        <IconButton
-          className="scroll-arrow scroll-arrow-left"
-          onClick={handlePrev}
-          aria-label="Previous stories"
+    <Stack className="watch-story-detail">
+      <Box className="detail-container">
+        <Button
+          className="back-button"
+          startIcon={<ArrowBackIcon />}
+          onClick={() => router.back()}
         >
-          <ChevronLeftIcon />
-        </IconButton>
+          Back
+        </Button>
 
-        <Box className="watch-story-content">
-          {currentStories.map((story) => (
-            <WatchStoriesCard key={story.id} story={story} />
-          ))}
+        <Box className="detail-content">
+          <Box className="detail-image-box">
+            <img src={story.image} alt={story.title} />
+          </Box>
+          <Box className="detail-text-box">
+            <h1 className="detail-title">{story.title}</h1>
+            <p className="detail-description">{story.description}</p>
+            <p className="detail-description">{story.description}</p>
+            <p className="detail-description">{story.description}</p>
+          </Box>
         </Box>
-
-        <IconButton
-          className="scroll-arrow scroll-arrow-right"
-          onClick={handleNext}
-          aria-label="Next stories"
-        >
-          <ChevronRightIcon />
-        </IconButton>
       </Box>
     </Stack>
   );
 };
 
-export default WatchStories;
+export default WatchStoriesDetail;
 
