@@ -1,8 +1,8 @@
-import { Stack, Box, Button } from "@mui/material";
+import { Stack, Box, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
@@ -143,76 +143,68 @@ const BestSeller = () => {
       <h2 className="section-title">Best Sellers</h2>
       <p className="section-subtitle">Most demanded luxury timepieces.</p>
 
-   
-      <Swiper
-        modules={[Navigation]}
-        slidesPerView={4} 
-        spaceBetween={30}
-        navigation={{
-          nextEl: ".best-next-btn",
-          prevEl: ".best-prev-btn",
-        }}
-        allowTouchMove={true} // sichqoncha bilan surilmaydi
-        speed={500}
-        className="best-seller-swiper"
-      >
-        {bestSellers.map((w) => (
-          <SwiperSlide key={w.id}>
-            <Box className="best-watch-card">
-              <div className="image-box">
-                <img src={w.image} alt={w.model} />
+      <Box className="best-seller-container">
+        <IconButton
+          className="scroll-arrow scroll-arrow-left best-prev-btn"
+          aria-label="Previous watches"
+        >
+          <ChevronLeftIcon />
+        </IconButton>
 
-                {/* 👉 HOVER ICON ACTIONS */}
-                <div className="watch-actions">
-                  <div className="action-btn">
-                    <ShoppingBagOutlinedIcon
-                      sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
-                    />
-                  </div>
-                  <div className="action-btn action-btn-with-count">
-                    <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
-                    <span className="action-count">{w.likes}</span>
-                  </div>
-                  <div className="action-btn action-btn-with-count">
-                    <CheckCircleIcon
-                      sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
-                    />
-                    <span className="action-count">{w.views}</span>
+        <Swiper
+          modules={[Navigation]}
+          slidesPerView={4} 
+          spaceBetween={30}
+          navigation={{
+            nextEl: ".best-next-btn",
+            prevEl: ".best-prev-btn",
+          }}
+          allowTouchMove={true}
+          speed={500}
+          className="best-seller-swiper"
+        >
+          {bestSellers.map((w) => (
+            <SwiperSlide key={w.id}>
+              <Box className="best-watch-card">
+                <div className="image-box">
+                  <img src={w.image} alt={w.model} />
+
+                  {/* 👉 HOVER ICON ACTIONS */}
+                  <div className="watch-actions">
+                    <div className="action-btn">
+                      <ShoppingBagOutlinedIcon
+                        sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                      />
+                    </div>
+                    <div className="action-btn action-btn-with-count">
+                      <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                      <span className="action-count">{w.likes}</span>
+                    </div>
+                    <div className="action-btn action-btn-with-count">
+                      <CheckCircleIcon
+                        sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                      />
+                      <span className="action-count">{w.views}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="info">
-                <p className="brand">{w.brand}</p>
-                <p className="model">{w.model}</p>
-              </div>
-            </Box>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                <div className="info">
+                  <p className="brand">{w.brand}</p>
+                  <p className="model">{w.model}</p>
+                </div>
+              </Box>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      {/* ▶ BOTTOM CONTROL BUTTONS */}
-      <Stack
-        className="bottom-controls"
-        direction="row"
-        justifyContent="space-between"
-      >
-        {/* ARROWS */}
-        <Stack direction="row" gap={2}>
-          <button className="scroll-btn best-prev-btn">
-            <ArrowBackIosIcon sx={{ color: "#fff" }} />
-          </button>
-
-          <button className="scroll-btn best-next-btn">
-            <ArrowForwardIosIcon sx={{ color: "#fff" }} />
-          </button>
-        </Stack>
-
-        <Button className="see-all-btn">
-          See All Watches{" "}
-          <ArrowForwardIosIcon sx={{ fontSize: 22, color: "#fff" }} />
-        </Button>
-      </Stack>
+        <IconButton
+          className="scroll-arrow scroll-arrow-right best-next-btn"
+          aria-label="Next watches"
+        >
+          <ChevronRightIcon />
+        </IconButton>
+      </Box>
     </Stack>
   );
 };
