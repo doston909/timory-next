@@ -143,16 +143,16 @@ const BestSeller = () => {
       <h2 className="section-title">Best Sellers</h2>
       <p className="section-subtitle">Most demanded luxury timepieces.</p>
 
-      {/* ▶ SWIPER */}
+   
       <Swiper
         modules={[Navigation]}
-        slidesPerView={4} // 4 ta card bir qatorda
+        slidesPerView={4} 
         spaceBetween={30}
         navigation={{
           nextEl: ".best-next-btn",
           prevEl: ".best-prev-btn",
         }}
-        allowTouchMove={false} // sichqoncha bilan surilmaydi
+        allowTouchMove={true} // sichqoncha bilan surilmaydi
         speed={500}
         className="best-seller-swiper"
       >

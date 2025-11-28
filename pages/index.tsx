@@ -6,6 +6,7 @@ import { Stack } from "@mui/material";
 import { NextPage } from "next";
 import TopDealers from "@/libs/components/homepage/TopDealers";
 import BestSeller from "@/libs/components/homepage/BestSeller";
+import WatchStories from "@/libs/components/homepage/WatchStories";
 
 
 const Home: NextPage = () => {
@@ -22,12 +23,11 @@ const Home: NextPage = () => {
       <TopDealers />
        
        <BestSeller />
+       <WatchStories />
        <Stack>
           <Stack className="container">Choose You Dial</Stack>
         </Stack>
-        <Stack>
-          <Stack className="container">Watch Stories</Stack>
-        </Stack>
+       
         <Stack>
           <Stack className="container">Latest News</Stack>
         </Stack>
