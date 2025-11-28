@@ -1,7 +1,8 @@
 import { Stack, Box, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { WatchStory } from "./WatchStoriesCard";
+import { WatchStory } from "@/libs/components/homepage/WatchStoriesCard";
+
 
 const watchStories: WatchStory[] = [
   {
