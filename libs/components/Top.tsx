@@ -16,8 +16,15 @@ const Top = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isSliding, setIsSliding] = useState(false);
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef<number>(0);
+  const originalSizeRef = useRef<{ width: number; height: number } | null>(null);
 
 
 
@@ -84,6 +91,89 @@ const Top = () => {
     };
   }, [isSearchOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const scrolled = scrollY > 300;
+      const wasScrolled = lastScrollY.current > 300;
+      
+      setIsScrolled(scrolled);
+      
+      // Scroll pastga yoki tepaga bo'lganda container tepadan sirg'alib tushadi
+      if (scrolled) {
+        setIsVisible(true);
+        
+        // Faqat scrollY > 50 bo'lganda va oldingi scrollY <= 50 bo'lganda animation trigger qilish
+        if (!wasScrolled) {
+          setIsSliding(true);
+          
+          // Animation tugagach isSliding ni false qilish
+          setTimeout(() => {
+            setIsSliding(false);
+          }, 400); // Animation davomiyligi
+        }
+        
+       
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+        
+       
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsVisible(false);
+        }, 10000); // 10 soniya = 10000ms
+      } else {
+       
+        setIsVisible(true);
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+      }
+      
+      lastScrollY.current = scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Original o'lchamlarni birinchi marta saqlash
+  useEffect(() => {
+    if (containerRef.current && !originalSizeRef.current) {
+      const container = containerRef.current;
+      originalSizeRef.current = {
+        width: container.offsetWidth,
+        height: container.offsetHeight,
+      };
+      
+      // CSS variables ni o'rnatish
+      container.style.setProperty('--original-width', `${originalSizeRef.current.width}px`);
+      container.style.setProperty('--original-height', `${originalSizeRef.current.height}px`);
+    }
+  }, []);
+
+  // Scroll bo'lganda original o'lchamlarni saqlab qolish
+  useEffect(() => {
+    if (containerRef.current && originalSizeRef.current) {
+      const container = containerRef.current;
+      
+      if (isScrolled) {
+        // Original o'lchamlarni ishlatish
+        container.style.width = `${originalSizeRef.current.width}px`;
+        container.style.height = `${originalSizeRef.current.height}px`;
+      } else {
+        // Scroll bo'lmaganda original o'lchamlarni tiklash
+        container.style.width = '';
+        container.style.height = '';
+      }
+    }
+  }, [isScrolled]);
+
   return (
     <>
       <Stack className={"navbar"}>
@@ -92,7 +182,10 @@ const Top = () => {
           <Box component={"div"} className="main1">hello</Box>
           <Box component={"div"} className="right">hello</Box>
         </Stack>
-        <Stack className={"container"}>
+        <Stack 
+          className={`container ${isScrolled ? "scrolled" : ""} ${!isVisible ? "hidden" : ""} ${isSliding ? "sliding" : ""}`}
+          ref={containerRef}
+        >
           <Box component={"div"} className={"logo-box"}>
             <Link href={"/"}>
               <img src="/img/logo/logoo.png" alt="Timory Logo" />

@@ -24,8 +24,41 @@
         align-items: center;
         justify-content: space-around;
         transition: all 0.3s ease;
-        border-radius: 18px;
+        
         box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1000;
+
+        &.scrolled {
+          position: fixed;
+          top: 2%;
+          left: 50%;
+          transform: translateX(-50%);
+          min-width: var(--original-width, auto) !important;
+          max-width: var(--original-width, auto) !important;
+          width: var(--original-width, auto) !important;
+          min-height: var(--original-height, 100px) !important;
+          max-height: var(--original-height, 100px) !important;
+          height: var(--original-height, 100px) !important;
+          background-color: rgba(229, 227, 227, 0.85);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(10px);
+          box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.25);
+          border-radius: 18px;
+          transition: opacity 0.3s ease, visibility 0.3s ease, top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-sizing: border-box;
+        }
+
+        &.scrolled.sliding {
+          animation: slideDownFromTop 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        &.scrolled.hidden {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+      }
 
         .logo-box img {
           width: 160px;
@@ -478,6 +511,17 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes slideDownFromTop {
+      from {
+        top: -100px;
+        opacity: 0;
+      }
+      to {
+        top: 2%;
+        opacity: 1;
       }
     }
   }
@@ -979,4 +1023,3 @@
       }
     }
   }
-}
