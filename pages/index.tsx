@@ -8,13 +8,14 @@ import TopDealers from "@/libs/components/homepage/TopDealers";
 import BestSeller from "@/libs/components/homepage/BestSeller";
 import WatchStories from "@/libs/components/homepage/WatchStories";
 import CreateAI from "@/libs/components/homepage/CreateAI";
+import OurGoal from "@/libs/components/homepage/OurGoal";
 
 
 const Home: NextPage = () => {
   return (
       <Stack className={"home-page"}>
    <TopBrands />
-
+    <OurGoal />
       <PopularWatches />
         
          <WatchStories />
