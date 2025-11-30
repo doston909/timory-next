@@ -87,10 +87,15 @@ const Top = () => {
   return (
     <>
       <Stack className={"navbar"}>
+        <Stack className={"head"}>
+          <Box component={"div"} className="left">hello</Box>
+          <Box component={"div"} className="main1">hello</Box>
+          <Box component={"div"} className="right">hello</Box>
+        </Stack>
         <Stack className={"container"}>
           <Box component={"div"} className={"logo-box"}>
             <Link href={"/"}>
-              <img src="/img/logo/Timorylogo.png" alt="Timory Logo" />
+              <img src="/img/logo/logoo.png" alt="Timory Logo" />
             </Link>
           </Box>
 
@@ -422,7 +427,6 @@ const Top = () => {
             </>
           </Box>
         </Stack>
-        <Stack className={"navbar-main"}></Stack>
       </Stack>
 
       {isSearchOpen && (
