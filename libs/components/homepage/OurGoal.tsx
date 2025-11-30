@@ -9,25 +9,25 @@ const OurGoal = () => {
   const stats = [
     {
       id: 1,
-      icon: <StarIcon sx={{ fontSize: 40, color: "#000" }} />,
+      icon: <StarIcon sx={{ fontSize: 50, color: "#000" }} />,
       title: "4.7 out of 5 stars",
       description: "from 186,000 reviews worldwide",
     },
     {
       id: 2,
-      icon: <PeopleIcon sx={{ fontSize: 40, color: "#000" }} />,
+      icon: <PeopleIcon sx={{ fontSize: 50, color: "#000" }} />,
       title: "9 million",
       description: "watch enthusiasts use Timory each month",
     },
     {
       id: 3,
-      icon: <SecurityIcon sx={{ fontSize: 40, color: "#000" }} />,
+      icon: <SecurityIcon sx={{ fontSize: 50, color: "#000" }} />,
       title: "Over 200,000",
       description: "customers choose Buyer Protection annually",
     },
     {
       id: 4,
-      icon: <StoreIcon sx={{ fontSize: 40, color: "#000" }} />,
+      icon: <StoreIcon sx={{ fontSize: 50, color: "#000" }} />,
       title: "More than 25,000",
       description: "trustworthy sellers",
     },

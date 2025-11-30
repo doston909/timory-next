@@ -9,6 +9,7 @@ import BestSeller from "@/libs/components/homepage/BestSeller";
 import WatchStories from "@/libs/components/homepage/WatchStories";
 import CreateAI from "@/libs/components/homepage/CreateAI";
 import OurGoal from "@/libs/components/homepage/OurGoal";
+import News from "@/libs/components/homepage/News";
 
 
 const Home: NextPage = () => {
@@ -30,9 +31,7 @@ const Home: NextPage = () => {
        <CreateAI />
       
        
-        <Stack>
-          <Stack className="container">Latest News</Stack>
-        </Stack>
+      <News />
       </Stack>
   );
 };

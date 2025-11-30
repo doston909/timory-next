@@ -5,6 +5,7 @@ import { light } from "../scss/MaterialTheme";
 import { useState } from "react";
 import "../scss/app.scss";
 import "../scss/pc/main.scss";
+import ScrollToTop from "@/libs/components/ScrollTotop";
 
 export default function App({ Component, pageProps }: AppProps) {
   // @ts-ignore
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Component {...pageProps} />
+      <ScrollToTop />
     </ThemeProvider>
   );
 }

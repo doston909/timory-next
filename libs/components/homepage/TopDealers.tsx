@@ -1,10 +1,10 @@
 import { Box, Stack } from "@mui/material";
 import { useState } from "react";
-import TopDealerCircleCard, { DealerMini } from "./TopDealersCircleCard";
 import TopDealersCard, { TopDealer } from "./TopDealersCard";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 
-// Mini Dealer Data (left side small circles)
-const miniDealers: DealerMini[] = [
+// Simple box data (left side 3 boxes)
+const simpleBoxes = [
   {
     id: 1,
     name: "Daniel Müller",
@@ -21,13 +21,6 @@ const miniDealers: DealerMini[] = [
   },
   {
     id: 3,
-    name: "Kenji Yamamoto",
-    avatar: "/img/agent/dos.png",
-    city: "Tokyo",
-    rating: 4.7,
-  },
-  {
-    id: 4,
     name: "Kenji Yamamoto",
     avatar: "/img/agent/dos.png",
     city: "Tokyo",
@@ -78,58 +71,52 @@ const fullDealers: TopDealer[] = [
     yearsActive: 14,
     dealerType: "Independent Dealer",
   },
-  {
-    id: 4,
-    name: "Milano Luxury Trade",
-    avatar: "/img/agent/dos.png",
-    city: "Milan",
-    country: "Italy",
-    brands: ["Patek Philippe", "AP", "Hublot"],
-    rating: 4.6,
-    sold: 250,
-    totalWatches: 76,
-    yearsActive: 12,
-    dealerType: "Boutique",
-  },
 ];
 
 const TopDealers = () => {
-  // DEFAULT: birinchi dealer o‘ng tomonda turadi
+  // DEFAULT: birinchi dealer o'ng tomonda turadi
   const [selectedDealerId, setSelectedDealerId] = useState<number>(1);
 
   const activeDealer = fullDealers.find((d) => d.id === selectedDealerId)!;
 
   return (
     <Stack className="top-dealers-section">
-
       {/* TITLE */}
       <h2 className="section-title">Top Dealers</h2>
 
       {/* ROW */}
       <Stack className="top-dealers-row" direction="row">
-
-        {/* LEFT — Circle dealers */}
+        {/* LEFT — 3 ta box (60%) */}
         <Box className="dealer-box-left">
           <Stack className="dealer-left-inner" direction="row">
-            {miniDealers.map((dealer) => (
-              <div
-                key={dealer.id}
-                onClick={() => setSelectedDealerId(dealer.id)}
-                className={`dealer-circle-wrapper ${
-                  selectedDealerId === dealer.id ? "active" : ""
+            {simpleBoxes.map((box) => (
+              <Box
+                key={box.id}
+                className={`dealer-simple-box ${
+                  selectedDealerId === box.id ? "active" : ""
                 }`}
+                onClick={() => setSelectedDealerId(box.id)}
               >
-                <TopDealerCircleCard dealer={dealer} />
-              </div>
+                <img
+                  src={box.avatar}
+                  alt={box.name}
+                  className="dealer-simple-avatar"
+                />
+                <h3 className="dealer-simple-name">{box.name}</h3>
+                <p className="dealer-simple-location">
+                  <PlaceOutlinedIcon className="dealer-simple-icon" />
+                  {box.city}
+                </p>
+                <p className="dealer-simple-rating">⭐ {box.rating}</p>
+              </Box>
             ))}
           </Stack>
         </Box>
 
-        {/* RIGHT — Selected Dealer Card */}
+        {/* RIGHT — Katta box (40%) */}
         <Box className="dealer-box-right">
           <TopDealersCard dealer={activeDealer} />
         </Box>
-
       </Stack>
     </Stack>
   );
