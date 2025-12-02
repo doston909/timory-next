@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
@@ -169,7 +170,7 @@ const BestSeller = () => {
                 <div className="image-box">
                   <img src={w.image} alt={w.model} />
 
-                  {/* 👉 HOVER ICON ACTIONS */}
+                
                   <div className="watch-actions">
                     <div className="action-btn">
                       <ShoppingBagOutlinedIcon
@@ -204,6 +205,12 @@ const BestSeller = () => {
         >
           <ChevronRightIcon />
         </IconButton>
+      </Box>
+
+      <Box className="dealers-see-all-wrapper">
+        <Box className="see-all-text">
+          See All <ArrowForwardIcon className="see-all-arrow" />
+        </Box>
       </Box>
     </Stack>
   );

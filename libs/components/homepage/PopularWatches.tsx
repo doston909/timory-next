@@ -1,5 +1,6 @@
 import React from "react";
 import { Stack, Box } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularWatchesCard, { PopularWatch } from "./PopularWatchesCard";
 
 const popularWatches: PopularWatch[] = [
@@ -54,6 +55,12 @@ const PopularWatches = () => {
             <PopularWatchesCard key={watch.id} watch={watch} />
           ))
         )}
+      </Box>
+
+      <Box className="dealers-see-all-wrapper">
+        <Box className="see-all-text">
+          See All <ArrowForwardIcon className="see-all-arrow" />
+        </Box>
       </Box>
     </Stack>
   );

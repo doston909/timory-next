@@ -398,7 +398,7 @@ const Top = () => {
                       position: "absolute",
                       top: -4,
                       right: -6,
-                      bgcolor: "#d6c6a4",
+                      bgcolor: "#e8994a",
                       color: "#fff",
                       fontSize: "10px",
                       width: 18,

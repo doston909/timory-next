@@ -81,11 +81,6 @@ const TopDealerCard = ({
             <AccessTimeIcon className="info-icon" />
             <Typography className="info-text">{responseTime}</Typography>
           </Stack>
-            {/* Established */}
-          <Typography className="dealer-info-row info-text">
-            Since {establishedYear}
-          </Typography>
-
          
         </Box>
         
