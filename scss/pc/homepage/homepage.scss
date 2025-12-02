@@ -427,6 +427,274 @@
       }
     }
 
+    /* TOP DEALERS SECTION */
+    .top-dealers-section {
+      position: relative;
+      padding: 70px 0;
+      text-align: center;
+      background-color: #f8f8f8;
+
+      .section-title {
+        font-size: 44px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 60px;
+        color: #1a1a1a;
+      }
+
+      .dealers-see-all-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        width: 1400px;
+        margin: 0 auto;
+        margin-top: 40px;
+        padding: 0 0;
+
+        .see-all-text {
+          color: #000000;
+          font-size: 20px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          .see-all-arrow {
+            font-size: 26px;
+            color: #000000;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover {
+            color: #8b7355;
+
+            .see-all-arrow {
+              color: #8b7355;
+              transform: translateX(15px);
+            }
+          }
+        }
+      }
+
+      .top-dealers-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .scroll-arrow {
+        margin-left: 30px;
+        margin-right: 30px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(241, 239, 239, 0.9);
+        border: 1px solid #bab6b6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background: #000000;
+          border-color: #000000;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+          svg {
+            color: #ffffff;
+          }
+        }
+
+        svg {
+          font-size: 28px;
+          color: #000000;
+          transition: color 0.3s ease;
+        }
+
+        &.scroll-arrow-left {
+          left: 20px;
+        }
+
+        &.scroll-arrow-right {
+          right: 20px;
+        }
+      }
+
+      .top-dealers-swiper {
+        width: 1400px;
+        margin: 0 auto;
+
+        :global(.swiper-slide) {
+          height: auto;
+        }
+      }
+    }
+
+    /* TOP DEALER CARD - New Design with Hover */
+    .top-dealer-card-new {
+      background: linear-gradient(145deg, #ffffff, #fefdfb);
+      border-radius: 20px;
+      padding: 0;
+      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+      transition: all 0.35s ease;
+      cursor: pointer;
+      border: 1px solid rgba(229, 200, 163, 0.2);
+      height: 480px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+
+      /* Image Box - 100% card */
+      .dealer-image-box {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+
+        .dealer-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: all 0.4s ease;
+        }
+
+        /* Hover Overlay */
+        .dealer-hover-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.85);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          padding: 30px 20px;
+          margin-right: 30px;
+          gap: 12px;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+
+          .dealer-info-row {
+            margin-left: 70px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .info-icon {
+              color: #e8994a;
+              font-size: 28px;
+            }
+
+            .info-text {
+              color: #cfcfcf;
+              font-size: 22px;
+              font-weight: 400;
+            }
+          }
+
+          .dealer-hover-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            width: 100%;
+
+            .hover-view-btn {
+              flex: 1;
+              border: 2px solid #e5c8a3;
+              color: #e5c8a3;
+              font-size: 13px;
+              font-weight: 600;
+              text-transform: none;
+              padding: 8px 16px;
+              border-radius: 8px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                background-color: #e5c8a3;
+                color: #000000;
+              }
+            }
+
+            .hover-contact-btn {
+              flex: 1;
+              background-color: transparent;
+              color: #ffffff;
+              font-size: 13px;
+              font-weight: 600;
+              text-transform: none;
+              text-decoration: underline;
+              text-underline-offset: 3px;
+              text-decoration-thickness: 1px;
+              text-decoration-color: #e5c8a3;
+              padding: 8px 16px;
+              border-radius: 8px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                background-color: rgba(229, 200, 163, 0.15);
+                color: #e5c8a3;
+              }
+            }
+          }
+        }
+
+        &:hover .dealer-image {
+          filter: blur(4px) brightness(0.7);
+        }
+
+        &:hover .dealer-hover-overlay {
+          opacity: 1;
+        }
+      }
+
+      /* Name Below Image - Blur Overlay */
+      .dealer-name-below {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 5;
+
+        .dealer-name-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: #ffffff;
+          text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .verified-icon-small {
+          color: #e5c8a3;
+          font-size: 20px;
+          filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.6));
+        }
+      }
+    }
 
     .best-seller-section {
       position: relative;
@@ -1396,105 +1664,104 @@
 
   /* NEWS SECTION */
   .news-section {
-  width: 100%;
-  padding: 100px 0;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .news-container {
-    text-align: center;
-    max-width: 500px;
     width: 100%;
-    padding: 0 20px;
-  }
-
-  .news-icon-wrapper {
+    padding: 100px;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
 
-    .news-envelope-icon {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-    }
-  }
-
-  .news-title {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 5px;
-    margin-bottom: 15px;
-    color: #000;
-  }
-
-  .news-description {
-    font-size: 15px;
-    color: #000;
-    margin-bottom: 40px;
-    line-height: 1.6;
-  }
-
-  .news-form {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    align-items: center;
-
-    .news-email-input {
+    .news-container {
+      text-align: center;
+      max-width: 800px;
       width: 100%;
+      padding: 0 20px;
+    }
 
-      :global(.MuiInputBase-root) {
-        font-size: 60px;
-        color: #000;
+    .news-icon-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
 
-        input {
-          padding: 10px 0;
-          &::placeholder {
-            color: #999;
-            font-size: 15px;
+      .news-envelope-icon {
+        width: 70px;
+        height: 100px;
+        object-fit: contain;
+      }
+    }
+
+    .news-title {
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 10px;
+      margin-bottom: 15px;
+      color: #000;
+    }
+
+    .news-description {
+      font-size: 18px;
+      color: #000;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .news-form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      align-items: center;
+
+      .news-email-input {
+        width: 100%;
+
+        :global(.MuiInputBase-root) {
+          font-size: 60px;
+          color: #000;
+
+          input {
+            padding: 10px 0;
+            &::placeholder {
+              color: #000000;
+              font-size: 30px;
+            }
           }
+        }
+
+        :global(.MuiInput-underline:before) {
+          border-bottom: 10px solid #000;
+        }
+
+        :global(.MuiInput-underline:hover:not(.Mui-disabled):before) {
+          border-bottom: 1px solid #000;
+        }
+
+        :global(.MuiInput-underline:after) {
+          border-bottom: 2px solid #000;
         }
       }
 
-      :global(.MuiInput-underline:before) {
-        border-bottom: 5px solid #000;
-      }
+      .news-subscribe-btn {
+        background-color: transparent;
+        border: none;
+        color: #000;
+        font-size: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-decoration: underline;
+        text-underline-offset: 5px;
+        letter-spacing: 2px;
+        padding: 0;
+        cursor: pointer;
 
-      :global(.MuiInput-underline:hover:not(.Mui-disabled):before) {
-        border-bottom: 1px solid #000;
-      }
+        &:hover {
+          color: #d0a20a;
+        }
 
-      :global(.MuiInput-underline:after) {
-        border-bottom: 2px solid #000;
-      }
-    }
-
-    .news-subscribe-btn {
-      background-color: transparent;
-      border: none;
-      color: #000;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      text-decoration: underline;
-      text-underline-offset: 5px;
-      letter-spacing: 1px;
-      padding: 0;
-      cursor: pointer;
-
-      &:hover {
-        color: #333;
-      }
-
-      &:active {
-        transform: scale(0.98);
+        &:active {
+          transform: scale(0.98);
+        }
       }
     }
   }
-}
-
 }

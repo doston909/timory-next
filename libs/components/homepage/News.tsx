@@ -32,7 +32,7 @@ const News = () => {
 
         {/* Description */}
         <p className="news-description">
-          Join our list and get 15% off your first purchase!
+          Join our list and get 15% off your first purchase! Don't worry we don't spam
         </p>
 
         {/* Email Form */}
@@ -50,7 +50,7 @@ const News = () => {
             required
           />
           <Button type="submit" className="news-subscribe-btn">
-            SUBSCRIBE
+            SUBMIT
           </Button>
         </form>
       </Box>

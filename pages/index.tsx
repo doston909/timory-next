@@ -9,6 +9,7 @@ import WatchStories from "@/libs/components/homepage/WatchStories";
 import CreateAI from "@/libs/components/homepage/CreateAI";
 import OurGoal from "@/libs/components/homepage/OurGoal";
 import News from "@/libs/components/homepage/News";
+import TopDealers from "@/libs/components/homepage/TopDealers";
 
 
 const Home: NextPage = () => {
@@ -20,14 +21,14 @@ const Home: NextPage = () => {
         
          <WatchStories />
         <LimitedEdition />
-       
+       <TopDealers />
     
 
      
-       
+        <CreateAI />
        <BestSeller />
 
-       <CreateAI />
+      
       
        
       <News />
