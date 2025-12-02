@@ -4,7 +4,6 @@ import TopBrands from "@/libs/components/homepage/TopBrands";
 import withLayoutMain from "@/libs/components/layout/LayoutHome";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
-import TopDealers from "@/libs/components/homepage/TopDealers";
 import BestSeller from "@/libs/components/homepage/BestSeller";
 import WatchStories from "@/libs/components/homepage/WatchStories";
 import CreateAI from "@/libs/components/homepage/CreateAI";
@@ -24,7 +23,7 @@ const Home: NextPage = () => {
        
     
 
-      <TopDealers />
+     
        
        <BestSeller />
 

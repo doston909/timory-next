@@ -99,18 +99,17 @@ const Top = () => {
       
       setIsScrolled(scrolled);
       
-      // Scroll pastga yoki tepaga bo'lganda container tepadan sirg'alib tushadi
+     
       if (scrolled) {
         setIsVisible(true);
-        
-        // Faqat scrollY > 50 bo'lganda va oldingi scrollY <= 50 bo'lganda animation trigger qilish
+     
         if (!wasScrolled) {
           setIsSliding(true);
           
-          // Animation tugagach isSliding ni false qilish
+         
           setTimeout(() => {
             setIsSliding(false);
-          }, 400); // Animation davomiyligi
+          }, 400); 
         }
         
        
@@ -121,7 +120,7 @@ const Top = () => {
        
         scrollTimeoutRef.current = setTimeout(() => {
           setIsVisible(false);
-        }, 10000); // 10 soniya = 10000ms
+        }, 6000); // 10 soniya = 10000ms
       } else {
        
         setIsVisible(true);
@@ -295,32 +294,6 @@ const Top = () => {
                     <Link href="/watch?sort=new">New Arrivals</Link>
                     <Link href="/watch?sort=best">Best Sellers</Link>
                     <Link href="/watch?sort=vintage">Vintage</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* AGENTS */}
-            <div
-              className="nav-item-wrapper"
-             
-            >
-              <div
-                className={`nav-item ${
-                  activeDropdown === "agents" ? "active" : ""
-                }`}
-                onMouseEnter={() => handleDropdownOpen("agents")}
-              >
-                <span>Agents</span>
-
-                {activeDropdown === "agents" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/agent?type=premium">Premium Agents</Link>
-                    <Link href="/agent?type=verified">Verified Agents</Link>
-                    <Link href="/agent?type=all">All Agents</Link>
                   </div>
                 )}
               </div>

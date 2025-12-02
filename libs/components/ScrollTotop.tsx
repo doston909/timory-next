@@ -12,7 +12,7 @@ const ScrollToTop = () => {
 
       const fromBottom = fullHeight - (scrollTop + windowHeight);
 
-      if (scrollTop > 1000 && fromBottom > 1000) {
+      if (scrollTop > 800 ) {
         setShowButton(true);
       } else {
         setShowButton(false);
