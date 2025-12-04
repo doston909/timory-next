@@ -1,14 +1,15 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 import { Container, Stack } from "@mui/material";
 
 const WatchDetail = () => {
-  return (
-    <>
-      <Stack sx={{ background: "#81c784" }}>Header Basic</Stack>
-      <Container>WATCH DETAIL</Container>
-      <Stack sx={{ background: "#a1887f" }}>Footer Basic</Stack>
-    </>
-  );
+  const device = useDeviceDetect();
+
+  if (device === "mobile") {
+    return <Stack>WATCH DETAIL MOBILE</Stack>;
+  } else {
+    return <Container>WATCH DETAIL</Container>;
+  }
 };
 
 export default withLayoutBasic(WatchDetail);

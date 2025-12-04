@@ -1,2 +1,449 @@
-@import "../../variables";
+#pc-wrap {
+  .watch-list-page {
+    height: auto;
+    width: 100%;
+    padding: 110px 90px;
+    background-color: #f9f8f8;
 
+    .watch-list-content {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: flex-start;
+
+      .watch-filter-sidebar {
+        width: 320px;
+        flex-shrink: 0;
+        order: 1;
+      }
+
+      .watch-list-main {
+        flex: 1;
+        min-width: 0;
+        order: 2;
+      }
+    }
+
+    /* Header Controls */
+    .watch-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 50px;
+      padding: 12px 20px;
+      background-color: #ffffff;
+      border: 1px solid #9d9b9b;
+      border-radius: 8px;
+
+      .view-mode-toggle {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 8px;
+        background-color: #ffffff;
+
+        .view-btn {
+          width: 36px;
+          height: 36px;
+          border: none;
+          border-radius: 6px;
+          transition: all 0.3s ease;
+          background-color: #ffffff;
+
+          svg {
+            font-size: 18px;
+            color: #4e4d4d;
+          }
+
+          &.active {
+            background-color: #E5C8A3;
+
+            svg {
+              color: #ffffff;
+            }
+          }
+
+          &:hover:not(.active) {
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+        }
+      }
+
+      .filter-dropdown {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        .filter-label {
+          font-size: 14px;
+          color: #666666;
+          font-weight: 400;
+          white-space: nowrap;
+        }
+
+        .filter-search-input {
+          min-width: 200px;
+          height: 36px;
+          font-size: 14px;
+
+          :global(.MuiOutlinedInput-notchedOutline) {
+            border-color: #e0e0e0;
+          }
+
+          &:hover :global(.MuiOutlinedInput-notchedOutline) {
+            border-color: #999999;
+          }
+
+          :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+            border-color: #000000;
+            border-width: 1px;
+          }
+        }
+      }
+
+      .sort-dropdown {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        .sort-label {
+          font-size: 14px;
+          color: #666666;
+          font-weight: 400;
+          white-space: nowrap;
+        }
+
+        .sort-select {
+          min-width: 140px;
+          height: 36px;
+          border-radius: 6px;
+          font-size: 14px;
+
+          :global(.MuiSelect-select) {
+            padding: 8px 12px;
+          }
+
+          :global(.MuiOutlinedInput-notchedOutline) {
+            border-color: #e0e0e0;
+          }
+
+          &:hover :global(.MuiOutlinedInput-notchedOutline) {
+            border-color: #999999;
+          }
+
+          :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+            border-color: #000000;
+            border-width: 1px;
+          }
+        }
+      }
+    }
+
+    /* Watch Grid */
+    .watch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 0;
+
+      &.list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 1600px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Watch Card */
+    .watch-card {
+      background-color: #ffffff;
+      border: 1px solid #b4b3b3;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        border-color: #e0e0e0;
+      }
+
+      .watch-image-box {
+        width: 100%;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        overflow: hidden;
+
+        .watch-image {
+          width: 80%;
+          height: 80%;
+          object-fit: contain;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      &:hover .watch-image {
+        transform: scale(1.05);
+      }
+
+      .watch-info {
+        padding: 16px 20px 20px;
+        gap: 6px;
+        background-color: #ffffff;
+
+        .watch-name {
+          font-size: 15px;
+          font-weight: 500;
+          color: #1a1a1a;
+          line-height: 1.4;
+        }
+
+        .watch-price {
+          font-size: 14px;
+          font-weight: 600;
+          color: #333333;
+          margin-top: 4px;
+        }
+      }
+    }
+
+    /* Filter Styles */
+    .filter-main {
+      background-color: #ffffff;
+      border: 1px solid #b4b3b3;
+      border-radius: 10px;
+     
+      padding: 30px 20px;
+      position: sticky;
+      top: 100px;
+
+      .find-your-watch {
+        margin-bottom: 30px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .title-main-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          user-select: none;
+          transition: all 0.2s ease;
+
+          &:hover {
+            .title-main {
+              color: #333333;
+            }
+          }
+        }
+
+        .title-main {
+          font-size: 14px;
+          font-weight: 300;
+          color: #666666;
+          margin-bottom: 0;
+          transition: color 0.2s ease;
+        }
+
+        .title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #333333;
+          margin-bottom: 16px;
+        }
+
+        .input-box {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          position: relative;
+          padding: 4px 0;
+          transition: all 0.2s ease;
+
+          &:hover {
+            .watch-type {
+              color: #000000;
+            }
+          }
+
+          .search-input {
+            flex: 1;
+            height: 40px;
+            font-size: 14px;
+
+            :global(.MuiOutlinedInput-notchedOutline) {
+              border-color: #e0e0e0;
+            }
+
+            &:hover :global(.MuiOutlinedInput-notchedOutline) {
+              border-color: #999999;
+            }
+
+            :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+              border-color: #000000;
+            }
+          }
+
+
+          .MuiIconButton-root {
+            padding: 4px;
+            color: #666666;
+
+            &:hover {
+              color: #000000;
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+          }
+        }
+
+        .watch-location {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          overflow-y: auto;
+          transition: height 0.3s ease;
+        }
+
+        .watch-checkbox {
+          padding: 4px;
+          color: #666666;
+          margin-right: 0;
+
+          :global(.MuiSvgIcon-root) {
+            font-size: 22px;
+            transition: all 0.2s ease;
+          }
+
+          &.Mui-checked {
+            color: #E5C8A3;
+
+            :global(.MuiSvgIcon-root) {
+              color: #E5C8A3;
+            }
+          }
+
+          &:hover {
+            :global(.MuiSvgIcon-root) {
+              color: #E5C8A3;
+            }
+          }
+        }
+
+        .watch-type {
+          font-size: 16px;
+          color: #333333;
+          font-weight: 400;
+          margin: 0;
+          transition: color 0.2s ease;
+          user-select: none;
+        }
+
+        .button-group {
+          display: flex;
+          gap: 0;
+          flex-wrap: wrap;
+
+          .MuiButton-root {
+            flex: 1;
+            min-width: 40px;
+            height: 36px;
+            font-size: 13px;
+            color: #333333;
+            background-color: #ffffff;
+            text-transform: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.05);
+              border-color: #666666 !important;
+            }
+          }
+        }
+
+        .square-price-input {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .MuiFormControl-root {
+            flex: 1;
+            min-width: 0;
+
+            .MuiInputLabel-root {
+              font-size: 15px;
+              color: #666666;
+            }
+
+            .MuiSelect-root {
+              height: 40px;
+              font-size: 16px;
+
+              :global(.MuiOutlinedInput-notchedOutline) {
+                border-color: #e0e0e0;
+              }
+
+              &:hover :global(.MuiOutlinedInput-notchedOutline) {
+                border-color: #999999;
+              }
+
+              :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+                border-color: #000000;
+              }
+            }
+          }
+
+          .central-divider {
+            width: 1px;
+            height: 30px;
+            background-color: #e0e0e0;
+            flex-shrink: 0;
+          }
+
+          input[type="number"] {
+            flex: 1;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333333;
+            transition: all 0.2s ease;
+
+            &:focus {
+              outline: none;
+              border-color: #000000;
+            }
+
+            &::placeholder {
+              color: #999999;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      max-height: 100px;
+      transform: translateY(0);
+    }
+  }
+}

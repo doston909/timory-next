@@ -1023,4 +1023,40 @@
         }
       }
     }
+
+    /* Header Basic Section */
+    .header-basic {
+      background-color: #f3f2ef;
+      padding: 40px 0;
+      width: 100%;
+
+      > .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        strong {
+          font-size: 24px;
+          font-weight: 600;
+          color: #1a1a1a;
+        }
+
+        span {
+          font-size: 14px;
+          color: #666666;
+        }
+      }
+    }
+
+    /* Main Content Section */
+    #main {
+      background-color: #ffffff;
+      width: 100%;
+      min-height: calc(100vh - 200px);
+      position: relative;
+      z-index: 1;
+    }
   }
