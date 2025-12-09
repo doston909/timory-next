@@ -1,10 +1,11 @@
-import { Stack, Box, Select, MenuItem, IconButton, OutlinedInput, InputAdornment } from "@mui/material";
+import { Stack, Box, Select, MenuItem, IconButton, OutlinedInput, InputAdornment, Typography } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import WatchCard from "@/libs/components/watch/WatchCard";
 import Filter from "@/libs/components/watch/Filter";
 import Top from "@/libs/components/Top";
@@ -16,6 +17,9 @@ interface Watch {
   name: string;
   price: string;
   image: string;
+  likes?: number;
+  views?: number;
+  comments?: number;
 }
 
 const watches: Watch[] = [
@@ -24,63 +28,156 @@ const watches: Watch[] = [
     name: "Analog Strap Watch",
     price: "Rs. 4,500.00",
     image: "/img/watch/rasm1.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
   {
     id: 2,
     name: "Black Dail Strap",
     price: "Rs. 2,500.00",
     image: "/img/watch/rasm2.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
   {
     id: 3,
     name: "Black Dial Classic",
     price: "Rs. 3,326.00",
     image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
   {
     id: 4,
     name: "Rose Gold Mesh",
     price: "Rs. 5,200.00",
     image: "/img/watch/rasmm.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
   {
     id: 5,
     name: "Chronograph Brown",
     price: "Rs. 6,800.00",
     image: "/img/watch/rasmm2.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
   {
     id: 6,
     name: "Classic Gold",
     price: "Rs. 4,100.00",
     image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
   },
+   {
+    id: 7,
+    name: "Chronograph Brown",
+    price: "Rs. 6,800.00",
+    image: "/img/watch/rasmm2.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 8,
+    name: "Classic Gold",
+    price: "Rs. 4,100.00",
+    image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+   {
+    id: 9,
+    name: "Classic Gold",
+    price: "Rs. 4,100.00",
+    image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+   {
+    id: 10,
+    name: "Analog Strap Watch",
+    price: "Rs. 4,500.00",
+    image: "/img/watch/rasm1.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 11,
+    name: "Black Dail Strap",
+    price: "Rs. 2,500.00",
+    image: "/img/watch/rasm2.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 12,
+    name: "Black Dial Classic",
+    price: "Rs. 3,326.00",
+    image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 13,
+    name: "Rose Gold Mesh",
+    price: "Rs. 5,200.00",
+    image: "/img/watch/rasmm.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 14,
+    name: "Chronograph Brown",
+    price: "Rs. 6,800.00",
+    image: "/img/watch/rasmm2.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  {
+    id: 15,
+    name: "Classic Gold",
+    price: "Rs. 4,100.00",
+    image: "/img/watch/rasm3.png",
+    likes: 2,
+    views: 35,
+    comments: 17,
+  },
+  
+   
+   
 ];
 
 const WatchList: NextPage = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("featured");
   const [searchText, setSearchText] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  
+  const itemsPerPage = viewMode === "list" ? 6 : 9; // List view'da 6 ta, Grid view'da 9 ta
+  const totalPages = Math.ceil(watches.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentWatches = watches.slice(startIndex, endIndex);
 
   return (
     <>
       <Stack id="pc-wrap">
-        <Stack id={"top"}>
-          <Top />
-        </Stack>
-
-        <Stack
-          className={`header-basic`}
-          style={{
-            backgroundSize: "cover",
-            boxShadow: "inser 10px 40px 150px 40px rgb(24 22 36)",
-          }}
-        >
-          <Stack className={"container"}>
-            <strong>Watch Search</strong>
-            <span>We are glad to see you again!</span>
-          </Stack>
-        </Stack>
 
         <Stack id={"main"}>
           <Stack className="watch-list-page">
@@ -98,13 +195,19 @@ const WatchList: NextPage = () => {
                   <Box className="view-mode-toggle">
                     <IconButton
                       className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-                      onClick={() => setViewMode("grid")}
+                      onClick={() => {
+                        setViewMode("grid");
+                        setCurrentPage(1);
+                      }}
                     >
                       <GridViewIcon />
                     </IconButton>
                     <IconButton
                       className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-                      onClick={() => setViewMode("list")}
+                      onClick={() => {
+                        setViewMode("list");
+                        setCurrentPage(1);
+                      }}
                     >
                       <ViewListIcon />
                     </IconButton>
@@ -123,6 +226,25 @@ const WatchList: NextPage = () => {
                         <InputAdornment position="start">
                           <SearchIcon sx={{ fontSize: 24, color: "#000000ff" }} />
                         </InputAdornment>
+                      }
+                      endAdornment={
+                        searchText && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setSearchText("")}
+                              edge="end"
+                              sx={{
+                                padding: "4px",
+                                color: "#666666",
+                                "&:hover": {
+                                  color: "#000000",
+                                },
+                              }}
+                            >
+                              <CloseIcon sx={{ fontSize: 20 }} />
+                            </IconButton>
+                          </InputAdornment>
+                        )
                       }
                     />
                   </Box>
@@ -144,11 +266,32 @@ const WatchList: NextPage = () => {
                 </Box>
 
                 {/* Watch Grid */}
-                <Box className={`watch-grid ${viewMode}`}>
-                  {watches.map((watch) => (
-                    <WatchCard key={watch.id} watch={watch} />
-                  ))}
-                </Box>
+                {currentWatches.length > 0 ? (
+                  <Box className={`watch-grid ${viewMode}`}>
+                    {currentWatches.map((watch) => (
+                      <WatchCard key={watch.id} watch={watch} />
+                    ))}
+                  </Box>
+                ) : (
+                  <Box className="watch-not-found">
+                    <Typography className="not-found-text">Watch Not Found</Typography>
+                  </Box>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Box className="watch-pagination">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <Box
+                        key={page}
+                        className={`pagination-number ${currentPage === page ? "active" : ""}`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </Box>
+                    ))}
+                  </Box>
+                )}
               </Box>
             </Box>
           </Stack>
@@ -162,4 +305,4 @@ const WatchList: NextPage = () => {
   );
 };
 
-export default WatchList;
+export default withLayoutBasic(WatchList);

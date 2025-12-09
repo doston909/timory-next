@@ -21,6 +21,10 @@
         flex: 1;
         min-width: 0;
         order: 2;
+        display: flex;
+        flex-direction: column;
+        min-height: 600px;
+        height: fit-content;
       }
     }
 
@@ -51,12 +55,12 @@
           background-color: #ffffff;
 
           svg {
-            font-size: 18px;
-            color: #4e4d4d;
+            font-size: 24px;
+            color: #4e4e4d;
           }
 
           &.active {
-            background-color: #E5C8A3;
+            background-color: #000000;
 
             svg {
               color: #ffffff;
@@ -64,7 +68,7 @@
           }
 
           &:hover:not(.active) {
-            background-color: rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 148, 34, 0.5);
           }
         }
       }
@@ -76,23 +80,24 @@
         gap: 10px;
 
         .filter-label {
-          font-size: 14px;
+          font-size: 18px;
           color: #666666;
-          font-weight: 400;
+          font-weight: 600;
           white-space: nowrap;
         }
 
         .filter-search-input {
-          min-width: 200px;
-          height: 36px;
-          font-size: 14px;
+          min-width: 330px;
+          height:36px;
+          font-size: 22px;
+          background-color: #f6f6f6;
 
           :global(.MuiOutlinedInput-notchedOutline) {
-            border-color: #e0e0e0;
+            border-color: #838383;
           }
 
           &:hover :global(.MuiOutlinedInput-notchedOutline) {
-            border-color: #999999;
+            border-color: #313131;
           }
 
           :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
@@ -109,17 +114,17 @@
         gap: 10px;
 
         .sort-label {
-          font-size: 14px;
+          font-size: 19px;
           color: #666666;
           font-weight: 400;
           white-space: nowrap;
         }
 
         .sort-select {
-          min-width: 140px;
+          min-width: 150px;
           height: 36px;
           border-radius: 6px;
-          font-size: 14px;
+          font-size: 18px;
 
           :global(.MuiSelect-select) {
             padding: 8px 12px;
@@ -145,16 +150,61 @@
     .watch-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      gap: 50px;
+      margin-bottom: 50px;
       padding: 0;
+      width: 100%;
+      max-width: 100%;
+      min-height: 1390px; /* 9 ta soat uchun doimiy balandlik: 3 qator × 430px + 2 gap × 50px */
+      grid-auto-rows: 430px;
+      flex: 1;
 
       &.list {
-        grid-template-columns: 1fr;
-        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+        width: 100%;
+        max-width: 100%;
+        min-height: 1210px; /* 3 qator uchun doimiy balandlik: 3 qator × 200px + 2 gap × 50px */
+        flex: 0 1 auto; /* List view'da flex: 1 ni o'chirish */
+        height: 700px; /* 3 qator uchun doimiy balandlik - soatlar soni o'zgarmasligi uchun */
+        grid-auto-rows: 370px; /* Har bir card uchun doimiy balandlik */
+
+        .watch-card {
+          display: flex;
+          flex-direction: row;
+          height: auto;
+          min-height: 150px;
+          max-height: none;
+
+          .watch-image-box {
+            width: 70%;
+            height: 100%;
+            min-height: 200px;
+            position: relative;
+          }
+
+          .watch-info {
+            width: 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff; /* Oddiy holatda oq */
+            transition: background-color 0.3s ease;
+          }
+
+          &:hover .watch-info {
+            background-color: #f5f5f5; /* Hover holatida background rangi */
+          }
+        }
       }
 
       @media (max-width: 1600px) {
         grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        max-width: 100%;
+        min-height: 2350px; /* 9 ta soat uchun doimiy balandlik: 5 qator × 430px + 4 gap × 50px (2 ustun layout) */
       }
     }
 
@@ -166,51 +216,243 @@
       overflow: hidden;
       cursor: pointer;
       transition: all 0.3s ease;
+      height: 450px;
+      min-height: 430px;
+      max-height: 450px;
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
         border-color: #e0e0e0;
+
+        .watch-info {
+          background-color: #f5f5f5; /* Hover holatida background rangi */
+        }
       }
 
       .watch-image-box {
         width: 100%;
-        height: 350px;
+        height: 360px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #ffffff;
         overflow: hidden;
+        position: relative;
 
         .watch-image {
-          width: 80%;
-          height: 80%;
+          width: 90%;
+          height: 90%;
           object-fit: contain;
           transition: transform 0.3s ease;
         }
+
+        .watch-actions {
+          position: absolute;
+          top: 35%;
+          right: 15px;
+          transform: translateY(-50%) translateX(20px);
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.35s ease;
+          z-index: 10;
+        }
+
+        .watch-scroll-arrow {
+          position: absolute;
+          bottom: 20px;
+          margin-left: 20px;
+          margin-right: 20px;
+          z-index: 10;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(241, 239, 239, 0.9);
+          border: 1px solid #bab6b6;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          opacity: 0;
+          pointer-events: none;
+
+          &:hover {
+            background: #000000;
+            border-color: #000000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+            svg {
+              color: #ffffff;
+            }
+          }
+
+          svg {
+            font-size: 28px;
+            color: #000000;
+            transition: color 0.3s ease;
+          }
+
+          &.watch-scroll-arrow-left {
+            left: 20px;
+          }
+
+          &.watch-scroll-arrow-right {
+            right: 20px;
+          }
+        }
       }
+
+      &:hover .watch-image-box .watch-scroll-arrow {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      &:hover .watch-image-box .watch-actions {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      .action-btn {
+        width: 48px;
+        height: 48px;
+        background: #edecec;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.25s ease;
+        position: relative;
+
+        &:hover {
+          background: #6b5a51;
+        }
+
+        svg {
+          width: 28px;
+          height: 28px;
+          color: #000000;
+          transition: color 0.55s ease;
+          filter: contrast(0.9);
+
+          path {
+            fill-opacity: 0.8;
+            stroke-width: 3;
+          }
+        }
+
+        &:hover svg {
+          color: #e5c8a3;
+
+          path {
+            fill-opacity: 1;
+          }
+        }
+
+        &.action-btn-with-count {
+          .action-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e8994a;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+          }
+        }
+      }
+
 
       &:hover .watch-image {
         transform: scale(1.05);
       }
 
       .watch-info {
-        padding: 16px 20px 20px;
-        gap: 6px;
-        background-color: #ffffff;
+        padding: 10px 20px 20px;
+        background-color: #ffffff; /* Oddiy holatda oq */
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease;
 
         .watch-name {
-          font-size: 15px;
+          font-size: 24px;
           font-weight: 500;
           color: #1a1a1a;
           line-height: 1.4;
         }
 
         .watch-price {
-          font-size: 14px;
+          font-size: 22px;
           font-weight: 600;
           color: #333333;
-          margin-top: 4px;
+          margin-bottom: 10px;
+          
+        }
+      }
+
+    }
+
+    /* Watch Not Found */
+    .watch-not-found {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 400px;
+      padding: 60px 20px;
+
+      .not-found-text {
+        font-size: 24px;
+        font-weight: 500;
+        color: #666666;
+        text-align: center;
+      }
+    }
+
+    /* Pagination */
+    .watch-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 20px 0 0;
+      flex-shrink: 0;
+
+      .pagination-number {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 500;
+        color: #4a4a4a;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+
+        &:hover {
+          color: #E5C8A3;
+        }
+
+        &.active {
+          background-color: transparent;
+          color: #E5C8A3;
+          border: none;
+          font-weight: 600;
         }
       }
     }
@@ -220,16 +462,147 @@
       background-color: #ffffff;
       border: 1px solid #b4b3b3;
       border-radius: 10px;
-     
+      
       padding: 30px 20px;
       position: sticky;
       top: 100px;
+
+      .filter-section {
+        margin-bottom: 30px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .title {
+          font-size: 20px;
+          font-weight: 600;
+          color: #333333;
+          margin-bottom: 16px;
+          cursor: pointer;
+          transition: color 0.2s ease;
+          user-select: none;
+
+          &:hover {
+            color: #b28429;
+          }
+        }
+
+        .filter-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          overflow-y: auto;
+          animation: slideDown 0.6s ease;
+          overflow: hidden;
+          max-height: 500px;
+          transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .input-box {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          position: relative;
+          padding: 4px 0;
+          transition: all 0.2s ease;
+
+          &:hover {
+            .label {
+              color: #000000;
+            }
+          }
+
+          .MuiCheckbox-root {
+            padding: 4px;
+            color: #666666;
+            margin-right: 0;
+
+            :global(.MuiSvgIcon-root) {
+              font-size: 22px;
+              transition: all 0.2s ease;
+            }
+
+            &.Mui-checked {
+              color: #300964;
+
+              :global(.MuiSvgIcon-root) {
+                color: #282828;
+              }
+            }
+
+            &:hover {
+              :global(.MuiSvgIcon-root) {
+                color: #000000;
+              }
+            }
+          }
+
+          .label {
+            font-size: 16px;
+            color: #333333;
+            font-weight: 400;
+            margin: 0;
+            transition: color 0.2s ease;
+            user-select: none;
+            cursor: pointer;
+          }
+        }
+
+        .price-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .MuiFormControl-root {
+            flex: 1;
+            min-width: 0;
+
+            .MuiInputLabel-root {
+              font-size: 15px;
+              color: #666666;
+            }
+
+            .MuiSelect-root {
+              height: 40px;
+              font-size: 16px;
+
+              :global(.MuiOutlinedInput-notchedOutline) {
+                border-color: #e0e0e0;
+              }
+
+              &:hover :global(.MuiOutlinedInput-notchedOutline) {
+                border-color: #999999;
+              }
+
+              :global(.Mui-focused .MuiOutlinedInput-notchedOutline) {
+                border-color: #000000;
+              }
+            }
+          }
+
+          .central-divider {
+            width: 1px;
+            height: 30px;
+            background-color: #e0e0e0;
+            flex-shrink: 0;
+          }
+        }
+      }
 
       .find-your-watch {
         margin-bottom: 30px;
 
         &:last-child {
           margin-bottom: 0;
+        }
+
+        :global(.MuiIconButton-root) {
+          &:hover {
+            padding: 8px !important;
+            padding-bottom: 8px !important;
+          }
         }
         .title-main-wrapper {
           display: flex;
@@ -255,7 +628,8 @@
         }
 
         .title {
-          font-size: 18px;
+          font-size: 26px;
+          justify-content: center;
           font-weight: 600;
           color: #333333;
           margin-bottom: 16px;
@@ -414,10 +788,10 @@
             flex: 1;
             height: 40px;
             padding: 0 12px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #000000;
             border-radius: 4px;
             font-size: 14px;
-            color: #333333;
+            color: #000000;
             transition: all 0.2s ease;
 
             &:focus {
@@ -442,8 +816,21 @@
     }
     to {
       opacity: 1;
-      max-height: 100px;
+      max-height: 500px;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      max-height: 500px;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      max-height: 0;
+      transform: translateY(-10px);
     }
   }
 }
