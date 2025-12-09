@@ -6,6 +6,7 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 interface Watch {
   id: number;
@@ -22,6 +23,8 @@ interface WatchCardProps {
 }
 
 const WatchCard = ({ watch }: WatchCardProps) => {
+  const router = useRouter();
+
   // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
@@ -36,21 +39,31 @@ const WatchCard = ({ watch }: WatchCardProps) => {
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const handlePrev = () => {
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const handleNext = () => {
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
+  const handleActionClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleCardClick = () => {
+    router.push(`/watch/detail?id=${watch.id}`);
+  };
+
   return (
-    <Box className="watch-card">
+    <Box className="watch-card" onClick={handleCardClick}>
       <Box className="watch-image-box">
         <img src={images[currentImageIndex]} alt={watch.name} className="watch-image" />
         
         {/* 👉 HOVER ICON ACTIONS */}
-        <div className="watch-actions">
+        <div className="watch-actions" onClick={handleActionClick}>
           <div className="action-btn">
             <ShoppingBagOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
