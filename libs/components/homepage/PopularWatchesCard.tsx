@@ -9,6 +9,7 @@ export type PopularWatch = {
   brand: string;
   model: string;
   image: string;
+  price?: string;
   likes?: number;
   views?: number;
   comments?: number;
@@ -53,6 +54,7 @@ const PopularWatchesCard = ({ watch }: Props) => {
       <Stack className="text-box">
         <span className="brand">{watch.brand}</span>
         <span className="model">{watch.model}</span>
+        {watch.price && <span className="price">{watch.price}</span>}
       </Stack>
     </Stack>
   );
