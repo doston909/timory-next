@@ -261,6 +261,7 @@ const WatchList: NextPage = () => {
                       <MenuItem value="price-asc">Price: Low to High</MenuItem>
                       <MenuItem value="price-desc">Price: High to Low</MenuItem>
                       <MenuItem value="newest">Newest</MenuItem>
+                      <MenuItem value="newest">Limited Editions</MenuItem>
                     </Select>
                   </Box>
                 </Box>
