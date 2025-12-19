@@ -1,5 +1,6 @@
 import { Stack, Box, Typography } from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/router"; // Bu qo'shish kerak
 
 export type Article = {
   id: number;
@@ -17,6 +18,7 @@ type CommunityCardProps = {
 };
 
 const CommunityCard = ({ articles }: CommunityCardProps) => {
+  const router = useRouter(); // Bu qo'shish kerak
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 4;
   const totalPages = Math.ceil(articles.length / articlesPerPage);
@@ -24,12 +26,25 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
   const startIndex = (currentPage - 1) * articlesPerPage;
   const displayedArticles = articles.slice(startIndex, startIndex + articlesPerPage);
 
+  // Bu funksiyani qo'shish kerak
+  const handleArticleClick = (articleId: number, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    console.log('Navigating to article:', articleId);
+    router.push(`/community/detail?id=${articleId}`);
+  };
+
   return (
     <Stack className="community-main">
       <Stack className="articles-grid">
         {displayedArticles.map((article) => (
           <Box key={article.id} className="article-card">
-            <Box className="article-image">
+            <Box 
+              className="article-image"
+              onClick={(e) => handleArticleClick(article.id, e)}
+            >
               <img src={article.image} alt={article.title} />
             </Box>
             <Box className="article-content">
@@ -47,7 +62,10 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
                 {"  |  "}
                 {article.date}  |  {article.comments} COMMENT{article.comments !== 1 ? "S" : ""}
               </Typography>
-              <Typography className="article-title">
+              <Typography 
+                className="article-title"
+                onClick={(e) => handleArticleClick(article.id, e)}
+              >
                 {article.title}
               </Typography>
               <Typography className="article-description">

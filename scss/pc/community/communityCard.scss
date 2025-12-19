@@ -1,0 +1,218 @@
+.community-main {
+  flex: 1;
+  min-width: 0;
+  margin-right: -140px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 1200px;
+  box-sizing: border-box;
+  position: relative;
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+    flex: 1 1 auto;
+    align-content: start;
+    min-height: 1000px;
+    height: 1700px;
+
+    .article-card {
+      background-color: #ffffff;
+      height: 850px;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: none;
+      transition: all 0.3s ease;
+      cursor: default;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+
+      &:hover {
+        box-shadow: none;
+        transform: none;
+      }
+
+      .article-image {
+        width: 100%;
+        padding-bottom: 100%;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 0;
+        cursor: pointer;
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.6s ease;
+          transform-origin: center;
+          pointer-events: none;
+        }
+
+        &:hover img {
+          transform: scale(1.2);
+        }
+      }
+
+      .article-content {
+        padding: 40px 20px 0 20px;
+
+        .article-meta {
+          font-family: $font;
+          font-size: 20px;
+          font-weight: 400 (Regular);
+          letter-spacing: 0.15em;
+          color: #8C6F5A;
+          margin-bottom: 30px;
+          line-height: 1.6;
+          white-space: pre;
+
+          .article-author-wrapper {
+            position: relative;
+            display: inline-block;
+            vertical-align: baseline;
+          }
+
+          .article-member-type {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            font-size: 16px;
+            line-height: 1;
+            margin-bottom: 2px;
+            display: block;
+            color: #000000;
+          }
+
+          .article-author {
+            display: inline-block;
+            cursor: pointer;
+          }
+        }
+
+        .article-title {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 32px;
+          font-weight: 200;
+          color: #3d3d3d;
+          margin-bottom: 22px;
+          line-height: 1.4;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          transition: color 0.3s ease;
+          cursor: pointer;
+
+          &:hover {
+            color: #f09620;
+          }
+        }
+
+        .article-description {
+          font-family: $font;
+          font-size: 18px;
+          font-weight: 400;
+          color: #7A5F4A;
+          line-height: 2;
+        }
+      }
+    }
+  }
+
+  // Pagination
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 30px;
+    min-height: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    position: relative;
+    top: 0;
+    visibility: visible;
+    opacity: 1;
+    box-sizing: border-box;
+
+    // Pagination bo'lmasa ham bir xil balandlikni saqlash
+    &:empty {
+      min-height: 80px;
+      height: 80px;
+    }
+  }
+
+    .watch-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 20px 0 0;
+      flex-shrink: 0;
+
+      .pagination-number {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 500;
+        color: #4a4a4a;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+
+        &:hover {
+          color: #E5C8A3;
+        }
+
+        &.active {
+          background-color: transparent;
+          color: #E5C8A3;
+          border: none;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .community-main {
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .community-main {
+    .articles-grid {
+      gap: 20px;
+
+      .article-card {
+        .article-content {
+          padding: 15px;
+
+          .article-title {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,6 +1,6 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
-import PopularWatches from "@/libs/components/homepage/PopularWatches";
+
 import PopularWatchesCard, { PopularWatch } from "@/libs/components/homepage/PopularWatchesCard";
 import { 
   Stack, 
@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -23,7 +21,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ReplyIcon from "@mui/icons-material/Reply";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+
 
 const WatchDetail = () => {
   const device = useDeviceDetect();

@@ -9,7 +9,8 @@ import {
   ArrowForwardIos,
 } from "@mui/icons-material";
 import { useState } from "react";
-import CommunityCard from "/libs/components/community/CommunityCard";
+import CommunityCard from "@/libs/components/community/communityCard";
+
 
 const Community: NextPage = () => {
   const [bestSellerIndex, setBestSellerIndex] = useState(0);
