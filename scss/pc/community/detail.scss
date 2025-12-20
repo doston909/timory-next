@@ -320,6 +320,46 @@
         }
       }
 
+      .watch-back-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+        padding: 0;
+        padding-right: 0;
+        box-sizing: border-box;
+        width: 100%;
+        margin-right: -440px;
+
+        .see-all-text {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          color: #000000;
+          font-size: 24px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-left: auto;
+          margin-right: 0;
+
+          .see-all-arrow {
+            font-size: 26px;
+            color: #000000;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover {
+            color: #8b7355;
+
+            .see-all-arrow {
+              color: #8b7355;
+              transform: translateX(15px);
+            }
+          }
+        }
+      }
+
       // Navigation
       .article-navigation {
         width: 100%;

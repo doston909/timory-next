@@ -212,7 +212,12 @@ const CommunityDetail: NextPage = () => {
             </Typography>
           </Box>
 
-       
+          {/* Back Link */}
+          <Box className="watch-back-wrapper">
+            <Box className="see-all-text" onClick={() => router.push("/community")}>
+              Back <ArrowForward className="see-all-arrow" />
+            </Box>
+          </Box>
   
           {/* Comments Section */}
           <Box className="comments-section">

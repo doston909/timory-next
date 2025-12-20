@@ -95,6 +95,7 @@
       padding-left: 20px;
 
       .watch-detail-name {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-size: 40px;
         font-weight: 700;
         color: #1a1a1a;
@@ -118,6 +119,7 @@
           gap: 15px;
 
           .detail-label {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-size: 18px;
             font-weight: 500;
             color: #77584a;
@@ -125,6 +127,7 @@
           }
 
           .detail-value {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-size: 18px;
             font-weight: 400;
             color: #1a1a1a;
@@ -221,9 +224,10 @@
         margin-top: 10px;
 
         .action-btn {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
           width: 30%;
           height: 52px;
-          font-size: 17px;
+          font-size: 18px;
           font-weight: 400;
           text-transform: none;
           border-radius: 8px;
@@ -245,14 +249,12 @@
             border: 1px solid #1a1a1a;
 
             &:hover {
-              background-color: #8B7362;
-              color: #E5C8A3;
-              font-weight: 500;
-              border-color: #8B7362;
+              background: #000000;
+              color: #ffffff;
+              border-color: #000000;
 
               svg {
                 transform: translateX(10px);
-                color: #E5C8A3;
               }
             }
           }
@@ -280,6 +282,7 @@
           }
 
           .metric-text {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-size: 16px;
             color: #b47050;
             font-weight: 400;
@@ -298,8 +301,9 @@
     
 
     .see-all-text {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #000000;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -329,16 +333,14 @@
     margin-left: 120px;
     border-bottom: none;
     display: flex;
-    gap: 8px;
+    gap: 40px !important;
     transition: all 0.3s ease;
 
-    &:hover {
-      filter: brightness(0.95);
-    }
 
     :global(.MuiTab-root) {
-      font-size: 16px;
-      font-weight: 500;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      font-size: 24px !important;
       color: #1a1a1a;
       text-transform: none;
       padding: 12px 24px;
@@ -350,33 +352,7 @@
       position: relative;
       flex: 0 0 auto;
 
-      &:first-child {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-      }
-
-      &:last-child {
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-      }
-
-      &.Mui-selected {
-        color: #E5C8A3;
-        background-color: #8B7362;
-        border-color: #8B7362;
-        font-weight: 600;
-        z-index: 1;
-      }
-
-      &:hover:not(.Mui-selected) {
-        background-color: #8B7362;
-        color: #eba13f;
-        border-color: #8B7362;
-      }
-    }
-
-    :global(.MuiTabs-indicator) {
-      display: none;
+      
     }
   }
 
@@ -390,6 +366,10 @@
     overflow: visible;
     height: auto;
     margin-top: 0;
+
+    &.reviews-active {
+      background-color: #f6f6f6;
+    }
 
     .tab-content {
       min-height: auto;
@@ -753,9 +733,12 @@
       }
 
       .description-text {
-        font-size: 17px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        letter-spacing: 0.5px;
+        word-spacing: 2px;
+        font-size: 22px;
         line-height: 1.8;
-        color: #333333;
+        color: #8C6F5A ;
         margin-bottom: 20px;
         overflow: visible;
         height: auto;

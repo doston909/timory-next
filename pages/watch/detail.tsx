@@ -1,16 +1,18 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 
-import PopularWatchesCard, { PopularWatch } from "@/libs/components/homepage/PopularWatchesCard";
-import { 
-  Stack, 
-  Box, 
-  Typography, 
-  Button, 
+import PopularWatchesCard, {
+  PopularWatch,
+} from "@/libs/components/homepage/PopularWatchesCard";
+import {
+  Stack,
+  Box,
+  Typography,
+  Button,
   IconButton,
   TextField,
   Tabs,
-  Tab
+  Tab,
 } from "@mui/material";
 import { useState, useRef, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
@@ -26,7 +28,6 @@ import Comment from "@mui/icons-material/Comment";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Person from "@mui/icons-material/Person";
 
-
 const WatchDetail = () => {
   const device = useDeviceDetect();
   const router = useRouter();
@@ -35,7 +36,7 @@ const WatchDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [likedReviews, setLikedReviews] = useState<number[]>([]);
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
-  
+
   const reviewsListRef = useRef<HTMLDivElement>(null);
   const reviewItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -45,26 +46,26 @@ const WatchDetail = () => {
       id: 1,
       author: "John Doe",
       date: "2024-01-15",
-      text: "Great watch! Very satisfied with the quality and design. Highly recommend!"
+      text: "Great watch! Very satisfied with the quality and design. Highly recommend!",
     },
     {
       id: 2,
       author: "Jane Smith",
       date: "2024-01-10",
-      text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!"
+      text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!",
     },
     {
       id: 3,
       author: "Mike Johnson",
       date: "2024-01-08",
-      text: "Amazing quality and craftsmanship. Worth every penny!"
+      text: "Amazing quality and craftsmanship. Worth every penny!",
     },
     {
       id: 4,
       author: "Sarah Williams",
       date: "2024-01-05",
-      text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish.Beautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylish"
-    }
+      text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish.Beautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylish",
+    },
   ];
 
   const sortedReviews = [...reviews].reverse();
@@ -75,15 +76,18 @@ const WatchDetail = () => {
     if (reviewsListRef.current && reviewItemsRef.current.length >= 2) {
       const firstReview = reviewItemsRef.current[0];
       const secondReview = reviewItemsRef.current[1];
-      
+
       if (firstReview && secondReview) {
-        const totalHeight = firstReview.offsetHeight + secondReview.offsetHeight + 50;
+        const totalHeight =
+          firstReview.offsetHeight + secondReview.offsetHeight + 50;
         reviewsListRef.current.style.maxHeight = `${totalHeight}px`;
       }
     } else if (reviewsListRef.current && reviewItemsRef.current.length === 1) {
       const firstReview = reviewItemsRef.current[0];
       if (firstReview) {
-        reviewsListRef.current.style.maxHeight = `${firstReview.offsetHeight + 25}px`;
+        reviewsListRef.current.style.maxHeight = `${
+          firstReview.offsetHeight + 25
+        }px`;
       }
     }
   }, [sortedReviews, reviewsCount]);
@@ -112,7 +116,8 @@ const WatchDetail = () => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
     if (image.includes("rasm2")) return image.replace("rasm2", "rasm3");
     if (image.includes("rasm3")) return image.replace("rasm3", "rasm1");
-    if (image.includes("rasmm.png")) return image.replace("rasmm.png", "rasmm2.png");
+    if (image.includes("rasmm.png"))
+      return image.replace("rasmm.png", "rasmm2.png");
     if (image.includes("rasmm2")) return image.replace("rasmm2", "rasmm");
     return image; // Agar topilmasa, bir xil rasm
   };
@@ -189,8 +194,12 @@ const WatchDetail = () => {
       <Box className="watch-detail-main">
         {/* Product Image Section */}
         <Box className="watch-image-section">
-          <img src={images[currentImageIndex]} alt={watch.name} className="watch-main-image" />
-          
+          <img
+            src={images[currentImageIndex]}
+            alt={watch.name}
+            className="watch-main-image"
+          />
+
           {/* Pagination Buttons */}
           {images.length > 1 && (
             <>
@@ -219,8 +228,7 @@ const WatchDetail = () => {
 
           {/* Product Details */}
           <Box className="watch-details">
-
-             <Box className="detail-item">
+            <Box className="detail-item">
               <Typography className="detail-label">Brand:</Typography>
               <Typography className="detail-value">{watch.brand}</Typography>
             </Box>
@@ -234,13 +242,18 @@ const WatchDetail = () => {
             </Box>
             <Box className="detail-item">
               <Typography className="detail-label">Case Shape:</Typography>
-              <Typography className="detail-value">{watch.caseShape}</Typography>
+              <Typography className="detail-value">
+                {watch.caseShape}
+              </Typography>
             </Box>
             <Box className="detail-item">
-              <Typography className="detail-label">Water Resistance:</Typography>
-              <Typography className="detail-value">{watch.waterResistance}</Typography>
+              <Typography className="detail-label">
+                Water Resistance:
+              </Typography>
+              <Typography className="detail-value">
+                {watch.waterResistance}
+              </Typography>
             </Box>
-            
             <Box className="detail-item">
               <Typography className="detail-label">Type:</Typography>
               <Typography className="detail-value">{watch.type}</Typography>
@@ -255,21 +268,23 @@ const WatchDetail = () => {
             </Box>
             <Box className="detail-item">
               <Typography className="detail-label">Availability:</Typography>
-              <Typography className="detail-value availability">{watch.availability}</Typography>
-            </Box>   <Box className="detail-item">
+              <Typography className="detail-value availability">
+                {watch.availability}
+              </Typography>
+            </Box>{" "}
+            <Box className="detail-item">
               <Typography className="detail-label">Dealer:</Typography>
-              <Typography className="detail-value availability">Elit Watch</Typography>
+              <Typography className="detail-value availability">
+                Elit Watch
+              </Typography>
             </Box>
           </Box>
-
-         
 
           {/* Action Buttons */}
           <Box className="action-buttons">
             <Button className="action-btn add-to-cart-btn">
               Add to Wishlist <ArrowForward sx={{ ml: 1 }} />
             </Button>
-            
           </Box>
 
           {/* Engagement Metrics */}
@@ -302,67 +317,193 @@ const WatchDetail = () => {
         value={activeTab}
         onChange={handleTabChange}
         className="watch-tabs"
+        sx={{
+          display: "flex",
+          gap: "40px",
+          "& .MuiTab-root": {
+            fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+            fontWeight: 400,
+            fontSize: "24px !important",
+            color: "#1a1a1a",
+            textTransform: "none",
+            padding: "12px 24px",
+            minHeight: "50px",
+            backgroundColor: "#ffffff",
+            border: "1px solid #1a1a1a",
+            borderRadius: "8px",
+            marginRight: "10px !important",
+            "&:last-of-type": {
+              marginRight: "0 !important",
+            },
+            position: "relative",
+            flex: "0 0 auto",
+            "&:first-of-type": {
+              borderTopLeftRadius: "8px",
+              borderBottomLeftRadius: "8px",
+            },
+
+            "&.Mui-selected": {
+              color: "#D4B890 !important",
+              backgroundColor: "#8C7360 !important",
+              borderColor: "#8C7360 !important",
+              fontWeight: 400,
+              zIndex: 1,
+            },
+            "&:hover:not(.Mui-selected)": {
+              backgroundColor: "#ffffff",
+              color: "#1a1a1a",
+              borderColor: "#1a1a1a",
+            },
+          },
+          "& .MuiTabs-indicator": {
+            display: "none !important",
+          },
+        }}
       >
         <Tab label="Description" />
-        <Tab label="Shipping Information" />
+        <Tab label="Shopping Information" />
         <Tab label="Reviews" />
       </Tabs>
 
       {/* Description/Reviews Section */}
-      <Box className="watch-tabs-section">
+      <Box
+        className={`watch-tabs-section ${
+          activeTab === 2 ? "reviews-active" : ""
+        }`}
+      >
         <Box className="tab-content">
           {activeTab === 0 && (
             <Box className="description-content">
               <Typography className="description-text">
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-               
-               
+                Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                solicitud felis. Nam tempus turpis at metus scelerisque placerat
+                nulla deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis. Nam tempus turpis at metus
+                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
+                turpis at metus scelerisque placerat nulla deumantos solicitud
+                felis. Nam tempus turpis at metus scelerisque placerat nulla
+                deumantos solicitud felis.
               </Typography>
-            
             </Box>
           )}
           {activeTab === 1 && (
             <Box className="shipping-content">
               <Typography className="description-text">
-                Shipping information will be displayed here.      Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis.
+                Returns Policy <br />
+                You may return most new, unopened items within 30 days of
+                delivery for a full refund. We'll also pay the return shipping
+                costs if the return is a result of our error (you received an
+                incorrect or defective item, etc.).<br /> You should expect to receive
+                your refund within four weeks of giving your package to the
+                return shipper, however, in many cases you will receive a refund
+                more quickly. This time period includes the transit time for us
+                to receive your return from the shipper (5 to 10 business days),
+                the time it takes us to process your return once we receive it
+                (3 to 5 business days), and the time it takes your bank to
+                process our refund request (5 to 10 business days).<br /> If you need
+                to return an item, simply login to your account, view the order
+                using the 'Complete Orders' link under the My Account menu and
+                click the Return Item(s) button. We'll notify you via e-mail of
+                your refund once we've received and processed the returned item
               </Typography>
             </Box>
           )}
@@ -379,27 +520,39 @@ const WatchDetail = () => {
               <Box className="reviews-list" ref={reviewsListRef}>
                 {reviewsCount === 0 ? (
                   <Box className="no-reviews">
-                    <Typography className="no-reviews-text">No review...</Typography>
+                    <Typography className="no-reviews-text">
+                      No review...
+                    </Typography>
                   </Box>
                 ) : (
                   sortedReviews.map((review, index) => (
-                    <Box 
-                      key={review.id} 
+                    <Box
+                      key={review.id}
                       className="review-item"
-                      ref={(el: HTMLDivElement | null) => { reviewItemsRef.current[index] = el; }}
+                      ref={(el: HTMLDivElement | null) => {
+                        reviewItemsRef.current[index] = el;
+                      }}
                     >
-                      <Typography className="review-number">{reviewsCount - index}.</Typography>
+                      <Typography className="review-number">
+                        {reviewsCount - index}.
+                      </Typography>
                       <Box className="review-content">
                         <Box className="review-meta">
                           <Box component="span" className="review-meta-item">
                             <CalendarToday className="review-meta-icon" />
-                            <Typography component="span" className="review-meta-text">
+                            <Typography
+                              component="span"
+                              className="review-meta-text"
+                            >
                               {review.date}
                             </Typography>
                           </Box>
                           <Box component="span" className="review-meta-item">
                             <Person className="review-meta-icon" />
-                            <Typography component="span" className="review-meta-text">
+                            <Typography
+                              component="span"
+                              className="review-meta-text"
+                            >
                               {review.author}
                             </Typography>
                           </Box>
@@ -412,15 +565,27 @@ const WatchDetail = () => {
                             <Box className="review-reply-btn">
                               <ReplyIcon className="reply-icon" />
                             </Box>
-                            <Box 
-                              className={`review-like-btn ${likedReviews.includes(review.id) ? 'liked' : ''}`}
+                            <Box
+                              className={`review-like-btn ${
+                                likedReviews.includes(review.id) ? "liked" : ""
+                              }`}
                               onClick={() => {
                                 if (likedReviews.includes(review.id)) {
-                                  setLikedReviews(likedReviews.filter(id => id !== review.id));
-                                  setLikeCounts(prev => ({ ...prev, [review.id]: (prev[review.id] || 2) - 1 }));
+                                  setLikedReviews(
+                                    likedReviews.filter(
+                                      (id) => id !== review.id
+                                    )
+                                  );
+                                  setLikeCounts((prev) => ({
+                                    ...prev,
+                                    [review.id]: (prev[review.id] || 2) - 1,
+                                  }));
                                 } else {
                                   setLikedReviews([...likedReviews, review.id]);
-                                  setLikeCounts(prev => ({ ...prev, [review.id]: (prev[review.id] || 2) + 1 }));
+                                  setLikeCounts((prev) => ({
+                                    ...prev,
+                                    [review.id]: (prev[review.id] || 2) + 1,
+                                  }));
                                 }
                               }}
                             >
@@ -429,7 +594,9 @@ const WatchDetail = () => {
                               ) : (
                                 <FavoriteBorderIcon className="like-icon" />
                               )}
-                              <Box className="like-badge">{likeCounts[review.id] || 2}</Box>
+                              <Box className="like-badge">
+                                {likeCounts[review.id] || 2}
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
@@ -441,29 +608,30 @@ const WatchDetail = () => {
 
               {/* Review Form */}
               <Box className="review-form">
-                <Typography className="review-form-title">Leave a review</Typography>
-                <Box className="review-form-row">
-                </Box>
+                <Typography className="review-form-title">
+                  Leave a review
+                </Typography>
+                <Box className="review-form-row"></Box>
                 <TextField
                   fullWidth
                   multiline
                   rows={6}
                   placeholder="Message"
                   className="review-textarea"
-                  sx={{ 
+                  sx={{
                     mb: 2,
-                    '& .MuiInputBase-input': {
-                      paddingTop: '16px !important',
+                    "& .MuiInputBase-input": {
+                      paddingTop: "16px !important",
                     },
-                    '& textarea': {
-                      paddingTop: '16px !important',
-                      resize: 'none !important',
-                      overflowY: 'auto !important',
-                      overflowX: 'hidden !important',
+                    "& textarea": {
+                      paddingTop: "16px !important",
+                      resize: "none !important",
+                      overflowY: "auto !important",
+                      overflowX: "hidden !important",
                     },
-                    '& .MuiOutlinedInput-root': {
-                      overflow: 'visible !important',
-                    }
+                    "& .MuiOutlinedInput-root": {
+                      overflow: "visible !important",
+                    },
                   }}
                 />
                 <Box className="review-submit-wrapper">
@@ -475,7 +643,6 @@ const WatchDetail = () => {
               </Box>
             </Box>
           )}
-         
         </Box>
       </Box>
 
@@ -488,8 +655,6 @@ const WatchDetail = () => {
             <PopularWatchesCard key={watch.id} watch={watch} />
           ))}
         </Box>
-
-      
       </Box>
     </Stack>
   );
