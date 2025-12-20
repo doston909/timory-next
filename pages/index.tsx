@@ -10,29 +10,43 @@ import CreateAI from "@/libs/components/homepage/CreateAI";
 import OurGoal from "@/libs/components/homepage/OurGoal";
 import News from "@/libs/components/homepage/News";
 import TopDealers from "@/libs/components/homepage/TopDealers";
-
+import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
+import { GET_WATCHES } from "@/apollo/user/query";
+import { useQuery } from "@apollo/client";
 
 const Home: NextPage = () => {
+  const device = useDeviceDetect();
+
+  const {
+    loading: getWatchesLoading,
+    data: getWatchesData,
+    error: getWatchesError,
+    refetch: getWatchesRefetch,
+  } = useQuery(GET_WATCHES, {
+    fetchPolicy: "network-only",
+    variables: {
+      input: {
+        page: 1,
+        limit: 9,
+        sort: "createdAt",
+        direction: "DESC",
+        search: {},
+      },
+    },
+  });
+console.log("getWatchesData", getWatchesData);
   return (
-      <Stack className={"home-page"}>
-   <TopBrands />
-    <OurGoal />
+    <Stack className={"home-page"}>
+      <TopBrands />
+      <OurGoal />
       <PopularWatches />
-        
-         <WatchStories />
-        <LimitedEdition />
-       <TopDealers />
-    
-
-     
-        <CreateAI />
-       <BestSeller />
-
-      
-      
-       
+      <WatchStories />
+      <LimitedEdition />
+      <TopDealers />
+      <CreateAI />
+      <BestSeller />
       <News />
-      </Stack>
+    </Stack>
   );
 };
 
