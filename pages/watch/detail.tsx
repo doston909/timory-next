@@ -14,8 +14,9 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useCart } from "@/libs/context/CartContext";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { ArrowForward } from "@mui/icons-material";
@@ -36,7 +37,8 @@ const WatchDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [likedReviews, setLikedReviews] = useState<number[]>([]);
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
-
+  const { addToCart } = useCart();
+  
   const reviewsListRef = useRef<HTMLDivElement>(null);
   const reviewItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -92,12 +94,34 @@ const WatchDetail = () => {
     }
   }, [sortedReviews, reviewsCount]);
 
-  const watch = {
-    id: 1,
+  // All watches data - should match pages/watch/index.tsx
+  const allWatches = [
+    { id: 1, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png" },
+    { id: 2, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png" },
+    { id: 3, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png" },
+    { id: 4, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png" },
+    { id: 5, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
+    { id: 6, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
+    { id: 7, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
+    { id: 8, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
+    { id: 9, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
+    { id: 10, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png" },
+    { id: 11, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png" },
+    { id: 12, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png" },
+    { id: 13, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png" },
+    { id: 14, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
+    { id: 15, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
+  ];
+
+  // Get watch ID from URL query
+  const watchId = router.query.id ? parseInt(router.query.id as string, 10) : null;
+  
+  // Find watch by ID from allWatches array
+  const foundWatch = watchId ? allWatches.find(w => w.id === watchId) : null;
+  
+  // Default watch data with additional properties
+  const defaultWatchData = {
     brand: "Rolex",
-    name: "Black Dail Strap",
-    price: "$ 2,500.00",
-    image: "/img/watch/rasmm2.png",
     color: "Green",
     caseShape: "Square",
     waterResistance: "20m",
@@ -110,6 +134,22 @@ const WatchDetail = () => {
     sold: 69,
     soldHours: 16,
   };
+
+  // Combine found watch with default data, or use default if not found
+  const watch = foundWatch 
+    ? {
+        ...foundWatch,
+        price: foundWatch.price.replace("Rs. ", "$ "), // Convert price format
+        ...defaultWatchData,
+      }
+    : {
+        id: 1,
+        brand: "Rolex",
+        name: "Black Dail Strap",
+        price: "$ 2,500.00",
+        image: "/img/watch/rasmm2.png",
+        ...defaultWatchData,
+      };
 
   // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
@@ -282,7 +322,17 @@ const WatchDetail = () => {
 
           {/* Action Buttons */}
           <Box className="action-buttons">
-            <Button className="action-btn add-to-cart-btn">
+            <Button 
+              className="action-btn add-to-cart-btn"
+              onClick={() => {
+                addToCart({
+                  id: watch.id,
+                  image: watch.image,
+                  name: watch.name,
+                  price: watch.price,
+                });
+              }}
+            >
               Add to Wishlist <ArrowForward sx={{ ml: 1 }} />
             </Button>
             <Button className="action-btn contact-dealer-btn">

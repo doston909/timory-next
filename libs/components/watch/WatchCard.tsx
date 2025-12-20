@@ -53,14 +53,25 @@ const WatchCard = ({ watch }: WatchCardProps) => {
     e.stopPropagation();
   };
 
-  const handleCardClick = () => {
-    router.push(`/watch/detail?id=${watch.id}`);
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Card clicked, watch ID:', watch.id);
+    console.log('Navigating to:', `/watch/detail?id=${watch.id}`);
+    router.push(`/watch/detail?id=${watch.id}`).catch((err) => {
+      console.error('Navigation error:', err);
+    });
   };
 
   return (
-    <Box className="watch-card" onClick={handleCardClick}>
+    <Box className="watch-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <Box className="watch-image-box">
-        <img src={images[currentImageIndex]} alt={watch.name} className="watch-image" />
+        <img 
+          src={images[currentImageIndex]} 
+          alt={watch.name} 
+          className="watch-image"
+          style={{ pointerEvents: 'none' }}
+        />
         
         {/* 👉 HOVER ICON ACTIONS */}
         <div className="watch-actions" onClick={handleActionClick}>
@@ -108,8 +119,8 @@ const WatchCard = ({ watch }: WatchCardProps) => {
         )}
       </Box>
       <Stack className="watch-info">
-        <Typography className="watch-name">{watch.name}</Typography>
-        <Typography className="watch-price">{watch.price}</Typography>
+        <Typography className="watch-name" style={{ pointerEvents: 'none' }}>{watch.name}</Typography>
+        <Typography className="watch-price" style={{ pointerEvents: 'none' }}>{watch.price}</Typography>
       </Stack>
     </Box>
   );

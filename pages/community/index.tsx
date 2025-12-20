@@ -9,7 +9,8 @@ import {
   ArrowForwardIos,
 } from "@mui/icons-material";
 import { useState } from "react";
-import CommunityCard from "@/libs/components/community/communityCard";
+import CommunityCard from "@/libs/components/community/CommunityCard";
+
 
 
 const Community: NextPage = () => {
@@ -149,7 +150,7 @@ const Community: NextPage = () => {
               ))}
             </Stack>
           </Box>
-          
+
           {/* Recent Articles */}
           <Box className="sidebar-section">
             <Typography className="sidebar-title">Recent Articles</Typography>

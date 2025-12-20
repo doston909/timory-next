@@ -9,12 +9,15 @@ import {
   DarkModeOutlined,
   Language,
   PersonOutline,
-  Delete,
+  
 } from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { useCart } from "@/libs/context/CartContext";
 
 const Top = () => {
+  const router = useRouter();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,45 +25,7 @@ const Top = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      image: "/img/watch/rasmm.png",
-      name: "Stainless Steel Dail",
-      price: "Rs. 3,000.00",
-    },
-    {
-      id: 2,
-      image: "/img/watch/rasmm2.png",
-      name: "Black Dail Strap",
-      price: "Rs. 2,500.00",
-    },
-     {
-      id: 1,
-      image: "/img/watch/rasmm.png",
-      name: "Stainless Steel Dail",
-      price: "Rs. 3,000.00",
-    },
-    {
-      id: 2,
-      image: "/img/watch/rasmm2.png",
-      name: "Black Dail Strap",
-      price: "Rs. 2,500.00",
-    },
-    {
-      id: 1,
-      image: "/img/watch/rasmm.png",
-      name: "Stainless Steel Dail",
-      price: "Rs. 3,000.00",
-    },
-    {
-      id: 2,
-      image: "/img/watch/rasmm2.png",
-      name: "Black Dail Strap",
-      price: "Rs. 2,500.00",
-    },
-    
-  ]);
+  const { cartItems, removeFromCart } = useCart();
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +65,7 @@ const Top = () => {
   };
 
   const handleRemoveItem = (id: number) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    removeFromCart(id);
   };
 
   useEffect(() => {
@@ -583,7 +548,7 @@ const Top = () => {
         </div>
       )}
 
-      {/* Shopping Cart Modal */}
+      {/* Wishlist Cart Modal */}
       {isCartOpen && (
         <div
           className="cart-modal-overlay"
@@ -631,7 +596,12 @@ const Top = () => {
                           <img
                             src={item.image}
                             alt={item.name}
-                            style={{ width: "80px", height: "100px", objectFit: "cover" }}
+                            style={{ width: "80px", height: "100px", objectFit: "cover", cursor: "pointer" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setIsCartOpen(false);
+                              router.push(`/watch/detail?id=${item.id}`);
+                            }}
                           />
                         </TableCell>
                         <TableCell>

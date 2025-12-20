@@ -238,12 +238,14 @@
         align-items: center;
         overflow: hidden;
         position: relative;
+        cursor: pointer;
 
         .watch-image {
           width: 90%;
           height: 90%;
           object-fit: contain;
           transition: transform 0.3s ease;
+          pointer-events: none;
         }
 
         .watch-actions {
@@ -382,7 +384,7 @@
         display: flex;
         align-items: center;
         transition: background-color 0.3s ease;
-        transition: background-color 0.3s ease;
+        cursor: pointer;
 
         .watch-name {
           font-size: 24px;
@@ -396,6 +398,7 @@
           font-weight: 600;
           color: #333333;
           margin-bottom: 10px;
+          pointer-events: none;
           
         }
       }

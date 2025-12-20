@@ -6,6 +6,7 @@ import { useState } from "react";
 import "../scss/app.scss";
 import "../scss/pc/main.scss";
 import ScrollToTop from "@/libs/components/ScrollTotop";
+import { CartProvider } from "@/libs/context/CartContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   // @ts-ignore
@@ -13,8 +14,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Component {...pageProps} />
-      <ScrollToTop />
+      <CartProvider>
+        <Component {...pageProps} />
+        <ScrollToTop />
+      </CartProvider>
     </ThemeProvider>
   );
 }

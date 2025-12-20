@@ -20,3 +20,4 @@ const TopBrandsCard = ({ brand }: { brand: TopBrand }) => {
 
 export default TopBrandsCard;
 
+
