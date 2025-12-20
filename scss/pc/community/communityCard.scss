@@ -8,6 +8,17 @@
   min-height: 1200px;
   box-sizing: border-box;
   position: relative;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: -140px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 
   .articles-grid {
     display: grid;

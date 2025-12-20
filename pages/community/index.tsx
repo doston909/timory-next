@@ -137,6 +137,19 @@ const Community: NextPage = () => {
       <Stack className="community-container">
         {/* Left Sidebar */}
         <Stack className="community-sidebar">
+
+            {/* Tags */}
+          <Box className="sidebar-section">
+            <Typography className="sidebar-title">Type</Typography>
+            <Stack className="tags-list" direction="row" flexWrap="wrap" gap={1}>
+              {tags.map((tag, index) => (
+                <Box key={index} className="tag-item">
+                  {tag}
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+          
           {/* Recent Articles */}
           <Box className="sidebar-section">
             <Typography className="sidebar-title">Recent Articles</Typography>
@@ -154,17 +167,7 @@ const Community: NextPage = () => {
             </Stack>
           </Box>
 
-          {/* Tags */}
-          <Box className="sidebar-section">
-            <Typography className="sidebar-title">Type</Typography>
-            <Stack className="tags-list" direction="row" flexWrap="wrap" gap={1}>
-              {tags.map((tag, index) => (
-                <Box key={index} className="tag-item">
-                  {tag}
-                </Box>
-              ))}
-            </Stack>
-          </Box>
+          
 
           {/* Best Sellers */}
           <Box className="sidebar-section">

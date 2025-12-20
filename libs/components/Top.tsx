@@ -217,33 +217,7 @@ const Top = () => {
               </div>
             </div>
 
-            {/* SHOP */}
-            <div
-              className="nav-item-wrapper"
-            
-            >
-              <div
-                className={`nav-item ${
-                  activeDropdown === "shop" ? "active" : ""
-                }`}
-                onMouseEnter={() => handleDropdownOpen("shop")}
-              >
-                <span>Shop</span>
-
-                {activeDropdown === "shop" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/watch?type=men">Men Watches</Link>
-                    <Link href="/watch?type=women">Women Watches</Link>
-                    <Link href="/watch?type=unisex">Unisex</Link>
-                    <Link href="/watch?type=sport">Sport</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-
+         
             {/* BRANDS */}
             <div
               className="nav-item-wrapper"

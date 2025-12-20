@@ -285,6 +285,9 @@ const WatchDetail = () => {
             <Button className="action-btn add-to-cart-btn">
               Add to Wishlist <ArrowForward sx={{ ml: 1 }} />
             </Button>
+            <Button className="action-btn contact-dealer-btn">
+              Contact Dealer <ArrowForward sx={{ ml: 1 }} />
+            </Button>
           </Box>
 
           {/* Engagement Metrics */}
