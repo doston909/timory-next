@@ -12,15 +12,19 @@ import {
   Tabs,
   Tab
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { ArrowForward } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ReplyIcon from "@mui/icons-material/Reply";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Comment from "@mui/icons-material/Comment";
+import CalendarToday from "@mui/icons-material/CalendarToday";
+import Person from "@mui/icons-material/Person";
 
 
 const WatchDetail = () => {
@@ -29,10 +33,60 @@ const WatchDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isReviewBoxOpen, setIsReviewBoxOpen] = useState(false);
-  const [reviewText, setReviewText] = useState("");
-  const [isReviewsExpanded, setIsReviewsExpanded] = useState(false);
   const [likedReviews, setLikedReviews] = useState<number[]>([]);
+  const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
+  
+  const reviewsListRef = useRef<HTMLDivElement>(null);
+  const reviewItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Mock reviews data
+  const reviews = [
+    {
+      id: 1,
+      author: "John Doe",
+      date: "2024-01-15",
+      text: "Great watch! Very satisfied with the quality and design. Highly recommend!"
+    },
+    {
+      id: 2,
+      author: "Jane Smith",
+      date: "2024-01-10",
+      text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!"
+    },
+    {
+      id: 3,
+      author: "Mike Johnson",
+      date: "2024-01-08",
+      text: "Amazing quality and craftsmanship. Worth every penny!"
+    },
+    {
+      id: 4,
+      author: "Sarah Williams",
+      date: "2024-01-05",
+      text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish.Beautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylish"
+    }
+  ];
+
+  const sortedReviews = [...reviews].reverse();
+  const reviewsCount = reviews.length;
+
+  // Calculate height for last 2 reviews dynamically
+  useLayoutEffect(() => {
+    if (reviewsListRef.current && reviewItemsRef.current.length >= 2) {
+      const firstReview = reviewItemsRef.current[0];
+      const secondReview = reviewItemsRef.current[1];
+      
+      if (firstReview && secondReview) {
+        const totalHeight = firstReview.offsetHeight + secondReview.offsetHeight + 50;
+        reviewsListRef.current.style.maxHeight = `${totalHeight}px`;
+      }
+    } else if (reviewsListRef.current && reviewItemsRef.current.length === 1) {
+      const firstReview = reviewItemsRef.current[0];
+      if (firstReview) {
+        reviewsListRef.current.style.maxHeight = `${firstReview.offsetHeight + 25}px`;
+      }
+    }
+  }, [sortedReviews, reviewsCount]);
 
   const watch = {
     id: 1,
@@ -213,7 +267,7 @@ const WatchDetail = () => {
           {/* Action Buttons */}
           <Box className="action-buttons">
             <Button className="action-btn add-to-cart-btn">
-              Add to Wishlist <ArrowForwardIcon sx={{ ml: 1 }} />
+              Add to Wishlist <ArrowForward sx={{ ml: 1 }} />
             </Button>
             
           </Box>
@@ -237,7 +291,7 @@ const WatchDetail = () => {
           {/* Back Link */}
           <Box className="watch-back-wrapper">
             <Box className="see-all-text" onClick={() => router.push("/watch")}>
-              Back <ArrowForwardIcon className="see-all-arrow" />
+              Back <ArrowForward className="see-all-arrow" />
             </Box>
           </Box>
         </Box>
@@ -314,126 +368,114 @@ const WatchDetail = () => {
           )}
           {activeTab === 2 && (
             <Box className="reviews-content">
-              <Typography className="reviews-title">Customer Reviews</Typography>
-              <Box className="reviews-divider" />
-              <Typography 
-                className="reviews-count"
-                onClick={() => setIsReviewsExpanded(!isReviewsExpanded)}
-                sx={{ cursor: "pointer", userSelect: "none" }}
-              >
-                Based on 2 reviews
-              </Typography>
-              <Box className="reviews-divider" />
-              
-              {isReviewsExpanded && (
-                <Box className="reviews-list">
-                  <Box className="review-item">
-                    <Box className="review-item-content">
-                      <Typography className="review-author">John Doe</Typography>
-                      <Typography className="review-date">2024-01-15</Typography>
-                      <Typography className="review-content">
-                        Great watch! Very satisfied with the quality and design. Highly recommend!
-                      </Typography>
-                    </Box>
-                    <Box className="review-actions">
-                      <Box className="review-reply-btn">
-                        <ReplyIcon className="reply-icon" />
-                      </Box>
-                      <Box 
-                        className={`review-like-btn ${likedReviews.includes(1) ? 'liked' : ''}`}
-                        onClick={() => {
-                          if (likedReviews.includes(1)) {
-                            setLikedReviews(likedReviews.filter(id => id !== 1));
-                          } else {
-                            setLikedReviews([...likedReviews, 1]);
-                          }
-                        }}
-                      >
-                        <FavoriteBorderIcon className="like-icon" />
-                        <Box className="like-badge">2</Box>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box className="review-item">
-                    <Box className="review-item-content">
-                      <Typography className="review-author">Jane Smith</Typography>
-                      <Typography className="review-date">2024-01-10</Typography>
-                      <Typography className="review-content">
-                        Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!
-                      </Typography>
-                    </Box>
-                    <Box className="review-actions">
-                      <Box className="review-reply-btn">
-                        <ReplyIcon className="reply-icon" />
-                      </Box>
-                      <Box 
-                        className={`review-like-btn ${likedReviews.includes(2) ? 'liked' : ''}`}
-                        onClick={() => {
-                          if (likedReviews.includes(2)) {
-                            setLikedReviews(likedReviews.filter(id => id !== 2));
-                          } else {
-                            setLikedReviews([...likedReviews, 2]);
-                          }
-                        }}
-                      >
-                        <FavoriteBorderIcon className="like-icon" />
-                        <Box className="like-badge">2</Box>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              )}
+              <Box className="reviews-title-wrapper">
+                <Comment className="reviews-title-icon" />
+                <Typography className="reviews-title">
+                  {reviewsCount} Review{reviewsCount !== 1 ? "s" : ""}
+                </Typography>
+              </Box>
 
-              {!isReviewBoxOpen && (
-                <Button 
-                  className="write-review-btn"
-                  onClick={() => setIsReviewBoxOpen(true)}
-                >
-                  Write a review
-                </Button>
-              )}
-
-              {isReviewBoxOpen && (
-                <Box className="review-form-container">
-                  <Typography className="review-title">Review</Typography>
-                  <TextField
-                    multiline
-                    rows={8}
-                    placeholder="vjhjhjgj"
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    className="review-textarea"
-                    fullWidth
-                  />
-                  <Box className="review-form-actions">
-                    <Button 
-                      className="review-cancel-btn"
-                      onClick={() => {
-                        setReviewText("");
-                        setIsReviewBoxOpen(false);
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      className="review-submit-btn"
-                      onClick={() => {
-                        if (reviewText.trim()) {
-                          // Handle review submission here
-                          console.log("Review submitted:", reviewText);
-                          setReviewText("");
-                          setIsReviewBoxOpen(false);
-                        }
-                      }}
-                      disabled={!reviewText.trim()}
-                    >
-                      Submit Review <ArrowForwardIcon sx={{ ml: 1 }} />
-                    </Button>
+              {/* Existing Reviews */}
+              <Box className="reviews-list" ref={reviewsListRef}>
+                {reviewsCount === 0 ? (
+                  <Box className="no-reviews">
+                    <Typography className="no-reviews-text">No review...</Typography>
                   </Box>
+                ) : (
+                  sortedReviews.map((review, index) => (
+                    <Box 
+                      key={review.id} 
+                      className="review-item"
+                      ref={(el: HTMLDivElement | null) => { reviewItemsRef.current[index] = el; }}
+                    >
+                      <Typography className="review-number">{reviewsCount - index}.</Typography>
+                      <Box className="review-content">
+                        <Box className="review-meta">
+                          <Box component="span" className="review-meta-item">
+                            <CalendarToday className="review-meta-icon" />
+                            <Typography component="span" className="review-meta-text">
+                              {review.date}
+                            </Typography>
+                          </Box>
+                          <Box component="span" className="review-meta-item">
+                            <Person className="review-meta-icon" />
+                            <Typography component="span" className="review-meta-text">
+                              {review.author}
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Box className="review-text-wrapper">
+                          <Typography className="review-text">
+                            {review.text}
+                          </Typography>
+                          <Box className="review-actions">
+                            <Box className="review-reply-btn">
+                              <ReplyIcon className="reply-icon" />
+                            </Box>
+                            <Box 
+                              className={`review-like-btn ${likedReviews.includes(review.id) ? 'liked' : ''}`}
+                              onClick={() => {
+                                if (likedReviews.includes(review.id)) {
+                                  setLikedReviews(likedReviews.filter(id => id !== review.id));
+                                  setLikeCounts(prev => ({ ...prev, [review.id]: (prev[review.id] || 2) - 1 }));
+                                } else {
+                                  setLikedReviews([...likedReviews, review.id]);
+                                  setLikeCounts(prev => ({ ...prev, [review.id]: (prev[review.id] || 2) + 1 }));
+                                }
+                              }}
+                            >
+                              {likedReviews.includes(review.id) ? (
+                                <FavoriteIcon className="like-icon" />
+                              ) : (
+                                <FavoriteBorderIcon className="like-icon" />
+                              )}
+                              <Box className="like-badge">{likeCounts[review.id] || 2}</Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))
+                )}
+              </Box>
+
+              {/* Review Form */}
+              <Box className="review-form">
+                <Typography className="review-form-title">Leave a review</Typography>
+                <Box className="review-form-row">
                 </Box>
-              )}
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={6}
+                  placeholder="Message"
+                  className="review-textarea"
+                  sx={{ 
+                    mb: 2,
+                    '& .MuiInputBase-input': {
+                      paddingTop: '16px !important',
+                    },
+                    '& textarea': {
+                      paddingTop: '16px !important',
+                      resize: 'none !important',
+                      overflowY: 'auto !important',
+                      overflowX: 'hidden !important',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      overflow: 'visible !important',
+                    }
+                  }}
+                />
+                <Box className="review-submit-wrapper">
+                  <Button className="review-submit-btn">
+                    Post review
+                    <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
+                  </Button>
+                </Box>
+              </Box>
             </Box>
           )}
+         
         </Box>
       </Box>
 
