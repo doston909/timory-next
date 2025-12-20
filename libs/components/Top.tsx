@@ -1,4 +1,4 @@
-import { Box, Menu, MenuItem, Stack, IconButton } from "@mui/material";
+import { Box, Menu, MenuItem, Stack, IconButton, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import Link from "next/link";
 import {
   Logout,
@@ -9,7 +9,9 @@ import {
   DarkModeOutlined,
   Language,
   PersonOutline,
+  Delete,
 } from "@mui/icons-material";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import React, { useState, useEffect, useRef } from "react";
 
 const Top = () => {
@@ -19,6 +21,46 @@ const Top = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      image: "/img/watch/rasmm.png",
+      name: "Stainless Steel Dail",
+      price: "Rs. 3,000.00",
+    },
+    {
+      id: 2,
+      image: "/img/watch/rasmm2.png",
+      name: "Black Dail Strap",
+      price: "Rs. 2,500.00",
+    },
+     {
+      id: 1,
+      image: "/img/watch/rasmm.png",
+      name: "Stainless Steel Dail",
+      price: "Rs. 3,000.00",
+    },
+    {
+      id: 2,
+      image: "/img/watch/rasmm2.png",
+      name: "Black Dail Strap",
+      price: "Rs. 2,500.00",
+    },
+    {
+      id: 1,
+      image: "/img/watch/rasmm.png",
+      name: "Stainless Steel Dail",
+      price: "Rs. 3,000.00",
+    },
+    {
+      id: 2,
+      image: "/img/watch/rasmm2.png",
+      name: "Black Dail Strap",
+      price: "Rs. 2,500.00",
+    },
+    
+  ]);
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,6 +95,14 @@ const Top = () => {
     }
   };
 
+  const handleCartToggle = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
+  const handleRemoveItem = (id: number) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -74,14 +124,18 @@ const Top = () => {
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isSearchOpen) {
-        setIsSearchOpen(false);
+      if (e.key === "Escape") {
+        if (isSearchOpen) {
+          setIsSearchOpen(false);
+        }
+        if (isCartOpen) {
+          setIsCartOpen(false);
+        }
       }
     };
 
-    if (isSearchOpen) {
+    if (isSearchOpen || isCartOpen) {
       document.addEventListener("keydown", handleEscape);
-
       document.body.style.overflow = "hidden";
     }
 
@@ -89,7 +143,7 @@ const Top = () => {
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, isCartOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -354,6 +408,7 @@ const Top = () => {
                 {/* BAG */}
                 <IconButton
                   aria-label="Bag"
+                  onClick={handleCartToggle}
                   sx={{
                     color: "#000",
                     p: 0,
@@ -366,26 +421,28 @@ const Top = () => {
                   }}
                 >
                   <ShoppingBagOutlined fontSize='large'/>
-                  <Box
-                    component="span"
-                    sx={{
-                      position: "absolute",
-                      top: -4,
-                      right: -6,
-                      bgcolor: "#e8994a",
-                      color: "#fff",
-                      fontSize: "10px",
-                      width: 18,
-                      height: 18,
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: 600,
-                    }}
-                  >
-                    0
-                  </Box>
+                  {cartItems.length > 0 && (
+                    <Box
+                      component="span"
+                      sx={{
+                        position: "absolute",
+                        top: -4,
+                        right: -6,
+                        bgcolor: "#e8994a",
+                        color: "#fff",
+                        fontSize: "10px",
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {cartItems.length}
+                    </Box>
+                  )}
                 </IconButton>
 
                 {/* NOTIFICATION */}
@@ -522,6 +579,97 @@ const Top = () => {
                 <button className="search-tag">Sport Watches</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Shopping Cart Modal */}
+      {isCartOpen && (
+        <div
+          className="cart-modal-overlay"
+          onClick={() => setIsCartOpen(false)}
+        >
+          <div
+            className="cart-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Box className="cart-modal-header">
+              <Typography className="cart-modal-title">Wishlist Cart</Typography>
+              <IconButton
+                onClick={() => setIsCartOpen(false)}
+                sx={{
+                  color: "#000",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+
+            {cartItems.length === 0 ? (
+              <Box className="cart-empty-state">
+                <Typography className="cart-empty-text">Wishlist Cart is Empty...</Typography>
+              </Box>
+            ) : (
+              <TableContainer component={Paper} className="cart-table-container">
+                <Table>
+                  <TableHead>
+                    <TableRow className="cart-table-header">
+                      <TableCell>IMAGE</TableCell>
+                      <TableCell>WATCH</TableCell>
+                      <TableCell>PRICE</TableCell>
+                      <TableCell>PURCHASE</TableCell>
+                      <TableCell>REMOVE</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cartItems.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            style={{ width: "80px", height: "100px", objectFit: "cover" }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{item.name}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{item.price}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              fontSize: "16px",
+                              fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                              borderColor: "#1a1a1a",
+                              color: "#1a1a1a",
+                              textTransform: "none",
+                            }}
+                          >
+                            Contact dealer
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <IconButton
+                            onClick={() => handleRemoveItem(item.id)}
+                            sx={{
+                              color: "#8C6F5A",
+                            }}
+                          >
+                            <DeleteOutlineOutlinedIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
           </div>
         </div>
       )}

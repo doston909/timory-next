@@ -472,6 +472,169 @@
       letter-spacing: 0.5px;
     }
 
+    // Shopping Cart Modal
+    .cart-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 80px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .cart-modal-content {
+      width: 95%;
+      max-width: 1300px;
+      background: white;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: slideDown 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+
+    .cart-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 40px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      background-color: #f5f5f0;
+
+      .cart-modal-title {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 28px;
+        font-weight: 400;
+        color: #1a1a1a;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    }
+
+    .cart-table-container {
+      box-shadow: none;
+      border-radius: 0;
+      max-height: calc(6 * 120px + 60px);
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      .cart-table-header {
+        background-color: #f5f5f0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        .MuiTableCell-root {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 16px;
+          font-weight: 600;
+          color: #1a1a1a;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          padding: 20px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          text-align: center;
+        }
+      }
+
+      .MuiTableBody-root {
+        .MuiTableRow-root {
+          .MuiTableCell-root {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #1a1a1a;
+            text-align: center;
+
+            .MuiTypography-root {
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              font-size: 20px !important;
+              color: #1a1a1a;
+            }
+
+            .MuiButton-root {
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+              font-size: 16px !important;
+              padding: 10px 20px !important;
+              min-width: auto !important;
+              height: 45px !important;
+              width: auto !important;
+              margin: 0 auto;
+              transition: all 0.3s ease !important;
+
+              &:hover {
+                background: #000000 !important;
+                color: #ffffff !important;
+                border-color: #000000 !important;
+              }
+            }
+
+            img {
+              display: block;
+              margin: 0 auto;
+            }
+
+            .MuiIconButton-root {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              margin: 0 auto;
+              padding: 12px !important;
+              border-radius: 50% !important;
+              background-color: #ffffff !important;
+              transition: all 0.3s ease !important;
+              width: 48px !important;
+              height: 48px !important;
+
+              svg {
+                color: #8C6F5A;
+                transition: all 0.3s ease;
+                font-size: 28px !important;
+                margin: 0 !important;
+              }
+
+              &:hover {
+                background-color: #6b5a51 !important;
+                transform: scale(1.1);
+
+                svg {
+                  color: #C8B8A8;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .cart-empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 40px;
+      min-height: 400px;
+
+      .cart-empty-text {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 36px;
+        font-weight: 300;
+        color: #7a5f4a;
+        text-align: center;
+      }
+    }
+
     .search-tags {
       display: flex;
       flex-wrap: wrap;
