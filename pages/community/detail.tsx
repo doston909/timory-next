@@ -1,7 +1,9 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
+import { communityComments, communityCommentsCount } from "@/libs/data/communityComments";
 import { Stack, Box, Typography, TextField, Button } from "@mui/material";
 import { NextPage } from "next";
-import { CalendarToday, Comment, Person, ArrowForward } from "@mui/icons-material";
+import { CalendarToday, Comment, Person, ArrowForward} from "@mui/icons-material";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ReplyIcon from "@mui/icons-material/Reply";
@@ -12,8 +14,9 @@ import { useEffect, useState, useRef, useLayoutEffect } from "react";
 const articles = [
     {
       id: 1,
-     image: "/img/watch/asosiy1.webp",
+      image: "/img/watch/asosiy1.webp",
       author: "Dostonbek",
+      
       memberType: "Admin",
       date: "May 30, 2022",
       comments: 1,
@@ -84,43 +87,12 @@ const CommunityDetail: NextPage = () => {
   const commentsListRef = useRef<HTMLDivElement>(null);
   const commentItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Comments data
-  const comments = [
-    {
-      id: 1,
-      date: "May 30, 2022",
-      author: "Harper",
-      text: "Turpis massa sed elementum tempus egestas sed sed risus. Dignissim suspendisse in est ante in. Sem et tortor consequat id porta nibh. Mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor."
-    },
-    {
-      id: 2,
-      date: "May 31, 2022",
-      author: "John",
-      text: "Great article! Very informative and well written."
-    },
-    {
-      id: 3,
-      date: "October 30, 2022",
-      author: "Harper",
-      text: "Turpis massa sed elementum tempus egestas sed sed risus. Dignissim suspendisse in est ante in. Sem et tortor consequat id porta nibh. Mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor."
-    },
-    {
-      id: 4,
-      date: "November 2, 2022",
-      author: "John",
-      text: "Great article! Very informative and well written.Great article! Very informative and well written. Great article! Very informative and well written. Great article! Very informative and well written.Great article! Very informative and well written. Great article! Very informative and well written. Great article! Very informative and well written. "
-    },
-    {
-      id: 5,
-      date: "November 2, 2022",
-      author: "John",
-      text: "Great article! Very informative and well written.  "
-    }
-  ];
+  // Comments data (source of truth)
+  const comments = communityComments;
 
   // Eng yangi commentlar birinchi ko'rinishi uchun teskari tartib (4,3,2,1)
   const sortedComments = [...comments].reverse();
-  const commentsCount = comments.length;
+  const commentsCount = communityCommentsCount;
 
   useEffect(() => {
     if (router.isReady) {
@@ -197,11 +169,24 @@ const CommunityDetail: NextPage = () => {
                   {commentsCount} Comment{commentsCount !== 1 ? "s" : ""}
                 </Typography>
               </Box>
-              <Box component="span" className="meta-item">
-                <Person className="meta-icon" />
-                <Typography component="span" className="meta-text">
-                  {article.author}
-                </Typography>
+              <Box component="span" className="meta-item meta-author">
+                {article.authorImage ? (
+                  <>
+                    <Box className="meta-author-avatar">
+                      <img src={article.authorImage} alt={article.author} />
+                    </Box>
+                    <Typography component="span" className="meta-text">
+                      {article.author}
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Person className="meta-icon" />
+                    <Typography component="span" className="meta-text">
+                      {article.author}
+                    </Typography>
+                  </>
+                )}
               </Box>
             </Box>
           </Box>

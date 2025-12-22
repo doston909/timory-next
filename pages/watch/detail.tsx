@@ -144,7 +144,6 @@ const WatchDetail = () => {
       }
     : {
         id: 1,
-        brand: "Rolex",
         name: "Black Dail Strap",
         price: "$ 2,500.00",
         image: "/img/watch/rasmm2.png",

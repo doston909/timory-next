@@ -1,6 +1,7 @@
 import { Stack, Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { useRouter } from "next/router"; // Bu qo'shish kerak
+import { useRouter } from "next/router";
+import { communityCommentsCount } from "@/libs/data/communityComments";
 
 export type Article = {
   id: number;
@@ -60,7 +61,8 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
                   </Box>
                 </Box>
                 {"  |  "}
-                {article.date}  |  {article.comments} COMMENT{article.comments !== 1 ? "S" : ""}
+                {article.date}  |  {communityCommentsCount} COMMENT
+                {communityCommentsCount !== 1 ? "S" : ""}
               </Typography>
               <Typography 
                 className="article-title"
