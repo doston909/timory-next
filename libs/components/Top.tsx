@@ -25,8 +25,11 @@ const Top = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const { cartItems, removeFromCart } = useCart();
   const routerBoxRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -70,22 +73,25 @@ const Top = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        routerBoxRef.current &&
-        !routerBoxRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+
+      if (routerBoxRef.current && !routerBoxRef.current.contains(target)) {
         setActiveDropdown(null);
+      }
+
+      if (userMenuRef.current && !userMenuRef.current.contains(target)) {
+        setIsUserMenuOpen(false);
       }
     };
 
-    if (activeDropdown !== null) {
+    if (activeDropdown !== null || isUserMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [activeDropdown]);
+  }, [activeDropdown, isUserMenuOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -158,6 +164,14 @@ const Top = () => {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
+  }, []);
+
+  // Simple auth check based on jwtToken in localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("jwtToken");
+      setIsUserLoggedIn(!!token);
+    }
   }, []);
 
   // Original o'lchamlarni birinchi marta saqlash
@@ -461,31 +475,79 @@ const Top = () => {
                 </Box>
 
                 {/* USER */}
-                <IconButton
-                  aria-label="User"
-                  sx={{
-                    color: "#000",
-                    p: 0,
-                    "&:hover": {
-                      color: "#E5C8A3",
-                      backgroundColor: "transparent",
-                      cursor: "pointer",
-                    },
-                  }}
-                >
-                  <PersonOutline />
-                </IconButton>
+                <Box className="user-menu" sx={{ position: "relative" }}>
+                  <IconButton
+                    aria-label="User"
+                    onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                    sx={{
+                      color: "#000",
+                      p: 0,
+                      "&:hover": {
+                        color: "#E5C8A3",
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                      },
+                    }}
+                  >
+                    <PersonOutline />
+                  </IconButton>
+
+                  {isUserMenuOpen && (
+                    <Box
+                      className="user-menu-dropdown"
+                      ref={userMenuRef}
+                      onMouseLeave={() => setIsUserMenuOpen(false)}
+                    >
+                      {isUserLoggedIn ? (
+                        <>
+                          <Box
+                            className="user-menu-item"
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              router.push("/mypage?category=myProfile");
+                            }}
+                          >
+                            My Page
+                          </Box>
+                          <Box
+                            className="user-menu-item"
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              // TODO: integrate real logout when auth is implemented
+                              localStorage.removeItem("jwtToken");
+                              setIsUserLoggedIn(false);
+                            }}
+                          >
+                            Logout
+                          </Box>
+                        </>
+                      ) : (
+                        <>
+                          <Box
+                            className="user-menu-item"
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              router.push("/account");
+                            }}
+                          >
+                            Login / Signup
+                          </Box>
+                          <Box
+                            className="user-menu-item"
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              
+                            }}
+                          >
+                            Contact Admin
+                          </Box>
+                        </>
+                      )}
+                    </Box>
+                  )}
+                </Box>
               </div>
 
-              <Menu id="basic-menu" sx={{ mt: "5px" }} open={false}>
-                <MenuItem>
-                  <Logout
-                    fontSize="small"
-                    style={{ color: "#E5C28C", marginRight: "10px" }}
-                  />
-                  Logout
-                </MenuItem>
-              </Menu>
             </>
           </Box>
         </Stack>

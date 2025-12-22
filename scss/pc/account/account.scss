@@ -1,0 +1,295 @@
+@import "/scss/variables.scss";
+
+#account-page {
+  background-color: #fbfbfb;
+  min-height: calc(100vh - 10px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 16px;
+  padding-top: 100px;
+  padding-bottom: 150px;
+
+  .account-container {
+    max-width: 720px;
+    width: 100%;
+    height: 1000px;
+    margin: 0 auto;
+    margin-top: 0;
+    margin-bottom: -360px;
+  }
+
+  .account-container-signup {
+    height: auto;
+    min-height: 1000px;
+    margin-top: 0;
+    margin-bottom: 35px;
+  }
+
+  .account-container-reset {
+    height: auto;
+    margin-top: 0;
+    min-height: 1000px;
+    margin-bottom: -1000px;
+  }
+
+  .account-card {
+    background-color: #ffffff;
+    border-radius: 28px;
+    height: 830px;
+    border: 1px solid #4b5563;
+    padding: 40px 56px 48px 56px;
+    box-sizing: border-box;
+  }
+
+  .account-card-signup {
+    min-height: 1100px;
+    height: auto;
+  }
+
+  .account-card-reset {
+    height: auto;
+    min-height: 500px;
+  }
+
+  .account-title {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 50px;
+    font-weight: 400;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    color: #000000;
+  }
+
+  .account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+
+  .account-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .account-label {
+    font-family: $font;
+    font-size: 16px;
+    font-weight: 500;
+    color: #111111;
+  }
+
+  .account-input {
+    .MuiOutlinedInput-root {
+      display: flex;
+      align-items: center;
+    }
+
+    .MuiOutlinedInput-notchedOutline {
+      border-color: #727272;
+      border-radius: 8px;
+      height: 60px;
+    }
+
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border-color: #000000;
+    }
+
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: #000000;
+      border-width: 3px;
+    }
+
+    .MuiInputBase-input {
+      margin-top: 8px;
+      padding: 18px 14px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+  }
+
+  .account-password-wrapper {
+    position: relative;
+
+    .MuiIconButton-root {
+      color: #000000 !important;
+
+      &:hover {
+        color: #000000 !important;
+        
+      }
+
+      svg {
+        color: #000000;
+      }
+    }
+  }
+
+  .account-options {
+    margin-top: 4px;
+    cursor: pointer;
+
+    .account-helper {
+      font-family: $font;
+      font-size: 16px;
+      font-weight: 400;
+      color: #201f1f;
+    }
+
+    .MuiFormControlLabel-root {
+      cursor: pointer !important;
+
+      &:hover {
+        cursor: pointer !important;
+      }
+    }
+
+    .account-link-button {
+      font-family: $font;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: none;
+      padding: 0;
+      min-width: auto;
+      color: #201f1f;
+      text-decoration: underline;
+      cursor: pointer !important;
+
+      &:hover {
+        color: rgb(89, 89, 255);
+        cursor: pointer !important;
+      }
+
+      .MuiButton-root {
+        cursor: pointer !important;
+      }
+    }
+
+    .MuiCheckbox-root {
+      color: #4f4f4f;
+      font-weight: 200;
+      transform: scale(0.85);
+      padding: 4px;
+      cursor: pointer !important;
+
+      &:hover {
+        cursor: pointer !important;
+      }
+    }
+
+    .MuiCheckbox-root.Mui-checked {
+      color: #000000;
+    }
+  }
+
+  .account-submit-button {
+    height: 55px;
+    background-color: #101c36;
+    color: #ffffff;
+    text-transform: none;
+    font-family: $font;
+    font-size: 18px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer !important;
+
+    &:hover {
+      background-color: #264382;
+      cursor: pointer !important;
+    }
+
+    .MuiButton-root {
+      cursor: pointer !important;
+    }
+  }
+
+  .account-divider {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    margin-top: -10px;
+
+    span:first-child,
+    span:last-child {
+      flex: 1;
+      height: 1px;
+      background-color: #e5e7eb;
+    }
+
+    span:nth-child(2) {
+      font-family: $font;
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: 18px;
+      color: #000000;
+    }
+  }
+
+  .account-oauth-button {
+    margin-top: -15px;
+    height: 55px;
+    text-transform: none;
+    font-family: $font;
+    font-size: 16px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border-color: #000000;
+    border-width: 2px;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer !important;
+
+    &:hover {
+      background-color: #e3e3e3;
+      border-color: #000000;
+      cursor: pointer !important;
+    }
+
+    .MuiButton-root {
+      cursor: pointer !important;
+    }
+  }
+
+    .account-oauth-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+    }
+  }
+
+  .account-footer {
+    margin-top: 38px;
+    text-align: left;
+
+    .account-helper {
+      font-family: $font;
+      font-size: 16px;
+      color: #000000;
+    }
+
+    .account-link-button {
+      font-family: $font;
+      font-size: 16px;
+      font-weight: 300;
+      padding: 0;
+      min-width: auto;
+      text-transform: none;
+      color: #000000;
+      text-decoration: underline;
+      cursor: pointer !important;
+
+      &:hover {
+        color: rgb(89, 89, 255);
+        cursor: pointer !important;
+        text-decoration: underline;
+      }
+
+      .MuiButton-root {
+        cursor: pointer !important;
+      }
+    }
+  }
+

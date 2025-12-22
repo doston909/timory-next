@@ -5,6 +5,7 @@
 @import "/scss/pc/watch/detail.scss";
 @import "/scss/pc/community/community.scss";
 @import "/scss/pc/community/detail.scss";
+@import "/scss/pc/account/account.scss";
 
 
 #pc-wrap {
@@ -238,6 +239,35 @@
                 width: 24px;
                 height: 24px;
                 font-size: 24px;
+              }
+            }
+
+            .user-menu {
+              position: relative;
+
+              &-dropdown {
+                position: absolute;
+                right: 0;
+                top: 120%;
+                background-color: #e0dfdf;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                border-radius: 10px;
+                min-width: 180px;
+                padding: 8px 0;
+                z-index: 1300;
+
+                .user-menu-item {
+                  padding: 10px 20px;
+                  font-size: 20px;
+                  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                  cursor: pointer;
+                  transition: background-color 0.2s ease, color 0.2s ease;
+
+                  &:hover {
+                    background-color: #000000;
+                    color: #ffffff;
+                  }
+                }
               }
             }
           }
