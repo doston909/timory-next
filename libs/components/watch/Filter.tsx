@@ -11,11 +11,13 @@ import {
   Box,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 // PRICE LIST
 const priceRanges = [
   0, 100, 250, 500, 1000, 2500, 5000,
-  10000, 25000, 50000, 100000, 250000,
+  10000, 25000, 50000, 100000, 250000, 1000000, 2000000, 10000000
 ];
 
 // WATCH TYPE
@@ -48,14 +50,20 @@ const materials = [
   "Rubber",
 ];
 
-// CATEGORIES
-const categories = [
-  "Popular",
-  "New Arrivals",
-  "Limited Edition",
-  "Bestsellers",
-  "Luxury",
-  "Budget",
+// BRANDS
+const brands = [
+  "Rolex",
+  "Omega",
+  "Patek Philippe",
+  "Audemars Piguet",
+  "Tag Heuer",
+  "Breitling",
+  "Cartier",
+  "IWC",
+  "Panerai",
+  "Hublot",
+  "Tudor",
+  "Seiko",
 ];
 
 const Filter = () => {
@@ -63,11 +71,11 @@ const Filter = () => {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedDialColors, setSelectedDialColors] = useState<string[]>([]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
 
   const [watchPrice, setWatchPrice] = useState({
     start: 0,
-    end: 250000,
+    end: priceRanges[priceRanges.length - 1], // Doim oxirgi narx
   });
 
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
@@ -94,8 +102,6 @@ const Filter = () => {
     if (selectedItems.length > 0) return true;
     // If manually opened (clicked), keep it open
     if (openSections.has(sectionKey)) return true;
-    // If hovering, keep it open
-    if (hoveredSection === sectionKey) return true;
     return false;
   };
 
@@ -104,12 +110,11 @@ const Filter = () => {
     setSelectedSizes([]);
     setSelectedDialColors([]);
     setSelectedMaterials([]);
-    setSelectedCategories([]);
+    setSelectedBrands([]);
     setWatchPrice({
       start: 0,
-      end: 250000,
+      end: priceRanges[priceRanges.length - 1], // Doim oxirgi narx
     });
-    setHoveredSection(null);
     setOpenSections(new Set());
   };
 
@@ -141,55 +146,150 @@ const Filter = () => {
             },
           }}
         >
-          <RefreshIcon sx={{ fontSize: "25px" }} />
+          <RefreshIcon sx={{ fontSize: "30px" }} />
         </IconButton>
+      </Stack>
+
+      {/* BRAND */}
+      <Stack 
+        className={`filter-section ${isSectionOpen("brand", selectedBrands) ? "open" : ""}`}
+        mb="30px"
+        onClick={() => {
+          // Toggle section open/close
+          setOpenSections((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has("brand")) {
+              // If open and no items selected, close it
+              if (selectedBrands.length === 0) {
+                newSet.delete("brand");
+              }
+            } else {
+              // If closed, open it
+              newSet.add("brand");
+            }
+            return newSet;
+          });
+        }}
+      >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Typography className="title">Brand</Typography>
+          {isSectionOpen("brand", selectedBrands) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowUpIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          )}
+        </Stack>
+        {isSectionOpen("brand", selectedBrands) && (
+          <Stack 
+            className="filter-list"
+            onClick={() => {
+              if (selectedBrands.length === 0) {
+                closeSection("brand");
+              }
+            }}
+          >
+            {brands.map((brand) => (
+              <Stack 
+                key={brand} 
+                className="input-box"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Checkbox
+                  checked={selectedBrands.includes(brand)}
+                  onChange={() =>
+                    toggleItem(selectedBrands, setSelectedBrands, brand)
+                  }
+                  size="small"
+                />
+                <Typography className="label">{brand}</Typography>
+              </Stack>
+            ))}
+          </Stack>
+        )}
       </Stack>
 
       {/* WATCH TYPE */}
       <Stack 
-        className="filter-section" 
+        className={`filter-section ${isSectionOpen("watchType", selectedTypes) ? "open" : ""}`}
         mb="30px"
-        onMouseEnter={() => setHoveredSection("watchType")}
-        onMouseLeave={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedTypes.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("watchType");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
         onClick={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedTypes.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
+          // Toggle section open/close
+          setOpenSections((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has("watchType")) {
+              // If open and no items selected, close it
+              if (selectedTypes.length === 0) {
                 newSet.delete("watchType");
-                return newSet;
-              });
-            }, 200);
-          }
+              }
+            } else {
+              // If closed, open it
+              newSet.add("watchType");
+            }
+            return newSet;
+          });
         }}
       >
-        <Typography 
-          className="title"
-          onClick={() => closeSection("watchType")}
-        >
-          Watch Type
-        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Typography className="title">Watch Type</Typography>
+          {isSectionOpen("watchType", selectedTypes) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' , marginBottom: '10px'}}>
+              <KeyboardArrowUpIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' , marginBottom: '10px'}}>
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          )}
+        </Stack>
         {isSectionOpen("watchType", selectedTypes) && (
           <Stack 
             className="filter-list"
             onClick={() => {
-              setHoveredSection(null);
               if (selectedTypes.length === 0) {
-                
                 closeSection("watchType");
               }
             }}
@@ -214,37 +314,57 @@ const Filter = () => {
 
       {/* CASE SIZE */}
       <Stack 
-        className="filter-section" 
+        className={`filter-section ${isSectionOpen("caseSize", selectedSizes) ? "open" : ""}`}
         mb="30px"
-        onMouseEnter={() => setHoveredSection("caseSize")}
-        onMouseLeave={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedSizes.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("caseSize");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
         onClick={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedSizes.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
+          // Toggle section open/close
+          setOpenSections((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has("caseSize")) {
+              // If open and no items selected, close it
+              if (selectedSizes.length === 0) {
                 newSet.delete("caseSize");
-                return newSet;
-              });
-            }, 200);
-          }
+              }
+            } else {
+              // If closed, open it
+              newSet.add("caseSize");
+            }
+            return newSet;
+          });
         }}
       >
-        <Typography className="title">Case Size</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Typography className="title">Case Size</Typography>
+          {isSectionOpen("caseSize", selectedSizes) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowUpIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px'}}>
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          )}
+        </Stack>
         {isSectionOpen("caseSize", selectedSizes) && (
           <Stack 
             className="filter-list"
@@ -274,37 +394,57 @@ const Filter = () => {
 
       {/* DIAL COLOR */}
       <Stack 
-        className="filter-section" 
+        className={`filter-section ${isSectionOpen("dialColor", selectedDialColors) ? "open" : ""}`}
         mb="30px"
-        onMouseEnter={() => setHoveredSection("dialColor")}
-        onMouseLeave={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedDialColors.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("dialColor");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
         onClick={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedDialColors.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
+          // Toggle section open/close
+          setOpenSections((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has("dialColor")) {
+              // If open and no items selected, close it
+              if (selectedDialColors.length === 0) {
                 newSet.delete("dialColor");
-                return newSet;
-              });
-            }, 200);
-          }
+              }
+            } else {
+              // If closed, open it
+              newSet.add("dialColor");
+            }
+            return newSet;
+          });
         }}
       >
-        <Typography className="title">Dial Color</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Typography className="title">Dial Color</Typography>
+          {isSectionOpen("dialColor", selectedDialColors) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowUpIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          )}
+        </Stack>
         {isSectionOpen("dialColor", selectedDialColors) && (
           <Stack 
             className="filter-list"
@@ -336,37 +476,57 @@ const Filter = () => {
 
       {/* MATERIAL */}
       <Stack 
-        className="filter-section" 
+        className={`filter-section ${isSectionOpen("material", selectedMaterials) ? "open" : ""}`}
         mb="30px"
-        onMouseEnter={() => setHoveredSection("material")}
-        onMouseLeave={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedMaterials.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("material");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
         onClick={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedMaterials.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
+          // Toggle section open/close
+          setOpenSections((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has("material")) {
+              // If open and no items selected, close it
+              if (selectedMaterials.length === 0) {
                 newSet.delete("material");
-                return newSet;
-              });
-            }, 200);
-          }
+              }
+            } else {
+              // If closed, open it
+              newSet.add("material");
+            }
+            return newSet;
+          });
         }}
       >
-        <Typography className="title">Material</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Typography className="title">Material</Typography>
+          {isSectionOpen("material", selectedMaterials) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowUpIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  fontSize: '35px', 
+                  color: '#333333',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease',
+                  '&:hover': {
+                    color: '#f9a63bff',
+                  }
+                }} 
+              />
+            </Box>
+          )}
+        </Stack>
         {isSectionOpen("material", selectedMaterials) && (
           <Stack 
             className="filter-list"
@@ -396,68 +556,6 @@ const Filter = () => {
         )}
       </Stack>
 
-      {/* CATEGORY */}
-      <Stack 
-        className="filter-section" 
-        mb="30px"
-        onMouseEnter={() => setHoveredSection("category")}
-        onMouseLeave={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedCategories.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("category");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
-        onClick={() => {
-          setHoveredSection(null);
-          // Close if no checkboxes are selected
-          if (selectedCategories.length === 0) {
-            setTimeout(() => {
-              setOpenSections((prev) => {
-                const newSet = new Set(prev);
-                newSet.delete("category");
-                return newSet;
-              });
-            }, 200);
-          }
-        }}
-      >
-        <Typography className="title">Category</Typography>
-        {isSectionOpen("category", selectedCategories) && (
-          <Stack 
-            className="filter-list"
-            onClick={() => {
-              if (selectedCategories.length === 0) {
-                closeSection("category");
-              }
-            }}
-          >
-            {categories.map((cat) => (
-              <Stack 
-                key={cat} 
-                className="input-box"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Checkbox
-                  checked={selectedCategories.includes(cat)}
-                  onChange={() =>
-                    toggleItem(selectedCategories, setSelectedCategories, cat)
-                  }
-                  size="small"
-                />
-                <Typography className="label">{cat}</Typography>
-              </Stack>
-            ))}
-          </Stack>
-        )}
-      </Stack>
-
       {/* PRICE RANGE */}
       <Stack className="filter-section" mb="30px">
         <Typography className="title">Price Range</Typography>
@@ -470,6 +568,19 @@ const Filter = () => {
               onChange={(e) =>
                 setWatchPrice({ ...watchPrice, start: Number(e.target.value) })
               }
+              sx={{
+                '& .MuiSelect-select': {
+                  fontSize: '18px !important',
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                },
+                '& .MuiInputBase-input': {
+                  marginTop: '10px',
+                  fontSize: '19px !important',
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                },
+              }}
             >
               {priceRanges.map((p) => (
                 <MenuItem key={p} value={p}>
@@ -488,6 +599,19 @@ const Filter = () => {
               onChange={(e) =>
                 setWatchPrice({ ...watchPrice, end: Number(e.target.value) })
               }
+              sx={{
+                '& .MuiSelect-select': {
+                  fontSize: '18px !important',
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                },
+                '& .MuiInputBase-input': {
+                  marginTop: '10px',
+                  fontSize: '19px !important',
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                },
+              }}
             >
               {priceRanges.map((p) => (
                 <MenuItem key={p} value={p}>

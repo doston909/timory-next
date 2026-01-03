@@ -1,5 +1,6 @@
 import { Stack, Box, Typography, Button } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import StarIcon from "@mui/icons-material/Star";
 import PeopleIcon from "@mui/icons-material/People";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -19,7 +20,7 @@ const OurGoal = () => {
   ),
 
       title: "4.7 out of 5 stars",
-      description: "from 186,000 reviews worldwide",
+      description: "from 5,000 reviews worldwide",
     },
     {
       id: 2,
@@ -31,7 +32,7 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "9 million",
+      title: "10.000",
       description: "watch enthusiasts use Timory each month",
     },
     {
@@ -44,7 +45,7 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "Over 200,000",
+      title: "Over 23,000",
       description: "customers choose Buyer Protection annually",
     },
     {
@@ -57,7 +58,7 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "More than 25,000",
+      title: "More than 17,000",
       description: "trustworthy sellers",
     },
   ];
@@ -76,7 +77,7 @@ const OurGoal = () => {
       {/* Top Section: Marketplace Statistics */}
       <Box className="stats-section">
         <Typography className="stats-title">
-          The Leading Marketplace for TIMORY Since 2003
+          The Leading Marketplace for TIMORY Since 2025
         </Typography>
         <Box className="stats-grid">
           {stats.map((stat) => (
@@ -100,7 +101,7 @@ const OurGoal = () => {
           <Box className="features-list">
             {features.map((feature, index) => (
               <Box key={index} className="feature-item">
-                <CheckCircleIcon className="check-icon" />
+                <CheckOutlinedIcon className="check-icon" />
                 <Typography className="feature-text">{feature}</Typography>
               </Box>
             ))}

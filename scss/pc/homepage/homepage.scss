@@ -12,7 +12,8 @@
 
       .section-title {
         font-size: 42px;
-        font-weight: 700;
+        font-weight: 500;
+          letter-spacing: 0.6px;
         color: #0a0a0a;
         margin-bottom: 50px;
         text-transform: uppercase;
@@ -223,11 +224,13 @@
       );
 
       .section-title {
-        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-        font-size: 44px;
-        font-weight: 700;
-        color: #f1ab13;
+        font-family: $font;
+        letter-spacing: 0.6px;
+        font-size: 42px;
+        font-weight: 500;
+        color: #ffffff;
         margin-bottom: 80px;
+        margin-top:-20px;
         text-transform: uppercase;
       }
 
@@ -470,10 +473,12 @@
       background-color: #f8f8f8;
 
       .section-title {
-        font-size: 44px;
-        font-weight: 700;
+        font-size: 42px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
-        margin-bottom: 60px;
+        margin-bottom: 80px;
+        margin-top: 50px;
         color: #1a1a1a;
       }
 
@@ -740,15 +745,18 @@
       text-align: center;
 
       .section-title {
-        font-size: 44px;
-        font-weight: 700;
+        font-size: 42px;
+        font-weight: 500;
+         margin-bottom: 80px;
+        margin-top: 40px;
         text-transform: uppercase;
         margin-bottom: 10px;
       }
 
       .section-subtitle {
         font-size: 18px;
-        margin-bottom: 40px;
+        margin-top: -10px;
+        margin-bottom: 70px;
         color: #777;
       }
 
@@ -1015,11 +1023,12 @@
       gap: 0;
 
       .section-title {
+        margin-top: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 44px;
-        font-weight: 700;
+        font-size: 42px;
+        font-weight: 500;
         text-transform: uppercase;
       }
 
@@ -1028,7 +1037,7 @@
         justify-content: center;
         align-items: center;
         font-size: 18px;
-        margin-bottom: 60px;
+        margin-bottom: 80px;
         color: #777;
       }
 
@@ -1403,16 +1412,18 @@
       position: relative;
 
       .title {
+        font-family: $font;
         font-size: 42px;
-        font-weight: 700;
+        font-weight: 500;
         color: #1a1a1a;
         text-transform: uppercase;
         margin-bottom: 12px;
       }
 
       .subtitle {
+        font-family: $font;
         font-size: 18px;
-        color: #6b6b6b;
+        color: #6d6d6d;
         margin-bottom: 50px;
       }
 
@@ -1585,10 +1596,10 @@
 
       .stats-title {
         font-size: 42px;
-        font-weight: 700;
+        font-weight: 400;
         color: #1a1a1a;
         margin-bottom: 60px;
-        font-family: $font;
+       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         line-height: 1.3;
       }
 
@@ -1677,7 +1688,7 @@
       }
 
       .protection-content {
-        background: #f8f8f8;
+        background: #1B253B;
         padding: 60px 50px;
         border-radius: 16px;
         border-top-right-radius: 0;
@@ -1685,11 +1696,11 @@
         height: 85%;
 
         .protection-title {
-          font-size: 36px;
-          font-weight: 700;
-          color: #1a1a1a;
+          font-size: 42px;
+          font-weight: 400;
+          color: #ffffff;
           margin-bottom: 40px;
-          font-family: $font;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
         .features-list {
@@ -1704,14 +1715,14 @@
             gap: 16px;
 
             .check-icon {
-              color: #4caf50;
-              font-size: 24px;
+              color: #ffffff;
+              font-size: 30px;
               flex-shrink: 0;
             }
 
             .feature-text {
               font-size: 18px;
-              color: #333333;
+              color: #ffffff;
               font-family: $font;
               line-height: 1.6;
             }
@@ -1720,9 +1731,9 @@
 
         .learn-more-btn {
           padding: 16px 75px;
-          border: 2px solid #1a1a1a;
+          border: 2px solid #ffffff;
           border-radius: 8px;
-          color: #1a1a1a;
+          color: #ffffff;
           background: transparent;
           font-size: 16px;
           font-weight: 600;
@@ -1731,9 +1742,10 @@
           transition: all 0.3s ease;
 
           &:hover {
-            background: #1a1a1a;
-            color: #ffffff;
-            border-color: #1a1a1a;
+            background: white;
+            color: #000000;
+            border-color: #ffffff;
+            opacity: 0.8;
           }
         }
       }
@@ -1807,17 +1819,24 @@
 
       .news-email-input {
         width: 100%;
+        font-size: 28px;
+        
 
         :global(.MuiInputBase-root) {
-          font-size: 60px;
           color: #000;
+        }
 
-          input {
-            padding: 10px 0;
-            &::placeholder {
-              color: #000000;
-              font-size: 30px;
-            }
+        :global(.MuiInputBase-input) {
+          padding: 20px 0;
+          font-size: 120px !important;
+          color: #000;
+          
+
+          &::placeholder {
+            color: #000000;
+            font-size: 100px !important;
+            opacity: 1;
+            font-family:"$font";
           }
         }
 
@@ -1836,9 +1855,10 @@
 
       .news-subscribe-btn {
         background-color: transparent;
+        font-family: $font;
         border: none;
         color: #000;
-        font-size: 15px;
+        font-size: 18px;
         font-weight: 600;
         text-transform: uppercase;
         text-decoration: underline;
