@@ -26,7 +26,7 @@ const watches: Watch[] = [
   {
     id: 1,
     name: "Analog Strap Watch",
-    price: "Rs. 4,500.00",
+    price: "$ 4,500.00",
     image: "/img/watch/rasm1.png",
     likes: 2,
     views: 35,
@@ -35,7 +35,7 @@ const watches: Watch[] = [
   {
     id: 2,
     name: "Black Dail Strap",
-    price: "Rs. 2,500.00",
+    price: "$ 2,500.00",
     image: "/img/watch/rasm2.png",
     likes: 2,
     views: 35,
@@ -44,7 +44,7 @@ const watches: Watch[] = [
   {
     id: 3,
     name: "Black Dial Classic",
-    price: "Rs. 3,326.00",
+    price: "$ 3,326.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -53,7 +53,7 @@ const watches: Watch[] = [
   {
     id: 4,
     name: "Rose Gold Mesh",
-    price: "Rs. 5,200.00",
+    price: "$ 5,200.00",
     image: "/img/watch/rasmm.png",
     likes: 2,
     views: 35,
@@ -62,7 +62,7 @@ const watches: Watch[] = [
   {
     id: 5,
     name: "Chronograph Brown",
-    price: "Rs. 6,800.00",
+    price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
     likes: 2,
     views: 35,
@@ -71,7 +71,7 @@ const watches: Watch[] = [
   {
     id: 6,
     name: "Classic Gold",
-    price: "Rs. 4,100.00",
+    price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -80,7 +80,7 @@ const watches: Watch[] = [
    {
     id: 7,
     name: "Chronograph Brown",
-    price: "Rs. 6,800.00",
+    price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
     likes: 2,
     views: 35,
@@ -89,7 +89,7 @@ const watches: Watch[] = [
   {
     id: 8,
     name: "Classic Gold",
-    price: "Rs. 4,100.00",
+    price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -98,7 +98,7 @@ const watches: Watch[] = [
    {
     id: 9,
     name: "Classic Gold",
-    price: "Rs. 4,100.00",
+    price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -107,7 +107,7 @@ const watches: Watch[] = [
    {
     id: 10,
     name: "Analog Strap Watch",
-    price: "Rs. 4,500.00",
+    price: "$ 4,500.00",
     image: "/img/watch/rasm1.png",
     likes: 2,
     views: 35,
@@ -116,7 +116,7 @@ const watches: Watch[] = [
   {
     id: 11,
     name: "Black Dail Strap",
-    price: "Rs. 2,500.00",
+    price: "$ 2,500.00",
     image: "/img/watch/rasm2.png",
     likes: 2,
     views: 35,
@@ -125,7 +125,7 @@ const watches: Watch[] = [
   {
     id: 12,
     name: "Black Dial Classic",
-    price: "Rs. 3,326.00",
+    price: "$ 3,326.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -134,7 +134,7 @@ const watches: Watch[] = [
   {
     id: 13,
     name: "Rose Gold Mesh",
-    price: "Rs. 5,200.00",
+    price: "$ 5,200.00",
     image: "/img/watch/rasmm.png",
     likes: 2,
     views: 35,
@@ -143,7 +143,7 @@ const watches: Watch[] = [
   {
     id: 14,
     name: "Chronograph Brown",
-    price: "Rs. 6,800.00",
+    price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
     likes: 2,
     views: 35,
@@ -152,7 +152,7 @@ const watches: Watch[] = [
   {
     id: 15,
     name: "Classic Gold",
-    price: "Rs. 4,100.00",
+    price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
     likes: 2,
     views: 35,
@@ -188,7 +188,7 @@ const WatchList: NextPage = () => {
               </Box>
 
               {/* Right Side - Watch Grid */}
-              <Box className="watch-list-main">
+              <Box className="watch-list-main" sx={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
                 {/* Header Controls */}
                 <Box className="watch-list-header">
                   {/* View Mode Toggle */}
@@ -213,7 +213,7 @@ const WatchList: NextPage = () => {
                     </IconButton>
                   </Box>
 
-                  {/* Filter */}
+                 
                   <Box className="filter-dropdown">
                     <span className="filter-label"></span>
                     <OutlinedInput
@@ -256,12 +256,22 @@ const WatchList: NextPage = () => {
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
                       className="sort-select"
+                      MenuProps={{
+                        PaperProps: {
+                          className: "sort-select-menu",
+                          sx: {
+                            '& .MuiMenuItem-root': {
+                              fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                            }
+                          }
+                        }
+                      }}
                     >
                       <MenuItem value="featured">Featured</MenuItem>
                       <MenuItem value="price-asc">Price: Low to High</MenuItem>
                       <MenuItem value="price-desc">Price: High to Low</MenuItem>
                       <MenuItem value="newest">Newest</MenuItem>
-                      <MenuItem value="newest">Limited Editions</MenuItem>
+                      <MenuItem value="limited-editions">Limited Editions</MenuItem>
                     </Select>
                   </Box>
                 </Box>

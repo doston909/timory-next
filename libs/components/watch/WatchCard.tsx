@@ -25,7 +25,6 @@ interface WatchCardProps {
 const WatchCard = ({ watch }: WatchCardProps) => {
   const router = useRouter();
 
-  // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
     if (image.includes("rasm2")) return image.replace("rasm2", "rasm3");

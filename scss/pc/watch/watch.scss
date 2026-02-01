@@ -25,6 +25,25 @@
         flex-direction: column;
         min-height: 600px;
         height: fit-content;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        
+        &,
+        *,
+        *::before,
+        *::after {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+        
+        :global(.MuiTypography-root),
+        :global(.MuiBox-root),
+        :global(.MuiButton-root),
+        :global(.MuiSelect-root),
+        :global(.MuiOutlinedInput-root),
+        :global(.MuiMenuItem-root),
+        :global(.MuiInputBase-root),
+        :global(.MuiInputBase-input) {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
       }
     }
 
@@ -38,6 +57,7 @@
       background-color: #ffffff;
       border: 1px solid #9d9b9b;
       border-radius: 8px;
+      min-width: 0;
 
       .view-mode-toggle {
         display: flex;
@@ -78,6 +98,8 @@
         flex-direction: row;
         align-items: center;
         gap: 10px;
+        flex-shrink: 0;
+        min-width: fit-content;
 
         .filter-label {
           font-size: 18px;
@@ -112,6 +134,8 @@
         flex-direction: row;
         align-items: center;
         gap: 10px;
+        flex-shrink: 0;
+        min-width: fit-content;
 
         .sort-label {
           font-size: 19px;
@@ -121,7 +145,8 @@
         }
 
         .sort-select {
-          min-width: 150px;
+          min-width: 200px;
+          width: 200px;
           height: 36px;
           border-radius: 6px;
           font-size: 18px;
@@ -388,15 +413,15 @@
 
         .watch-name {
           font-size: 24px;
-          font-weight: 500;
+          font-weight: 400;
           color: #1a1a1a;
           line-height: 1.4;
         }
 
         .watch-price {
           font-size: 22px;
-          font-weight: 600;
-          color: #333333;
+          font-weight: 500;
+          color: #a92e2e;
           margin-bottom: 10px;
           pointer-events: none;
           
@@ -850,6 +875,13 @@
           }
         }
       }
+    }
+  }
+
+  /* Sort Select Dropdown Menu - Global (Menu renders to body) */
+  :global(.sort-select-menu) {
+    :global(.MuiMenuItem-root) {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     }
   }
 
