@@ -6,6 +6,7 @@
 @import "/scss/pc/community/community.scss";
 @import "/scss/pc/community/detail.scss";
 @import "/scss/pc/account/account.scss";
+@import "/scss/pc/about/index.scss";
 @import "/scss/pc/cs/index.scss";
 @import "/scss/pc/cs/notice.scss";
 @import "/scss/pc/cs/terms.scss";
@@ -119,89 +120,18 @@
                 left: 0;
                 width: 0;
                 height: 2px;
-                background: #e5c28c;
+                background: #be7003;
                 transition: width 0.3s ease;
               }
             }
 
             &.active {
-              color: #e5c28c;
+              color: #be7003;
 
               span::after {
                 width: 100%;
               }
-
-              .dropdown-menu {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-                pointer-events: auto;
-                display: flex;
-                flex-direction: column;
-              }
             }
-
-            .dropdown-menu {
-              position: absolute;
-              top: calc(100% + 12px);
-              left: 0;
-              min-width: 220px;
-              max-width: 280px;
-
-              gap: 0;
-              background: white;
-              padding: 12px 0;
-              border-radius: 14px;
-              box-shadow: 0 12px 38px rgba(0, 0, 0, 0.12),
-                0 4px 12px rgba(0, 0, 0, 0.06);
-              border: 1px solid rgba(0, 0, 0, 0.06);
-              opacity: 0;
-              visibility: hidden;
-              transform: translateY(-10px);
-              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-              pointer-events: none;
-              z-index: 1000;
-
-              &::before {
-                content: "";
-                position: absolute;
-                top: -6px;
-                left: 20px;
-                width: 12px;
-                height: 12px;
-                background: white;
-                border-left: 1px solid rgba(0, 0, 0, 0.06);
-                border-top: 1px solid rgba(0, 0, 0, 0.06);
-                transform: rotate(45deg);
-              }
-
-              a {
-                display: block;
-                padding: 12px 20px;
-                font-size: 16px;
-                font-weight: 500;
-                color: #333;
-                text-decoration: none;
-                transition: all 0.25s ease;
-                border-left: 3px solid transparent;
-                font-family: $font;
-
-                &:hover {
-                  color: #e5c28c;
-                  background: rgba(229, 194, 140, 0.08);
-                  border-left-color: #e5c28c;
-                  padding-left: 24px;
-                }
-
-                &:active {
-                  background: rgba(229, 194, 140, 0.15);
-                }
-              }
-            }
-          }
-
-          .nav-item.dropdown:not(.active) .dropdown-menu {
-            pointer-events: none;
           }
         }
 
@@ -263,84 +193,6 @@
             }
           }
 
-          .icon-button {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-
-            .icon {
-              width: 32px;
-              height: 32px;
-              transition: all 0.2s ease;
-            }
-
-            &:hover {
-              .icon {
-                opacity: 0.7;
-                transform: scale(1.1);
-              }
-            }
-          }
-
-          .icon {
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            transition: 0.2s;
-
-            &:hover {
-              opacity: 0.7;
-            }
-          }
-
-          .bag-wrapper {
-            position: relative;
-
-            .bag-badge {
-              position: absolute;
-              top: -6px;
-              right: -10px;
-              background: #d6c6a4;
-              color: white;
-              font-size: 10px;
-              width: 18px;
-              height: 18px;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: 600;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            }
-          }
-
-          .lang-box select {
-            background: transparent;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #090707ed;
-            font-family: $font;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-
-            &:hover {
-              color: #e5c28c;
-              background: rgba(229, 194, 140, 0.1);
-            }
-
-            &:focus {
-              outline: none;
-              background: rgba(229, 194, 140, 0.1);
-            }
-          }
         }
       }
     }
@@ -372,25 +224,6 @@
       animation: slideDown 0.3s ease;
     }
 
-    .search-close-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.05);
-        transform: rotate(90deg);
-      }
-    }
 
     .search-form {
       display: flex;
