@@ -1,0 +1,114 @@
+#pc-wrap {
+  .notice-page {
+    width: 100%;
+    min-height: calc(100vh - 200px);
+    background-color: #f8f8f8;
+    padding: 40px 20px 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    .notice-content {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .notice-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: #000000;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      .notice-table-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+
+        .notice-table {
+          width: 100%;
+          border-collapse: collapse;
+
+          .notice-table-header {
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+
+            .notice-header-cell {
+              font-size: 16px;
+              font-weight: 600;
+              color: #000000;
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              padding: 16px 20px;
+              border: none;
+
+              &.notice-number-header {
+                text-align: left;
+                width: 10%;
+              }
+
+              &.notice-title-header {
+                text-align: left;
+                width: 70%;
+              }
+
+              &.notice-date-header {
+                text-align: right;
+                width: 20%;
+              }
+            }
+          }
+
+          .notice-table-row {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+              background-color: #f9f9f9;
+            }
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            .notice-cell {
+              font-size: 16px;
+              font-weight: 400;
+              color: #333333;
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              padding: 16px 20px;
+              border: none;
+
+              &.notice-number-cell {
+                text-align: left;
+                color: #666666;
+              }
+
+              &.notice-title-cell {
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .notice-icon {
+                  font-size: 18px;
+                  margin-left: auto;
+                }
+              }
+
+              &.notice-date-cell {
+                text-align: right;
+                color: #666666;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

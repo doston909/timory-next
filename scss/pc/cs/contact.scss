@@ -1,0 +1,286 @@
+#pc-wrap {
+  .cs-contact-section {
+    max-width: 90%;
+    width: 100%;
+    margin-top: 60px;
+    padding: 0 20px 60px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    /* Ichkaridagi barcha Typography matnlar uchun Helvetica */
+    :global(.MuiTypography-root) {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+  }
+
+  .cs-contact-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    margin-bottom: 24px;
+  }
+
+  .cs-contact-intro {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-intro-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-intro-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444444;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-intro-subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111111;
+    margin: 8px 0 0 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-intro-list {
+    margin: 8px 0 0 20px;
+    padding: 0;
+    list-style-type: disc;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #444444;
+      margin-bottom: 8px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+  }
+
+  .cs-contact-intro-thanks {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111111;
+    margin: 8px 0 0 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto; /* gorizontal markazga qo'yish */
+    display: flex;
+    gap: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 80px 40px 80px 40px; /* balandligini yanada biroz kattaroq qilish uchun */
+  }
+
+  .cs-contact-form {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cs-contact-form-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #111111;
+    margin: 0 0 10px 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    /* Guruh ichidagi barcha matnlar uchun 18px font-size */
+    :global(.MuiTypography-root) {
+      font-size: 18px !important;
+    }
+
+    .cs-contact-label {
+      font-size: 18px !important;
+      font-weight: 500;
+      color: #555555;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .cs-contact-input,
+    .cs-contact-textarea {
+      font-size: 18px !important;
+    }
+  }
+
+  .cs-contact-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555555;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-required {
+    color: #ff1500;
+    margin-left: 2px;
+  }
+
+  .cs-contact-input,
+  .cs-contact-textarea {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #b5b5b5;
+    padding: 12px 12px;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* cs-contact-form-group ichidagi input va textarea uchun 18px */
+  .cs-contact-form-group {
+    .cs-contact-input,
+    .cs-contact-textarea {
+      font-size: 18px !important;
+    }
+  }
+
+  .cs-contact-input::placeholder,
+  .cs-contact-textarea::placeholder {
+    color: #b0b0b0;
+  }
+
+  .cs-contact-input:focus,
+  .cs-contact-textarea:focus {
+    border-color: #031541;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  }
+
+  .cs-contact-textarea {
+    min-height: 220px; /* balandligini biroz kattaroq qildik */
+    resize: vertical;
+  }
+
+  .cs-contact-submit {
+    margin-top: 10px;
+    align-self: flex-end; /* form ichida o'ng tomonga joylashsin */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 35%; /* biroz kengroq */
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 8px;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #1a1a1a !important;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .cs-contact-submit:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+    
+    .cs-contact-submit-icon {
+      transform: translateX(10px);
+    }
+  }
+
+  .cs-contact-submit-icon {
+    font-size: 24px;
+    margin-left: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  .cs-contact-info {
+    flex: 0.9;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 32px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cs-contact-info-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 8px 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .cs-contact-info-text {
+    font-size: 17px !important;
+    line-height: 1.7;
+    color: #555555;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  :global(.MuiTypography-root.cs-contact-info-text) {
+    font-size: 17px !important;
+  }
+
+  .cs-contact-info-block {
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cs-contact-info-heading {
+    font-size: 20px !important;
+    font-weight: 600;
+    color: #111111;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  :global(.MuiTypography-root.cs-contact-info-heading) {
+    font-size: 20px !important;
+  }
+
+  .cs-contact-info-icon {
+    font-size: 16px;
+  }
+
+  .cs-contact-info-line {
+    font-size: 17px !important;
+    color: #000000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  :global(.MuiTypography-root.cs-contact-info-line) {
+    font-size: 17px !important;
+  }
+}
+
+

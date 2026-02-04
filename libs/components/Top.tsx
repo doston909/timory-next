@@ -339,7 +339,7 @@ const Top = () => {
             {/* PAGES */}
             <div
               className="nav-item-wrapper"
-              
+              onClick={() => router.push('/cs')}
             >
               <div
                 className={`nav-item ${
@@ -347,19 +347,7 @@ const Top = () => {
                 }`}
                 onMouseEnter={() => handleDropdownOpen("pages")}
               >
-                <span>Pages</span>
-
-                {activeDropdown === "pages" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/cs">Customer Center</Link>
-                    <Link href="/terms">Terms & Conditions</Link>
-                    <Link href="/privacy">Privacy Policy</Link>
-                    <Link href="/faq">FAQ</Link>
-                  </div>
-                )}
+                <span>Cs</span>
               </div>
             </div>
           </Box>

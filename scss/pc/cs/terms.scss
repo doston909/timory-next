@@ -1,0 +1,171 @@
+#pc-wrap {
+  .terms-page {
+    width: 100%;
+    min-height: calc(100vh - 200px);
+    background-color: #f8f8f8;
+    padding: 40px 20px 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .terms-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+      .terms-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: #000000;
+        margin: 0;
+      }
+
+      .terms-updated {
+        font-size: 20px;
+        font-weight: 400;
+        color: #777777;
+        margin: 0 0 16px 0;
+      }
+
+      .terms-intro {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333333;
+        margin: 0 0 8px 0;
+      }
+
+      .terms-section {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .terms-section-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #111111;
+          margin: 0;
+        }
+
+        .terms-paragraph {
+          font-size: 15px;
+          line-height: 1.7;
+          color: #444444;
+          margin: 0;
+
+          strong {
+            font-weight: 600;
+            color: #222222;
+          }
+        }
+
+        .terms-list {
+          margin: 4px 0 0 20px;
+          padding: 0;
+          list-style-type: disc;
+
+          li {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444444;
+            margin-bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  /* Inline Terms section inside cs/index.tsx (Notice bilan bir xil layout) */
+  .cs-terms-section {
+    max-width: 90%;
+    width: 100%;
+    margin-top: 60px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .cs-terms-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      margin-bottom: 8px;
+    }
+
+    .cs-terms-updated {
+      font-size: 18px !important;
+      font-weight: 400;
+      color: #397b03;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      margin: 0 0 12px 0;
+    }
+    
+    :global(.MuiTypography-root.cs-terms-updated) {
+      font-size: 18px !important;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+
+    .cs-terms-paragraph {
+      /* font-size sx ichidan boshqariladi */
+      line-height: 1.7;
+      color: #444444;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0 0 4px 0;
+
+      strong {
+        font-weight: 600;
+        color: #222222;
+      }
+    }
+
+    /* MUI Typography root + cs-terms-paragraph class uchun aniq override */
+    :global(.MuiTypography-root.cs-terms-paragraph) {
+      /* font-size sx ichidan boshqariladi */
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+
+    .cs-terms-section-title {
+      font-size: 22px !important;
+      font-weight: 700 !important;
+      color: #111111;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      margin: 0;
+    }
+
+    :global(.MuiTypography-root.cs-terms-section-title) {
+      font-size: 22px !important;
+      font-weight: 700 !important;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+
+    .cs-terms-section-block {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cs-terms-list {
+      margin: 4px 0 0 20px;
+      padding: 0;
+      list-style-type: disc;
+
+      li {
+        font-size: 18px !important;
+        line-height: 1.6;
+        color: #444444;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
+
