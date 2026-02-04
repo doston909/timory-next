@@ -141,14 +141,6 @@
               }
             }
 
-            &:hover {
-              color: #e5c28c;
-
-              span::after {
-                width: 100%;
-              }
-            }
-
             .dropdown-menu {
               position: absolute;
               top: calc(100% + 12px);
@@ -205,13 +197,6 @@
                   background: rgba(229, 194, 140, 0.15);
                 }
               }
-            }
-
-            &.dropdown:hover .dropdown-menu {
-              opacity: 1;
-              visibility: visible;
-              transform: translateY(0);
-              pointer-events: auto;
             }
           }
 

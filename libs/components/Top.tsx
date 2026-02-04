@@ -18,7 +18,6 @@ import { useCart } from "@/libs/context/CartContext";
 
 const Top = () => {
   const router = useRouter();
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,17 +34,6 @@ const Top = () => {
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef<number>(0);
   const originalSizeRef = useRef<{ width: number; height: number } | null>(null);
-
-
-
-  // Hover-based open/close for navbar dropdowns
-  const handleDropdownOpen = (menuName: string) => {
-    setActiveDropdown(menuName);
-  };
-
-  const handleDropdownClose = () => {
-    setActiveDropdown(null);
-  };
 
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -75,23 +63,19 @@ const Top = () => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
 
-      if (routerBoxRef.current && !routerBoxRef.current.contains(target)) {
-        setActiveDropdown(null);
-      }
-
       if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setIsUserMenuOpen(false);
       }
     };
 
-    if (activeDropdown !== null || isUserMenuOpen) {
+    if (isUserMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [activeDropdown, isUserMenuOpen]);
+  }, [isUserMenuOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -232,120 +216,59 @@ const Top = () => {
             <div className="nav-item-wrapper">
               <div
                 className={`nav-item ${
-                  activeDropdown === "home" ? "active" : ""
+                  router.pathname === "/" ? "active" : ""
                 }`}
-                onMouseEnter={() => handleDropdownOpen("home")}
+                onClick={() => router.push("/")}
               >
                 <span>Home</span>
-
-                {activeDropdown === "home" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/">Home Page</Link>
-                    <Link href="/?section=about">About</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-
-         
-            {/* BRANDS */}
-            <div
-              className="nav-item-wrapper"
-           
-            >
-              <div
-                className={`nav-item ${
-                  activeDropdown === "brands" ? "active" : ""
-                }`}
-                onMouseEnter={() => handleDropdownOpen("brands")}
-              >
-                <span>Brands</span>
-
-                {activeDropdown === "brands" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/brand/rolex">Rolex</Link>
-                    <Link href="/brand/omega">Omega</Link>
-                    <Link href="/brand/cartier">Cartier</Link>
-                    <Link href="/brand/ap">Audemars Piguet</Link>
-                    <Link href="/brand/patek">Patek Philippe</Link>
-                  </div>
-                )}
               </div>
             </div>
 
             {/* WATCHES */}
-            <div
-              className="nav-item-wrapper"
-             
-            >
+            <div className="nav-item-wrapper">
               <div
                 className={`nav-item ${
-                  activeDropdown === "watches" ? "active" : ""
+                  router.pathname.startsWith("/watch") ? "active" : ""
                 }`}
-                onMouseEnter={() => handleDropdownOpen("watches")}
+                onClick={() => router.push("/watch")}
               >
                 <span>Watches</span>
-
-                {activeDropdown === "watches" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/watch?sort=popular">Popular</Link>
-                    <Link href="/watch?sort=new">New Arrivals</Link>
-                    <Link href="/watch?sort=best">Best Sellers</Link>
-                    <Link href="/watch?sort=vintage">Vintage</Link>
-                  </div>
-                )}
               </div>
             </div>
 
             {/* COMMUNITY */}
-            <div
-              className="nav-item-wrapper"
-            
-            >
+            <div className="nav-item-wrapper">
               <div
                 className={`nav-item ${
-                  activeDropdown === "community" ? "active" : ""
+                  router.pathname.startsWith("/community") ? "active" : ""
                 }`}
-                onMouseEnter={() => handleDropdownOpen("community")}
+                onClick={() => router.push("/community")}
               >
                 <span>Community</span>
-
-                {activeDropdown === "community" && (
-                  <div
-                    className="dropdown-menu"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Link href="/community?articleCategory=FREE">
-                      Free Board
-                    </Link>
-                    <Link href="/community?articleCategory=NEWS">News</Link>
-                    <Link href="/community?articleCategory=REVIEW">
-                      Reviews
-                    </Link>
-                  </div>
-                )}
               </div>
             </div>
 
-            {/* PAGES */}
+            {/* ABOUT US */}
+            <div
+              className="nav-item-wrapper"
+              onClick={() => router.push("/about")}
+            >
+              <div className={`nav-item ${
+                router.pathname.startsWith("/about") ? "active" : ""
+              }`}>
+                <span>About Us</span>
+              </div>
+            </div>
+
+            {/* CS */}
             <div
               className="nav-item-wrapper"
               onClick={() => router.push('/cs')}
             >
               <div
                 className={`nav-item ${
-                  activeDropdown === "pages" ? "active" : ""
+                  router.pathname.startsWith("/cs") ? "active" : ""
                 }`}
-                onMouseEnter={() => handleDropdownOpen("pages")}
               >
                 <span>Cs</span>
               </div>
