@@ -1,6 +1,6 @@
-import { common } from '@mui/material/colors';
-import shadow from './shadow';
-import typography from './typography';
+import { common } from "@mui/material/colors";
+import shadow from "./shadow";
+import typography from "./typography";
 
 /**
  *   TIMORY LUXURY LIGHT THEME
@@ -10,21 +10,21 @@ import typography from './typography';
 
 export const light = {
   palette: {
-    type: 'light',
+    type: "light",
     background: {
-      default: '#f3f2ef', // Warm off-white (luxury)
-      paper: '#ffffff',
+      default: "#f3f2ef", // Warm off-white (luxury)
+      paper: "#ffffff",
     },
     primary: {
-      contrastText: '#ffffff',
-      main: '#D4AF37', // GOLD
+      contrastText: "#ffffff",
+      main: "#D4AF37", // GOLD
     },
     secondary: {
-      main: '#1A1A1A', // Deep luxury black
+      main: "#1A1A1A", // Deep luxury black
     },
     text: {
-      primary: '#111111',  // Real black
-      secondary: '#444444', // Charcoal gray
+      primary: "#111111", // Real black
+      secondary: "#444444", // Charcoal gray
       dark: common.black,
     },
   },
@@ -44,11 +44,11 @@ export const light = {
 
     body1: {
       fontFamily: `"Cormorant Garamond", serif`,
-      fontSize: '1.05rem',
+      fontSize: "1.05rem",
     },
     body2: {
       fontFamily: `"Cormorant Garamond", serif`,
-      fontSize: '0.95rem',
+      fontSize: "0.95rem",
     },
 
     subtitle1: {
@@ -69,22 +69,22 @@ export const light = {
     MuiTypography: {
       styleOverrides: {
         root: {
-          letterSpacing: '0',
+          letterSpacing: "0",
         },
       },
       defaultProps: {
         variantMapping: {
-          h1: 'h1',
-          h2: 'h2',
-          h3: 'h3',
-          h4: 'h4',
-          h5: 'h5',
-          h6: 'h6',
-          subtitle1: 'p',
-          subtitle2: 'p',
-          subtitle3: 'p',
-          body1: 'p',
-          body2: 'p',
+          h1: "h1",
+          h2: "h2",
+          h3: "h3",
+          h4: "h4",
+          h5: "h5",
+          h6: "h6",
+          subtitle1: "p",
+          subtitle2: "p",
+          subtitle3: "p",
+          body1: "p",
+          body2: "p",
         },
       },
     },
@@ -92,8 +92,8 @@ export const light = {
     MuiLink: {
       styleOverrides: {
         root: {
-          color: '#6d6d6d',
-          textDecoration: 'none',
+          color: "#6d6d6d",
+          textDecoration: "none",
         },
       },
     },
@@ -101,7 +101,7 @@ export const light = {
     MuiDivider: {
       styleOverrides: {
         root: {
-          borderColor: '#e6e6e6',
+          borderColor: "#e6e6e6",
         },
       },
     },
@@ -109,7 +109,7 @@ export const light = {
     MuiBox: {
       styleOverrides: {
         root: {
-          padding: '0',
+          padding: "0",
         },
       },
     },
@@ -117,9 +117,9 @@ export const light = {
     MuiContainer: {
       styleOverrides: {
         root: {
-          maxWidth: 'inherit',
-          padding: '0',
-          '@media (min-width: 600px)': {
+          maxWidth: "inherit",
+          padding: "0",
+          "@media (min-width: 600px)": {
             paddingLeft: 0,
             paddingRight: 0,
           },
@@ -129,20 +129,20 @@ export const light = {
 
     MuiCssBaseline: {
       styleOverrides: {
-        html: { height: '100%' },
+        html: { height: "100%" },
         body: {
-          background: '#f3f2ef', // luxury background
-          height: '100%',
-          minHeight: '100%',
+          background: "#f3f2ef", // luxury background
+          height: "100%",
+          minHeight: "100%",
         },
-        p: { margin: '0' },
+        p: { margin: "0" },
       },
     },
 
     MuiAvatar: {
       styleOverrides: {
         root: {
-          marginLeft: '0',
+          marginLeft: "0",
         },
       },
     },
@@ -150,10 +150,10 @@ export const light = {
     MuiButton: {
       styleOverrides: {
         root: {
-          color: '#111111',
-          minWidth: 'auto',
-          lineHeight: '1.2',
-          boxShadow: 'none',
+          color: "#111111",
+          minWidth: "auto",
+          lineHeight: "1.2",
+          boxShadow: "none",
         },
       },
     },
@@ -167,7 +167,7 @@ export const light = {
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          padding: '0',
+          padding: "0",
         },
       },
     },
@@ -175,7 +175,7 @@ export const light = {
     MuiList: {
       styleOverrides: {
         root: {
-          padding: '0',
+          padding: "0",
         },
       },
     },
@@ -183,40 +183,40 @@ export const light = {
     MuiListItem: {
       styleOverrides: {
         root: {
-          padding: '0',
+          padding: "0",
         },
       },
     },
 
     MuiFormControl: {
       styleOverrides: {
-        root: { width: '100%' },
+        root: { width: "100%" },
       },
     },
 
     MuiFormControlLabel: {
       styleOverrides: {
         root: {
-          marginRight: '0',
+          marginRight: "0",
         },
       },
     },
 
     MuiSelect: {
       styleOverrides: {
-        select: { textAlign: 'left' },
+        select: { textAlign: "left" },
       },
     },
 
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          height: '48px',
-          width: '100%',
-          backgroundColor: '#ffffff',
+          height: "48px",
+          width: "100%",
+          backgroundColor: "#ffffff",
         },
         notchedOutline: {
-          border: '1px solid #ddd',
+          border: "1px solid #ddd",
         },
       },
     },
@@ -224,8 +224,8 @@ export const light = {
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          margin: '5px 0 0 2px',
-          lineHeight: '1.2',
+          margin: "5px 0 0 2px",
+          lineHeight: "1.2",
         },
       },
     },
@@ -233,31 +233,31 @@ export const light = {
     MuiStepIcon: {
       styleOverrides: {
         root: {
-          color: '#D4AF37', // gold
-          borderRadius: '50%',
-          border: '1px solid #ddd',
+          color: "#D4AF37", // gold
+          borderRadius: "50%",
+          border: "1px solid #ddd",
         },
-        text: { fill: '#bdbdbd' },
+        text: { fill: "#bdbdbd" },
       },
     },
 
     MuiStepConnector: {
       styleOverrides: {
-        line: { borderColor: '#e4e4e4' },
+        line: { borderColor: "#e4e4e4" },
       },
     },
 
     MuiStepLabel: {
       styleOverrides: {
-        label: { fontSize: '14px' },
+        label: { fontSize: "14px" },
       },
     },
 
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          '&.Mui-checked': {
-            color: '#D4AF37', // CHECKED = GOLD
+          "&.Mui-checked": {
+            color: "#D4AF37", // CHECKED = GOLD
           },
         },
       },
@@ -266,10 +266,10 @@ export const light = {
     MuiFab: {
       styleOverrides: {
         root: {
-          width: '40px',
-          height: '40px',
-          background: '#ffffff',
-          color: '#111111',
+          width: "40px",
+          height: "40px",
+          background: "#ffffff",
+          color: "#111111",
         },
       },
     },
@@ -283,8 +283,8 @@ export const light = {
     MuiChip: {
       styleOverrides: {
         root: {
-          border: '1px solid #ccc',
-          color: '#111111',
+          border: "1px solid #ccc",
+          color: "#111111",
         },
       },
     },
