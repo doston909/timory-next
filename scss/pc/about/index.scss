@@ -16,8 +16,7 @@
       font-weight: 400;
       color: #1a1a1a;
       text-align: center;
-      margin-bottom: 8px;
-      margin-top: 30px;
+     
       line-height: 1.3;
     }
 
@@ -25,7 +24,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 60px;
       align-items: center;
 
       .about-image-wrapper {
@@ -34,12 +33,11 @@
         max-height: 600px;
         overflow: hidden;
         border-radius: 0;
-        margin-bottom: 40px;
         padding: 0px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 80px;
+        margin-top: 100px;
 
         .about-image {
           width: 100%;
@@ -272,16 +270,15 @@
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 40px;
         font-weight: 500;
-        color: #202636;
+        color: #000000;
       }
 
       .about-cta-subtitle {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-size: 20px;
         font-weight: 400;
-        color: #5a6478;
-        margin-top: -24px;   // title bilan orasini yanada yaqinlashtirish
-        margin-bottom: 24px; // pastdagi buttonni biroz pastroqqa tushirish
+        color: #000000 !important;
+        margin-top: -18px; // title bilan juda yaqin bo'lishi uchun
       }
 
       .about-cta-button {
@@ -302,6 +299,7 @@
         gap: 8px;
         min-width: auto;
         cursor: pointer;
+        transform: translateY(20px); // balandlikni o'zgartirmasdan, ko'rinishda pastga tushirish
 
         svg {
           transition: transform 0.3s ease;

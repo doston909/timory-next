@@ -215,7 +215,7 @@ const About: NextPage = () => {
 
             <Box className="about-cta-section">
               <Typography className="about-cta-title">
-                Do you have any ideas?
+                Do you have any ideas ?
               </Typography>
               <Typography className="about-cta-subtitle">
                 Can&apos;t find the answer you&apos;re looking for? Please chat
@@ -223,7 +223,12 @@ const About: NextPage = () => {
               </Typography>
               <button
                 className="about-cta-button"
-                onClick={() => router.push("/cs#cs-contact-section")}
+                onClick={() =>
+                  router.push({
+                    pathname: "/cs",
+                    hash: "cs-contact-section",
+                  })
+                }
               >
                 Contact us
                 <ArrowForward sx={{ ml: 1, fontSize: 24 }} />
