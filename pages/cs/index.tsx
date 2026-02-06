@@ -1,7 +1,7 @@
 import { Stack, Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { ArrowForward, KeyboardArrowDown } from "@mui/icons-material";
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import Footer from "@/libs/components/Footer";
@@ -226,6 +226,27 @@ const CustomerService: NextPage = () => {
     useState<FaqCategory>("Account");
   const [openFaqItemId, setOpenFaqItemId] = useState<number | null>(null);
   const [activeCsButton, setActiveCsButton] = useState<CsButtonKey | null>("notice");
+
+  // When coming from About page with /cs#cs-contact-section, open Contact tab and scroll
+  useEffect(() => {
+    if (router.asPath.includes("#cs-contact-section")) {
+      setShowNotice(false);
+      setShowTerms(false);
+      setShowPrivacy(false);
+      setShowFaq(false);
+      setShowContact(true);
+      setActiveCsButton("contact");
+    }
+  }, [router.asPath]);
+
+  // After Contact section is visible, scroll it into view
+  useEffect(() => {
+    if (!showContact) return;
+    const el = document.getElementById("cs-contact-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showContact]);
 
   const renderFaqsForCategory = (): FaqItem[] => {
     switch (activeFaqCategory) {
@@ -709,7 +730,7 @@ const CustomerService: NextPage = () => {
             )}
 
             {showContact && (
-              <Box className="cs-contact-section">
+              <Box id="cs-contact-section" className="cs-contact-section">
                 <Typography className="cs-contact-title">
                   Contact Us
                 </Typography>
