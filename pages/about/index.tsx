@@ -215,7 +215,7 @@ const About: NextPage = () => {
 
             <Box className="about-cta-section">
               <Typography className="about-cta-title">
-                Still have questions
+                Do you have any ideas?
               </Typography>
               <Typography className="about-cta-subtitle">
                 Can&apos;t find the answer you&apos;re looking for? Please chat
