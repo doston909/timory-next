@@ -28,7 +28,6 @@ const TopDealerCard = ({
   rating,
   like,
   reviewCount,
-  establishedYear,
   city,
   country,
   watches: activeListings,

@@ -1,0 +1,203 @@
+@import "/scss/variables.scss";
+
+#pc-wrap {
+  .dealer-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    .dealer-list-header {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      margin-left: 30px;
+
+      .dealer-list-title {
+        font-size: 45px;
+        font-weight: 500;
+        color: #111111;
+        letter-spacing: 0.5px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .dealer-list-subtitle {
+        font-size: 20px;
+        color: #555555;
+        line-height: 1.5;
+        max-width: 820px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+    }
+
+    .dealer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+      margin-top: 10px;
+      /* Pagination joyi o‘zgarmasligi uchun 3 qatorlik doimiy balandlik */
+      grid-auto-rows: 660px;
+      min-height: calc(3 * 660px + 2 * 26px);
+    }
+
+    .dealer-card {
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease,
+        border-color 0.25s ease;
+      cursor: pointer;
+      margin-bottom: 20px;
+
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 0 65px rgba(0, 0.6, 0.2, 0.8);
+        border-color: transparent;
+      }
+
+      .dealer-image-wrapper {
+        width: 100%;
+        height: 520px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .dealer-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Hamma cardda bo'sh joy qolmasdan wrapperni to'liq egallasin */
+          transition: transform 0.35s ease;
+        }
+
+        /* Hamma card uchun: originalga yaqin, lekin baribir bo'sh joysiz */
+        .dealer-image-original {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .dealer-image-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #f3f3f3;
+
+          .dealer-user-icon {
+            font-size: 360px; /* 2x kattaroq */
+            color: #b0b0b0;
+          }
+        }
+      }
+
+      // Hoverda ham rasm to'liq ko'rinishi uchun scale bermaymiz
+      &:hover .dealer-image-wrapper .dealer-image {
+        transform: none;
+      }
+
+      .dealer-card-content {
+        padding: 18px 20px 22px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+        .dealer-name {
+          width: 100%;
+          font-size: 24px;
+          font-weight: 600;
+          color: #111111;
+
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .dealer-label {
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 1.6px;
+          color: #5e5d5d;
+          margin-bottom: 10px;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .dealer-goal {
+          font-size: 20px;
+          line-height: 1.6;
+          font-weight: 500;
+          color: #714d32;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+      }
+    }
+
+    .dealer-pagination {
+      /* watch/index.tsx dagi .watch-pagination bilan 100% bir xil */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+      padding: 20px 0 0;
+      flex-shrink: 0;
+
+      .dealer-page-number {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 500;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #7d7d7d;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+
+        &:hover {
+          color: #901f03;
+        }
+
+        &.active {
+          background-color: transparent;
+          color: #901f03;
+          border: none;
+          font-weight: 600;
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
+          text-underline-offset: 6px;
+        }
+      }
+
+      .dealer-page-arrow {
+        /* watch-pagination dizaynini buzmaslik uchun oddiy, minimal style */
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 22px;
+        color: #7d7d7d;
+        transition: color 0.3s ease;
+
+        &:hover:not(:disabled) {
+          color: #901f03;
+        }
+
+        &:disabled {
+          opacity: 0.3;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
