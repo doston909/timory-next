@@ -1,5 +1,6 @@
 import { Stack, IconButton, Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import WatchStoriesCard, { WatchStory } from "./WatchStoriesCard";
@@ -66,6 +67,7 @@ const STORIES_PER_PAGE = 2;
 const WatchStories = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = Math.ceil(watchStories.length / STORIES_PER_PAGE);
+  const router = useRouter();
 
   const handleNext = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -78,6 +80,37 @@ const WatchStories = () => {
   const startIndex = currentPage * STORIES_PER_PAGE;
   const endIndex = startIndex + STORIES_PER_PAGE;
   const currentStories = watchStories.slice(startIndex, endIndex);
+
+  // URL'dan fromStoryId bo'lsa, shu id joylashgan sahifaga o'tamiz
+  useEffect(() => {
+    const { fromStoryId } = router.query;
+    if (!fromStoryId) return;
+
+    const raw = Array.isArray(fromStoryId) ? fromStoryId[0] : fromStoryId;
+    const targetId = parseInt(raw as string, 10);
+    if (Number.isNaN(targetId)) return;
+
+    const idx = watchStories.findIndex((s) => s.id === targetId);
+    if (idx === -1) return;
+
+    const targetPage = Math.floor(idx / STORIES_PER_PAGE);
+    setCurrentPage(targetPage);
+  }, [router.query.fromStoryId]);
+
+  // Sahifa va kartalar chizilgandan keyin, maqsad kartaga scroll
+  useEffect(() => {
+    const { fromStoryId } = router.query;
+    if (!fromStoryId) return;
+
+    const raw = Array.isArray(fromStoryId) ? fromStoryId[0] : fromStoryId;
+    const targetId = parseInt(raw as string, 10);
+    if (Number.isNaN(targetId)) return;
+
+    const el = document.getElementById(`watch-story-card-${targetId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [currentPage, router.query.fromStoryId]);
 
   return (
     <Stack id="watch-story-section" className="watch-story-section">
