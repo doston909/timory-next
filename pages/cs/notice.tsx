@@ -70,3 +70,4 @@ const NoticePage: NextPage = () => {
 
 export default withLayoutBasic(NoticePage);
 
+

@@ -48,6 +48,9 @@ const About: NextPage = () => {
         <Stack id={"main"}>
           <Stack className="about-page">
             <Box className="about-content">
+              <Typography className="about-main-title">
+                Timory   ( Time + Story ) — Where time, trust, and elegance meet
+              </Typography>
               <Box className="about-image-wrapper">
                 <img
                   src="/img/profile/about1.jpeg"
@@ -56,9 +59,6 @@ const About: NextPage = () => {
                 />
               </Box>
               <Box className="about-text-content">
-                <Typography className="about-main-title">
-                  Timory (Time + Story) — Where time, trust, and elegance meet.
-                </Typography>
                 <Typography className="about-text">
                   TIMORY is a digital platform designed to help people discover,
                   explore, and compare watches with ease. We bring together

@@ -79,7 +79,7 @@
         .article-meta {
           font-family: $font;
           font-size: 20px;
-          font-weight: 400 (Regular);
+          font-weight: 400;
           letter-spacing: 0.15em;
           color: #8C6F5A;
           margin-bottom: 30px;
@@ -140,7 +140,7 @@
   // Pagination
   .pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     margin-top: auto;
     padding-top: 30px;
@@ -152,13 +152,13 @@
     visibility: visible;
     opacity: 1;
     box-sizing: border-box;
+    width: 100%;
 
     // Pagination bo'lmasa ham bir xil balandlikni saqlash
     &:empty {
       min-height: 80px;
       height: 80px;
     }
-  }
 
     .watch-pagination {
       display: flex;
@@ -168,6 +168,7 @@
       margin-top: 20px;
       padding: 20px 0 0;
       flex-shrink: 0;
+      width: 100%;
 
       .pagination-number {
         width: 40px;
@@ -175,9 +176,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 500;
-        color: #4a4a4a;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #7d7d7d;
         background-color: transparent;
         border: none;
         border-radius: 0;
@@ -186,19 +188,22 @@
         user-select: none;
 
         &:hover {
-          color: #E5C8A3;
+          color: #901f03;
         }
 
         &.active {
           background-color: transparent;
-          color: #E5C8A3;
+          color: #901f03;
           border: none;
           font-weight: 600;
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
+          text-underline-offset: 6px;
         }
       }
     }
   }
-
+}
 
 // Responsive Design
 @media (max-width: 1024px) {
@@ -226,4 +231,3 @@
     }
   }
 }
-

@@ -44,10 +44,10 @@
           }
 
           &:hover {
-            color: #8b7355;
+            color: #901f03;
 
             .see-all-arrow {
-              color: #8b7355;
+              color: #901f03;
               transform: translateX(15px);
             }
           }
@@ -194,7 +194,7 @@
           margin-top: 4px;
           font-size: 22px;
           font-weight: 700;
-          color: #c9a86a;
+          color: #9c1b1b;
         }
       }
     }
@@ -507,10 +507,10 @@
           }
 
           &:hover {
-            color: #8b7355;
+            color: #901f03;
 
             .see-all-arrow {
-              color: #8b7355;
+              color: #901f03;
               transform: translateX(15px);
             }
           }
@@ -785,10 +785,10 @@
           }
 
           &:hover {
-            color: #8b7355;
+            color: #901f03;
 
             .see-all-arrow {
-              color: #8b7355;
+              color: #901f03;
               transform: translateX(15px);
             }
           }
@@ -917,7 +917,7 @@
         .model {
           font-size: 20px;
           font-weight: 700;
-          color: #c9a86a;
+          color: #9c1b1b;
         }
 
         .likes {
@@ -1625,7 +1625,7 @@
           border-radius: 12px;
           padding: 40px 30px;
           background: #ffffff;
-          transition: all 0.3s ease;
+          transition: all 0.4s ease;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -1634,6 +1634,46 @@
           height: 100%;
           min-height: 280px;
           box-sizing: border-box;
+          position: relative;
+          overflow: hidden;
+
+          // Markazdan yoyiladigan rangli hover effekt — BOX shaklida
+          &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 12px; // box burchaklari stat-box bilan bir xil
+            background: linear-gradient(
+              135deg,
+              rgba(201, 168, 106, 0.22) 0%,
+              rgba(229, 200, 163, 0.18) 40%,
+              rgba(214, 176, 116, 0.12) 100%
+            );
+            transform: translate(-50%, -50%);
+            transition: width 0.45s ease, height 0.45s ease;
+            z-index: 0;
+            pointer-events: none;
+          }
+
+          &:hover {
+            border-color: #c9a86a;
+            transform: translateY(-10px);
+            box-shadow: 0 8px 24px rgba(201, 168, 106, 0.25);
+
+            &::before {
+              width: 120%;
+              height: 120%;
+            }
+          }
+
+          // Kontentni hover effektidan yuqorida ko'rsatish
+          > * {
+            position: relative;
+            z-index: 1;
+          }
 
           .stat-icon {
             margin-bottom: -10px;
@@ -1820,7 +1860,7 @@
       .news-email-input {
         width: 100%;
         font-size: 28px;
-        
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
         :global(.MuiInputBase-root) {
           color: #000;
@@ -1828,15 +1868,26 @@
 
         :global(.MuiInputBase-input) {
           padding: 20px 0;
-          font-size: 120px !important;
+          font-size: 26px !important; // email textni kattaroq qilish
           color: #000;
-          
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 
           &::placeholder {
             color: #000000;
-            font-size: 100px !important;
+            font-size: 26px !important; // placeholder ham kattaroq
             opacity: 1;
-            font-family:"$font";
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          }
+        }
+
+        /* PC da aniq ishlashi uchun input elementini bevosita override qilamiz */
+        input {
+          font-size: 26px !important;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+
+          &::placeholder {
+            font-size: 26px !important;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           }
         }
 
@@ -1855,24 +1906,36 @@
 
       .news-subscribe-btn {
         background-color: transparent;
-        font-family: $font;
         border: none;
-        color: #000;
-        font-size: 18px;
-        font-weight: 600;
-        text-transform: uppercase;
-        text-decoration: underline;
-        text-underline-offset: 5px;
-        letter-spacing: 2px;
         padding: 0;
         cursor: pointer;
 
-        &:hover {
-          color: #d0a20a;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        font-family: $font;
+        color: #000000;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+        text-decoration: none;
+        text-underline-offset: 0;
+
+        .news-subscribe-arrow {
+          font-size: 26px;
+          color: #000000;
+          transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        &:active {
-          transform: scale(0.98);
+        &:hover {
+          color: #901f03;
+
+          .news-subscribe-arrow {
+            color: #901f03;
+            transform: translateX(15px);
+          }
         }
       }
     }

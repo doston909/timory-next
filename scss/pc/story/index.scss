@@ -1,0 +1,273 @@
+#pc-wrap {
+  .brand-story-page {
+    width: 100%;
+    min-height: calc(100vh - 200px);
+    background-color: #ffffff;
+    padding: 40px 0 80px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    .brand-story-title {
+      width: 100%;
+      max-width: 1400px;
+      margin-top: 50px;
+      margin-left: 80px;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: #1a1a1a;
+      text-align: left;
+    }
+
+    .brand-story-history-title {
+      width: 100%;
+      max-width: 1400px;
+
+      margin-bottom: 10px;
+      margin-left: 80px;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: #1a1a1a;
+      text-align: left;
+    }
+
+    .brand-story-section {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 10px 0;
+      background-color: #ffffff;
+      border-radius: 32px;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: center;
+      max-height: 700px;
+      box-sizing: border-box;
+
+      .brand-story-card {
+        border-radius: 32px;
+        flex: 0 0 100%;
+        display: flex;
+        background-color: #f5f3f0;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 140px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        .brand-story-content {
+          flex: 0 0 55%;
+          padding: 50px 40px;
+          background-color: #f5f3f0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 40px;
+          background-color: #f5f3f0;
+          position: relative;
+          border-radius: 32px;
+          margin-left: 0;
+
+          .brand-story-name-year-wrapper {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            margin-left: 50px;
+            background-color: #f5f3f0;
+
+            .brand-story-name {
+              font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+              font-size: 22px;
+              font-weight: 500;
+              color: #af5f09;
+              margin: 0;
+              line-height: 1.6;
+              letter-spacing: 0.1px;
+            }
+
+            .brand-story-year {
+              font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+              font-size: 20px;
+              font-weight: 400;
+              color: #666666;
+              margin: 0;
+              line-height: 1.6;
+              letter-spacing: 0.1px;
+            }
+          }
+
+          .brand-story-quote {
+            font-family: var(--font-ng), ui-sans-serif, system-ui, sans-serif,
+              "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+              "Noto Color Emoji";
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+            margin-left: 50px;
+            text-transform: uppercase;
+          }
+        }
+
+        .brand-story-image-right {
+          flex: 0 0 45%;
+          display: flex;
+          align-items: stretch;
+          justify-content: stretch;
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          min-width: 0;
+          background-color: transparent;
+
+          .brand-story-portrait-wrapper {
+            width: 110%;
+            height: 100%;
+            min-height: 450px;
+            max-height: 550px;
+            overflow: hidden;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            position: relative;
+            margin-left: -5%;
+
+            .brand-story-portrait {
+              max-width: 100%;
+              max-height: 100%;
+              width: auto;
+              height: auto;
+              object-fit: contain;
+              object-position: center center;
+              display: block;
+              margin: 0;
+              padding: 0;
+              border-radius: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .watch-back-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      max-width: 1400px;
+      margin: 50px auto 50px;
+      padding: 0;
+      margin-left: 280px;
+
+      .see-all-text {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #000000;
+        font-size: 24px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        .see-all-arrow {
+          font-size: 26px;
+          color: #000000;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          color: #901f03;
+
+          .see-all-arrow {
+            color: #901f03;
+            transform: translateX(15px);
+          }
+        }
+      }
+    }
+
+    .brand-story-video-box {
+      width: 100%;
+      max-width: 1500px; // brand-story-boxes dan biroz kengroq
+      margin: 40px auto 10px;
+      height: 720px;
+      border-radius: 30px;
+      background-color: #000000;
+      overflow: hidden;
+      margin-top: 100px;
+    }
+
+    .brand-story-video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .brand-story-boxes {
+      width: 100%;
+      height: auto;
+      max-width: 1400px;
+      margin: 1px auto 0;
+      margin-bottom: 40px;
+      padding: 0;
+      position: relative;
+      background-color: #f5f3f0;
+      border-radius: 30px;
+
+      .brand-story-content {
+        font-size: 20px;
+        max-width: 1300px;
+        margin: 30px 30px 30px 30px;
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 1.8px;
+        word-spacing: 6px;
+        color: #68574d;
+      }
+
+      .brand-story-image {
+        float: left;
+        width: 500px;
+        height: 680px;
+        margin: -10px 40px 24px -10px;
+        border-radius: 20px;
+        background-color: #f5f3f0;
+      }
+
+      .brand-story-image-right {
+        float: right;
+        width: 400px;
+        height: 520px;
+        margin: 0 30px 24px 40px;
+        border-radius: 20px;
+        background-color: #f5f3f0;
+      }
+
+      .brand-story-text-1 {
+        margin: 0;
+        padding: 0;
+        margin-left: 15px;
+        letter-spacing: 1px;
+        word-spacing: 5px;
+      }
+
+      .brand-story-text-2 {
+        margin-left: 15px;
+        padding: 0;
+        letter-spacing: 1px;
+        word-spacing: 5px;
+      }
+    }
+  }
+}

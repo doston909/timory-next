@@ -201,3 +201,4 @@ const TermsPage: NextPage = () => {
 export default withLayoutBasic(TermsPage);
 
 
+

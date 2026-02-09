@@ -34,6 +34,16 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
   }, [story.image, currentImage]);
 
   const handleButtonClick = () => {
+    // id 1–6 bo'lsa Brand Stories page ga, mos id bilan o'tkazamiz
+    if (story.id >= 1 && story.id <= 6) {
+      router.push({
+        pathname: "/brand-stories",
+        query: { id: story.id },
+      });
+      return;
+    }
+
+    // boshqa id lar bo'lsa, avvalgidek watch story detailga o'tadi
     router.push({
       pathname: "/watch-stories/[id]",
       query: { id: story.id },
@@ -41,7 +51,7 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
   };
 
   return (
-    <Box className="watch-story-card">
+    <Box className="watch-story-card" id={`watch-story-card-${story.id}`}>
       {story.imagePosition === "left" ? (
         <>
           <Box className="story-image-box" onClick={handleButtonClick}>

@@ -1,4 +1,5 @@
 import { Box, Stack, TextField, Button } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -50,7 +51,7 @@ const News = () => {
             required
           />
           <Button type="submit" className="news-subscribe-btn">
-            SUBMIT
+            SUBMIT <ArrowForwardIcon className="news-subscribe-arrow" />
           </Button>
         </form>
       </Box>

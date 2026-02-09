@@ -17,8 +17,9 @@ const withLayoutBasic = (Component: any) => {
       // Page title mapping
       const titleMap: { [key: string]: string } = {
         '': 'Home',
-        'watch': 'Watch',
+        'watch': 'Watches',
         'community': 'Community',
+        'about': 'About Us',
         'mypage': 'My Page',
         'account': 'Login',
         'signup': 'Sign Up',
@@ -30,8 +31,9 @@ const withLayoutBasic = (Component: any) => {
       
       // Breadcrumb mapping
       const breadcrumbMap: { [key: string]: string } = {
-        'watch': 'Watch',
+        'watch': 'Watches',
         'community': 'Community',
+        'about': 'About Us',
         'mypage': 'My Page',
         'account': 'Account',
         'signup': 'Sign Up',

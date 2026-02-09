@@ -80,7 +80,7 @@ const WatchStories = () => {
   const currentStories = watchStories.slice(startIndex, endIndex);
 
   return (
-    <Stack className="watch-story-section">
+    <Stack id="watch-story-section" className="watch-story-section">
       <h2 className="section-title">Brands Story</h2>
       <p className="section-subtitle">History speaks about us</p>
 
