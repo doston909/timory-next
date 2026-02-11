@@ -463,6 +463,70 @@ const DealerDetailPage = () => {
         </Box>
       )}
 
+      {activeTab === "Followings" && (
+        <Box className="dealer-followers-container">
+          <Typography className="dealer-watches-container-title">Followings</Typography>
+          <Box className="dealer-followers-grid">
+            {currentFollowerBoxes.map((id) => {
+              const isFollowerFollowing = !!followersFollowing[id];
+              return (
+                <Box key={id} className="dealer-followers-box">
+                  <Box className="dealer-followers-box-part part-1">
+                    <img
+                      src="/img/profile/about1.jpeg"
+                      alt="Follower"
+                      className="dealer-followers-avatar"
+                    />
+                  </Box>
+                  <Box className="dealer-followers-box-part part-2">
+                    <Typography className="dealer-followers-name">User name</Typography>
+                    <Typography className="dealer-followers-role">Dealer</Typography>
+                  </Box>
+                  <Box className="dealer-followers-box-part part-3">
+                    <Typography className="dealer-followers-label">
+                      Followers ({followersCounts[id] ?? 0})
+                    </Typography>
+                  </Box>
+                  <Box className="dealer-followers-box-part part-4">
+                    <Typography className="dealer-followers-label">
+                      Followings (5)
+                    </Typography>
+                  </Box>
+                  <Box className="dealer-followers-box-part part-5">
+                    <Button
+                      className={`dealer-follow-button${
+                        isFollowerFollowing ? " dealer-follow-button-active" : ""
+                      }`}
+                      onClick={() => handleFollowerFollowToggle(id)}
+                    >
+                      {isFollowerFollowing ? "Unfollow" : "Follow"}
+                    </Button>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
+          {totalFollowersPages > 1 && (
+            <Box className="dealer-watches-pagination">
+              {Array.from({ length: totalFollowersPages }).map((_, index) => {
+                const page = index + 1;
+                return (
+                  <button
+                    key={page}
+                    className={`dealer-watches-page-number${
+                      page === followersPage ? " active" : ""
+                    }`}
+                    onClick={() => setFollowersPage(page)}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </Box>
+          )}
+        </Box>
+      )}
+
     </Stack>
   );
 };
