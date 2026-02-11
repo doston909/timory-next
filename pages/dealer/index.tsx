@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 
@@ -85,6 +86,7 @@ const ITEMS_PER_PAGE = 9;
 
 const DealerPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
 
   const totalPages = Math.ceil(dealers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -112,7 +114,10 @@ const DealerPage = () => {
         </Typography>
       </Box>
 
-      <Box className="dealer-grid">
+      <Box
+        className="dealer-grid"
+        onClick={() => router.push("/dealer/detail")}
+      >
         {currentDealers.map((dealer) => (
           <Box
             key={dealer.id}
