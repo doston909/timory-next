@@ -197,6 +197,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap; /* "Send Message" bitta qatorda chiqishi uchun */
     transition: all 0.3s ease;
   }
 

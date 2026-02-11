@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined } from "@mui/icons-material";
+import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowForward } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
@@ -132,6 +132,7 @@ const watches: Watch[] = [
 
 const ITEMS_PER_PAGE = 6;
 const FOLLOWERS_PER_PAGE = 4;
+const ARTICLES_PER_PAGE = 3;
 
 const DealerDetailPage = () => {
   const router = useRouter();
@@ -159,6 +160,14 @@ const DealerDetailPage = () => {
     });
     return initialLikes;
   });
+  // Articles uchun like holati va count
+  const [articleLiked, setArticleLiked] = useState<{ [key: number]: boolean }>({});
+  const [articleLikes, setArticleLikes] = useState<{ [key: number]: number }>({
+    1: 12,
+    2: 8,
+    3: 19,
+  });
+  const [articlePage, setArticlePage] = useState(1);
 
   const totalPages = Math.ceil(watches.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -171,6 +180,107 @@ const DealerDetailPage = () => {
     followersStartIndex,
     followersStartIndex + FOLLOWERS_PER_PAGE
   );
+
+  const articles: any[] = [
+    {
+      id: 1,
+      type: "Free board",
+      date: "June 11, 2025",
+      title: "Tips for maintaining your luxury watch collection",
+      content:
+        "Discover essential tips for cleaning, storing, and wearing your luxury watches to preserve their value and beauty over time.",
+      views: 35,
+      likes: 12,
+    },
+    {
+      id: 2,
+      type: "Recommendation",
+      date: "November 10, 2025",
+      title: "Our recommended dress watches for special occasions",
+      content:
+        "Explore our curated list of elegant dress watches that perfectly complement formal outfits for weddings, galas, and important meetings.",
+      views: 21,
+      likes: 8,
+    },
+    {
+      id: 3,
+      type: "News",
+      date: "November 9, 2025",
+      title: "New limited edition releases this season",
+      content:
+        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
+      views: 48,
+      likes: 19,
+    },
+     {
+      id: 3,
+      type: "News",
+      date: "November 9, 2025",
+      title: "New limited edition releases this season",
+      content:
+        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
+      views: 48,
+      likes: 19,
+    },
+     {
+      id: 3,
+      type: "News",
+      date: "November 9, 2025",
+      title: "New limited edition releases this season",
+      content:
+        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
+      views: 48,
+      likes: 19,
+    },
+     {
+      id: 3,
+      type: "News",
+      date: "November 9, 2025",
+      title: "New limited edition releases this season",
+      content:
+        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
+      views: 48,
+      likes: 19,
+    },
+     {
+      id: 3,
+      type: "News",
+      date: "November 9, 2025",
+      title: "New limited edition releases this season",
+      content:
+        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
+      views: 48,
+      likes: 19,
+    },
+    
+  ];
+
+  const totalArticlePages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const articleStartIndex = (articlePage - 1) * ARTICLES_PER_PAGE;
+  const currentArticles = articles.slice(
+    articleStartIndex,
+    articleStartIndex + ARTICLES_PER_PAGE
+  );
+
+  const getArticleExcerpt = (content: string, wordLimit = 18) => {
+    const words = content.split(/\s+/);
+    if (words.length <= wordLimit) return content;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
+  const handleArticleLikeClick = (articleId: number) => {
+    const isLiked = !!articleLiked[articleId];
+
+    setArticleLiked((prev) => ({
+      ...prev,
+      [articleId]: !isLiked,
+    }));
+
+    setArticleLikes((prev) => ({
+      ...prev,
+      [articleId]: (prev[articleId] ?? 0) + (isLiked ? -1 : 1),
+    }));
+  };
 
   const handleFollowerFollowToggle = (id: number) => {
     const isCurrentlyFollowing = !!followersFollowing[id];
@@ -281,6 +391,14 @@ const DealerDetailPage = () => {
           onClick={() => setActiveTab("Articles")}
         >
           Articles
+        </Box>
+        <Box
+          className={`dealer-tab${
+            activeTab === "Contact Dealer" ? " dealer-tab-active" : ""
+          }`}
+          onClick={() => setActiveTab("Contact Dealer")}
+        >
+          Contact Dealer
         </Box>
       </Box>
 
@@ -402,63 +520,76 @@ const DealerDetailPage = () => {
       {activeTab === "Followers" && (
         <Box className="dealer-followers-container">
           <Typography className="dealer-watches-container-title">Followers</Typography>
-          <Box className="dealer-followers-grid">
-            {currentFollowerBoxes.map((id) => {
-              const isFollowerFollowing = !!followersFollowing[id];
-              return (
-                <Box key={id} className="dealer-followers-box">
-                  <Box className="dealer-followers-box-part part-1">
-                    <img
-                      src="/img/profile/about1.jpeg"
-                      alt="Follower"
-                      className="dealer-followers-avatar"
-                    />
-                  </Box>
-                  <Box className="dealer-followers-box-part part-2">
-                    <Typography className="dealer-followers-name">User name</Typography>
-                    <Typography className="dealer-followers-role">Dealer</Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-3">
-                    <Typography className="dealer-followers-label">
-                      Followers ({followersCounts[id] ?? 0})
-                    </Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-4">
-                    <Typography className="dealer-followers-label">
-                      Followings (5)
-                    </Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-5">
-                    <Button
-                      className={`dealer-follow-button${
-                        isFollowerFollowing ? " dealer-follow-button-active" : ""
-                      }`}
-                      onClick={() => handleFollowerFollowToggle(id)}
-                    >
-                      {isFollowerFollowing ? "Unfollow" : "Follow"}
-                    </Button>
-                  </Box>
+          {currentFollowerBoxes.length === 0 ? (
+            <Typography className="dealer-watches-empty-message">
+              No Followers...
+            </Typography>
+          ) : (
+            <>
+              <Box className="dealer-followers-grid">
+                {currentFollowerBoxes.map((id) => {
+                  const isFollowerFollowing = !!followersFollowing[id];
+                  const hasAvatar = true; // hozircha hamma uchun rasm bor deb olaylik
+                  return (
+                    <Box key={id} className="dealer-followers-box">
+                      <Box className="dealer-followers-box-part part-1">
+                        {hasAvatar ? (
+                          <img
+                            src="/img/profile/about1.jpeg"
+                            alt="Follower"
+                            className="dealer-followers-avatar"
+                          />
+                        ) : (
+                          <PersonOutline className="dealer-followers-avatar-icon" />
+                        )}
+                      </Box>
+                      <Box className="dealer-followers-box-part part-2">
+                        <Typography className="dealer-followers-name">User name</Typography>
+                        <Typography className="dealer-followers-role">Dealer</Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-3">
+                        <Typography className="dealer-followers-label">
+                          Followers ({followersCounts[id] ?? 0})
+                        </Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-4">
+                        <Typography className="dealer-followers-label">
+                          Followings (5)
+                        </Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-5">
+                        <Button
+                          className={`dealer-follow-button${
+                            isFollowerFollowing ? " dealer-follow-button-active" : ""
+                          }`}
+                          onClick={() => handleFollowerFollowToggle(id)}
+                        >
+                          {isFollowerFollowing ? "Unfollow" : "Follow"}
+                        </Button>
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+              {totalFollowersPages > 1 && (
+                <Box className="dealer-watches-pagination">
+                  {Array.from({ length: totalFollowersPages }).map((_, index) => {
+                    const page = index + 1;
+                    return (
+                      <button
+                        key={page}
+                        className={`dealer-watches-page-number${
+                          page === followersPage ? " active" : ""
+                        }`}
+                        onClick={() => setFollowersPage(page)}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
                 </Box>
-              );
-            })}
-          </Box>
-          {totalFollowersPages > 1 && (
-            <Box className="dealer-watches-pagination">
-              {Array.from({ length: totalFollowersPages }).map((_, index) => {
-                const page = index + 1;
-                return (
-                  <button
-                    key={page}
-                    className={`dealer-watches-page-number${
-                      page === followersPage ? " active" : ""
-                    }`}
-                    onClick={() => setFollowersPage(page)}
-                  >
-                    {page}
-                  </button>
-                );
-              })}
-            </Box>
+              )}
+            </>
           )}
         </Box>
       )}
@@ -466,64 +597,286 @@ const DealerDetailPage = () => {
       {activeTab === "Followings" && (
         <Box className="dealer-followers-container">
           <Typography className="dealer-watches-container-title">Followings</Typography>
-          <Box className="dealer-followers-grid">
-            {currentFollowerBoxes.map((id) => {
-              const isFollowerFollowing = !!followersFollowing[id];
-              return (
-                <Box key={id} className="dealer-followers-box">
-                  <Box className="dealer-followers-box-part part-1">
-                    <img
-                      src="/img/profile/about1.jpeg"
-                      alt="Follower"
-                      className="dealer-followers-avatar"
-                    />
-                  </Box>
-                  <Box className="dealer-followers-box-part part-2">
-                    <Typography className="dealer-followers-name">User name</Typography>
-                    <Typography className="dealer-followers-role">Dealer</Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-3">
-                    <Typography className="dealer-followers-label">
-                      Followers ({followersCounts[id] ?? 0})
-                    </Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-4">
-                    <Typography className="dealer-followers-label">
-                      Followings (5)
-                    </Typography>
-                  </Box>
-                  <Box className="dealer-followers-box-part part-5">
-                    <Button
-                      className={`dealer-follow-button${
-                        isFollowerFollowing ? " dealer-follow-button-active" : ""
-                      }`}
-                      onClick={() => handleFollowerFollowToggle(id)}
-                    >
-                      {isFollowerFollowing ? "Unfollow" : "Follow"}
-                    </Button>
-                  </Box>
+          {currentFollowerBoxes.length === 0 ? (
+            <Typography className="dealer-watches-empty-message">
+              No Followings...
+            </Typography>
+          ) : (
+            <>
+              <Box className="dealer-followers-grid">
+                {currentFollowerBoxes.map((id) => {
+                  const isFollowerFollowing = !!followersFollowing[id];
+                  const hasAvatar = true;
+                  return (
+                    <Box key={id} className="dealer-followers-box">
+                      <Box className="dealer-followers-box-part part-1">
+                        {hasAvatar ? (
+                          <img
+                            src="/img/profile/about1.jpeg"
+                            alt="Follower"
+                            className="dealer-followers-avatar"
+                          />
+                        ) : (
+                          <PersonOutline className="dealer-followers-avatar-icon" />
+                        )}
+                      </Box>
+                      <Box className="dealer-followers-box-part part-2">
+                        <Typography className="dealer-followers-name">User name</Typography>
+                        <Typography className="dealer-followers-role">Dealer</Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-3">
+                        <Typography className="dealer-followers-label">
+                          Followers ({followersCounts[id] ?? 0})
+                        </Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-4">
+                        <Typography className="dealer-followers-label">
+                          Followings (5)
+                        </Typography>
+                      </Box>
+                      <Box className="dealer-followers-box-part part-5">
+                        <Button
+                          className={`dealer-follow-button${
+                            isFollowerFollowing ? " dealer-follow-button-active" : ""
+                          }`}
+                          onClick={() => handleFollowerFollowToggle(id)}
+                        >
+                          {isFollowerFollowing ? "Unfollow" : "Follow"}
+                        </Button>
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+              {totalFollowersPages > 1 && (
+                <Box className="dealer-watches-pagination">
+                  {Array.from({ length: totalFollowersPages }).map((_, index) => {
+                    const page = index + 1;
+                    return (
+                      <button
+                        key={page}
+                        className={`dealer-watches-page-number${
+                          page === followersPage ? " active" : ""
+                        }`}
+                        onClick={() => setFollowersPage(page)}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
                 </Box>
-              );
-            })}
-          </Box>
-          {totalFollowersPages > 1 && (
-            <Box className="dealer-watches-pagination">
-              {Array.from({ length: totalFollowersPages }).map((_, index) => {
-                const page = index + 1;
-                return (
-                  <button
-                    key={page}
-                    className={`dealer-watches-page-number${
-                      page === followersPage ? " active" : ""
-                    }`}
-                    onClick={() => setFollowersPage(page)}
-                  >
-                    {page}
-                  </button>
-                );
-              })}
-            </Box>
+              )}
+            </>
           )}
+        </Box>
+      )}
+
+      {activeTab === "Articles" && (
+        <Box className="dealer-followers-container">
+          <Typography className="dealer-watches-container-title">Articles</Typography>
+          <Box className="dealer-articles-box">
+            {articles.length === 0 ? (
+              <Typography className="dealer-watches-empty-message">
+                The dealer did not load the article...
+              </Typography>
+            ) : (
+              <>
+                <Box className="dealer-articles-grid">
+                  {currentArticles.map((article) => (
+                    <Box key={article.id} className="dealer-article-card">
+                      <Box className="dealer-article-header">
+                        <Typography className="dealer-article-type">
+                          {article.type}
+                        </Typography>
+                        <Typography className="dealer-article-date">
+                          {article.date}
+                        </Typography>
+                      </Box>
+
+                      <Box className="dealer-article-body">
+                        <Box className="dealer-article-title">
+                          <Typography className="dealer-article-title-text">
+                            {article.title}
+                          </Typography>
+                        </Box>
+                        <Box className="dealer-article-excerpt">
+                          <Typography className="dealer-article-excerpt-text">
+                            {getArticleExcerpt(article.content, 15)}
+                          </Typography>
+                        </Box>
+
+                        <Box className="dealer-article-actions">
+                          <Box className="dealer-article-read-more">
+                            <Typography className="dealer-article-read-more-text">
+                              Read more
+                            </Typography>
+                            <ArrowForwardIos className="dealer-article-read-more-arrow" />
+                          </Box>
+                          <Box className="dealer-article-actions-right">
+                            <Box className="dealer-article-action">
+                              <VisibilityOutlined
+                                sx={{ fontSize: 22, color: "#000000" }}
+                              />
+                              {article.views !== undefined && (
+                                <Typography className="dealer-article-action-count">
+                                  {article.views}
+                                </Typography>
+                              )}
+                            </Box>
+                            <Box
+                              className="dealer-article-action"
+                              onClick={() =>
+                                handleArticleLikeClick(article.id)
+                              }
+                            >
+                              {articleLiked[article.id] ? (
+                                <Favorite
+                                  sx={{ fontSize: 22, color: "#f09620" }}
+                                />
+                              ) : (
+                                <FavoriteBorder
+                                  sx={{ fontSize: 22, color: "#000000" }}
+                                />
+                              )}
+                              <Typography className="dealer-article-action-count">
+                                {articleLikes[article.id] ??
+                                  article.likes ??
+                                  0}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+
+                {totalArticlePages > 1 && (
+                  <Box className="dealer-watches-pagination">
+                    {Array.from({ length: totalArticlePages }).map(
+                      (_, index) => {
+                        const page = index + 1;
+                        return (
+                          <button
+                            key={page}
+                            className={`dealer-watches-page-number${
+                              page === articlePage ? " active" : ""
+                            }`}
+                            onClick={() => setArticlePage(page)}
+                          >
+                            {page}
+                          </button>
+                        );
+                      }
+                    )}
+                  </Box>
+                )}
+              </>
+            )}
+          </Box>
+        </Box>
+      )}
+
+      {activeTab === "Contact Dealer" && (
+        <Box className="dealer-followers-container">
+          <Typography className="dealer-watches-container-title cs-contact-title">
+            Contact Dealer
+          </Typography>
+
+          <Box id="cs-contact-section" className="cs-contact-section">
+            <Box className="cs-contact-container">
+              <Box className="cs-contact-form">
+                <Typography className="cs-contact-form-title">
+                  Tell Us Your Message
+                </Typography>
+
+                <Box className="cs-contact-form-group">
+                  <Typography className="cs-contact-label">
+                    Your Name <span className="cs-contact-required">*</span>
+                  </Typography>
+                  <input
+                    className="cs-contact-input"
+                    type="text"
+                    placeholder="Full Name..."
+                  />
+                </Box>
+
+                <Box className="cs-contact-form-group">
+                  <Typography className="cs-contact-label">
+                    Your Email <span className="cs-contact-required">*</span>
+                  </Typography>
+                  <input
+                    className="cs-contact-input"
+                    type="email"
+                    placeholder="Email Address..."
+                  />
+                </Box>
+
+                <Box className="cs-contact-form-group">
+                  <Typography className="cs-contact-label">
+                    Subject
+                  </Typography>
+                  <input
+                    className="cs-contact-input"
+                    type="text"
+                    placeholder="Subject..."
+                  />
+                </Box>
+
+                <Box className="cs-contact-form-group">
+                  <Typography className="cs-contact-label">
+                    Your Message
+                  </Typography>
+                  <textarea
+                    className="cs-contact-textarea"
+                    placeholder="Message..."
+                  />
+                </Box>
+
+                <Button className="cs-contact-submit">
+                  Send Message
+                  <ArrowForward className="cs-contact-submit-icon" />
+                </Button>
+              </Box>
+
+              <Box className="cs-contact-info">
+                <Typography className="cs-contact-info-title">
+                  Contact Dealer
+                </Typography>
+                <Typography className="cs-contact-info-text">
+                  We&apos;re here to help.
+                  <br />
+                  If you have any questions or requests regarding this dealer,
+                  please send us a message. Our team will review your request
+                  and get back to you as soon as possible.
+                  <br />
+                  Thank you for using TIMORY.
+                </Typography>
+                <Box className="cs-contact-info-block">
+                  <Typography className="cs-contact-info-heading">
+                    <span className="cs-contact-info-icon"></span>
+                    Address:
+                  </Typography>
+                  <Typography className="cs-contact-info-line">
+                    29 Banryong-ro 28beongil, Buk-gu, Gwangju, South Korea
+                  </Typography>
+                </Box>
+
+                <Box className="cs-contact-info-block">
+                  <Typography className="cs-contact-info-heading">
+                    <span className="cs-contact-info-icon"></span>
+                    Email:
+                  </Typography>
+                  <Typography className="cs-contact-info-line">
+                    ahmadalievd382@gmail.com
+                  </Typography>
+                  <Typography className="cs-contact-info-line">
+                    ahmadalievd384@gmail.com
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       )}
 
