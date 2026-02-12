@@ -1,0 +1,1187 @@
+@import "/scss/variables.scss";
+
+#pc-wrap {
+  .mypage-page {
+    width: 100%;
+    min-height: 600px;
+    background-color: #f2f1f1;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    .mypage-hero {
+      position: relative;
+      width: 1400px;
+      margin: 0 auto;
+      margin-top: 120px;
+      height: 280px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      overflow: hidden;
+      background-color: #9e9fa4;
+
+      .mypage-hero-bg {
+        position: absolute;
+        inset: 0;
+        background-image: url("/img/profile/lay4.jpeg");
+        background-size: cover;
+        background-position: center;
+        filter: grayscale(1);
+        opacity: 0.9;
+      }
+
+      .mypage-hero-content {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 40px 80px;
+        box-sizing: border-box;
+      }
+
+      .mypage-profile {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .mypage-avatar-wrapper {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid rgba(220, 220, 220, 0.9);
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        flex-shrink: 0;
+
+        .mypage-avatar {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+        }
+      }
+
+      .mypage-profile-text {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .mypage-profile-name {
+          font-size: 42px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          color: #000000;
+        }
+
+        .mypage-profile-phone {
+          font-size: 22px;
+          color: #000000;
+          font-weight: 500;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .mypage-profile-email {
+          font-size: 20px;
+          color: #000000;
+          font-weight: 400;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .mypage-profile-role {
+          font-size: 20px;
+          font-weight: 500;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          color: #714d32;
+          letter-spacing: 3px;
+        }
+      }
+
+      .mypage-edit-profile-button {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        height: 52px;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 24px;
+        background-color: #c4ecb8;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        cursor: pointer;
+        margin-right: 20px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+        &:hover {
+          background: #000000;
+          color: #ffffff;
+          border-color: #000000;
+        }
+      }
+
+      .mypage-logout-button {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        height: 52px;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 24px;
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        cursor: pointer;
+        margin-right: 20px;
+        margin-top: 30px;
+
+        &:hover {
+        background: #000000;
+          color: #ffffff;
+          border-color: #000000;
+        }
+      }
+    }
+
+    .mypage-tabs {
+      width: 1400px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 22px 80px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      border-top: 1px solid rgba(62, 62, 62, 0.364);
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 80px;
+        right: 80px;
+        bottom: 0;
+        height: 1px;
+        background-color: rgba(90, 90, 90, 0.71);
+      }
+    }
+
+    .mypage-tab {
+      font-size: 20px;
+      color: #000000;
+      cursor: pointer;
+      position: relative;
+      padding: 8px 4px;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #f09620;
+      }
+    }
+
+    .mypage-tab-active {
+      color: #f09620;
+      font-weight: 600;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+        height: 4px;
+        border-radius: 999px;
+        background-color: #f09620;
+      }
+    }
+
+    .mypage-watches-container {
+      width: 1400px;
+      margin: 0 auto;
+      margin-bottom: 80px;
+      background-color: #ffffff;
+      padding: 40px 30px 40px;
+      box-sizing: border-box;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+
+      .mypage-watches-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .mypage-watches-container-title {
+        font-size: 34px;
+        font-weight: 600;
+        color: #000000;
+        margin: 0;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-add-watch-button {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        height: 52px;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 24px;
+        background-color: #c4ecb8;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        cursor: pointer;
+
+        &:hover {
+          background: #000000;
+          color: #ffffff;
+          border-color: #000000;
+        }
+      }
+
+      .mypage-watches-empty-message {
+        font-size: 30px;
+        font-weight: 500;
+        color: #585553;
+        text-align: center;
+        padding: 60px 20px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-watches-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        margin-bottom: 30px;
+        margin-top: 30px
+      }
+
+      .mypage-watch-item {
+        background-color: #f6f6f6a9;
+        border-radius: 12px;
+        min-height: 300px;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+        border: 1px solid black;
+
+        .mypage-watch-item-left {
+          flex-shrink: 0;
+          width: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          position: relative;
+
+          .mypage-watch-item-image {
+            width: 100%;
+            height: 260px;
+            object-fit: contain;
+            object-position: 20% center;
+            background-color: #eeeded;
+            border-radius: 8px;
+            padding: 10px;
+            box-sizing: border-box;
+          }
+
+          .mypage-watch-item-icons {
+            position: absolute;
+            top: 40%;
+            right: 25px;
+            transform: translateY(-50%) translateX(0);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            opacity: 1;
+            pointer-events: all;
+            transition: all 0.35s ease;
+            z-index: 10;
+
+            .action-btn {
+              width: 38px;
+              height: 38px;
+              background: #edecec;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: 0.25s ease;
+              position: relative;
+
+              &:hover {
+                background: #6b5a51;
+              }
+
+              svg {
+                width: 28px;
+                height: 28px;
+                color: #000000;
+                transition: color 0.55s ease;
+                filter: contrast(0.9);
+
+                path {
+                  fill-opacity: 0.8;
+                  stroke-width: 3;
+                }
+              }
+
+              &:hover svg {
+                color: #f09620;
+
+                path {
+                  fill-opacity: 1;
+                }
+              }
+
+              &.action-btn-liked {
+                background: #6b5a51;
+
+                svg {
+                  color: #e5c8a3;
+
+                  path {
+                    fill-opacity: 1;
+                  }
+                }
+
+                &:hover {
+                  background: #6b5a51;
+                }
+              }
+
+              &.action-btn-with-count {
+                .action-count {
+                  position: absolute;
+                  top: -8px;
+                  right: -8px;
+                  background: #e8994a;
+                  color: #ffffff;
+                  font-size: 12px;
+                  font-weight: 500;
+                  padding: 2px 6px;
+                  border-radius: 10px;
+                  min-width: 18px;
+                  text-align: center;
+                }
+              }
+            }
+          }
+        }
+
+        .mypage-watch-item-right {
+          flex: 1;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          justify-content: flex-start;
+          align-items: center;
+          position: relative;
+
+          .mypage-watch-limited-edition {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #f09620;
+            text-transform: uppercase;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #6b5a51;
+            padding: 4px 8px;
+            border-radius: 4px;
+            z-index: 5;
+          }
+
+          .mypage-watch-item-brand {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            margin-top: 50px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+
+          .mypage-watch-item-name {
+            font-size: 20px;
+            font-weight: 500;
+            color: #000000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            text-align: center;
+          }
+
+          .mypage-watch-item-price {
+            font-size: 18px;
+            font-weight: 500;
+            color: #4e4b4b;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            text-align: center;
+          }
+
+          .mypage-watch-item-date {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #7d7d7d;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            z-index: 5;
+          }
+
+          .mypage-watch-item-status {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+            background-color: #53bb68;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #53bb68;
+            z-index: 5;
+
+            &.mypage-watch-item-status-sold-out {
+              background-color: #000000;
+              border: 1px solid #000000;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+
+      .mypage-watches-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 20px 0 0;
+        flex-shrink: 0;
+
+        .mypage-watches-page-number {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 500;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          color: #7d7d7d;
+          background-color: transparent;
+          border: none;
+          border-radius: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          user-select: none;
+
+          &:hover {
+            color: #901f03;
+          }
+
+          &.active {
+            background-color: transparent;
+            color: #901f03;
+            border: none;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            text-underline-offset: 6px;
+          }
+        }
+      }
+    }
+
+    .mypage-followers-container {
+      width: 1400px;
+      margin: 0 auto;
+      margin-bottom: 80px;
+      background-color: #ffffff;
+      padding: 40px 30px 40px;
+      box-sizing: border-box;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+
+      .mypage-watches-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .mypage-watches-container-title {
+        font-size: 34px;
+        font-weight: 600;
+        color: #000000;
+        margin: 0;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-add-watch-button {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        height: 52px;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 24px;
+        background-color: #c4ecb8;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        cursor: pointer;
+
+        &:hover {
+          background: #000000;
+          color: #ffffff;
+          border-color: #000000;
+        }
+      }
+
+      .mypage-watches-empty-message {
+        font-size: 30px;
+        font-weight: 500;
+        color: #585553;
+        text-align: center;
+        padding: 60px 20px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-follow-button {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        width: 120px;
+        height: 52px;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 24px;
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        cursor: pointer;
+
+        svg {
+          font-size: 24px;
+          margin-left: 12px;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover {
+          background: #6b5a51;
+          color: #f09620;
+          border-color: #6b5a51;
+
+          svg {
+            transform: translateX(10px);
+          }
+        }
+      }
+
+      .mypage-follow-button-active {
+        background: #6b5a51;
+        color: #f09620;
+        border-color: #6b5a51;
+      }
+
+      .mypage-followers-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0;
+        margin-bottom: 30px;
+      }
+
+      .mypage-articles-box {
+        width: 100%;
+        min-height: 220px;
+        border-radius: 12px;
+        background-color: #ffffff;
+        border: 1px solid #ffffff;
+        box-sizing: border-box;
+        padding: 20px 24px;
+      }
+
+      .mypage-articles-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .mypage-article-card {
+        min-height: 480px;
+        border-radius: 12px;
+        border: 1px solid #000000;
+        background-color: #f3f3f3;
+        padding: 16px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-bottom: 30px;
+        margin-top: -15px;
+      }
+
+      .mypage-article-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        margin-top: 10px;
+      }
+
+      .mypage-article-type {
+        font-size: 20px;
+        font-weight: 500;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-article-date {
+        font-size: 18px;
+        font-weight: 400;
+        color: #3f3f3f;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #000000;
+        background-color: #ffffff;
+      }
+
+      .mypage-article-body {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 30px;
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-bottom: 20px;
+        flex: 1;
+      }
+
+      .mypage-article-title-text {
+        font-size: 26px;
+        font-weight: 600;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        cursor: pointer;
+        transition: color 0.25s ease;
+      }
+
+      .mypage-article-title-text:hover {
+        color: #f09620;
+      }
+
+      .mypage-article-excerpt-text {
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+      }
+
+      .mypage-article-actions {
+        margin-top: auto;
+        padding: 0 30px 10px 30px;
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+        margin-right: -60px;
+      }
+
+      .mypage-article-read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        margin-left: -40px;
+      }
+
+      .mypage-article-read-more-text {
+        font-size: 18px;
+        font-weight: 500;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-article-read-more-arrow {
+        font-size: 16px;
+        color: #000000;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .mypage-article-read-more:hover .mypage-article-read-more-arrow {
+        transform: translateX(10px);
+        color: #f09620;
+      }
+
+      .mypage-article-read-more:hover .mypage-article-read-more-text {
+        color: #f09620;
+      }
+
+      .mypage-article-actions-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .mypage-article-action {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .mypage-article-actions-right .mypage-article-action:nth-child(2):hover svg {
+        color: #f09620;
+      }
+
+      .mypage-article-actions-right .mypage-article-action:nth-child(2) {
+        cursor: pointer;
+      }
+
+      .mypage-article-action-count {
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-followers-box {
+        width: 100%;
+        min-height: 180px;
+        margin: 0;
+        border-radius: 0;
+        background-color: #ffffff;
+        border: none;
+        border-bottom: 2px solid #e0e0e0;
+        display: grid;
+        grid-template-columns: 0.7fr 1.4fr 1.4fr 1.4fr 1.3fr;
+        column-gap: 12px;
+        padding: 16px 20px;
+        box-sizing: border-box;
+      }
+
+      .mypage-followers-box-part {
+        background-color: #ffffff;
+        border-radius: 8px;
+        border: 1px solid #ffffff;
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mypage-followers-box-part.part-1 {
+        justify-content: flex-start;
+        background-color: transparent;
+        border: none;
+        min-height: auto;
+      }
+
+      .mypage-followers-avatar {
+        width: 150px;
+        height: 145px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .mypage-followers-avatar-icon {
+        font-size: 60px;
+        color: #7d7d7d;
+      }
+
+      .mypage-followers-box-part.part-2 {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding-left: 8px;
+      }
+
+      .mypage-followers-name {
+        font-size: 20px;
+        font-weight: 500;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin-bottom: 4px;
+        margin-left: 30px;
+      }
+
+      .mypage-followers-role {
+        font-size: 18px;
+        font-weight: 400;
+        color: #262626;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin-left: 30px;
+      }
+
+      .mypage-followers-box-part.part-3,
+      .mypage-followers-box-part.part-4 {
+        flex-direction: column;
+      }
+
+      .mypage-followers-label {
+        font-size: 20px;
+        font-weight: 500;
+        color: #000000;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .mypage-watches-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 20px 0 0;
+        flex-shrink: 0;
+
+        .mypage-watches-page-number {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 500;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          color: #7d7d7d;
+          background-color: transparent;
+          border: none;
+          border-radius: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          user-select: none;
+
+          &:hover {
+            color: #901f03;
+          }
+
+          &.active {
+            background-color: transparent;
+            color: #901f03;
+            border: none;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            text-underline-offset: 6px;
+          }
+        }
+      }
+    }
+
+    .mypage-logout-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 80px;
+      box-sizing: border-box;
+    }
+
+    .mypage-edit-profile-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mypage-edit-profile-modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .mypage-edit-profile-modal-content {
+      position: relative;
+      z-index: 1;
+      width: 90%;
+      max-width: 800px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 40px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .mypage-edit-profile-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .mypage-edit-profile-modal-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mypage-edit-profile-modal-close {
+      min-width: auto;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background-color: transparent;
+      color: #000000;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      svg {
+        font-size: 24px;
+      }
+    }
+
+    .mypage-edit-profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .mypage-edit-profile-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mypage-edit-profile-section-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mypage-edit-profile-photo-section {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .mypage-edit-profile-photo-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .mypage-edit-profile-photo-placeholder {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .mypage-edit-profile-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .mypage-edit-profile-photo-icon {
+      font-size: 150px;
+      width: 100%;
+      height: 100%;
+      color: #cccccc;
+    }
+
+    .mypage-edit-profile-photo-cancel {
+      position: absolute;
+      bottom: -8px;
+      right: -8px;
+      min-width: auto;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 1);
+        transform: scale(1.1);
+      }
+
+      svg {
+        font-size: 20px;
+      }
+    }
+
+    .mypage-edit-profile-photo-icon {
+      font-size: 80px;
+      color: #b7b7b7;
+    }
+
+    .mypage-edit-profile-photo-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .mypage-edit-profile-upload-button {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      height: 45px;
+      font-size: 18px;
+      font-weight: 400;
+      text-transform: none;
+      border-radius: 8px;
+      padding: 0 24px;
+      background-color: #ffffff;
+      color: #000000;
+      border: 1px solid #1a1a1a;
+      cursor: pointer;
+      width: fit-content;
+
+      &:hover {
+        background-color: #000000;
+        color:#ffffff
+      }
+    }
+
+    .mypage-edit-profile-photo-hint {
+      font-size: 16px;
+      color: #6d6d6d;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mypage-edit-profile-fields {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .mypage-edit-profile-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      &:nth-child(4) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .mypage-edit-profile-label {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mypage-edit-profile-input {
+      width: 100%;
+      height: 50px;
+      padding: 0 16px;
+      font-size: 16px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      background-color: #ffffff;
+      border: 1px solid #d0d0d0;
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #6b5a51;
+      }
+
+      &::placeholder {
+        color: #999999;
+      }
+    }
+
+    .mypage-edit-profile-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .mypage-edit-profile-update-button {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      height: 52px;
+      font-size: 20px;
+      font-weight: 400;
+      text-transform: none;
+      border-radius: 8px;
+      padding: 0 32px;
+      background-color: #ffffff;
+      color: #000000;
+     border: 1px solid #1a1a1a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #000000;
+        color:#ffffff
+      }
+
+     
+    }
+    }
+  }
+
+
