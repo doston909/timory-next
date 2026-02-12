@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Stack, Typography, Button } from "@mui/material";
-import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowUpward, Close, Delete } from "@mui/icons-material";
+import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowUpward, Close, Delete, WatchLaterOutlined, ArrowDropDown } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
@@ -176,6 +176,42 @@ const MyPage = () => {
   const [favoritesPage, setFavoritesPage] = useState(1);
   const [recentlyVisitedPage, setRecentlyVisitedPage] = useState(1);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isAddWatchOpen, setIsAddWatchOpen] = useState(false);
+  const [isWatchTypeOpen, setIsWatchTypeOpen] = useState(false);
+  const [isCaseShapeOpen, setIsCaseShapeOpen] = useState(false);
+  const [isCaseSizeOpen, setIsCaseSizeOpen] = useState(false);
+  const [isMaterialOpen, setIsMaterialOpen] = useState(false);
+  const [newWatch, setNewWatch] = useState({
+    modelName: "",
+    watchBrand: "",
+    watchType: "",
+    price: "",
+    color: "",
+    caseShape: "",
+    caseSize: "",
+    madeIn: "",
+    date: "",
+    waterResistance: "",
+    availability: "",
+    material: "",
+    description: "",
+    image1: null as string | null,
+    image2: null as string | null,
+  });
+  const isAddWatchValid =
+    !!newWatch.modelName &&
+    !!newWatch.watchBrand &&
+    !!newWatch.watchType &&
+    !!newWatch.price &&
+    !!newWatch.color &&
+    !!newWatch.caseShape &&
+    !!newWatch.caseSize &&
+    !!newWatch.madeIn &&
+    !!newWatch.date &&
+    !!newWatch.waterResistance &&
+    !!newWatch.availability &&
+    !!newWatch.material &&
+    !!newWatch.description;
   const [profileData, setProfileData] = useState({
     username: "doston",
     phone: "01076409293",
@@ -517,8 +553,7 @@ const MyPage = () => {
             <Button
               className="mypage-add-watch-button"
               onClick={() => {
-                // Add Watch functionality
-                console.log("Add Watch clicked");
+                setIsAddWatchOpen(true);
               }}
             >
               + Add Watch
@@ -1309,6 +1344,559 @@ const MyPage = () => {
                 >
                   Update Profile
                   
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
+
+      {isAddWatchOpen && (
+        <Box className="mypage-edit-profile-modal">
+          <Box
+            className="mypage-edit-profile-modal-overlay"
+            onClick={() => setIsAddWatchOpen(false)}
+          />
+          <Box className="mypage-edit-profile-modal-content">
+            <Box className="mypage-edit-profile-modal-header">
+              <Typography className="mypage-edit-profile-modal-title">
+                Add Watch
+              </Typography>
+              <Button
+                className="mypage-edit-profile-modal-close"
+                onClick={() => setIsAddWatchOpen(false)}
+              >
+                <Close />
+              </Button>
+            </Box>
+
+            <Box className="mypage-add-watch-form">
+              <Box className="mypage-add-watch-images-section">
+                <Box className="mypage-add-watch-image-block">
+                 
+                  <Box className="mypage-add-watch-image-wrapper">
+                    <Box className="mypage-add-watch-image-placeholder">
+                      {newWatch.image1 ? (
+                        <img
+                          src={newWatch.image1}
+                          alt="Watch 1"
+                          className="mypage-add-watch-image"
+                        />
+                      ) : (
+                        <WatchLaterOutlined className="mypage-add-watch-image-icon" />
+                      )}
+                    </Box>
+                    {newWatch.image1 && (
+                      <Button
+                        className="mypage-add-watch-image-remove"
+                        onClick={() =>
+                          setNewWatch((prev) => ({ ...prev, image1: null }))
+                        }
+                      >
+                        <Delete />
+                      </Button>
+                    )}
+                  </Box>
+                  <Box className="mypage-add-watch-image-actions">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png"
+                      style={{ display: "none" }}
+                      id="mypage-add-watch-image-1"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setNewWatch((prev) => ({
+                              ...prev,
+                              image1: reader.result as string,
+                            }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                    <Button
+                      className="mypage-edit-profile-upload-button"
+                      onClick={() => {
+                        const input = document.getElementById(
+                          "mypage-add-watch-image-1"
+                        ) as HTMLInputElement | null;
+                        input?.click();
+                      }}
+                    >
+                      Upload Watch Image 1
+                    </Button>
+                  </Box>
+                </Box>
+
+                <Box className="mypage-add-watch-image-block">
+                 
+                  <Box className="mypage-add-watch-image-wrapper">
+                    <Box className="mypage-add-watch-image-placeholder">
+                      {newWatch.image2 ? (
+                        <img
+                          src={newWatch.image2}
+                          alt="Watch 2"
+                          className="mypage-add-watch-image"
+                        />
+                      ) : (
+                        <WatchLaterOutlined className="mypage-add-watch-image-icon" />
+                      )}
+                    </Box>
+                    {newWatch.image2 && (
+                      <Button
+                        className="mypage-add-watch-image-remove"
+                        onClick={() =>
+                          setNewWatch((prev) => ({ ...prev, image2: null }))
+                        }
+                      >
+                        <Delete />
+                      </Button>
+                    )}
+                  </Box>
+                  <Box className="mypage-add-watch-image-actions">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png"
+                      style={{ display: "none" }}
+                      id="mypage-add-watch-image-2"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setNewWatch((prev) => ({
+                              ...prev,
+                              image2: reader.result as string,
+                            }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                    <Button
+                      className="mypage-edit-profile-upload-button"
+                      onClick={() => {
+                        const input = document.getElementById(
+                          "mypage-add-watch-image-2"
+                        ) as HTMLInputElement | null;
+                        input?.click();
+                      }}
+                    >
+                      Upload Watch Image 2
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box className="mypage-add-watch-fields">
+                {/* Row 1: Model Name | Watch Brand */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Model Name
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter model name"
+                      value={newWatch.modelName}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          modelName: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Watch Brand
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter watch brand"
+                      value={newWatch.watchBrand}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          watchBrand: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+
+                {/* Row 2: Watch Type | Price */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field mypage-add-watch-field-watch-type">
+                    <Typography className="mypage-add-watch-label">
+                      Watch Type
+                    </Typography>
+                    <Box className="mypage-add-watch-input-with-arrow" onClick={() => setIsWatchTypeOpen((prev) => !prev)}>
+                      <input
+                        type="text"
+                        className="mypage-add-watch-input"
+                        placeholder="Choose watch type"
+                        value={newWatch.watchType}
+                        readOnly
+                      />
+                      <ArrowDropDown className="mypage-add-watch-type-arrow" />
+                    </Box>
+                    {isWatchTypeOpen && (
+                      <Box className="mypage-add-watch-type-dropdown">
+                        {["Men", "Women", "Unisex", "Sport"].map((option) => (
+                          <Box
+                            key={option}
+                            className={`mypage-add-watch-type-option${
+                              newWatch.watchType === option
+                                ? " mypage-add-watch-type-option-active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNewWatch((prev) => ({
+                                ...prev,
+                                watchType: option,
+                              }));
+                              setIsWatchTypeOpen(false);
+                            }}
+                          >
+                            {option}
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Price
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter price, e.g. $ 4,500.00"
+                      value={newWatch.price}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          price: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+
+                {/* Row 3: Color | Case Shape */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Color
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter color"
+                      value={newWatch.color}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          color: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+
+                  <Box className="mypage-add-watch-field mypage-add-watch-field-case-shape">
+                    <Typography className="mypage-add-watch-label">
+                      Case Shape
+                    </Typography>
+                    <Box
+                      className="mypage-add-watch-input-with-arrow"
+                      onClick={() =>
+                        setIsCaseShapeOpen((prev) => !prev)
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="mypage-add-watch-input"
+                        placeholder="Choose case shape"
+                        value={newWatch.caseShape}
+                        readOnly
+                      />
+                      <ArrowDropDown className="mypage-add-watch-type-arrow" />
+                    </Box>
+                    {isCaseShapeOpen && (
+                      <Box className="mypage-add-watch-type-dropdown">
+                        {[
+                          "Round",
+                          "Square",
+                          "Rectangular",
+                          "Cushion",
+                          "Tonneau",
+                          "Oval",
+                          "Octagon",
+                          "Custom",
+                        ].map((option) => (
+                          <Box
+                            key={option}
+                            className={`mypage-add-watch-type-option${
+                              newWatch.caseShape === option
+                                ? " mypage-add-watch-type-option-active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNewWatch((prev) => ({
+                                ...prev,
+                                caseShape: option,
+                              }));
+                              setIsCaseShapeOpen(false);
+                            }}
+                          >
+                            {option}
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+
+                {/* Row 4: Case Size | Made In */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field mypage-add-watch-field-case-size">
+                    <Typography className="mypage-add-watch-label">
+                      Case Size
+                    </Typography>
+                    <Box
+                      className="mypage-add-watch-input-with-arrow"
+                      onClick={() =>
+                        setIsCaseSizeOpen((prev) => !prev)
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="mypage-add-watch-input"
+                        placeholder="Choose case size"
+                        value={newWatch.caseSize}
+                        readOnly
+                      />
+                      <ArrowDropDown className="mypage-add-watch-type-arrow" />
+                    </Box>
+                    {isCaseSizeOpen && (
+                      <Box className="mypage-add-watch-type-dropdown">
+                        {[
+                          "28-32mm",
+                          "33-36mm",
+                          "37-40mm",
+                          "41-44mm",
+                          "45mm+",
+                        ].map((option) => (
+                          <Box
+                            key={option}
+                            className={`mypage-add-watch-type-option${
+                              newWatch.caseSize === option
+                                ? " mypage-add-watch-type-option-active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNewWatch((prev) => ({
+                                ...prev,
+                                caseSize: option,
+                              }));
+                              setIsCaseSizeOpen(false);
+                            }}
+                          >
+                            {option}
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Made In
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter country of origin"
+                      value={newWatch.madeIn}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          madeIn: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+
+                {/* Row 5: Data | Water Resistance */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Data
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter data"
+                      value={newWatch.date}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          date: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Water Resistance
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter water resistance"
+                      value={newWatch.waterResistance}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          waterResistance: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+
+                {/* Row 6: Availability | Material */}
+                <Box className="mypage-add-watch-row">
+                  <Box className="mypage-add-watch-field">
+                    <Typography className="mypage-add-watch-label">
+                      Availability
+                    </Typography>
+                    <input
+                      type="text"
+                      className="mypage-add-watch-input"
+                      placeholder="Enter availability"
+                      value={newWatch.availability}
+                      onChange={(e) =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          availability: e.target.value,
+                        }))
+                      }
+                    />
+                  </Box>
+
+                  <Box className="mypage-add-watch-field mypage-add-watch-field-material">
+                    <Typography className="mypage-add-watch-label">
+                      Material
+                    </Typography>
+                    <Box
+                      className="mypage-add-watch-input-with-arrow"
+                      onClick={() =>
+                        setIsMaterialOpen((prev) => !prev)
+                      }
+                    >
+                      <input
+                        type="text"
+                        className="mypage-add-watch-input"
+                        placeholder="Choose material"
+                        value={newWatch.material}
+                        readOnly
+                      />
+                      <ArrowDropDown className="mypage-add-watch-type-arrow" />
+                    </Box>
+                    {isMaterialOpen && (
+                      <Box className="mypage-add-watch-type-dropdown">
+                        {[
+                          "Stainles Steel",
+                          "Gold",
+                          "Rose Gold",
+                          "Titanium",
+                          "Ceramic",
+                          "Carbon",
+                          "Leather",
+                          "Rubber",
+                        ].map((option) => (
+                          <Box
+                            key={option}
+                            className={`mypage-add-watch-type-option${
+                              newWatch.material === option
+                                ? " mypage-add-watch-type-option-active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setNewWatch((prev) => ({
+                                ...prev,
+                                material: option,
+                              }));
+                              setIsMaterialOpen(false);
+                            }}
+                          >
+                            {option}
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+
+                {/* Last row: Description full width */}
+                <Box className="mypage-add-watch-field mypage-add-watch-field-full">
+                  <Typography className="mypage-add-watch-label">
+                    Description
+                  </Typography>
+                  <textarea
+                    className="mypage-add-watch-input"
+                    placeholder="Enter description"
+                    value={newWatch.description}
+                    onChange={(e) =>
+                      setNewWatch((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                  />
+                </Box>
+              </Box>
+
+              <Box className="mypage-add-watch-footer">
+                <Button
+                  className="mypage-add-watch-submit-button"
+                  disabled={!isAddWatchValid}
+                  onClick={() => {
+                    if (!isAddWatchValid) return;
+                    // Add Watch submit functionality (hozircha faqat modalni yopamiz)
+                    // Formani to'liq qayta boshlash
+                    setNewWatch({
+                      modelName: "",
+                      watchBrand: "",
+                      watchType: "",
+                      price: "",
+                      color: "",
+                      caseShape: "",
+                      caseSize: "",
+                      madeIn: "",
+                      date: "",
+                      waterResistance: "",
+                      availability: "",
+                      material: "",
+                      description: "",
+                      image1: null,
+                      image2: null,
+                    });
+                    setIsAddWatchOpen(false);
+                  }}
+                >
+                  Add Watch
                 </Button>
               </Box>
             </Box>

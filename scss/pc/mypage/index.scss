@@ -938,8 +938,8 @@
     .mypage-edit-profile-modal-content {
       position: relative;
       z-index: 1;
-      width: 90%;
-      max-width: 800px;
+      width: 96%;
+      max-width: 1120px;
       background-color: #ffffff;
       border-radius: 12px;
       padding: 40px;
@@ -1039,8 +1039,8 @@
 
     .mypage-edit-profile-photo-cancel {
       position: absolute;
-      bottom: -8px;
-      right: -8px;
+      bottom: -4px;
+      right: -4px;
       min-width: auto;
       width: 36px;
       height: 36px;
@@ -1167,7 +1167,7 @@
       padding: 0 32px;
       background-color: #ffffff;
       color: #000000;
-     border: 1px solid #1a1a1a;
+      border: 1px solid #1a1a1a;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1176,12 +1176,183 @@
 
       &:hover {
         background-color: #000000;
-        color:#ffffff
+        color: #ffffff;
       }
-
-     
     }
+
+    /* Add Watch modal - Edit Profile modal bilan bir xil uslubda */
+    .mypage-add-watch-form {
+      @extend .mypage-edit-profile-form;
+    }
+
+    .mypage-add-watch-fields {
+      @extend .mypage-edit-profile-fields;
+    }
+
+    .mypage-add-watch-field {
+      @extend .mypage-edit-profile-field;
+    }
+
+    .mypage-add-watch-row {
+      display: flex;
+      gap: 24px;
+      grid-column: 1 / -1;
+    }
+
+    .mypage-add-watch-row .mypage-add-watch-field {
+      flex: 1;
+    }
+
+    .mypage-add-watch-field-full {
+      grid-column: 1 / -1;
+    }
+
+    .mypage-add-watch-field-watch-type {
+      position: relative;
+    }
+
+    .mypage-add-watch-field-case-shape {
+      position: relative;
+    }
+
+    .mypage-add-watch-field-case-size {
+      position: relative;
+    }
+
+    .mypage-add-watch-field-material {
+      position: relative;
+    }
+
+    .mypage-add-watch-label {
+      @extend .mypage-edit-profile-label;
+      font-size: 20px; /* Add Watch form label font a bit larger */
+    }
+
+    .mypage-add-watch-input {
+      @extend .mypage-edit-profile-input;
+      font-size: 18px; /* Add Watch form input font a bit larger */
+    }
+
+    .mypage-add-watch-input-with-arrow {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .mypage-add-watch-input-with-arrow .mypage-add-watch-input {
+      width: 100%;
+      padding-right: 40px; /* arrow uchun joy */
+      cursor: pointer;
+    }
+
+    .mypage-add-watch-type-arrow {
+      position: absolute;
+      right: 12px;
+      font-size: 24px;
+      color: #5a5a5a;
+      pointer-events: none;
+    }
+
+    .mypage-add-watch-type-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; /* input bilan chap tomondan bir xil joylashsin */
+      transform: none;
+      width: 70%; /* dropdown kengligini inputdan kichikroq, lekin chapdan bir xil */
+      background-color: #f5f5f5;
+      border: 1px solid #000000;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      z-index: 20;
+      max-height: 140px; /* birinchi ~4 ta option ko'rinsin */
+      overflow-y: auto;
+    }
+
+    .mypage-add-watch-type-option {
+      padding: 6px 10px;
+      font-size: 18px;
+      color:#000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .mypage-add-watch-type-option:hover {
+      background-color: #cbaf9f;
+    }
+
+    .mypage-add-watch-type-option-active {
+      background-color: #6b5a51;
+      color: #f09620;
+    }
+
+    .mypage-add-watch-field-full .mypage-add-watch-input {
+      height: 150px; /* Description uchun yanada balandroq textarea */
+      padding-top: 8px;
+      padding-bottom: 8px;
+      resize: none;
+    }
+
+    .mypage-add-watch-footer {
+      @extend .mypage-edit-profile-footer;
+      gap: 12px;
+    }
+
+    .mypage-add-watch-submit-button {
+      @extend .mypage-edit-profile-update-button;
+    }
+
+    .mypage-add-watch-images-section {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 30px; /* ikki blok orasini yaqinroq, lekin chiroyli qilish uchun */
+      margin-bottom: 24px;
+      flex-wrap: nowrap;
+    }
+
+    .mypage-add-watch-image-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 0 0 auto; /* har bir blokning kengligi kontentga qarab bo‘lsin */
+    }
+
+    .mypage-add-watch-image-wrapper {
+      @extend .mypage-edit-profile-photo-wrapper;
+      margin: 0 auto; /* ustun ichida markazga keltirish */
+    }
+
+    .mypage-add-watch-image-placeholder {
+      @extend .mypage-edit-profile-photo-placeholder;
+    }
+
+    .mypage-add-watch-image {
+      @extend .mypage-edit-profile-photo;
+    }
+
+    .mypage-add-watch-image-icon {
+      font-size: 80px;
+      color: #b7b7b7;
+    }
+
+    .mypage-add-watch-image-remove {
+      @extend .mypage-edit-profile-photo-cancel;
+      right: 50%;
+      bottom: -2px; /* rasmga yanada yaqinroq */
+      left: 100px;
+      transform: translateX(50%);
+    }
+
+    .mypage-add-watch-image-remove:hover {
+      transform: translateX(50%) scale(1.1);
+    }
+
+    .mypage-add-watch-image-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
   }
-
-
+}
