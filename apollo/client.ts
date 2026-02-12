@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { ApolloClient, ApolloLink, InMemoryCache, split, from, NormalizedCacheObject } from '@apollo/client';
-import createUploadLink  from "apollo-upload-client/public/createUploadLink.js";
+import { ApolloClient, ApolloLink, InMemoryCache, split, from, NormalizedCacheObject, createHttpLink } from '@apollo/client';
+import { createUploadLink } from "apollo-upload-client";
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
@@ -57,7 +57,14 @@ class LoggingWebSocket {
 }
 
 function createIsomorphicLink() {
-	if (typeof window !== 'undefined') {
+	const uri = process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "http://localhost:3000/graphql";
+	
+	// Server-side uchun oddiy HTTP link
+	if (typeof window === 'undefined') {
+		const httpLink = createHttpLink({
+			uri,
+		});
+		
 		const authLink = new ApolloLink((operation, forward) => {
 			operation.setContext(({ headers = {} }) => ({
 				headers: {
@@ -65,52 +72,73 @@ function createIsomorphicLink() {
 					...getHeaders(),
 				},
 			}));
-			console.warn('requesting.. ', operation);
 			return forward(operation);
 		});
 
-		// @ts-ignore
-		const link = createUploadLink({
-			uri: process.env.REACT_APP_API_GRAPHQL_URL ,
-		});
-
-		/* WEBSOCKET SUBSCRIPTION LINK */
-		const wsLink = new WebSocketLink({
-			uri: `ws://localhost:3007`,
-			options: {
-				reconnect: false,
-				timeout: 30000,
-				connectionParams: () => {
-					return { headers: getHeaders() };
-				},
-			},
-			webSocketImpl: LoggingWebSocket,
-		});
-
-		const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+		const errorLink = onError(({ graphQLErrors, networkError }) => {
 			if (graphQLErrors) {
-				graphQLErrors.map(({ message, locations, path, extensions }) => {
+				graphQLErrors.map(({ message, locations, path }) => {
 					console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-					if (!message.includes('input')) sweetErrorAlert(message);
 				});
 			}
 			if (networkError) console.log(`[Network error]: ${networkError}`);
-			// @ts-ignore
-			if (networkError?.statusCode === 401) {
-			}
 		});
 
-		const splitLink = split(
-			({ query }) => {
-				const definition = getMainDefinition(query);
-				return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
-			},
-			wsLink,
-			authLink.concat(link),
-		);
-
-		return from([errorLink, tokenRefreshLink, splitLink]);
+		return from([errorLink, authLink.concat(httpLink)]);
 	}
+
+	// Client-side uchun to'liq link (upload, websocket bilan)
+	const authLink = new ApolloLink((operation, forward) => {
+		operation.setContext(({ headers = {} }) => ({
+			headers: {
+				...headers,
+				...getHeaders(),
+			},
+		}));
+		console.warn('requesting.. ', operation);
+		return forward(operation);
+	});
+
+	const link = createUploadLink({
+		uri,
+	});
+
+	/* WEBSOCKET SUBSCRIPTION LINK */
+	const wsLink = new WebSocketLink({
+		uri: process.env.NEXT_PUBLIC_WS_URL || `ws://localhost:3000`,
+		options: {
+			reconnect: false,
+			timeout: 30000,
+			connectionParams: () => {
+				return { headers: getHeaders() };
+			},
+		},
+		webSocketImpl: LoggingWebSocket,
+	});
+
+	const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+		if (graphQLErrors) {
+			graphQLErrors.map(({ message, locations, path, extensions }) => {
+				console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+				if (!message.includes('input')) sweetErrorAlert(message);
+			});
+		}
+		if (networkError) console.log(`[Network error]: ${networkError}`);
+		// @ts-ignore
+		if (networkError?.statusCode === 401) {
+		}
+	});
+
+	const splitLink = split(
+		({ query }) => {
+			const definition = getMainDefinition(query);
+			return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+		},
+		wsLink,
+		authLink.concat(link),
+	);
+
+	return from([errorLink, tokenRefreshLink, splitLink]);
 }
 
 function createApolloClient() {

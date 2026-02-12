@@ -139,16 +139,21 @@ const DealerDetailPage = () => {
   const { addToCart } = useCart();
   // Asosiy dealer uchun Follow/Unfollow
   const [isDealerFollowing, setIsDealerFollowing] = useState(false);
+  // Followers tab uchun umumiy son (asosiy Follow tugmasiga bog'langan)
+  const [totalFollowersCount, setTotalFollowersCount] = useState(6);
+  // Asosiy Follow bosgan user Followers ro'yxatida ko'rinsinmi-yo'qmi
+  const [isCurrentUserFollower, setIsCurrentUserFollower] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Watches");
   const [followersPage, setFollowersPage] = useState(1);
-  // Followers listidagi har bir user uchun alohida Follow/Unfollow holati
-  const [followersFollowing, setFollowersFollowing] = useState<{ [key: number]: boolean }>({});
-  // Har bir follower uchun Followers soni (bosilganda +1 / -1 bo'ladi)
-  const [followersCounts, setFollowersCounts] = useState<{ [key: number]: number }>(() => {
-    const initial: { [key: number]: number } = {};
+  // Followers / Followings tablari uchun alohida follow holatlari (tab + id bo'yicha)
+  const [followersFollowing, setFollowersFollowing] = useState<{ [key: string]: boolean }>({});
+  // Har bir box uchun Followers soni (kalit: "followers-1", "followings-1", ...)
+  const [followersCounts, setFollowersCounts] = useState<{ [key: string]: number }>(() => {
+    const initial: { [key: string]: number } = {};
     for (let i = 1; i <= 6; i += 1) {
-      initial[i] = 10; // boshlang'ich qiymat
+      initial[`followers-${i}`] = 10; // Followers tab uchun boshlang'ich qiymat
+      initial[`followings-${i}`] = 10; // Followings tab uchun boshlang'ich qiymat
     }
     return initial;
   });
@@ -282,19 +287,19 @@ const DealerDetailPage = () => {
     }));
   };
 
-  const handleFollowerFollowToggle = (id: number) => {
-    const isCurrentlyFollowing = !!followersFollowing[id];
+  const handleFollowerFollowToggle = (key: string) => {
+    const isCurrentlyFollowing = !!followersFollowing[key];
 
     // Follow / Unfollow holatini almashtirish
     setFollowersFollowing((prev) => ({
       ...prev,
-      [id]: !isCurrentlyFollowing,
+      [key]: !isCurrentlyFollowing,
     }));
 
     // Followers sonini +1 / -1 ga o'zgartirish
     setFollowersCounts((prev) => ({
       ...prev,
-      [id]: (prev[id] ?? 0) + (isCurrentlyFollowing ? -1 : 1),
+      [key]: (prev[key] ?? 0) + (isCurrentlyFollowing ? -1 : 1),
     }));
   };
 
@@ -360,7 +365,13 @@ const DealerDetailPage = () => {
             className={`dealer-follow-button${
               isDealerFollowing ? " dealer-follow-button-active" : ""
             }`}
-            onClick={() => setIsDealerFollowing((prev) => !prev)}
+            onClick={() =>
+              setIsDealerFollowing((prev) => {
+                setTotalFollowersCount((count) => count + (prev ? -1 : 1));
+                setIsCurrentUserFollower(!prev);
+                return !prev;
+              })
+            }
           >
             {isDealerFollowing ? "Unfollow" : "Follow"}
           </Button>
@@ -372,25 +383,25 @@ const DealerDetailPage = () => {
           className={`dealer-tab${activeTab === "Watches" ? " dealer-tab-active" : ""}`}
           onClick={() => setActiveTab("Watches")}
         >
-          Watches
+          Watches ({watches.length})
         </Box>
         <Box
           className={`dealer-tab${activeTab === "Followers" ? " dealer-tab-active" : ""}`}
           onClick={() => setActiveTab("Followers")}
         >
-          Followers
+          Followers ({totalFollowersCount})
         </Box>
         <Box
           className={`dealer-tab${activeTab === "Followings" ? " dealer-tab-active" : ""}`}
           onClick={() => setActiveTab("Followings")}
         >
-          Followings
+          Followings ({followerBoxes.length})
         </Box>
         <Box
           className={`dealer-tab${activeTab === "Articles" ? " dealer-tab-active" : ""}`}
           onClick={() => setActiveTab("Articles")}
         >
-          Articles
+          Articles ({articles.length})
         </Box>
         <Box
           className={`dealer-tab${
@@ -527,8 +538,48 @@ const DealerDetailPage = () => {
           ) : (
             <>
               <Box className="dealer-followers-grid">
+                {isCurrentUserFollower && (
+                  <Box className="dealer-followers-box">
+                    <Box className="dealer-followers-box-part part-1">
+                      <img
+                        src="/img/profile/defaultUser.svg"
+                        alt="You"
+                        className="dealer-followers-avatar"
+                      />
+                    </Box>
+                    <Box className="dealer-followers-box-part part-2">
+                      <Typography className="dealer-followers-name">You</Typography>
+                      <Typography className="dealer-followers-role">User</Typography>
+                    </Box>
+                    <Box className="dealer-followers-box-part part-3">
+                      <Typography className="dealer-followers-label">
+                        Followers (10)
+                      </Typography>
+                    </Box>
+                    <Box className="dealer-followers-box-part part-4">
+                      <Typography className="dealer-followers-label">
+                        Followings (5)
+                      </Typography>
+                    </Box>
+                    <Box className="dealer-followers-box-part part-5">
+                      <Button
+                        className={`dealer-follow-button dealer-follow-button-active`}
+                        onClick={() =>
+                          setIsDealerFollowing((prev) => {
+                            setTotalFollowersCount((count) => count + (prev ? -1 : 1));
+                            setIsCurrentUserFollower(!prev);
+                            return !prev;
+                          })
+                        }
+                      >
+                        Unfollow
+                      </Button>
+                    </Box>
+                  </Box>
+                )}
                 {currentFollowerBoxes.map((id) => {
-                  const isFollowerFollowing = !!followersFollowing[id];
+                  const key = `followers-${id}`;
+                  const isFollowerFollowing = !!followersFollowing[key];
                   const hasAvatar = true; // hozircha hamma uchun rasm bor deb olaylik
                   return (
                     <Box key={id} className="dealer-followers-box">
@@ -549,7 +600,7 @@ const DealerDetailPage = () => {
                       </Box>
                       <Box className="dealer-followers-box-part part-3">
                         <Typography className="dealer-followers-label">
-                          Followers ({followersCounts[id] ?? 0})
+                          Followers ({followersCounts[key] ?? 0})
                         </Typography>
                       </Box>
                       <Box className="dealer-followers-box-part part-4">
@@ -562,7 +613,7 @@ const DealerDetailPage = () => {
                           className={`dealer-follow-button${
                             isFollowerFollowing ? " dealer-follow-button-active" : ""
                           }`}
-                          onClick={() => handleFollowerFollowToggle(id)}
+                          onClick={() => handleFollowerFollowToggle(key)}
                         >
                           {isFollowerFollowing ? "Unfollow" : "Follow"}
                         </Button>
@@ -605,7 +656,8 @@ const DealerDetailPage = () => {
             <>
               <Box className="dealer-followers-grid">
                 {currentFollowerBoxes.map((id) => {
-                  const isFollowerFollowing = !!followersFollowing[id];
+                  const key = `followings-${id}`;
+                  const isFollowerFollowing = !!followersFollowing[key];
                   const hasAvatar = true;
                   return (
                     <Box key={id} className="dealer-followers-box">
@@ -626,7 +678,7 @@ const DealerDetailPage = () => {
                       </Box>
                       <Box className="dealer-followers-box-part part-3">
                         <Typography className="dealer-followers-label">
-                          Followers ({followersCounts[id] ?? 0})
+                          Followers ({followersCounts[key] ?? 0})
                         </Typography>
                       </Box>
                       <Box className="dealer-followers-box-part part-4">
@@ -639,7 +691,7 @@ const DealerDetailPage = () => {
                           className={`dealer-follow-button${
                             isFollowerFollowing ? " dealer-follow-button-active" : ""
                           }`}
-                          onClick={() => handleFollowerFollowToggle(id)}
+                          onClick={() => handleFollowerFollowToggle(key)}
                         >
                           {isFollowerFollowing ? "Unfollow" : "Follow"}
                         </Button>

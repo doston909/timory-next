@@ -415,7 +415,7 @@ const Top = () => {
                             className="user-menu-item"
                             onClick={() => {
                               setIsUserMenuOpen(false);
-                              router.push("/mypage?category=myProfile");
+                              router.push("/mypage");
                             }}
                           >
                             My Page

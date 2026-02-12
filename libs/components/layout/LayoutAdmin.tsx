@@ -42,114 +42,114 @@ const withAdminLayout = (Component: ComponentType) => {
 				<Head>
 					<title>Timory - Admin</title>
 				</Head>
-				<main id="pc-wrap" className="admin">
-					<Box component={'div'} sx={{ display: 'flex' }}>
-						<AppBar
-							position="fixed"
-							sx={{
-								width: `calc(100% - ${drawerWidth}px)`,
-								ml: `${drawerWidth}px`,
-								boxShadow: 'rgb(100 116 139 / 12%) 0px 1px 4px',
-								background: 'none',
+			<main id="pc-wrap" className="admin">
+				<Box component={'div'} sx={{ display: 'flex' }}>
+					<AppBar
+						position="fixed"
+						sx={{
+							width: `calc(100% - ${drawerWidth}px)`,
+							ml: `${drawerWidth}px`,
+							boxShadow: 'rgb(100 116 139 / 12%) 0px 1px 4px',
+							background: 'none',
 								backgroundColor: '#ffffff',
-							}}
-						>
-							<Toolbar>
-								<Tooltip title="Open settings">
-									<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-										<Avatar
-											src={'/img/profile/defaultUser.svg'}
-										/>
-									</IconButton>
-								</Tooltip>
-								<Menu
-									sx={{ mt: '45px' }}
-									id="menu-appbar"
-									className={'pop-menu'}
-									anchorEl={anchorElUser}
-									anchorOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
-									}}
-									open={Boolean(anchorElUser)}
-									onClose={handleCloseUserMenu}
-								>
-									<Box
-										component={'div'}
-										onClick={handleCloseUserMenu}
-										sx={{
-											width: '200px',
-										}}
-									>
-										<Stack sx={{ px: '20px', my: '12px' }}>
-											<Typography variant={'h6'} component={'h6'} sx={{ mb: '4px' }}>
-												Admin User
-											</Typography>
-											<Typography variant={'subtitle1'} component={'p'} color={'#757575'}>
-												admin@timory.com
-											</Typography>
-										</Stack>
-										<Divider />
-										<Box component={'div'} sx={{ p: 1, py: '6px' }} onClick={logoutHandler}>
-											<MenuItem sx={{ px: '16px', py: '6px' }}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													Logout
-												</Typography>
-											</MenuItem>
-										</Box>
-									</Box>
-								</Menu>
-							</Toolbar>
-						</AppBar>
-
-						<Drawer
-							sx={{
-								width: drawerWidth,
-								flexShrink: 0,
-								'& .MuiDrawer-paper': {
-									width: drawerWidth,
-									boxSizing: 'border-box',
-								},
-							}}
-							variant="permanent"
-							anchor="left"
-							className="aside"
-						>
-							<Toolbar sx={{ flexDirection: 'column', alignItems: 'flexStart' }}>
-								<Stack className={'logo-box'}>
-									<img src={'/img/logo/Timorylogo.png'} alt={'Timory logo'} style={{ width: '120px', height: 'auto' }} />
-								</Stack>
-
-								<Stack
-									className="user"
-									direction={'row'}
-									alignItems={'center'}
-									sx={{
-										borderRadius: '8px',
-										px: '24px',
-										py: '11px',
-										mt: 2,
-									}}
-								>
+						}}
+					>
+						<Toolbar>
+							<Tooltip title="Open settings">
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 									<Avatar
-										src={'/img/profile/defaultUser.svg'}
+											src={'/img/profile/defaultUser.svg'}
 									/>
-									<Typography variant={'body2'} p={1} ml={1}>
+								</IconButton>
+							</Tooltip>
+							<Menu
+								sx={{ mt: '45px' }}
+								id="menu-appbar"
+								className={'pop-menu'}
+								anchorEl={anchorElUser}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}
+							>
+								<Box
+									component={'div'}
+									onClick={handleCloseUserMenu}
+									sx={{
+										width: '200px',
+									}}
+								>
+									<Stack sx={{ px: '20px', my: '12px' }}>
+										<Typography variant={'h6'} component={'h6'} sx={{ mb: '4px' }}>
+												Admin User
+										</Typography>
+										<Typography variant={'subtitle1'} component={'p'} color={'#757575'}>
+												admin@timory.com
+										</Typography>
+									</Stack>
+									<Divider />
+									<Box component={'div'} sx={{ p: 1, py: '6px' }} onClick={logoutHandler}>
+										<MenuItem sx={{ px: '16px', py: '6px' }}>
+											<Typography variant={'subtitle1'} component={'span'}>
+												Logout
+											</Typography>
+										</MenuItem>
+									</Box>
+								</Box>
+							</Menu>
+						</Toolbar>
+					</AppBar>
+
+					<Drawer
+						sx={{
+							width: drawerWidth,
+							flexShrink: 0,
+							'& .MuiDrawer-paper': {
+								width: drawerWidth,
+								boxSizing: 'border-box',
+							},
+						}}
+						variant="permanent"
+						anchor="left"
+						className="aside"
+					>
+						<Toolbar sx={{ flexDirection: 'column', alignItems: 'flexStart' }}>
+							<Stack className={'logo-box'}>
+									<img src={'/img/logo/Timorylogo.png'} alt={'Timory logo'} style={{ width: '120px', height: 'auto' }} />
+							</Stack>
+
+							<Stack
+								className="user"
+								direction={'row'}
+								alignItems={'center'}
+								sx={{
+									borderRadius: '8px',
+									px: '24px',
+									py: '11px',
+										mt: 2,
+								}}
+							>
+								<Avatar
+										src={'/img/profile/defaultUser.svg'}
+								/>
+								<Typography variant={'body2'} p={1} ml={1}>
 										Admin User <br />
 										admin@timory.com
-									</Typography>
-								</Stack>
-							</Toolbar>
+								</Typography>
+							</Stack>
+						</Toolbar>
 
-							<Divider />
+						<Divider />
 
 							<AdminMenuList />
-						</Drawer>
+					</Drawer>
 
 						<Box 
 							component={'div'} 
@@ -162,11 +162,11 @@ const withAdminLayout = (Component: ComponentType) => {
 								minHeight: 'calc(100vh - 64px)',
 							}}
 						>
-							{/*@ts-ignore*/}
-							<Component {...props} setSnackbar={setSnackbar} setTitle={setTitle} />
-						</Box>
+						{/*@ts-ignore*/}
+						<Component {...props} setSnackbar={setSnackbar} setTitle={setTitle} />
 					</Box>
-				</main>
+				</Box>
+			</main>
 			</>
 		);
 	};
