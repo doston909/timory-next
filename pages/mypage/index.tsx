@@ -181,6 +181,12 @@ const MyPage = () => {
   const [isCaseShapeOpen, setIsCaseShapeOpen] = useState(false);
   const [isCaseSizeOpen, setIsCaseSizeOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
+  const [isAddArticleOpen, setIsAddArticleOpen] = useState(false);
+  const [newArticle, setNewArticle] = useState({
+    image: null as string | null,
+    title: "",
+    content: "",
+  });
   const [newWatch, setNewWatch] = useState({
     modelName: "",
     watchBrand: "",
@@ -195,6 +201,7 @@ const MyPage = () => {
     availability: "",
     material: "",
     description: "",
+    limitedEdition: false,
     image1: null as string | null,
     image2: null as string | null,
   });
@@ -1102,10 +1109,7 @@ const MyPage = () => {
             <Typography className="mypage-watches-container-title">Articles</Typography>
             <Button
               className="mypage-add-watch-button"
-              onClick={() => {
-                // Add Article functionality
-                console.log("Add Article clicked");
-              }}
+              onClick={() => setIsAddArticleOpen(true)}
             >
               + Add Article
             </Button>
@@ -1428,6 +1432,9 @@ const MyPage = () => {
                     >
                       Upload Watch Image 1
                     </Button>
+                    <Typography className="mypage-edit-profile-photo-hint">
+                      A photo must be in JPG, JPEG or PNG format!
+                    </Typography>
                   </Box>
                 </Box>
 
@@ -1487,6 +1494,9 @@ const MyPage = () => {
                     >
                       Upload Watch Image 2
                     </Button>
+                    <Typography className="mypage-edit-profile-photo-hint">
+                      A photo must be in JPG, JPEG or PNG format!
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
@@ -1849,8 +1859,10 @@ const MyPage = () => {
                   </Box>
                 </Box>
 
-                {/* Last row: Description full width */}
+                {/* Last row: Limited Edition + Description full width */}
                 <Box className="mypage-add-watch-field mypage-add-watch-field-full">
+                  
+
                   <Typography className="mypage-add-watch-label">
                     Description
                   </Typography>
@@ -1865,6 +1877,22 @@ const MyPage = () => {
                       }))
                     }
                   />
+                  <Box className="mypage-add-watch-limited">
+                    <label className="mypage-add-watch-limited-label">
+                      <input
+                        type="checkbox"
+                        className="mypage-add-watch-limited-checkbox"
+                        checked={newWatch.limitedEdition}
+                        onChange={(e) =>
+                          setNewWatch((prev) => ({
+                            ...prev,
+                            limitedEdition: e.target.checked,
+                          }))
+                        }
+                      />
+                      <span>Limited Edition</span>
+                    </label>
+                  </Box>
                 </Box>
               </Box>
 
@@ -1890,6 +1918,7 @@ const MyPage = () => {
                       availability: "",
                       material: "",
                       description: "",
+                      limitedEdition: false,
                       image1: null,
                       image2: null,
                     });
@@ -1897,6 +1926,140 @@ const MyPage = () => {
                   }}
                 >
                   Add Watch
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
+
+      {isAddArticleOpen && (
+        <Box className="mypage-edit-profile-modal">
+          <Box
+            className="mypage-edit-profile-modal-overlay"
+            onClick={() => setIsAddArticleOpen(false)}
+          />
+          <Box className="mypage-edit-profile-modal-content">
+            <Box className="mypage-edit-profile-modal-header">
+              <Typography className="mypage-edit-profile-modal-title">
+                Add Article
+              </Typography>
+              <Button
+                className="mypage-edit-profile-modal-close"
+                onClick={() => setIsAddArticleOpen(false)}
+              >
+                <Close />
+              </Button>
+            </Box>
+
+            <Box className="mypage-add-article-form">
+              <Box className="mypage-add-article-photo-section">
+                <Typography className="mypage-add-article-label">
+                  Article Image
+                </Typography>
+                <Box className="mypage-add-article-photo-row">
+                  <Box className="mypage-edit-profile-photo-wrapper">
+                    <Box className="mypage-edit-profile-photo-placeholder">
+                      {newArticle.image ? (
+                        <img
+                          src={newArticle.image}
+                          alt="Article"
+                          className="mypage-edit-profile-photo"
+                        />
+                      ) : (
+                        <PersonOutline className="mypage-edit-profile-photo-icon" />
+                      )}
+                    </Box>
+                    {newArticle.image && (
+                      <Button
+                        className="mypage-edit-profile-photo-cancel"
+                        onClick={() =>
+                          setNewArticle((prev) => ({ ...prev, image: null }))
+                        }
+                      >
+                        <Delete />
+                      </Button>
+                    )}
+                  </Box>
+                  <Box className="mypage-add-article-photo-actions">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png"
+                      style={{ display: "none" }}
+                      id="mypage-add-article-image"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setNewArticle((prev) => ({
+                              ...prev,
+                              image: reader.result as string,
+                            }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                    <Button
+                      className="mypage-edit-profile-upload-button"
+                      onClick={() => {
+                        const input = document.getElementById(
+                          "mypage-add-article-image"
+                        ) as HTMLInputElement | null;
+                        input?.click();
+                      }}
+                    >
+                      Upload Article Image
+                    </Button>
+                    <Typography className="mypage-edit-profile-photo-hint">
+                      A photo must be in JPG, JPEG or PNG format!
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box className="mypage-add-article-field">
+                <Typography className="mypage-add-article-label">
+                  Article Title
+                </Typography>
+                <input
+                  type="text"
+                  className="mypage-add-article-input"
+                  placeholder="Enter article title"
+                  value={newArticle.title}
+                  onChange={(e) =>
+                    setNewArticle((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                />
+              </Box>
+
+              <Box className="mypage-add-article-field">
+                <Typography className="mypage-add-article-label">
+                  Article Content
+                </Typography>
+                <textarea
+                  className="mypage-add-article-input mypage-add-article-content"
+                  placeholder="Enter article content"
+                  value={newArticle.content}
+                  onChange={(e) =>
+                    setNewArticle((prev) => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
+                  }
+                />
+              </Box>
+
+              <Box className="mypage-edit-profile-footer">
+                <Button
+                  className="mypage-edit-profile-update-button"
+                  onClick={() => {
+                    setNewArticle({ image: null, title: "", content: "" });
+                    setIsAddArticleOpen(false);
+                  }}
+                >
+                  Add Article
                 </Button>
               </Box>
             </Box>

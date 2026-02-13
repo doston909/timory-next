@@ -1077,6 +1077,11 @@
       flex-direction: column;
       gap: 8px;
       flex: 1;
+
+      .mypage-edit-profile-upload-button {
+        margin-left: 40px;
+        margin-right: auto;
+      }
     }
 
     .mypage-edit-profile-upload-button {
@@ -1092,6 +1097,9 @@
       border: 1px solid #1a1a1a;
       cursor: pointer;
       width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
 
       &:hover {
         background-color: #000000;
@@ -1293,6 +1301,52 @@
       resize: none;
     }
 
+    .mypage-add-watch-limited {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .mypage-add-watch-limited-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: inline-flex;
+      align-items: center;
+      flex-direction: row-reverse; /* chapda matn, o'ngda checkbox */
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .mypage-add-watch-limited-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 2px solid #6b5a51;
+      border-radius: 4px;
+      background-color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mypage-add-watch-limited-checkbox:checked {
+      background-color: #6b5a51;
+      border-color: #6b5a51;
+    }
+
+    .mypage-add-watch-limited-checkbox:checked::after {
+      content: "✓";
+      color: #f09620;
+      font-size: 18px;
+      line-height: 1;
+    }
+
     .mypage-add-watch-footer {
       @extend .mypage-edit-profile-footer;
       gap: 12px;
@@ -1353,6 +1407,75 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+
+    /* Add Article modal form */
+    .mypage-add-article-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .mypage-add-article-photo-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mypage-add-article-photo-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .mypage-add-article-photo-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mypage-add-article-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mypage-add-article-label {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000000;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mypage-add-article-input {
+      width: 100%;
+      padding: 0 16px;
+      font-size: 16px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      background-color: #ffffff;
+      border: 1px solid #d0d0d0;
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      height: 50px;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #6b5a51;
+      }
+
+      &::placeholder {
+        color: #999999;
+      }
+    }
+
+    .mypage-add-article-content {
+      height: 200px;
+      min-height: 200px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      resize: vertical;
     }
   }
 }
