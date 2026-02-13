@@ -6,7 +6,8 @@ import {
   Search,
   ShoppingBagOutlined,
   NotificationsNoneOutlined,
-  DarkModeOutlined,
+  DarkMode,
+  LightModeOutlined,
   Language,
   PersonOutline,
   
@@ -24,6 +25,8 @@ const Top = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const { cartItems, removeFromCart } = useCart();
@@ -53,6 +56,10 @@ const Top = () => {
 
   const handleCartToggle = () => {
     setIsCartOpen(!isCartOpen);
+  };
+
+  const handleNotificationToggle = () => {
+    setIsNotificationOpen(!isNotificationOpen);
   };
 
   const handleRemoveItem = (id: number) => {
@@ -86,10 +93,13 @@ const Top = () => {
         if (isCartOpen) {
           setIsCartOpen(false);
         }
+        if (isNotificationOpen) {
+          setIsNotificationOpen(false);
+        }
       }
     };
 
-    if (isSearchOpen || isCartOpen) {
+    if (isSearchOpen || isCartOpen || isNotificationOpen) {
       document.addEventListener("keydown", handleEscape);
       document.body.style.overflow = "hidden";
     }
@@ -98,7 +108,7 @@ const Top = () => {
       document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
-  }, [isSearchOpen, isCartOpen]);
+  }, [isSearchOpen, isCartOpen, isNotificationOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -286,7 +296,7 @@ const Top = () => {
                     color: "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#E5C8A3",
+                      color: "#f09620 ",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -304,7 +314,7 @@ const Top = () => {
                     p: 0,
                     position: "relative",
                     "&:hover": {
-                      color: "#E5C8A3",
+                      color: "#f09620 ",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -338,11 +348,12 @@ const Top = () => {
                 {/* NOTIFICATION */}
                 <IconButton
                   aria-label="Notifications"
+                  onClick={handleNotificationToggle}
                   sx={{
                     color: "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#E5C8A3",
+                      color: "#f09620 ",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -353,18 +364,19 @@ const Top = () => {
 
                 {/* DARK MODE */}
                 <IconButton
-                  aria-label="Dark mode"
+                  aria-label={isDarkMode ? "Light mode" : "Dark mode"}
+                  onClick={() => setIsDarkMode((prev) => !prev)}
                   sx={{
                     color: "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#E5C8A3",
+                      color: "#f09620 ",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
                   }}
                 >
-                  <DarkModeOutlined />
+                  {isDarkMode ? <LightModeOutlined /> : <DarkMode sx={{ color: "#000" }} />}
                 </IconButton>
 
                 {/* LANGUAGE */}
@@ -379,7 +391,7 @@ const Top = () => {
                   <Language
                     sx={{
                       color: "#000",
-                      "&:hover": { color: "#E5C8A3", cursor: "pointer" },
+                      "&:hover": { color: "#f09620", cursor: "pointer" },
                     }}
                   />
                   
@@ -394,7 +406,7 @@ const Top = () => {
                       color: "#000",
                       p: 0,
                       "&:hover": {
-                        color: "#E5C8A3",
+                        color: "#f09620",
                         backgroundColor: "transparent",
                         cursor: "pointer",
                       },
@@ -447,7 +459,7 @@ const Top = () => {
                             className="user-menu-item"
                             onClick={() => {
                               setIsUserMenuOpen(false);
-                              
+                              router.push("/cs#cs-contact-section");
                             }}
                           >
                             Contact Admin
@@ -517,6 +529,37 @@ const Top = () => {
                 <button className="search-tag">Sport Watches</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification Modal */}
+      {isNotificationOpen && (
+        <div
+          className="cart-modal-overlay"
+          onClick={() => setIsNotificationOpen(false)}
+        >
+          <div
+            className="notification-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Box className="cart-modal-header">
+              <Typography className="cart-modal-title">Notification Cart</Typography>
+              <IconButton
+                onClick={() => setIsNotificationOpen(false)}
+                sx={{
+                  color: "#000",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+            <Box className="cart-empty-state">
+              <Typography className="cart-empty-text">Notification Cart is Empty...</Typography>
+            </Box>
           </div>
         </div>
       )}
