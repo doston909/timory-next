@@ -1,0 +1,294 @@
+/**
+ * Dark mode overrides when .theme-dark is on <html>
+ * Loaded last so these override default light styles.
+ */
+.theme-dark {
+  &,
+  body {
+    background-color: #121212 !important;
+  }
+
+  #pc-wrap {
+    background-color: #121212;
+    color: #e4e4e4;
+  }
+
+  #top {
+    .navbar .head {
+      background-color: #1e1e1e;
+    }
+
+    .navbar .container {
+      background-color: #1e1e1e !important;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+
+      &.scrolled {
+        background-color: rgba(30, 30, 30, 0.92) !important;
+      }
+    }
+
+    .router-box .nav-item {
+      color: #e4e4e4 !important;
+
+      &:hover {
+        color: #f09620 !important;
+      }
+
+      &.active {
+        color: #f09620 !important;
+
+        span::after {
+          background: #f09620 !important;
+          width: 100%;
+        }
+      }
+    }
+
+    .lang-box svg {
+      color: #e4e4e4;
+    }
+
+    .lang-box svg:hover {
+      color: #f09620;
+    }
+
+    .search-modal-content {
+      background: #1e1e1e !important;
+    }
+
+    .search-input-wrapper {
+      border-color: rgba(255, 255, 255, 0.23);
+      background: rgba(255, 255, 255, 0.05) !important;
+
+      &:focus-within {
+        border-color: #D4AF37;
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .search-input {
+        color: #e4e4e4 !important;
+
+        &::placeholder {
+          color: #888;
+        }
+      }
+    }
+
+    .search-suggestions-title {
+      color: #b0b0b0 !important;
+    }
+
+    .search-tag {
+      background: #2a2a2a;
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #e4e4e4;
+
+      &:hover {
+        background: #D4AF37;
+        border-color: #D4AF37;
+        color: #121212;
+      }
+    }
+
+    .cart-modal-content,
+    .notification-modal-content {
+      background: #1e1e1e !important;
+    }
+
+    .cart-modal-header {
+      background-color: #252525 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.12);
+
+      .cart-modal-title {
+        color: #e4e4e4 !important;
+      }
+    }
+
+    .cart-empty-state .cart-empty-text {
+      color: #b0b0b0 !important;
+    }
+
+    .cart-table-header {
+      background-color: #252525 !important;
+
+      .MuiTableCell-root {
+        color: #e4e4e4 !important;
+        border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+      }
+    }
+
+    .MuiTableBody-root .MuiTableRow-root .MuiTableCell-root {
+      color: #e4e4e4 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+
+      .MuiTypography-root {
+        color: #e4e4e4 !important;
+      }
+
+      .MuiIconButton-root {
+        background-color: #2a2a2a !important;
+
+        svg {
+          color: #D4AF37 !important;
+        }
+
+        &:hover {
+          background-color: #3a3a3a !important;
+          svg {
+            color: #e5c28c !important;
+          }
+        }
+      }
+    }
+
+    .user-menu-item {
+      color: #e4e4e4 !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+    }
+  }
+
+  #main {
+    background-color: #121212 !important;
+    color: #e4e4e4;
+  }
+
+  .header-basic .container strong,
+  .header-basic .container span,
+  .MuiTypography-root.header-page-title,
+  .MuiTypography-root.header-breadcrumb {
+    color: #e4e4e4 !important;
+  }
+
+  #footer {
+    background: #0d0d0f !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.theme-dark {
+  /* See All links under homepage sections */
+  .dealers-see-all-wrapper {
+    .see-all-text {
+      color: #ffffff !important;
+
+      .see-all-arrow {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  /* Newsletter arrow in News section */
+  .news-subscribe-arrow {
+    color: #ffffff !important;
+  }
+
+  .news-subscribe-btn:hover {
+    color: #ffffff !important;
+  }
+
+  /* Newsletter email input background transparent in dark mode */
+  .news-email-input {
+    :global(.MuiInputBase-root) {
+      background-color: transparent !important;
+    }
+
+    input {
+      background-color: transparent !important;
+    }
+  }
+
+  /* Newsletter email icon white in dark mode */
+  .news-envelope-icon {
+    filter: brightness(0) invert(1);
+  }
+
+  /* TopBrands section background in dark mode */
+  .top-brands-section {
+    background: #b1b1b1 !important;
+  }
+}
+
+/* Page-level dark overrides (mypage, dealer, watch, community, etc.) */
+.theme-dark {
+  [class*="mypage-"],
+  [class*="dealer-"],
+  [class*="watch-"],
+  [class*="community-"],
+  [class*="account-"],
+  [class*="about-"],
+  [class*="cs-"] {
+    --dm-bg: #1e1e1e;
+    --dm-bg-alt: #252525;
+    --dm-text: #e4e4e4;
+    --dm-text-muted: #b0b0b0;
+    --dm-border: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.theme-dark {
+  .mypage-wrap,
+  .mypage-profile-section,
+  .mypage-content-box,
+  .mypage-articles-box,
+  .mypage-watches-container,
+  .mypage-article-card,
+  .mypage-watch-item,
+  .dealer-detail-page .container,
+  .watch-detail-page,
+  .community-detail-page,
+  .account-page,
+  .cs-page {
+    background-color: #1e1e1e !important;
+    color: #e4e4e4;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .mypage-article-card,
+  .mypage-watch-item,
+  .mypage-followers-box,
+  .mypage-article-header,
+  .mypage-article-body {
+    background-color: #252525 !important;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .mypage-profile-role,
+  .mypage-article-type,
+  .mypage-article-date,
+  .mypage-article-title-text,
+  .mypage-article-excerpt-text,
+  .mypage-watch-name,
+  .detail-label,
+  .detail-value,
+  .MuiTypography-root {
+    color: #e4e4e4 !important;
+  }
+
+  .mypage-article-read-more-text,
+  .mypage-article-action-count,
+  .mypage-watches-empty-message {
+    color: #b0b0b0 !important;
+  }
+
+  input,
+  textarea,
+  .MuiOutlinedInput-input {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #e4e4e4 !important;
+    border-color: rgba(255, 255, 255, 0.23) !important;
+  }
+
+  .MuiPaper-root,
+  .MuiCard-root {
+    background-color: #252525 !important;
+    color: #e4e4e4;
+  }
+
+  .MuiButton-outlined {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #e4e4e4;
+  }
+}

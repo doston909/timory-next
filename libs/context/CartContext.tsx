@@ -1,53 +1,88 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
 export interface CartItem {
   id: number;
+  name?: string;
+  model: string;
+  brand: string;
+  price: number;
   image: string;
-  name: string;
-  price: string;
+  quantity: number;
 }
 
-interface CartContextType {
+export interface CartContextType {
+  isCartOpen: boolean;
+  setIsCartOpen: (open: boolean | ((prev: boolean) => boolean)) => void;
+  toggleCart: () => void;
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
+  updateQuantity: (id: number, quantity: number) => void;
+  clearCart: () => void;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
-
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-   
-  ]);
-
-  const addToCart = (item: CartItem) => {
-    setCartItems((prevItems) => {
-      // Check if item already exists in cart
-      const existingItem = prevItems.find(i => i.id === item.id);
-      if (existingItem) {
-        return prevItems; // Don't add duplicate
-      }
-      // Keep the original ID from the item
-      return [...prevItems, item];
-    });
-  };
-
-  const removeFromCart = (id: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
-
-  return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
-      {children}
-    </CartContext.Provider>
-  );
-};
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
+  if (!context) {
+    throw new Error("useCart must be used within CartContext.Provider");
   }
   return context;
 };
 
+interface CartProviderProps {
+  children: ReactNode;
+}
+
+export const CartProvider = ({ children }: CartProviderProps) => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev);
+  };
+
+  const addToCart = (item: CartItem) => {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+        );
+      }
+      return [...prev, item];
+    });
+  };
+
+  const removeFromCart = (id: number) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const updateQuantity = (id: number, quantity: number) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+    );
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  return (
+    <CartContext.Provider
+      value={{
+        isCartOpen,
+        setIsCartOpen,
+        toggleCart,
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};

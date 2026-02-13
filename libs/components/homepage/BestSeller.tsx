@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { Stack, Box, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -5,14 +7,13 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import SellIcon from '@mui/icons-material/Sell';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-
-
+import { useCart } from "@/libs/context/CartContext";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -139,6 +140,46 @@ const bestSellers: BestSellerWatch[] = [
 ];
 
 const BestSeller = () => {
+  const router = useRouter();
+  const { addToCart } = useCart();
+  const [likedWatches, setLikedWatches] = useState<Record<number, boolean>>({});
+  const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
+    bestSellers.reduce((acc, w) => ({ ...acc, [w.id]: w.likes }), {})
+  );
+
+  const handleCardClick = (watchId: number) => {
+    router.push(`/watch/detail?id=${watchId}`);
+  };
+
+  const handleBagClick = (e: React.MouseEvent, watch: BestSellerWatch) => {
+    e.stopPropagation();
+    addToCart({
+      id: watch.id,
+      name: watch.model,
+      model: watch.model,
+      brand: watch.brand,
+      price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "") || "0"),
+      image: watch.image,
+      quantity: 1,
+    });
+  };
+
+  const handleLikeClick = (e: React.MouseEvent, watchId: number, originalLikes: number) => {
+    e.stopPropagation();
+    setLikedWatches((prev) => {
+      const isLiked = !prev[watchId];
+      setLikeCounts((counts) => ({
+        ...counts,
+        [watchId]: isLiked ? counts[watchId] + 1 : Math.max(originalLikes, counts[watchId] - 1),
+      }));
+      return { ...prev, [watchId]: isLiked };
+    });
+  };
+
+  const handleSeeAllClick = () => {
+    router.push("/watch");
+  };
+
   return (
     <Stack className="best-seller-section">
       <h2 className="section-title">Best Sellers</h2>
@@ -166,20 +207,33 @@ const BestSeller = () => {
         >
           {bestSellers.map((w) => (
             <SwiperSlide key={w.id}>
-              <Box className="best-watch-card">
+              <Box
+                className="best-watch-card"
+                onClick={() => handleCardClick(w.id)}
+                sx={{ cursor: "pointer" }}
+              >
                 <div className="image-box">
                   <img src={w.image} alt={w.model} />
 
                 
                   <div className="watch-actions">
-                    <div className="action-btn">
+                    <div className="action-btn" onClick={(e) => handleBagClick(e, w)}>
                       <ShoppingBagOutlinedIcon
                         sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
                       />
                     </div>
-                    <div className="action-btn action-btn-with-count">
-                      <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
-                      <span className="action-count">{w.likes}</span>
+                    <div
+                      className={`action-btn action-btn-with-count${
+                        likedWatches[w.id] ? " action-btn-liked" : ""
+                      }`}
+                      onClick={(e) => handleLikeClick(e, w.id, w.likes)}
+                    >
+                      {likedWatches[w.id] ? (
+                        <FavoriteIcon sx={{ fontSize: 24, fontWeight: 300 }} />
+                      ) : (
+                        <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                      )}
+                      <span className="action-count">{likeCounts[w.id]}</span>
                     </div>
                     <div className="action-btn action-btn-with-count">
                       <CheckCircleIcon
@@ -207,7 +261,7 @@ const BestSeller = () => {
         </IconButton>
       </Box>
 
-      <Box className="dealers-see-all-wrapper">
+      <Box className="dealers-see-all-wrapper" onClick={handleSeeAllClick} sx={{ cursor: "pointer" }}>
         <Box className="see-all-text">
           See All <ArrowForwardIcon className="see-all-arrow" />
         </Box>

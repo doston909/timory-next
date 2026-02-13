@@ -17,21 +17,12 @@
 @import "/scss/pc/cs/privacy.scss";
 @import "/scss/pc/cs/contact.scss";
 @import "/scss/pc/cs/faq.scss";
+@import "/scss/pc/dark-mode-overrides.scss";
 
 
 #pc-wrap {
   #top {
     .navbar {
-      .head {
-        margin-left: 35px;
-        background-color: red;
-        height: 30px;
-        width: 96%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
       .container {
         background-color: rgb(255, 255, 255);
         height: 100px;
@@ -48,19 +39,19 @@
         &.scrolled {
           position: fixed;
           top: 2%;
-          left: 50%;
-          transform: translateX(-50%);
-          min-width: var(--original-width, auto) !important;
-          max-width: var(--original-width, auto) !important;
-          width: var(--original-width, auto) !important;
-          min-height: var(--original-height, 100px) !important;
-          max-height: var(--original-height, 100px) !important;
-          height: var(--original-height, 100px) !important;
+          left: 0;
+          transform: none;
+          min-width: 100% !important;
+          max-width: 100% !important;
+          width: 100% !important;
+          min-height: var(--original-height, 80px) !important;
+          max-height: var(--original-height, 80px) !important;
+          height: var(--original-height, 80px) !important;
           background-color: rgba(229, 227, 227, 0.85);
-          backdrop-filter: blur(4px);
+          backdrop-filter: blur(3px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.25);
-          border-radius: 18px;
+          border-radius: 68px;
           transition: opacity 0.3s ease, visibility 0.3s ease, top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           box-sizing: border-box;
         }
@@ -98,6 +89,10 @@
 
           .nav-item-wrapper {
             position: relative;
+            
+            &:hover .nav-item {
+              color: #f09620;
+            }
           }
 
           .nav-item {
@@ -111,6 +106,7 @@
             border-radius: 6px;
             transition: all 0.3s ease;
             user-select: none;
+            
 
             span {
               display: inline-block;
@@ -124,13 +120,14 @@
                 left: 0;
                 width: 0;
                 height: 2px;
-                background: #be7003;
+                background: #f09620;
                 transition: width 0.3s ease;
               }
             }
+            
 
             &.active {
-              color: #be7003;
+              color: #f09620;
 
               span::after {
                 width: 100%;

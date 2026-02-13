@@ -1,5 +1,5 @@
 import { Stack, IconButton, Box } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -66,6 +66,8 @@ const STORIES_PER_PAGE = 2;
 
 const WatchStories = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageLoadTime] = useState(() => Date.now());
+  const hasProcessedQuery = useRef(false);
   const totalPages = Math.ceil(watchStories.length / STORIES_PER_PAGE);
   const router = useRouter();
 
@@ -98,9 +100,25 @@ const WatchStories = () => {
   }, [router.query.fromStoryId]);
 
   // Sahifa va kartalar chizilgandan keyin, maqsad kartaga scroll
+  // Faqat navigation bo'lganda, page reload bo'lganida emas
   useEffect(() => {
     const { fromStoryId } = router.query;
-    if (!fromStoryId) return;
+    if (!fromStoryId || hasProcessedQuery.current) return;
+
+    // Birinchi marta processlaymiz
+    hasProcessedQuery.current = true;
+
+    // Agar sahifa yuklanganidan 500ms dan kam vaqt o'tgan bo'lsa, 
+    // bu page reload, scroll qilmaymiz va query ni tozalaymiz
+    const timeSinceLoad = Date.now() - pageLoadTime;
+    if (timeSinceLoad < 500) {
+      // Query parametrni tozalaymiz (shallow routing)
+      const { pathname } = router;
+      const newQuery = { ...router.query };
+      delete newQuery.fromStoryId;
+      router.replace({ pathname, query: newQuery }, undefined, { shallow: true });
+      return;
+    }
 
     const raw = Array.isArray(fromStoryId) ? fromStoryId[0] : fromStoryId;
     const targetId = parseInt(raw as string, 10);
@@ -109,8 +127,13 @@ const WatchStories = () => {
     const el = document.getElementById(`watch-story-card-${targetId}`);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
+      // Scroll qilgandan keyin query parametrni tozalaymiz
+      const { pathname } = router;
+      const newQuery = { ...router.query };
+      delete newQuery.fromStoryId;
+      router.replace({ pathname, query: newQuery }, undefined, { shallow: true });
     }
-  }, [currentPage, router.query.fromStoryId]);
+  }, [currentPage, router.query.fromStoryId, pageLoadTime, router]);
 
   return (
     <Stack id="watch-story-section" className="watch-story-section">

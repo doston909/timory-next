@@ -2,6 +2,39 @@
 @import "variables.scss";
 @import "reset.scss";
 
+/* Global color tokens for light/dark mode */
+:root {
+  /* Backgrounds */
+  --bg-page: #f3f2ef;          /* app background */
+  --bg-section: #ffffff;       /* white sections */
+  --bg-section-alt: #f8f8f8;   /* light gray sections (top dealers, etc.) */
+  --bg-section-soft: #f9f5f5;  /* soft tinted sections (stories) */
+  --bg-ai-section: #faf7f2;    /* AI finder section */
+
+  /* Text */
+  --text-primary: #0a0a0a;
+  --text-heading: #1a1a1a;
+  --text-secondary: #333333;
+  --text-muted: #777777;
+  --text-subtle: #6d6d6d;
+}
+
+.theme-dark {
+  /* Backgrounds */
+  --bg-page: #121212;
+  --bg-section: #1e1e1e;
+  --bg-section-alt: #181818;
+  --bg-section-soft: #181818;
+  --bg-ai-section: #181818;
+
+  /* Text */
+  --text-primary: #e4e4e4;
+  --text-heading: #f3f3f3;
+  --text-secondary: #d0d0d0;
+  --text-muted: #a0a0a0;
+  --text-subtle: #9a9a9a;
+}
+
 /** VERSION: PC **/
 #pc-wrap {
   width: 100%;

@@ -1,4 +1,5 @@
 import { Box, Stack, Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
@@ -7,6 +8,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 
 export interface TopDealerCardProps {
+  id?: number;
   dealerName: string;
   logoUrl: string;
   rating: number;
@@ -23,6 +25,7 @@ export interface TopDealerCardProps {
 }
 
 const TopDealerCard = ({
+  id,
   dealerName,
   logoUrl,
   rating,
@@ -36,8 +39,16 @@ const TopDealerCard = ({
   onViewProfile,
   onContact,
 }: TopDealerCardProps) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    if (id) {
+      router.push(`/dealer/detail?id=${id}`);
+    }
+  };
+
   return (
-    <Box className="top-dealer-card-new">
+    <Box className="top-dealer-card-new" onClick={handleCardClick} sx={{ cursor: "pointer" }}>
       {/* Image Box */}
       <Box className="dealer-image-box">
         <img src={logoUrl} alt={dealerName} className="dealer-image" />

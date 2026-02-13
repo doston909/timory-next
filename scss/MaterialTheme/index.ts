@@ -292,3 +292,104 @@ export const light = {
 
   shadow,
 };
+
+/**
+ *   TIMORY LUXURY DARK THEME
+ *   Same structure as light, dark backgrounds + gold accent
+ */
+export const dark = {
+  palette: {
+    type: "dark",
+    mode: "dark" as const,
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
+    primary: {
+      contrastText: "#121212",
+      main: "#D4AF37", // GOLD
+    },
+    secondary: {
+      main: "#e0e0e0",
+    },
+    text: {
+      primary: "#e4e4e4",
+      secondary: "#b0b0b0",
+      dark: common.white,
+    },
+  },
+
+  typography: light.typography,
+
+  components: {
+    ...light.components,
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: { height: "100%" },
+        body: {
+          background: "#121212",
+          height: "100%",
+          minHeight: "100%",
+        },
+        p: { margin: "0" },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: "#b0b0b0",
+          textDecoration: "none",
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: "rgba(255,255,255,0.12)",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "#e4e4e4",
+          minWidth: "auto",
+          lineHeight: "1.2",
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          height: "48px",
+          width: "100%",
+          backgroundColor: "rgba(255,255,255,0.05)",
+        },
+        notchedOutline: {
+          border: "1px solid rgba(255,255,255,0.23)",
+        },
+      },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          width: "40px",
+          height: "40px",
+          background: "#2a2a2a",
+          color: "#e4e4e4",
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          border: "1px solid rgba(255,255,255,0.23)",
+          color: "#e4e4e4",
+        },
+      },
+    },
+  },
+
+  shadow,
+};

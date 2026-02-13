@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Stack, Box } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularWatchesCard, { PopularWatch } from "./PopularWatchesCard";
@@ -43,6 +44,12 @@ const popularWatches: PopularWatch[] = [
 ];
 
 const PopularWatches = () => {
+  const router = useRouter();
+
+  const handleSeeAllClick = () => {
+    router.push("/watch");
+  };
+
   return (
     <Stack className="popular-watches-section">
       <h2 className="section-title">Our Most Popular Models</h2>
@@ -57,7 +64,7 @@ const PopularWatches = () => {
         )}
       </Box>
 
-      <Box className="dealers-see-all-wrapper">
+      <Box className="dealers-see-all-wrapper" onClick={handleSeeAllClick} sx={{ cursor: "pointer" }}>
         <Box className="see-all-text">
           See All <ArrowForwardIcon className="see-all-arrow" />
         </Box>

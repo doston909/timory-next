@@ -7,7 +7,7 @@ import {
   ShoppingBagOutlined,
   NotificationsNoneOutlined,
   DarkMode,
-  LightModeOutlined,
+  LightMode,
   Language,
   PersonOutline,
   
@@ -16,6 +16,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
+import { useTheme } from "@/libs/context/ThemeContext";
 
 const Top = () => {
   const router = useRouter();
@@ -24,12 +25,11 @@ const Top = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { mode, setMode } = useTheme();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const { cartItems, removeFromCart } = useCart();
+  const { isCartOpen, setIsCartOpen, cartItems, removeFromCart } = useCart();
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -203,11 +203,6 @@ const Top = () => {
   return (
     <>
       <Stack className={"navbar"}>
-        <Stack className={"head"}>
-          <Box component={"div"} className="left">hello</Box>
-          <Box component={"div"} className="main1">hello</Box>
-          <Box component={"div"} className="right">hello</Box>
-        </Stack>
         <Stack 
           className={`container ${isScrolled ? "scrolled" : ""} ${!isVisible ? "hidden" : ""} ${isSliding ? "sliding" : ""}`}
           ref={containerRef}
@@ -293,10 +288,10 @@ const Top = () => {
                   aria-label="Search"
                   onClick={handleSearchToggle}
                   sx={{
-                    color: "#000",
+                    color: mode === "dark" ? "#e4e4e4" : "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#f09620 ",
+                      color: "#f09620",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -310,11 +305,11 @@ const Top = () => {
                   aria-label="Bag"
                   onClick={handleCartToggle}
                   sx={{
-                    color: "#000",
+                    color: mode === "dark" ? "#e4e4e4" : "#000",
                     p: 0,
                     position: "relative",
                     "&:hover": {
-                      color: "#f09620 ",
+                      color: "#f09620",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -350,10 +345,10 @@ const Top = () => {
                   aria-label="Notifications"
                   onClick={handleNotificationToggle}
                   sx={{
-                    color: "#000",
+                    color: mode === "dark" ? "#e4e4e4" : "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#f09620 ",
+                      color: "#f09620",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
@@ -364,19 +359,23 @@ const Top = () => {
 
                 {/* DARK MODE */}
                 <IconButton
-                  aria-label={isDarkMode ? "Light mode" : "Dark mode"}
-                  onClick={() => setIsDarkMode((prev) => !prev)}
+                  aria-label={mode === "dark" ? "Light mode" : "Dark mode"}
+                  onClick={() => setMode((prev) => (prev === "dark" ? "light" : "dark"))}
                   sx={{
-                    color: "#000",
+                    color: mode === "dark" ? "#ffffff" : "#000",
                     p: 0,
                     "&:hover": {
-                      color: "#f09620 ",
+                      color: "#f09620",
                       backgroundColor: "transparent",
                       cursor: "pointer",
                     },
                   }}
                 >
-                  {isDarkMode ? <LightModeOutlined /> : <DarkMode sx={{ color: "#000" }} />}
+                  {mode === "dark" ? (
+                    <LightMode sx={{ color: "inherit" }} />
+                  ) : (
+                    <DarkMode sx={{ color: "inherit" }} />
+                  )}
                 </IconButton>
 
                 {/* LANGUAGE */}
@@ -390,7 +389,7 @@ const Top = () => {
                 >
                   <Language
                     sx={{
-                      color: "#000",
+                      color: mode === "dark" ? "#e4e4e4" : "#000",
                       "&:hover": { color: "#f09620", cursor: "pointer" },
                     }}
                   />
@@ -403,7 +402,7 @@ const Top = () => {
                     aria-label="User"
                     onClick={() => setIsUserMenuOpen((prev) => !prev)}
                     sx={{
-                      color: "#000",
+                      color: mode === "dark" ? "#e4e4e4" : "#000",
                       p: 0,
                       "&:hover": {
                         color: "#f09620",

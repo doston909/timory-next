@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 // 8 dealers data
 const dealersData: TopDealerCardProps[] = [
   {
+    id: 1,
     dealerName: "Swiss Prestige House",
     logoUrl: "/img/agent/dos.png",
     rating: 4.9,
@@ -25,6 +26,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: true,
   },
   {
+    id: 2,
     dealerName: "Lux Time Gallery",
     logoUrl: "/img/agent/dos.png",
     rating: 4.8,
@@ -38,6 +40,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: true,
   },
   {
+    id: 3,
     dealerName: "Tokyo Elite Horology",
     logoUrl: "/img/agent/dos.png",
     rating: 4.7,
@@ -51,6 +54,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: false,
   },
   {
+    id: 4,
     dealerName: "Milano Luxury Trade",
     logoUrl: "/img/agent/dos.png",
     rating: 4.6,
@@ -64,6 +68,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: false,
   },
   {
+    id: 5,
     dealerName: "Berlin Watch Masters",
     logoUrl: "/img/agent/dos.png",
     rating: 4.8,
@@ -77,6 +82,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: true,
   },
   {
+    id: 6,
     dealerName: "London Timepiece",
     logoUrl: "/img/agent/dos.png",
     rating: 4.9,
@@ -90,6 +96,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: true,
   },
   {
+    id: 7,
     dealerName: "Madrid Watch House",
     logoUrl: "/img/agent/dos.png",
     rating: 4.7,
@@ -103,6 +110,7 @@ const dealersData: TopDealerCardProps[] = [
     verified: false,
   },
   {
+    id: 8,
     dealerName: "Warsaw Luxury Watches",
     logoUrl: "/img/agent/dos.png",
     rating: 4.6,
