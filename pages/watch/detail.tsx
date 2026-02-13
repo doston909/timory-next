@@ -16,7 +16,13 @@ import {
 } from "@mui/material";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 import { useCart } from "@/libs/context/CartContext";
+import {
+  getWatchStatus,
+  isWatchDeletedForVisitor,
+} from "@/libs/watchStatusStorage";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { ArrowForward } from "@mui/icons-material";
@@ -32,6 +38,7 @@ import Person from "@mui/icons-material/Person";
 const WatchDetail = () => {
   const device = useDeviceDetect();
   const router = useRouter();
+  const user = useReactiveVar(userVar);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -150,6 +157,12 @@ const WatchDetail = () => {
         ...defaultWatchData,
       };
 
+  const storedStatus = watchId != null ? getWatchStatus(watchId) : undefined;
+  const isDeletedForVisitor =
+    watchId != null && isWatchDeletedForVisitor(watchId, user?._id);
+  const availabilityText =
+    storedStatus?.status === "sold_out" ? "sold out" : String(watch.availability);
+
   // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
@@ -223,6 +236,19 @@ const WatchDetail = () => {
       comments: 17,
     },
   ];
+
+  if (isDeletedForVisitor) {
+    return (
+      <Stack className="watch-detail-page">
+        <Box className="watch-detail-main" sx={{ p: 3, textAlign: "center" }}>
+          <Typography variant="h6">This watch is no longer available.</Typography>
+          <Button onClick={() => router.back()} sx={{ mt: 2 }}>
+            Go back
+          </Button>
+        </Box>
+      </Stack>
+    );
+  }
 
   if (device === "mobile") {
     return <Stack>WATCH DETAIL MOBILE</Stack>;
@@ -308,7 +334,7 @@ const WatchDetail = () => {
             <Box className="detail-item">
               <Typography className="detail-label">Availability:</Typography>
               <Typography className="detail-value availability">
-                {watch.availability}
+                {availabilityText}
               </Typography>
             </Box>{" "}
             <Box className="detail-item">

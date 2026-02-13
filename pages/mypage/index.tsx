@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowUpward, Close, Delete, WatchLaterOutlined, ArrowDropDown } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { useReactiveVar } from "@apollo/client";
 import { useCart } from "@/libs/context/CartContext";
+import { userVar } from "@/apollo/store";
+import {
+  getWatchStatus,
+  setWatchStatus,
+} from "@/libs/watchStatusStorage";
+import {
+  getArticleStatus,
+  setArticleStatus,
+} from "@/libs/articleStatusStorage";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 
 type Watch = {
@@ -137,6 +147,10 @@ const ARTICLES_PER_PAGE = 3;
 const MyPage = () => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const user = useReactiveVar(userVar);
+  const isDealer = true;
+  //const isDealer =  user?.memberType?.toLowerCase() === "dealer";
+
   // Asosiy dealer uchun Follow/Unfollow
   const [isDealerFollowing, setIsDealerFollowing] = useState(false);
   // Followers tab uchun umumiy son (asosiy Follow tugmasiga bog'langan)
@@ -146,6 +160,16 @@ const MyPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Watches");
   const [followersPage, setFollowersPage] = useState(1);
+  const [watchesList, setWatchesList] = useState<Watch[]>(watches);
+
+  useEffect(() => {
+    if (!isDealer && activeTab === "Watches") setActiveTab("Favorites");
+  }, [isDealer, activeTab]);
+
+  const totalPagesWatches = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
+  useEffect(() => {
+    if (currentPage > totalPagesWatches && totalPagesWatches > 0) setCurrentPage(1);
+  }, [watchesList.length, currentPage, totalPagesWatches]);
   // Followers / Followings tablari uchun alohida follow holatlari (tab + id bo'yicha)
   const [followersFollowing, setFollowersFollowing] = useState<{ [key: string]: boolean }>({});
   // Har bir box uchun Followers soni (kalit: "followers-1", "followings-1", ...)
@@ -163,6 +187,21 @@ const MyPage = () => {
     watches.forEach((watch) => {
       initialLikes[watch.id] = watch.likes || 0;
     });
+    // Favorites (101–107) va Recently Visited (201–207) uchun like soni
+    initialLikes[101] = 5;
+    initialLikes[102] = 3;
+    initialLikes[103] = 4;
+    initialLikes[104] = 6;
+    initialLikes[105] = 2;
+    initialLikes[106] = 5;
+    initialLikes[107] = 3;
+    initialLikes[201] = 4;
+    initialLikes[202] = 6;
+    initialLikes[203] = 5;
+    initialLikes[204] = 3;
+    initialLikes[205] = 7;
+    initialLikes[206] = 4;
+    initialLikes[207] = 2;
     return initialLikes;
   });
   // Articles uchun like holati va count
@@ -262,6 +301,76 @@ const MyPage = () => {
       limitedEdition: true,
       watchStatus: true,
     },
+    {
+      id: 103,
+      name: "Favorite Watch 3",
+      image: "/img/watch/rasm3.png",
+      price: "$ 5,800.00",
+      brand: "Rolex",
+      likes: 4,
+      views: 45,
+      comments: 18,
+      datePosted: "2024-01-18 12:00",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
+    {
+      id: 104,
+      name: "Favorite Watch 4",
+      image: "/img/watch/rasm3.png",
+      price: "$ 6,900.00",
+      brand: "Tag Heuer",
+      likes: 6,
+      views: 52,
+      comments: 21,
+      datePosted: "2024-01-17 09:00",
+      status: "Active",
+      limitedEdition: true,
+      watchStatus: true,
+    },
+    {
+      id: 105,
+      name: "Favorite Watch 5",
+      image: "/img/watch/rasm3.png",
+      price: "$ 8,100.00",
+      brand: "IWC",
+      likes: 2,
+      views: 38,
+      comments: 14,
+      datePosted: "2024-01-16 15:30",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
+    {
+      id: 106,
+      name: "Favorite Watch 6",
+      image: "/img/watch/rasm3.png",
+      price: "$ 5,200.00",
+      brand: "Cartier",
+      likes: 5,
+      views: 48,
+      comments: 19,
+      datePosted: "2024-01-15 11:20",
+      status: "Active",
+      limitedEdition: true,
+      watchStatus: false,
+    },
+    {
+      id: 107,
+      name: "Favorite Watch 7",
+      image: "/img/watch/rasm3.png",
+      price: "$ 7,600.00",
+      brand: "Breitling",
+      likes: 3,
+      views: 42,
+      comments: 16,
+      datePosted: "2024-01-14 14:00",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
   ];
 
   const recentlyVisited: Watch[] = [
@@ -293,13 +402,83 @@ const MyPage = () => {
       limitedEdition: true,
       watchStatus: false,
     },
+    {
+      id: 203,
+      name: "Recently Visited Watch 3",
+      image: "/img/watch/rasm3.png",
+      price: "$ 6,200.00",
+      brand: "Patek Philippe",
+      likes: 5,
+      views: 55,
+      comments: 22,
+      datePosted: "2024-01-19 11:00",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
+    {
+      id: 204,
+      name: "Recently Visited Watch 4",
+      image: "/img/watch/rasm3.png",
+      price: "$ 9,100.00",
+      brand: "Audemars Piguet",
+      likes: 3,
+      views: 62,
+      comments: 28,
+      datePosted: "2024-01-18 13:45",
+      status: "Active",
+      limitedEdition: true,
+      watchStatus: true,
+    },
+    {
+      id: 205,
+      name: "Recently Visited Watch 5",
+      image: "/img/watch/rasm3.png",
+      price: "$ 5,400.00",
+      brand: "Omega",
+      likes: 7,
+      views: 58,
+      comments: 24,
+      datePosted: "2024-01-17 10:30",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
+    {
+      id: 206,
+      name: "Recently Visited Watch 6",
+      image: "/img/watch/rasm3.png",
+      price: "$ 7,800.00",
+      brand: "Rolex",
+      likes: 4,
+      views: 65,
+      comments: 26,
+      datePosted: "2024-01-16 16:00",
+      status: "Active",
+      limitedEdition: true,
+      watchStatus: false,
+    },
+    {
+      id: 207,
+      name: "Recently Visited Watch 7",
+      image: "/img/watch/rasm3.png",
+      price: "$ 6,600.00",
+      brand: "Tag Heuer",
+      likes: 2,
+      views: 44,
+      comments: 20,
+      datePosted: "2024-01-15 09:15",
+      status: "Active",
+      limitedEdition: false,
+      watchStatus: true,
+    },
   ];
 
-  const totalPages = Math.ceil(watches.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
   const totalFavoritesPages = Math.ceil(favorites.length / ITEMS_PER_PAGE);
   const totalRecentlyVisitedPages = Math.ceil(recentlyVisited.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentWatches = watches.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentWatches = watchesList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const favoritesStartIndex = (favoritesPage - 1) * ITEMS_PER_PAGE;
   const currentFavorites = favorites.slice(favoritesStartIndex, favoritesStartIndex + ITEMS_PER_PAGE);
@@ -388,12 +567,17 @@ const MyPage = () => {
     },
   ];
 
-  const totalArticlePages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const [articlesList, setArticlesList] = useState(articles);
+  const totalArticlePages = Math.ceil(articlesList.length / ARTICLES_PER_PAGE);
   const articleStartIndex = (articlePage - 1) * ARTICLES_PER_PAGE;
-  const currentArticles = articles.slice(
+  const currentArticles = articlesList.slice(
     articleStartIndex,
     articleStartIndex + ARTICLES_PER_PAGE
   );
+
+  useEffect(() => {
+    if (articlePage > totalArticlePages && totalArticlePages > 0) setArticlePage(1);
+  }, [articlesList.length, articlePage, totalArticlePages]);
 
   const getArticleExcerpt = (content: string, wordLimit = 18) => {
     const words = content.split(/\s+/);
@@ -490,7 +674,7 @@ const MyPage = () => {
                   {displayProfile.email}
                 </Typography>
               )}
-              <Typography className="mypage-profile-role">Dealer</Typography>
+              <Typography className="mypage-profile-role">{isDealer ? "Dealer" : "User"}</Typography>
             </Box>
           </Box>
 
@@ -515,12 +699,14 @@ const MyPage = () => {
       </Box>
 
       <Box className="mypage-tabs">
-        <Box
-          className={`mypage-tab${activeTab === "Watches" ? " mypage-tab-active" : ""}`}
-          onClick={() => setActiveTab("Watches")}
-        >
-          Watches ({watches.length})
-        </Box>
+        {isDealer && (
+          <Box
+            className={`mypage-tab${activeTab === "Watches" ? " mypage-tab-active" : ""}`}
+            onClick={() => setActiveTab("Watches")}
+          >
+            Watches ({watchesList.length})
+          </Box>
+        )}
         <Box
           className={`mypage-tab${activeTab === "Favorites" ? " mypage-tab-active" : ""}`}
           onClick={() => setActiveTab("Favorites")}
@@ -549,11 +735,11 @@ const MyPage = () => {
           className={`mypage-tab${activeTab === "Articles" ? " mypage-tab-active" : ""}`}
           onClick={() => setActiveTab("Articles")}
         >
-          Articles ({articles.length})
+          Articles ({articlesList.length})
         </Box>
       </Box>
 
-      {activeTab === "Watches" && (
+      {isDealer && activeTab === "Watches" && (
         <Box className="mypage-watches-container">
           <Box className="mypage-watches-header">
             <Typography className="mypage-watches-container-title">Watches</Typography>
@@ -566,7 +752,7 @@ const MyPage = () => {
               + Add Watch
             </Button>
           </Box>
-          {watches.length === 0 ? (
+          {watchesList.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               The dealer did not load the watch...
             </Typography>
@@ -642,15 +828,64 @@ const MyPage = () => {
                           {watch.datePosted}
                         </Typography>
                       )}
-                      {watch.watchStatus !== undefined && (
-                        <Typography
-                          className={`mypage-watch-item-status${
-                            !watch.watchStatus ? " mypage-watch-item-status-sold-out" : ""
+                      <Box className="mypage-watch-status-control">
+                        <select
+                          className={`mypage-watch-status-select${
+                            getWatchStatus(watch.id)?.status === "deleted"
+                              ? " mypage-watch-item-status-deleted"
+                              : watch.watchStatus === false
+                                ? " mypage-watch-item-status-sold-out"
+                                : ""
                           }`}
+                          value={
+                            getWatchStatus(watch.id)?.status === "deleted"
+                              ? "delete"
+                              : watch.watchStatus === true
+                                ? "on_sale"
+                                : watch.watchStatus === false
+                                  ? "sold_out"
+                                  : "on_sale"
+                          }
+                          onChange={(e) => {
+                            const v = e.target.value;
+
+                            // DELETE = soft delete:
+                            //  - faqat shu dealer pagedagi Watches da ko'rinadi
+                            //  - boshqa joylarda (watch/detail, listlar) ko'rinmaydi
+                            if (v === "delete") {
+                              setWatchStatus(watch.id, "deleted", user?._id);
+                              setWatchesList((prev) => [...prev]); // re-render so select shows "delete"
+                              return;
+                            }
+
+                            // REMOVE = hard delete:
+                            //  - dealer pagedagi Watches ro'yxatidan ham o'chib ketadi
+                            //  - boshqa joylarda ham ko'rinmaydi
+                            if (v === "remove") {
+                              setWatchesList((prev) => prev.filter((w) => w.id !== watch.id));
+                              setWatchStatus(watch.id, "removed", user?._id);
+                              return;
+                            }
+
+                            if (v === "on_sale") {
+                              setWatchesList((prev) =>
+                                prev.map((w) => (w.id === watch.id ? { ...w, watchStatus: true } : w))
+                              );
+                              setWatchStatus(watch.id, "on_sale");
+                            } else {
+                              setWatchesList((prev) =>
+                                prev.map((w) => (w.id === watch.id ? { ...w, watchStatus: false } : w))
+                              );
+                              setWatchStatus(watch.id, "sold_out");
+                            }
+                          }}
                         >
-                          {watch.watchStatus ? "on sale" : "sold out"}
-                        </Typography>
-                      )}
+                          <option value="on_sale">ON SALE</option>
+                          <option value="sold_out">SOLD OUT</option>
+                          <option value="delete">DELETE</option>
+                          <option value="remove">REMOVE</option>
+                        </select>
+                      </Box>
                     </Box>
                   </Box>
                 ))}
@@ -1115,7 +1350,7 @@ const MyPage = () => {
             </Button>
           </Box>
           <Box className="mypage-articles-box">
-            {articles.length === 0 ? (
+            {articlesList.length === 0 ? (
               <Typography className="mypage-watches-empty-message">
                 The dealer did not load the article...
               </Typography>
@@ -1134,7 +1369,11 @@ const MyPage = () => {
                       </Box>
 
                       <Box className="mypage-article-body">
-                        <Box className="mypage-article-title">
+                        <Box
+                          className="mypage-article-title"
+                          onClick={() => router.push(`/community/detail?id=${article.id}`)}
+                          sx={{ cursor: "pointer" }}
+                        >
                           <Typography className="mypage-article-title-text">
                             {article.title}
                           </Typography>
@@ -1146,43 +1385,81 @@ const MyPage = () => {
                         </Box>
 
                         <Box className="mypage-article-actions">
-                          <Box className="mypage-article-read-more">
+                          <Box
+                            className="mypage-article-read-more"
+                            onClick={() => router.push(`/community/detail?id=${article.id}`)}
+                          >
                             <Typography className="mypage-article-read-more-text">
                               Read more
                             </Typography>
                             <ArrowForwardIos className="mypage-article-read-more-arrow" />
                           </Box>
-                          <Box className="mypage-article-actions-right">
-                            <Box className="mypage-article-action">
-                              <VisibilityOutlined
-                                sx={{ fontSize: 22, color: "#000000" }}
-                              />
-                              {article.views !== undefined && (
-                                <Typography className="mypage-article-action-count">
-                                  {article.views}
-                                </Typography>
-                              )}
-                            </Box>
-                            <Box
-                              className="mypage-article-action"
-                              onClick={() =>
-                                handleArticleLikeClick(article.id)
-                              }
-                            >
-                              {articleLiked[article.id] ? (
-                                <Favorite
-                                  sx={{ fontSize: 22, color: "#f09620" }}
-                                />
-                              ) : (
-                                <FavoriteBorder
+                          <Box className="mypage-article-actions-right-column">
+                            <Box className="mypage-article-actions-right">
+                              <Box className="mypage-article-action">
+                                <VisibilityOutlined
                                   sx={{ fontSize: 22, color: "#000000" }}
                                 />
-                              )}
-                              <Typography className="mypage-article-action-count">
-                                {articleLikes[article.id] ??
-                                  article.likes ??
-                                  0}
-                              </Typography>
+                                {article.views !== undefined && (
+                                  <Typography className="mypage-article-action-count">
+                                    {article.views}
+                                  </Typography>
+                                )}
+                              </Box>
+                              <Box
+                                className="mypage-article-action"
+                                onClick={() =>
+                                  handleArticleLikeClick(article.id)
+                                }
+                              >
+                                {articleLiked[article.id] ? (
+                                  <Favorite
+                                    sx={{ fontSize: 22, color: "#f09620" }}
+                                  />
+                                ) : (
+                                  <FavoriteBorder
+                                    sx={{ fontSize: 22, color: "#000000" }}
+                                  />
+                                )}
+                                <Typography className="mypage-article-action-count">
+                                  {articleLikes[article.id] ??
+                                    article.likes ??
+                                    0}
+                                </Typography>
+                              </Box>
+                            </Box>
+                            <Box className="mypage-article-status-control">
+                              <select
+                                className={`mypage-article-status-select${
+                                  getArticleStatus(article.id)?.status === "deleted"
+                                    ? " mypage-article-status-deleted"
+                                    : ""
+                                }`}
+                                value={
+                                  getArticleStatus(article.id)?.status === "deleted"
+                                    ? "delete"
+                                    : "publishing"
+                                }
+                                onChange={(e) => {
+                                  const v = e.target.value;
+                                  if (v === "delete") {
+                                    setArticleStatus(article.id, "deleted", user?._id);
+                                    setArticlesList((prev) => [...prev]);
+                                    return;
+                                  }
+                                  if (v === "remove") {
+                                    setArticlesList((prev) => prev.filter((a) => a.id !== article.id));
+                                    setArticleStatus(article.id, "removed", user?._id);
+                                    return;
+                                  }
+                                  setArticleStatus(article.id, "publishing");
+                                  setArticlesList((prev) => [...prev]);
+                                }}
+                              >
+                                <option value="publishing">Publishing</option>
+                                <option value="delete">Delete</option>
+                                <option value="remove">Remove</option>
+                              </select>
                             </Box>
                           </Box>
                         </Box>
