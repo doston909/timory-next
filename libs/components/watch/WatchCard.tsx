@@ -1,21 +1,29 @@
 import { Box, Stack, Typography, IconButton } from "@mui/material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useCart } from "@/libs/context/CartContext";
 
 interface Watch {
   id: number;
   name: string;
   price: string;
   image: string;
+  brand?: string;
+  type?: string;
+  caseSize?: string;
+  dialColor?: string;
+  material?: string;
   likes?: number;
   views?: number;
   comments?: number;
+  limitedEdition?: boolean;
 }
 
 interface WatchCardProps {
@@ -24,6 +32,9 @@ interface WatchCardProps {
 
 const WatchCard = ({ watch }: WatchCardProps) => {
   const router = useRouter();
+  const { addToCart } = useCart();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(watch.likes ?? 0);
 
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
@@ -52,6 +63,30 @@ const WatchCard = ({ watch }: WatchCardProps) => {
     e.stopPropagation();
   };
 
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked((prev) => {
+      const next = !prev;
+      setLikeCount((count) =>
+        next ? count + 1 : Math.max((watch.likes ?? 0), count - 1)
+      );
+      return next;
+    });
+  };
+
+  const handleBagClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      id: watch.id,
+      name: watch.name,
+      model: watch.name,
+      brand: watch.brand || "",
+      price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "") || "0"),
+      image: watch.image,
+      quantity: 1,
+    });
+  };
+
   const handleCardClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -65,6 +100,28 @@ const WatchCard = ({ watch }: WatchCardProps) => {
   return (
     <Box className="watch-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <Box className="watch-image-box">
+        {/* Limited Edition Badge */}
+        {watch.limitedEdition && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 10,
+              left: 10,
+              backgroundColor: '#f09620',
+              color: '#ffffff',
+              padding: '4px 10px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: 600,
+              zIndex: 10,
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+            }}
+          >
+            Limited Edition
+          </Box>
+        )}
+        
         <img 
           src={images[currentImageIndex]} 
           alt={watch.name} 
@@ -74,14 +131,23 @@ const WatchCard = ({ watch }: WatchCardProps) => {
         
         {/* 👉 HOVER ICON ACTIONS */}
         <div className="watch-actions" onClick={handleActionClick}>
-          <div className="action-btn">
+          <div className="action-btn" onClick={handleBagClick}>
             <ShoppingBagOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
             />
           </div>
-          <div className="action-btn action-btn-with-count">
-            <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
-            {watch.likes && <span className="action-count">{watch.likes}</span>}
+          <div 
+            className={`action-btn action-btn-with-count${
+              isLiked ? " action-btn-liked" : ""
+            }`}
+            onClick={handleLikeClick}
+          >
+            {isLiked ? (
+              <FavoriteIcon sx={{ fontSize: 24, fontWeight: 300 }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+            )}
+            {likeCount > 0 && <span className="action-count">{likeCount}</span>}
           </div>
           <div className="action-btn action-btn-with-count">
             <VisibilityOutlinedIcon
@@ -118,7 +184,9 @@ const WatchCard = ({ watch }: WatchCardProps) => {
         )}
       </Box>
       <Stack className="watch-info">
-        <Typography className="watch-name" style={{ pointerEvents: 'none' }}>{watch.name}</Typography>
+        <Typography className="watch-name" style={{ pointerEvents: 'none' }}>
+          {watch.name}
+        </Typography>
         <Typography className="watch-price" style={{ pointerEvents: 'none' }}>{watch.price}</Typography>
       </Stack>
     </Box>

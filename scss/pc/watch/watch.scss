@@ -396,6 +396,18 @@
             text-align: center;
           }
         }
+
+        &.action-btn-liked {
+          background: #6b5a51;
+
+          svg {
+            color: #e5c8a3;
+
+            path {
+              fill-opacity: 1;
+            }
+          }
+        }
       }
 
       &:hover .watch-image {
@@ -882,6 +894,18 @@
   :global(.sort-select-menu) {
     :global(.MuiMenuItem-root) {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      
+      &:hover {
+        background-color: #bf2e2e !important;
+      }
+      
+      &:global(.Mui-selected) {
+        background-color: #2b2b2b !important;
+        
+        &:hover {
+          background-color: #d0d0d0 !important;
+        }
+      }
     }
   }
 

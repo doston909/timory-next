@@ -17,9 +17,16 @@ interface Watch {
   name: string;
   price: string;
   image: string;
+  brand?: string;
+  type?: string;
+  caseSize?: string;
+  dialColor?: string;
+  material?: string;
   likes?: number;
   views?: number;
   comments?: number;
+  createdAt?: string;
+  limitedEdition?: boolean;
 }
 
 const watches: Watch[] = [
@@ -28,135 +35,240 @@ const watches: Watch[] = [
     name: "Analog Strap Watch",
     price: "$ 4,500.00",
     image: "/img/watch/rasm1.png",
+    brand: "Rolex",
+    type: "Men",
+    caseSize: "41–44mm",
+    dialColor: "Black",
+    material: "Stainless Steel",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-01-10T10:00:00Z",
+    limitedEdition: false,
   },
   {
     id: 2,
     name: "Black Dail Strap",
     price: "$ 2,500.00",
     image: "/img/watch/rasm2.png",
+    brand: "Omega",
+    type: "Women",
+    caseSize: "28–32mm",
+    dialColor: "White",
+    material: "Leather",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-01-15T14:30:00Z",
+    limitedEdition: true,
   },
   {
     id: 3,
     name: "Black Dial Classic",
     price: "$ 3,326.00",
     image: "/img/watch/rasm3.png",
+    brand: "Patek Philippe",
+    type: "Men",
+    caseSize: "37–40mm",
+    dialColor: "Black",
+    material: "Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-01-20T09:15:00Z",
+    limitedEdition: false,
   },
   {
     id: 4,
     name: "Rose Gold Mesh",
     price: "$ 5,200.00",
     image: "/img/watch/rasmm.png",
+    brand: "Rolex",
+    type: "Women",
+    caseSize: "33–36mm",
+    dialColor: "Silver",
+    material: "Rose Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-01-25T16:45:00Z",
+    limitedEdition: true,
   },
   {
     id: 5,
     name: "Chronograph Brown",
     price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
+    brand: "Tag Heuer",
+    type: "Sport",
+    caseSize: "45mm+",
+    dialColor: "Brown",
+    material: "Titanium",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-01T11:20:00Z",
+    limitedEdition: false,
   },
   {
     id: 6,
     name: "Classic Gold",
     price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
+    brand: "Omega",
+    type: "Unisex",
+    caseSize: "37–40mm",
+    dialColor: "Gold",
+    material: "Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-05T13:00:00Z",
+    limitedEdition: true,
   },
    {
     id: 7,
     name: "Chronograph Brown",
     price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
+    brand: "Breitling",
+    type: "Men",
+    caseSize: "41–44mm",
+    dialColor: "Blue",
+    material: "Ceramic",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-08T10:30:00Z",
+    limitedEdition: false,
   },
   {
     id: 8,
     name: "Classic Gold",
     price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
+    brand: "Cartier",
+    type: "Women",
+    caseSize: "28–32mm",
+    dialColor: "White",
+    material: "Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-10T15:00:00Z",
+    limitedEdition: true,
   },
    {
     id: 9,
     name: "Classic Gold",
     price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
+    brand: "Rolex",
+    type: "Unisex",
+    caseSize: "37–40mm",
+    dialColor: "Green",
+    material: "Stainless Steel",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-12T08:45:00Z",
+    limitedEdition: false,
   },
    {
     id: 10,
     name: "Analog Strap Watch",
     price: "$ 4,500.00",
     image: "/img/watch/rasm1.png",
+    brand: "IWC",
+    type: "Sport",
+    caseSize: "45mm+",
+    dialColor: "Black",
+    material: "Carbon",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-13T12:00:00Z",
+    limitedEdition: true,
   },
   {
     id: 11,
     name: "Black Dail Strap",
     price: "$ 2,500.00",
     image: "/img/watch/rasm2.png",
+    brand: "Seiko",
+    type: "Men",
+    caseSize: "37–40mm",
+    dialColor: "Blue",
+    material: "Rubber",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-14T09:30:00Z",
+    limitedEdition: false,
   },
   {
     id: 12,
     name: "Black Dial Classic",
     price: "$ 3,326.00",
     image: "/img/watch/rasm3.png",
+    brand: "Tudor",
+    type: "Women",
+    caseSize: "33–36mm",
+    dialColor: "Silver",
+    material: "Rose Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-15T14:15:00Z",
+    limitedEdition: true,
   },
   {
     id: 13,
     name: "Rose Gold Mesh",
     price: "$ 5,200.00",
     image: "/img/watch/rasmm.png",
+    brand: "Panerai",
+    type: "Men",
+    caseSize: "45mm+",
+    dialColor: "Skeleton",
+    material: "Titanium",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-16T11:00:00Z",
+    limitedEdition: false,
   },
   {
     id: 14,
     name: "Chronograph Brown",
     price: "$ 6,800.00",
     image: "/img/watch/rasmm2.png",
+    brand: "Hublot",
+    type: "Sport",
+    caseSize: "41–44mm",
+    dialColor: "Brown",
+    material: "Ceramic",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-17T16:30:00Z",
+    limitedEdition: true,
   },
   {
     id: 15,
     name: "Classic Gold",
     price: "$ 4,100.00",
     image: "/img/watch/rasm3.png",
+    brand: "Audemars Piguet",
+    type: "Unisex",
+    caseSize: "37–40mm",
+    dialColor: "Gold",
+    material: "Gold",
     likes: 2,
     views: 35,
     comments: 17,
+    createdAt: "2024-02-18T10:00:00Z",
+    limitedEdition: false,
   },
   
    
@@ -165,15 +277,92 @@ const watches: Watch[] = [
 
 const WatchList: NextPage = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState("featured");
+  const [sortBy, setSortBy] = useState("newest");
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedDialColors, setSelectedDialColors] = useState<string[]>([]);
+  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [watchPrice, setWatchPrice] = useState({
+    start: 0,
+    end: 10000000,
+  });
+  
+  // Search orqali filter qilingan watchlar
+  const searchedWatches = searchText.trim()
+    ? watches.filter((watch) =>
+        watch.name.toLowerCase().includes(searchText.toLowerCase().trim())
+      )
+    : watches;
+  
+  // Brand filter
+  const brandFiltered = selectedBrands.length > 0
+    ? searchedWatches.filter((watch) => selectedBrands.includes(watch.brand || ""))
+    : searchedWatches;
+  
+  // Type filter
+  const typeFiltered = selectedTypes.length > 0
+    ? brandFiltered.filter((watch) => selectedTypes.includes(watch.type || ""))
+    : brandFiltered;
+  
+  // Case Size filter
+  const sizeFiltered = selectedSizes.length > 0
+    ? typeFiltered.filter((watch) => selectedSizes.includes(watch.caseSize || ""))
+    : typeFiltered;
+  
+  // Dial Color filter
+  const colorFiltered = selectedDialColors.length > 0
+    ? sizeFiltered.filter((watch) => selectedDialColors.includes(watch.dialColor || ""))
+    : sizeFiltered;
+  
+  // Material filter
+  const materialFiltered = selectedMaterials.length > 0
+    ? colorFiltered.filter((watch) => selectedMaterials.includes(watch.material || ""))
+    : colorFiltered;
+  
+  // Price Range filter
+  const priceFiltered = materialFiltered.filter((watch) => {
+    const price = parseFloat(watch.price.replace(/[^0-9.-]+/g, ""));
+    return price >= watchPrice.start && price <= watchPrice.end;
+  });
+  
+  // Limited Edition filter
+  const filteredByType = sortBy === "limited-editions"
+    ? priceFiltered.filter((watch) => watch.limitedEdition === true)
+    : priceFiltered;
+  
+  // Sort qilish
+  const filteredWatches = [...filteredByType].sort((a, b) => {
+    if (sortBy === "price-asc") {
+      const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g, ""));
+      const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g, ""));
+      return priceA - priceB;
+    }
+    if (sortBy === "price-desc") {
+      const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g, ""));
+      const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g, ""));
+      return priceB - priceA;
+    }
+    if (sortBy === "newest") {
+      const dateA = new Date(a.createdAt || "2024-01-01").getTime();
+      const dateB = new Date(b.createdAt || "2024-01-01").getTime();
+      return dateB - dateA; // Eng yangilarni birinchi
+    }
+    return 0; // Default - o'zgartirmaslik
+  });
   
   const itemsPerPage = viewMode === "list" ? 6 : 9; // List view'da 6 ta, Grid view'da 9 ta
-  const totalPages = Math.ceil(watches.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredWatches.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentWatches = watches.slice(startIndex, endIndex);
+  const currentWatches = filteredWatches.slice(startIndex, endIndex);
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1); // Search qilganda birinchi sahifaga qaytamiz
+  };
 
   return (
     <>
@@ -184,7 +373,20 @@ const WatchList: NextPage = () => {
             <Box className="watch-list-content">
               {/* Left Side - Filter */}
               <Box className="watch-filter-sidebar">
-                <Filter />
+                <Filter 
+                  selectedBrands={selectedBrands}
+                  setSelectedBrands={setSelectedBrands}
+                  selectedTypes={selectedTypes}
+                  setSelectedTypes={setSelectedTypes}
+                  selectedSizes={selectedSizes}
+                  setSelectedSizes={setSelectedSizes}
+                  selectedDialColors={selectedDialColors}
+                  setSelectedDialColors={setSelectedDialColors}
+                  selectedMaterials={selectedMaterials}
+                  setSelectedMaterials={setSelectedMaterials}
+                  watchPrice={watchPrice}
+                  setWatchPrice={setWatchPrice}
+                />
               </Box>
 
               {/* Right Side - Watch Grid */}
@@ -216,37 +418,50 @@ const WatchList: NextPage = () => {
                  
                   <Box className="filter-dropdown">
                     <span className="filter-label"></span>
-                    <OutlinedInput
-                      value={searchText}
-                      type={"text"}
-                      className={"filter-search-input"}
-                      placeholder={"Search..."}
-                      onChange={(e: any) => setSearchText(e.target.value)}
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <SearchIcon sx={{ fontSize: 24, color: "#000000ff" }} />
-                        </InputAdornment>
-                      }
-                      endAdornment={
-                        searchText && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => setSearchText("")}
-                              edge="end"
-                              sx={{
-                                padding: "4px",
-                                color: "#666666",
-                                "&:hover": {
-                                  color: "#000000",
-                                },
-                              }}
-                            >
-                              <CloseIcon sx={{ fontSize: 20 }} />
-                            </IconButton>
+                    <form onSubmit={handleSearch} style={{ width: "100%" }}>
+                      <OutlinedInput
+                        value={searchText}
+                        type={"text"}
+                        className={"filter-search-input"}
+                        placeholder={"Search..."}
+                        onChange={(e: any) => {
+                          setSearchText(e.target.value);
+                          setCurrentPage(1); // Search qilganda birinchi sahifaga qaytamiz
+                        }}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            handleSearch(e);
+                          }
+                        }}
+                        startAdornment={
+                          <InputAdornment position="start">
+                            <SearchIcon sx={{ fontSize: 24, color: "rgb(141, 141, 141)" }} />
                           </InputAdornment>
-                        )
-                      }
-                    />
+                        }
+                        endAdornment={
+                          searchText && (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => {
+                                  setSearchText("");
+                                  setCurrentPage(1);
+                                }}
+                                edge="end"
+                                sx={{
+                                  padding: "4px",
+                                  color: "#666666",
+                                  "&:hover": {
+                                    color: "#000000",
+                                  },
+                                }}
+                              >
+                                <CloseIcon sx={{ fontSize: 20 }} />
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }
+                      />
+                    </form>
                   </Box>
 
                   {/* Sort Dropdown */}
@@ -262,15 +477,23 @@ const WatchList: NextPage = () => {
                           sx: {
                             '& .MuiMenuItem-root': {
                               fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                              '&:hover': {
+                                backgroundColor: '#f5f5f5',
+                              },
+                              '&.Mui-selected': {
+                                backgroundColor: '#c1c1c1',
+                                '&:hover': {
+                                  backgroundColor: '#c7bdbd',
+                                }
+                              }
                             }
                           }
                         }
                       }}
                     >
-                      <MenuItem value="featured">Featured</MenuItem>
+                      <MenuItem value="newest">Newest</MenuItem>
                       <MenuItem value="price-asc">Price: Low to High</MenuItem>
                       <MenuItem value="price-desc">Price: High to Low</MenuItem>
-                      <MenuItem value="newest">Newest</MenuItem>
                       <MenuItem value="limited-editions">Limited Editions</MenuItem>
                     </Select>
                   </Box>
@@ -285,7 +508,12 @@ const WatchList: NextPage = () => {
                   </Box>
                 ) : (
                   <Box className="watch-not-found">
-                    <Typography className="not-found-text">Watch Not Found</Typography>
+                    <Typography className="not-found-text">
+                      {searchText.trim() 
+                        ? `No results found for "${searchText}"`
+                        : "Watch Not Found"
+                      }
+                    </Typography>
                   </Box>
                 )}
 

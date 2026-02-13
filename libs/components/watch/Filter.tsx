@@ -66,17 +66,35 @@ const brands = [
   "Seiko",
 ];
 
-const Filter = () => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedDialColors, setSelectedDialColors] = useState<string[]>([]);
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+interface FilterProps {
+  selectedBrands: string[];
+  setSelectedBrands: (brands: string[]) => void;
+  selectedTypes: string[];
+  setSelectedTypes: (types: string[]) => void;
+  selectedSizes: string[];
+  setSelectedSizes: (sizes: string[]) => void;
+  selectedDialColors: string[];
+  setSelectedDialColors: (colors: string[]) => void;
+  selectedMaterials: string[];
+  setSelectedMaterials: (materials: string[]) => void;
+  watchPrice: { start: number; end: number };
+  setWatchPrice: (price: { start: number; end: number }) => void;
+}
 
-  const [watchPrice, setWatchPrice] = useState({
-    start: 0,
-    end: priceRanges[priceRanges.length - 1], // Doim oxirgi narx
-  });
+const Filter = ({ 
+  selectedBrands, 
+  setSelectedBrands, 
+  selectedTypes, 
+  setSelectedTypes,
+  selectedSizes,
+  setSelectedSizes,
+  selectedDialColors,
+  setSelectedDialColors,
+  selectedMaterials,
+  setSelectedMaterials,
+  watchPrice,
+  setWatchPrice
+}: FilterProps) => {
 
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
