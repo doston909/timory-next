@@ -137,7 +137,18 @@ const CommunityDetail: NextPage = () => {
     const text = newCommentText.trim();
     if (!text) return;
     if (editingCommentId !== null) {
-      setEditedCommentTexts((prev) => ({ ...prev, [editingCommentId]: text }));
+      const baseCommentsList = communityComments.slice(0, article?.comments ?? 0);
+      const comment = [...baseCommentsList, ...extraComments].find((c) => c.id === editingCommentId);
+      const originalText = comment?.text ?? "";
+      if (text !== originalText) {
+        setEditedCommentTexts((prev) => ({ ...prev, [editingCommentId]: text }));
+      } else {
+        setEditedCommentTexts((prev) => {
+          const next = { ...prev };
+          delete next[editingCommentId];
+          return next;
+        });
+      }
       setExtraComments((prev) =>
         prev.map((c) => (c.id === editingCommentId ? { ...c, text } : c))
       );
@@ -306,7 +317,7 @@ const CommunityDetail: NextPage = () => {
                             </Typography>
                           </Box>
                         </Box>
-                        {editingCommentId !== comment.id && (
+                        {editingCommentId !== comment.id && comment.author === "You" && (
                           <IconButton
                             className="comment-more-btn"
                             size="small"

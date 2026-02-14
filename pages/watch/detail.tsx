@@ -144,7 +144,18 @@ const WatchDetail = () => {
     const text = newReviewText.trim();
     if (!text) return;
     if (editingReviewId !== null) {
-      setEditedReviewTexts((prev) => ({ ...prev, [editingReviewId]: text }));
+      const allReviewsList = [...baseReviews, ...extraReviews].filter((r) => !deletedReviewIds.includes(r.id));
+      const review = allReviewsList.find((r) => r.id === editingReviewId);
+      const originalText = review?.text ?? "";
+      if (text !== originalText) {
+        setEditedReviewTexts((prev) => ({ ...prev, [editingReviewId]: text }));
+      } else {
+        setEditedReviewTexts((prev) => {
+          const next = { ...prev };
+          delete next[editingReviewId];
+          return next;
+        });
+      }
       setExtraReviews((prev) =>
         prev.map((r) => (r.id === editingReviewId ? { ...r, text } : r))
       );
@@ -702,7 +713,7 @@ const WatchDetail = () => {
                               </Typography>
                             </Box>
                           </Box>
-                          {editingReviewId !== review.id && (
+                          {editingReviewId !== review.id && review.author === "You" && (
                             <IconButton
                               className="review-more-btn"
                               size="small"
@@ -843,7 +854,7 @@ const WatchDetail = () => {
                 />
                 <Box className="review-submit-wrapper">
                   <Button className="review-submit-btn" onClick={handleSubmitReview}>
-                    Post review
+                    Post comment
                     <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                   </Button>
                 </Box>
