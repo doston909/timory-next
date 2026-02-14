@@ -6,6 +6,7 @@ import { light, dark } from "../scss/MaterialTheme";
 import { useState, useEffect, useMemo } from "react";
 
 import ScrollToTop from "@/libs/components/ScrollTotop";
+import Chat from "@/libs/components/Chat";
 import { CartProvider } from "@/libs/context/CartContext";
 import {
   ThemeContext,
@@ -49,6 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <CartProvider>
             <Component {...pageProps} />
             <ScrollToTop />
+            <Chat />
           </CartProvider>
         </ThemeProvider>
       </ThemeContext.Provider>
