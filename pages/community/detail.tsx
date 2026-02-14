@@ -1,12 +1,14 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import { communityComments, communityCommentsCount } from "@/libs/data/communityComments";
-import { Stack, Box, Typography, TextField, Button } from "@mui/material";
+import { communityComments } from "@/libs/data/communityComments";
+import { Stack, Box, Typography, TextField, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { NextPage } from "next";
-import { CalendarToday, Comment, Person, ArrowForward} from "@mui/icons-material";
+import { CalendarToday, Comment, Person, ArrowForward } from "@mui/icons-material";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ReplyIcon from "@mui/icons-material/Reply";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import Close from "@mui/icons-material/Close";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 
@@ -19,7 +21,7 @@ const articles = [
       
       memberType: "Admin",
       date: "May 30, 2022",
-      comments: 1,
+      comments: 10,
       title: "How to build watches by machine",
       content: `Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque facilisis. Nam convallis pellentesque nisl. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. Morbi in dui quis est pulvinar ullamcorper. Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque facilisis. Nam convallis pellentesque nisl. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. Morbi in dui quis est pulvinar ullamcorper.
       Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque facilisis. Nam convallis pellentesque nisl. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. Morbi in dui quis est pulvinar ullamcorper.`,
@@ -82,17 +84,78 @@ const CommunityDetail: NextPage = () => {
   const [article, setArticle] = useState<any>(null);
   const [likedComments, setLikedComments] = useState<number[]>([]);
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
+  const [newCommentText, setNewCommentText] = useState("");
+  const [extraComments, setExtraComments] = useState<{ id: number; date: string; author: string; text: string }[]>([]);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [openMenuCommentId, setOpenMenuCommentId] = useState<number | null>(null);
+  const [deletedCommentIds, setDeletedCommentIds] = useState<number[]>([]);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editedCommentTexts, setEditedCommentTexts] = useState<Record<number, string>>({});
 
   // Refs for dynamic height calculation - HOOKS TEPADA BO'LISHI KERAK
   const commentsListRef = useRef<HTMLDivElement>(null);
   const commentItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Comments data (source of truth)
-  const comments = communityComments;
+  // Comments: article.comments dan + yangi qo'shilganlar (o'chirilganlarsiz)
+  const baseComments = communityComments.slice(0, article?.comments ?? 0);
+  const allComments = [...baseComments, ...extraComments].filter((c) => !deletedCommentIds.includes(c.id));
+  const sortedComments = [...allComments].reverse();
+  const commentsCount = allComments.length;
 
-  // Eng yangi commentlar birinchi ko'rinishi uchun teskari tartib (4,3,2,1)
-  const sortedComments = [...comments].reverse();
-  const commentsCount = communityCommentsCount;
+  const handleCommentMenuOpen = (event: React.MouseEvent<HTMLElement>, commentId: number) => {
+    event.stopPropagation();
+    setMenuAnchorEl(event.currentTarget);
+    setOpenMenuCommentId(commentId);
+  };
+
+  const handleCommentMenuClose = () => {
+    setMenuAnchorEl(null);
+    setOpenMenuCommentId(null);
+  };
+
+  const handleEditComment = (commentId: number) => {
+    handleCommentMenuClose();
+    const comment = allComments.find((c) => c.id === commentId);
+    if (comment) {
+      setNewCommentText(editedCommentTexts[commentId] ?? comment.text);
+      setEditingCommentId(commentId);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setNewCommentText("");
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    setDeletedCommentIds((prev) => [...prev, commentId]);
+    setExtraComments((prev) => prev.filter((c) => c.id !== commentId));
+    handleCommentMenuClose();
+  };
+
+  const handleSubmitComment = () => {
+    const text = newCommentText.trim();
+    if (!text) return;
+    if (editingCommentId !== null) {
+      setEditedCommentTexts((prev) => ({ ...prev, [editingCommentId]: text }));
+      setExtraComments((prev) =>
+        prev.map((c) => (c.id === editingCommentId ? { ...c, text } : c))
+      );
+      setEditingCommentId(null);
+      setNewCommentText("");
+    } else {
+      setExtraComments((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+          author: "You",
+          text,
+        },
+      ]);
+      setNewCommentText("");
+    }
+  };
 
   useEffect(() => {
     if (router.isReady) {
@@ -229,29 +292,42 @@ const CommunityDetail: NextPage = () => {
                     <Typography className="comment-number">{commentsCount - index}.</Typography>
                     <Box className="comment-content">
                       <Box className="comment-meta">
-                        <Box component="span" className="comment-meta-item">
-                          <CalendarToday className="comment-meta-icon" />
-                          <Typography component="span" className="comment-meta-text">
-                            {comment.date}
-                          </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                          <Box component="span" className="comment-meta-item">
+                            <CalendarToday className="comment-meta-icon" />
+                            <Typography component="span" className="comment-meta-text">
+                              {comment.date}
+                            </Typography>
+                          </Box>
+                          <Box component="span" className="comment-meta-item">
+                            <Person className="comment-meta-icon" />
+                            <Typography component="span" className="comment-meta-text">
+                              {comment.author}
+                            </Typography>
+                          </Box>
                         </Box>
-                        <Box component="span" className="comment-meta-item">
-                          <Person className="comment-meta-icon" />
-                          <Typography component="span" className="comment-meta-text">
-                            {comment.author}
-                          </Typography>
-                        </Box>
+                        {editingCommentId !== comment.id && (
+                          <IconButton
+                            className="comment-more-btn"
+                            size="small"
+                            onClick={(e) => handleCommentMenuOpen(e, comment.id)}
+                            sx={{ padding: "4px" }}
+                          >
+                            <MoreHoriz sx={{ fontSize: 22, color: "#8c6f5a" }} />
+                          </IconButton>
+                        )}
                       </Box>
                       <Box className="comment-text-wrapper">
-                        <Typography className="comment-text">
-                          {comment.text}
-                        </Typography>
-                        <Box className="comment-actions">
-                          <Box className="comment-reply-btn">
-                            <ReplyIcon className="reply-icon" />
-                          </Box>
-                          <Box 
-                            className={`comment-like-btn ${likedComments.includes(comment.id) ? 'liked' : ''}`}
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px", width: "100%" }}>
+                          <Typography className="comment-text">
+                            {editedCommentTexts[comment.id] ?? comment.text}
+                          </Typography>
+                          <Box className="comment-actions">
+                            <Box className="comment-reply-btn">
+                              <ReplyIcon className="reply-icon" />
+                            </Box>
+                            <Box
+                              className={`comment-like-btn ${likedComments.includes(comment.id) ? 'liked' : ''}`}
                             onClick={() => {
                               if (likedComments.includes(comment.id)) {
                                 setLikedComments(likedComments.filter(id => id !== comment.id));
@@ -261,15 +337,21 @@ const CommunityDetail: NextPage = () => {
                                 setLikeCounts(prev => ({ ...prev, [comment.id]: (prev[comment.id] || 2) + 1 }));
                               }
                             }}
-                          >
-                            {likedComments.includes(comment.id) ? (
-                              <FavoriteIcon className="like-icon" />
-                            ) : (
-                              <FavoriteBorderIcon className="like-icon" />
-                            )}
-                            <Box className="like-badge">{likeCounts[comment.id] || 2}</Box>
+                            >
+                              {likedComments.includes(comment.id) ? (
+                                <FavoriteIcon className="like-icon" />
+                              ) : (
+                                <FavoriteBorderIcon className="like-icon" />
+                              )}
+                              <Box className="like-badge">{likeCounts[comment.id] || 2}</Box>
+                            </Box>
                           </Box>
                         </Box>
+                        {editedCommentTexts[comment.id] && (
+                          <Typography className="comment-edited">
+                            edited
+                          </Typography>
+                        )}
                       </Box>
                     </Box>
                   </Box>
@@ -277,9 +359,53 @@ const CommunityDetail: NextPage = () => {
               )}
             </Box>
 
+            <Menu
+              anchorEl={menuAnchorEl}
+              open={Boolean(menuAnchorEl)}
+              onClose={handleCommentMenuClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+              PaperProps={{
+                sx: {
+                  "& .MuiMenuItem-root": {
+                    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                  },
+                },
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  if (openMenuCommentId !== null) handleEditComment(openMenuCommentId);
+                }}
+              >
+                Edit
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  if (openMenuCommentId !== null) handleDeleteComment(openMenuCommentId);
+                }}
+              >
+                Delete
+              </MenuItem>
+            </Menu>
+
             {/* Comment Form */}
             <Box className="comment-form">
-              <Typography className="comment-form-title">Leave a comment</Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
+                <Typography className="comment-form-title">
+                  {editingCommentId !== null ? "Edit comment" : "Leave a comment"}
+                </Typography>
+                {editingCommentId !== null && (
+                  <IconButton
+                    size="small"
+                    onClick={handleCancelEdit}
+                    sx={{ color: "#8c6f5a" }}
+                    aria-label="Cancel edit"
+                  >
+                    <Close sx={{ fontSize: 24 }} />
+                  </IconButton>
+                )}
+              </Box>
               <Box className="comment-form-row">
               </Box>
               <TextField
@@ -288,6 +414,8 @@ const CommunityDetail: NextPage = () => {
                 rows={6}
                 placeholder="Message"
                 className="comment-textarea"
+                value={newCommentText}
+                onChange={(e) => setNewCommentText(e.target.value)}
                 sx={{ 
                   mb: 2,
                   '& .MuiInputBase-input': {
@@ -305,7 +433,7 @@ const CommunityDetail: NextPage = () => {
                 }}
               />
               <Box className="comment-submit-wrapper">
-                <Button className="comment-submit-button">
+                <Button className="comment-submit-button" onClick={handleSubmitComment}>
                   Post comment
                   <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                 </Button>

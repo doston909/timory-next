@@ -13,6 +13,8 @@ import {
   TextField,
   Tabs,
   Tab,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -23,6 +25,7 @@ import {
   getWatchStatus,
   isWatchDeletedForVisitor,
 } from "@/libs/watchStatusStorage";
+import { incrementViewCount } from "@/libs/viewCountStorage";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { ArrowForward } from "@mui/icons-material";
@@ -34,6 +37,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Comment from "@mui/icons-material/Comment";
 import CalendarToday from "@mui/icons-material/CalendarToday";
 import Person from "@mui/icons-material/Person";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import Close from "@mui/icons-material/Close";
 
 const WatchDetail = () => {
   const device = useDeviceDetect();
@@ -44,41 +49,120 @@ const WatchDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [likedReviews, setLikedReviews] = useState<number[]>([]);
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
+  const [newReviewText, setNewReviewText] = useState("");
+  const [extraReviews, setExtraReviews] = useState<{ id: number; date: string; author: string; text: string }[]>([]);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [openMenuReviewId, setOpenMenuReviewId] = useState<number | null>(null);
+  const [deletedReviewIds, setDeletedReviewIds] = useState<number[]>([]);
+  const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
+  const [editedReviewTexts, setEditedReviewTexts] = useState<Record<number, string>>({});
   const { addToCart } = useCart();
-  
+
   const reviewsListRef = useRef<HTMLDivElement>(null);
   const reviewItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Mock reviews data
-  const reviews = [
-    {
-      id: 1,
-      author: "John Doe",
-      date: "2024-01-15",
-      text: "Great watch! Very satisfied with the quality and design. Highly recommend!",
-    },
-    {
-      id: 2,
-      author: "Jane Smith",
-      date: "2024-01-10",
-      text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!",
-    },
-    {
-      id: 3,
-      author: "Mike Johnson",
-      date: "2024-01-08",
-      text: "Amazing quality and craftsmanship. Worth every penny!",
-    },
-    {
-      id: 4,
-      author: "Sarah Williams",
-      date: "2024-01-05",
-      text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish.Beautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylishBeautiful watch, perfect for daily wear. Very comfortable and stylish",
-    },
+  const watchId = router.query.id ? parseInt(router.query.id as string, 10) : null;
+
+  const allWatchesData = [
+    { id: 1, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png", comments: 17 },
+    { id: 2, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png", comments: 17 },
+    { id: 3, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png", comments: 17 },
+    { id: 4, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png", comments: 17 },
+    { id: 5, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
+    { id: 6, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
+    { id: 7, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
+    { id: 8, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
+    { id: 9, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
+    { id: 10, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png", comments: 17 },
+    { id: 11, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png", comments: 17 },
+    { id: 12, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png", comments: 17 },
+    { id: 13, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png", comments: 17 },
+    { id: 14, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
+    { id: 15, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
   ];
 
-  const sortedReviews = [...reviews].reverse();
-  const reviewsCount = reviews.length;
+  const watchCommentsCount = watchId ? (allWatchesData.find((w: { id: number }) => w.id === watchId)?.comments ?? 4) : 4;
+
+  const reviewPool = [
+    { id: 1, author: "John Doe", date: "2024-01-15", text: "Great watch! Very satisfied with the quality and design. Highly recommend!" },
+    { id: 2, author: "Jane Smith", date: "2024-01-10", text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!" },
+    { id: 3, author: "Mike Johnson", date: "2024-01-08", text: "Amazing quality and craftsmanship. Worth every penny!" },
+    { id: 4, author: "Sarah Williams", date: "2024-01-05", text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish." },
+    { id: 5, author: "David Brown", date: "2024-01-04", text: "Outstanding quality. Exceeded my expectations." },
+    { id: 6, author: "Emily Davis", date: "2024-01-03", text: "Love it! Perfect gift for my husband." },
+    { id: 7, author: "James Wilson", date: "2024-01-02", text: "Classic design, great value for money." },
+    { id: 8, author: "Lisa Anderson", date: "2024-01-01", text: "Very elegant and well-made watch." },
+    { id: 9, author: "Robert Taylor", date: "2023-12-30", text: "Fast delivery, exactly as described." },
+    { id: 10, author: "Maria Garcia", date: "2023-12-29", text: "Highly recommend this brand. Great quality." },
+    { id: 11, author: "Thomas Martinez", date: "2023-12-28", text: "Beautiful timepiece. Very impressed." },
+    { id: 12, author: "Jennifer Lee", date: "2023-12-27", text: "Perfect for everyday wear. Love the style." },
+    { id: 13, author: "Christopher Harris", date: "2023-12-26", text: "Excellent craftsmanship. Worth every penny." },
+    { id: 14, author: "Amanda Clark", date: "2023-12-25", text: "Great watch! Exceeded expectations." },
+    { id: 15, author: "Daniel Lewis", date: "2023-12-24", text: "Classic and elegant. Very satisfied." },
+    { id: 16, author: "Jessica Walker", date: "2023-12-23", text: "Beautiful design, comfortable to wear." },
+    { id: 17, author: "Matthew Hall", date: "2023-12-22", text: "Outstanding quality. Highly recommend!" },
+  ];
+
+  const baseReviews = reviewPool.slice(0, watchCommentsCount);
+
+  const allReviews = [...baseReviews, ...extraReviews].filter((r) => !deletedReviewIds.includes(r.id));
+  const sortedReviews = [...allReviews].reverse();
+  const reviewsCount = allReviews.length;
+
+  const handleReviewMenuOpen = (event: React.MouseEvent<HTMLElement>, reviewId: number) => {
+    event.stopPropagation();
+    setMenuAnchorEl(event.currentTarget);
+    setOpenMenuReviewId(reviewId);
+  };
+
+  const handleReviewMenuClose = () => {
+    setMenuAnchorEl(null);
+    setOpenMenuReviewId(null);
+  };
+
+  const handleEditReview = (reviewId: number) => {
+    handleReviewMenuClose();
+    const review = allReviews.find((r) => r.id === reviewId);
+    if (review) {
+      setNewReviewText(editedReviewTexts[reviewId] ?? review.text);
+      setEditingReviewId(reviewId);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReviewId(null);
+    setNewReviewText("");
+  };
+
+  const handleDeleteReview = (reviewId: number) => {
+    setDeletedReviewIds((prev) => [...prev, reviewId]);
+    setExtraReviews((prev) => prev.filter((r) => r.id !== reviewId));
+    handleReviewMenuClose();
+  };
+
+  const handleSubmitReview = () => {
+    const text = newReviewText.trim();
+    if (!text) return;
+    if (editingReviewId !== null) {
+      setEditedReviewTexts((prev) => ({ ...prev, [editingReviewId]: text }));
+      setExtraReviews((prev) =>
+        prev.map((r) => (r.id === editingReviewId ? { ...r, text } : r))
+      );
+      setEditingReviewId(null);
+      setNewReviewText("");
+    } else {
+      setExtraReviews((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+          author: "You",
+          text,
+        },
+      ]);
+      setNewReviewText("");
+    }
+  };
 
   // Calculate height for last 2 reviews dynamically
   useLayoutEffect(() => {
@@ -101,30 +185,8 @@ const WatchDetail = () => {
     }
   }, [sortedReviews, reviewsCount]);
 
-  // All watches data - should match pages/watch/index.tsx
-  const allWatches = [
-    { id: 1, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png" },
-    { id: 2, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png" },
-    { id: 3, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png" },
-    { id: 4, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png" },
-    { id: 5, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
-    { id: 6, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
-    { id: 7, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
-    { id: 8, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
-    { id: 9, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
-    { id: 10, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png" },
-    { id: 11, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png" },
-    { id: 12, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png" },
-    { id: 13, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png" },
-    { id: 14, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png" },
-    { id: 15, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png" },
-  ];
-
-  // Get watch ID from URL query
-  const watchId = router.query.id ? parseInt(router.query.id as string, 10) : null;
-  
-  // Find watch by ID from allWatches array
-  const foundWatch = watchId ? allWatches.find(w => w.id === watchId) : null;
+  const allWatches = allWatchesData.map(({ comments, ...w }) => w);
+  const foundWatch = watchId ? allWatchesData.find((w: { id: number }) => w.id === watchId) : null;
   
   // Default watch data with additional properties
   const defaultWatchData = {
@@ -162,6 +224,13 @@ const WatchDetail = () => {
     watchId != null && isWatchDeletedForVisitor(watchId, user?._id);
   const availabilityText =
     storedStatus?.status === "sold_out" ? "sold out" : String(watch.availability);
+
+  // View count: sahifaga kirilganda 1ga oshirish
+  useEffect(() => {
+    if (watchId != null && !Number.isNaN(watchId)) {
+      incrementViewCount(watchId);
+    }
+  }, [watchId]);
 
   // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
@@ -354,7 +423,10 @@ const WatchDetail = () => {
                   id: watch.id,
                   image: watch.image,
                   name: watch.name,
-                  price: watch.price,
+                  model: watch.name,
+                  brand: "",
+                  price: parseFloat(String(watch.price).replace(/[^0-9.-]+/g, "")) || 0,
+                  quantity: 1,
                 });
               }}
             >
@@ -616,29 +688,36 @@ const WatchDetail = () => {
                       </Typography>
                       <Box className="review-content">
                         <Box className="review-meta">
-                          <Box component="span" className="review-meta-item">
-                            <CalendarToday className="review-meta-icon" />
-                            <Typography
-                              component="span"
-                              className="review-meta-text"
-                            >
-                              {review.date}
-                            </Typography>
+                          <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                            <Box component="span" className="review-meta-item">
+                              <CalendarToday className="review-meta-icon" />
+                              <Typography component="span" className="review-meta-text">
+                                {review.date}
+                              </Typography>
+                            </Box>
+                            <Box component="span" className="review-meta-item">
+                              <Person className="review-meta-icon" />
+                              <Typography component="span" className="review-meta-text">
+                                {review.author}
+                              </Typography>
+                            </Box>
                           </Box>
-                          <Box component="span" className="review-meta-item">
-                            <Person className="review-meta-icon" />
-                            <Typography
-                              component="span"
-                              className="review-meta-text"
+                          {editingReviewId !== review.id && (
+                            <IconButton
+                              className="review-more-btn"
+                              size="small"
+                              onClick={(e) => handleReviewMenuOpen(e, review.id)}
+                              sx={{ padding: "4px" }}
                             >
-                              {review.author}
-                            </Typography>
-                          </Box>
+                              <MoreHoriz sx={{ fontSize: 22, color: "#8c6f5a" }} />
+                            </IconButton>
+                          )}
                         </Box>
                         <Box className="review-text-wrapper">
-                          <Typography className="review-text">
-                            {review.text}
-                          </Typography>
+                          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px", width: "100%" }}>
+                            <Typography className="review-text">
+                              {editedReviewTexts[review.id] ?? review.text}
+                            </Typography>
                           <Box className="review-actions">
                             <Box className="review-reply-btn">
                               <ReplyIcon className="reply-icon" />
@@ -677,6 +756,12 @@ const WatchDetail = () => {
                               </Box>
                             </Box>
                           </Box>
+                          </Box>
+                          {editedReviewTexts[review.id] && (
+                            <Typography className="review-edited">
+                              edited
+                            </Typography>
+                          )}
                         </Box>
                       </Box>
                     </Box>
@@ -684,11 +769,53 @@ const WatchDetail = () => {
                 )}
               </Box>
 
+              <Menu
+                anchorEl={menuAnchorEl}
+                open={Boolean(menuAnchorEl)}
+                onClose={handleReviewMenuClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                PaperProps={{
+                  sx: {
+                    "& .MuiMenuItem-root": {
+                      fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                    },
+                  },
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    if (openMenuReviewId !== null) handleEditReview(openMenuReviewId);
+                  }}
+                >
+                  Edit
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    if (openMenuReviewId !== null) handleDeleteReview(openMenuReviewId);
+                  }}
+                >
+                  Delete
+                </MenuItem>
+              </Menu>
+
               {/* Review Form */}
               <Box className="review-form">
-                <Typography className="review-form-title">
-                  Leave a review
-                </Typography>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
+                  <Typography className="review-form-title">
+                    {editingReviewId !== null ? "Edit review" : "Leave a review"}
+                  </Typography>
+                  {editingReviewId !== null && (
+                    <IconButton
+                      size="small"
+                      onClick={handleCancelEdit}
+                      sx={{ color: "#8c6f5a" }}
+                      aria-label="Cancel edit"
+                    >
+                      <Close sx={{ fontSize: 24 }} />
+                    </IconButton>
+                  )}
+                </Box>
                 <Box className="review-form-row"></Box>
                 <TextField
                   fullWidth
@@ -696,6 +823,8 @@ const WatchDetail = () => {
                   rows={6}
                   placeholder="Message"
                   className="review-textarea"
+                  value={newReviewText}
+                  onChange={(e) => setNewReviewText(e.target.value)}
                   sx={{
                     mb: 2,
                     "& .MuiInputBase-input": {
@@ -713,7 +842,7 @@ const WatchDetail = () => {
                   }}
                 />
                 <Box className="review-submit-wrapper">
-                  <Button className="review-submit-btn">
+                  <Button className="review-submit-btn" onClick={handleSubmitReview}>
                     Post review
                     <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                   </Button>

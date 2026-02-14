@@ -4,17 +4,26 @@ import { NextPage } from "next";
 import {
   ShoppingBagOutlined,
   FavoriteBorderOutlined,
+  Favorite,
   VisibilityOutlined,
   ArrowBackIos,
   ArrowForwardIos,
 } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import CommunityCard from "@/libs/components/community/CommunityCard";
+import { useCart } from "@/libs/context/CartContext";
+import { getViewCount } from "@/libs/viewCountStorage";
 
 
 
 const Community: NextPage = () => {
+  const router = useRouter();
+  const { addToCart } = useCart();
   const [bestSellerIndex, setBestSellerIndex] = useState(0);
+  const [likedWatches, setLikedWatches] = useState<Record<number, boolean>>({});
+  const [likeCounts, setLikeCounts] = useState<Record<number, number>>({});
+  const [isHovered, setIsHovered] = useState(false);
 
   const recentArticles = [
     {
@@ -36,21 +45,28 @@ const Community: NextPage = () => {
       id: 1,
       image: "/img/watch/rasmm.png",
       title: "Golden Dial Analog",
-      price: "Rs. 3,600.00",
+      price: "$ 3,600.00",
     },
     {
       id: 2,
       image: "/img/watch/rasm1.png",
       title: "Silver Classic Watch",
-      price: "Rs. 2,800.00",
+      price: "$ 2,800.00",
     },
     {
       id: 3,
       image: "/img/watch/rasm3.png",
       title: "Premium Luxury Watch",
-      price: "Rs. 4,500.00",
+      price: "$ 4,500.00",
     },
   ];
+
+  const currentBestSeller = bestSellers[bestSellerIndex];
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    setViewCount(getViewCount(currentBestSeller?.id ?? 0));
+  }, [currentBestSeller?.id]);
 
   const articles = [
     {
@@ -59,7 +75,7 @@ const Community: NextPage = () => {
       author: "RAM M",
       memberType: "Admin",
       date: "MAY 30, 2022",
-      comments: 1,
+      comments: 10,
       title: "HOW TO BUILD WATCHES BY MACHINE",
       description:
         "Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
@@ -133,6 +149,52 @@ const Community: NextPage = () => {
     );
   };
 
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const watchId = currentBestSeller?.id ?? 0;
+    const currentlyLiked = likedWatches[watchId] ?? false;
+    const nextLiked = !currentlyLiked;
+    setLikedWatches((prev) => ({ ...prev, [watchId]: nextLiked }));
+    setLikeCounts((counts) => ({
+      ...counts,
+      [watchId]: nextLiked
+        ? (counts[watchId] ?? 0) + 1
+        : Math.max(0, (counts[watchId] ?? 0) - 1),
+    }));
+  };
+
+  const handleBagClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (currentBestSeller) {
+      addToCart({
+        id: currentBestSeller.id,
+        name: currentBestSeller.title,
+        model: currentBestSeller.title,
+        brand: "",
+        price: parseFloat(currentBestSeller.price.replace(/[^0-9.-]+/g, "")) || 0,
+        image: currentBestSeller.image,
+        quantity: 1,
+      });
+    }
+  };
+
+  const handleCardClick = () => {
+    if (currentBestSeller) {
+      router.push(`/watch/detail?id=${currentBestSeller.id}`);
+    }
+  };
+
+  // Har 3 sekundda chapdan o'ngga almashish
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setBestSellerIndex((prev) =>
+        prev === bestSellers.length - 1 ? 0 : prev + 1
+      );
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isHovered, bestSellers.length]);
+
   return (
     <Stack className="community-page">
       <Stack className="community-container">
@@ -153,18 +215,46 @@ const Community: NextPage = () => {
 
           {/* Recent Articles */}
           <Box className="sidebar-section">
-            <Typography className="sidebar-title">Recent Articles</Typography>
-            <Stack className="recent-articles-list">
-              {recentArticles.map((article) => (
-                <Box key={article.id} className="recent-article-item">
-                  <Box className="recent-article-image">
-                    <img src={article.image} alt={article.title} />
-                  </Box>
-                  <Typography className="recent-article-title">
-                    {article.title}
-                  </Typography>
-                </Box>
-              ))}
+            <Typography className="sidebar-title">For Business Partnership</Typography>
+            <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
+              <Box 
+                sx={{ 
+                  width: '100%',
+                  height: '400px',
+                  padding: '15px',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '8px',
+                  border: '1px solid #000000',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+                }}
+              >
+                <Typography className="partnership-box-text">
+                  Your business can be advertised here...
+                </Typography>
+              </Box>
+              <Box 
+                sx={{ 
+                  width: '100%',
+                  height: '300px',
+                  padding: '15px',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '8px',
+                  border: '1px solid #000000',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+                }}
+              >
+                <Typography className="partnership-box-text">
+                  Your business can be advertised here...
+                </Typography>
+              </Box>
             </Stack>
           </Box>
 
@@ -173,7 +263,13 @@ const Community: NextPage = () => {
           {/* Best Sellers */}
           <Box className="sidebar-section">
             <Typography className="sidebar-title">Best Sellers</Typography>
-            <Box className="best-seller-card">
+            <Box
+              className="best-seller-card"
+              onClick={handleCardClick}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              sx={{ cursor: "pointer" }}
+            >
               <Box className="best-seller-image-wrapper">
                 <img
                   src={bestSellers[bestSellerIndex].image}
@@ -181,14 +277,27 @@ const Community: NextPage = () => {
                   className="best-seller-image"
                 />
                 <Stack className="best-seller-icons">
-                  <Box className="icon-wrapper">
+                  <Box className="icon-wrapper" onClick={handleBagClick}>
                     <ShoppingBagOutlined />
                   </Box>
-                  <Box className="icon-wrapper">
-                    <FavoriteBorderOutlined />
+                  <Box
+                    className={`icon-wrapper icon-wrapper-with-count${
+                      likedWatches[currentBestSeller?.id ?? 0] ? " icon-wrapper-liked" : ""
+                    }`}
+                    onClick={handleLikeClick}
+                  >
+                    {likedWatches[currentBestSeller?.id ?? 0] ? (
+                      <Favorite sx={{ fontSize: 28 }} />
+                    ) : (
+                      <FavoriteBorderOutlined sx={{ fontSize: 28 }} />
+                    )}
+                    <span className="icon-wrapper-count">{likeCounts[currentBestSeller?.id ?? 0] ?? 0}</span>
                   </Box>
-                  <Box className="icon-wrapper">
-                    <VisibilityOutlined />
+                  <Box className="icon-wrapper icon-wrapper-with-count">
+                    <VisibilityOutlined sx={{ fontSize: 28 }} />
+                    {viewCount > 0 && (
+                      <span className="icon-wrapper-count">{viewCount}</span>
+                    )}
                   </Box>
                 </Stack>
               </Box>

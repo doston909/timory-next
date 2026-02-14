@@ -474,11 +474,16 @@
               .review-meta {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 20px;
                 margin-bottom: 15px;
                 padding-bottom: 15px;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
                 flex-wrap: wrap;
+
+                .review-more-btn {
+                  margin-left: auto;
+                }
 
                 .review-meta-item {
                   display: flex;
@@ -504,11 +509,17 @@
               .review-text-wrapper {
                 margin-top: 15px;
                 display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                gap: 20px;
+                flex-direction: column;
+                gap: 8px;
                 width: 100%;
                 height: auto;
+
+                .review-edited {
+                  text-align: right;
+                  color: #6b6b6b;
+                  font-size: 14px;
+                  font-family: $font;
+                }
 
                 .review-text {
                   font-family: $font;

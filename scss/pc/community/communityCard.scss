@@ -71,6 +71,83 @@
         &:hover img {
           transform: scale(1.2);
         }
+
+        .article-image-icons {
+          position: absolute;
+          bottom: 15px;
+          right: 15px;
+          flex-direction: column;
+          gap: 14px;
+          z-index: 2;
+
+          .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: #f4f4f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.25s ease;
+            position: relative;
+
+            &:hover {
+              background: #6b5a51;
+            }
+
+            svg {
+              width: 28px;
+              height: 28px;
+              color: #000000;
+              transition: color 0.55s ease;
+              filter: contrast(0.9);
+
+              path {
+                fill-opacity: 0.8;
+                stroke-width: 3;
+              }
+            }
+
+            &:hover svg {
+              color: #e5c8a3;
+
+              path {
+                fill-opacity: 1;
+              }
+            }
+
+            &.icon-wrapper-with-count {
+              position: relative;
+
+              .icon-wrapper-count {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: #e8994a;
+                color: #ffffff;
+                font-size: 12px;
+                font-weight: 500;
+                padding: 2px 6px;
+                border-radius: 10px;
+                min-width: 18px;
+                text-align: center;
+              }
+            }
+
+            &.icon-wrapper-liked {
+              background: #6b5a51;
+
+              svg {
+                color: #e5c8a3;
+
+                path {
+                  fill-opacity: 1;
+                }
+              }
+            }
+          }
+        }
       }
 
       .article-content {
@@ -84,7 +161,14 @@
           color: #8C6F5A;
           margin-bottom: 30px;
           line-height: 1.6;
-          white-space: pre;
+          margin-left: -20px;
+          margin-right: -20px;
+          width: calc(100% + 40px);
+          padding-left: 20px;
+          padding-right: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
           .article-author-wrapper {
             position: relative;

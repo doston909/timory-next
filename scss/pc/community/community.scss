@@ -1,3 +1,14 @@
+@keyframes partnershipPulse {
+  0%, 100% {
+    transform: scale(0.95);
+    color: #000000;
+  }
+  50% {
+    transform: scale(1.05);
+    color: #f09620;
+  }
+}
+
 .community-page {
   padding: 120px 0;
   min-height: 80vh;
@@ -53,54 +64,13 @@
           }
         }
 
-        // Recent Articles
-        .recent-articles-list {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-
-          .recent-article-item {
-            display: flex;
-            flex-direction: row;
-            gap: 15px;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-
-            &:hover {
-              opacity: 0.8;
-            }
-
-            .recent-article-image {
-              width: 120px;
-              height: 140px;
-              flex-shrink: 0;
-              overflow: hidden;
-              border-radius: 6px;
-
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              }
-            }
-
-            .recent-article-title {
-             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-              font-size: 24px;
-              font-weight: 300;
-              color: #090707;
-              line-height: 1.5;
-              flex: 1;
-              display: flex;
-              align-items: center;
-               transition: color 0.3s ease;
-          cursor: pointer;
-
-          &:hover {
-            color: #f09620;
-          }
-            }
-          }
+        // Partnership boxes text animation
+        .partnership-box-text {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 32px;
+          font-weight: 400;
+          text-align: center;
+          animation: partnershipPulse 3s ease-in-out infinite;
         }
 
         // Tags
@@ -229,6 +199,36 @@
 
                   path {
                     fill-opacity: 1;
+                  }
+                }
+
+                &.icon-wrapper-with-count {
+                  position: relative;
+
+                  .icon-wrapper-count {
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background: #e8994a;
+                    color: #ffffff;
+                    font-size: 12px;
+                    font-weight: 500;
+                    padding: 2px 6px;
+                    border-radius: 10px;
+                    min-width: 18px;
+                    text-align: center;
+                  }
+                }
+
+                &.icon-wrapper-liked {
+                  background: #6b5a51;
+
+                  svg {
+                    color: #e5c8a3;
+
+                    path {
+                      fill-opacity: 1;
+                    }
                   }
                 }
               }
