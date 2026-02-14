@@ -26,18 +26,6 @@ const Community: NextPage = () => {
   const [likeCounts, setLikeCounts] = useState<Record<number, number>>({});
   const [isHovered, setIsHovered] = useState(false);
 
-  const recentArticles = [
-    {
-      id: 1,
-      image: "/img/watch/asosiy1.webp",
-      title: "How to build watches by machine",
-    },
-    {
-      id: 2,
-      image: "/img/watch/fon1.jpg",
-      title: "International best branded watches",
-    },
-  ];
 
   const tags = ["Free Board", "Recommendation", "News"] as const;
   const [selectedArticleType, setSelectedArticleType] = useState<string | null>(null);
@@ -263,7 +251,8 @@ const Community: NextPage = () => {
                   width: '100%',
                   height: '400px',
                   padding: '15px',
-                  backgroundColor: '#f5f5f5',
+                  position: 'relative',
+                  overflow: 'hidden',
                   borderRadius: '8px',
                   border: '1px solid #000000',
                   display: 'flex',
@@ -273,7 +262,21 @@ const Community: NextPage = () => {
                   fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
                 }}
               >
-                <Typography className="partnership-box-text">
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundImage: 'url(/img/watch/fon1.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(5px)',
+                    zIndex: 0,
+                  }}
+                />
+                <Typography className="partnership-box-text" sx={{ position: 'relative', zIndex: 1 }}>
                   Your business can be advertised here...
                 </Typography>
               </Box>
@@ -282,7 +285,8 @@ const Community: NextPage = () => {
                   width: '100%',
                   height: '300px',
                   padding: '15px',
-                  backgroundColor: '#f5f5f5',
+                  position: 'relative',
+                  overflow: 'hidden',
                   borderRadius: '8px',
                   border: '1px solid #000000',
                   display: 'flex',
@@ -292,7 +296,21 @@ const Community: NextPage = () => {
                   fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
                 }}
               >
-                <Typography className="partnership-box-text">
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundImage: 'url(/img/watch/lay2.jpeg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(4px)',
+                    zIndex: 0,
+                  }}
+                />
+                <Typography className="partnership-box-text" sx={{ position: 'relative', zIndex: 1 }}>
                   Your business can be advertised here...
                 </Typography>
               </Box>

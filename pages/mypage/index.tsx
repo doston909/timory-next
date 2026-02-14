@@ -638,9 +638,12 @@ const MyPage = () => {
     e.stopPropagation();
     addToCart({
       id: watch.id,
-      image: watch.image,
       name: watch.name,
-      price: watch.price,
+      model: watch.name,
+      brand: watch.brand || "",
+      price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "")) || 0,
+      image: watch.image,
+      quantity: 1,
     });
   };
 

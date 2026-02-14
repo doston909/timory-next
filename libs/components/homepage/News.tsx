@@ -20,7 +20,7 @@ const News = () => {
         {/* Icon */}
         <Box className="news-icon-wrapper">
           <Image
-            src="/img/agent/email.png"
+            src="/img/dealer/email.png"
             alt="Email Icon"
             width={50}
             height={50}

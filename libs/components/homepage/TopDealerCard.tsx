@@ -55,7 +55,7 @@ const TopDealerCard = ({
     <Box className="top-dealer-card-new" onClick={handleCardClick} sx={{ cursor: "pointer" }}>
       {/* Image Box */}
       <Box className="dealer-image-box">
-        <img src={logoUrl} alt={dealerName} className="dealer-image" />
+        <img src="/img/dealer/doston.jpg" alt={dealerName} className="dealer-image" />
         
         {/* Hover Overlay with Info */}
         <Box className="dealer-hover-overlay">
