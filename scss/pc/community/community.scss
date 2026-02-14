@@ -98,6 +98,11 @@
             cursor: pointer;
 
             &:hover {
+              background: #848484;
+              color: #ffffff;
+            }
+
+            &.tag-item-active {
               background: #000000;
               color: #ffffff;
             }

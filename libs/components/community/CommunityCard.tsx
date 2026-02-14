@@ -17,6 +17,7 @@ export type Article = {
   comments: number;
   title: string;
   description: string;
+  articleType?: string;
 };
 
 type CommunityCardProps = {
@@ -146,6 +147,9 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
               onClick={(e) => handleArticleClick(article.id, e)}
             >
               <img src={article.image} alt={article.title} />
+              {article.articleType && (
+                <Typography className="article-type-label">{article.articleType}</Typography>
+              )}
               <Stack className="article-image-icons" direction="column">
                 <Box
                   className={`icon-wrapper icon-wrapper-with-count${likedArticles[article.id] ? " icon-wrapper-liked" : ""}`}

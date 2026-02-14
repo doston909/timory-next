@@ -38,7 +38,8 @@ const Community: NextPage = () => {
     },
   ];
 
-  const tags = ["Free Board", "Recommendation", "News"];
+  const tags = ["Free Board", "Recommendation", "News"] as const;
+  const [selectedArticleType, setSelectedArticleType] = useState<string | null>(null);
 
   const bestSellers = [
     {
@@ -79,6 +80,7 @@ const Community: NextPage = () => {
       title: "HOW TO BUILD WATCHES BY MACHINE",
       description:
         "Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
+      articleType: "Free Board",
     },
     {
       id: 2,
@@ -90,6 +92,7 @@ const Community: NextPage = () => {
       title: "TRENDING FASHION WHITE WATCHES",
       description:
         "Erese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
+      articleType: "Recommendation",
     },
     {
       id: 3,
@@ -101,6 +104,7 @@ const Community: NextPage = () => {
       title: "THE CLASSIC DIAL MEN'S WATCHES",
       description:
         "Wrese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
+      articleType: "News",
     },
     {
       id: 4,
@@ -112,8 +116,9 @@ const Community: NextPage = () => {
       title: "MADE OF 100% RECYCLED PLASTIC",
       description:
         "Prese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,...",
+      articleType: "Free Board",
     },
-      {
+    {
       id: 5,
       image: "/img/watch/rasmm.png",
       author: "RAM M",
@@ -123,6 +128,7 @@ const Community: NextPage = () => {
       title: "THE CLASSIC DIAL MEN'S WATCHES",
       description:
         "Wrese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
+      articleType: "Recommendation",
     },
     {
       id: 6,
@@ -134,8 +140,13 @@ const Community: NextPage = () => {
       title: "MADE OF 100% RECYCLED PLASTIC",
       description:
         "Prese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,...",
+      articleType: "News",
     },
   ];
+
+  const filteredArticles = selectedArticleType
+    ? articles.filter((a) => (a as { articleType?: string }).articleType === selectedArticleType)
+    : articles;
 
   const handlePrevBestSeller = () => {
     setBestSellerIndex((prev) =>
@@ -206,7 +217,12 @@ const Community: NextPage = () => {
             <Typography className="sidebar-title">Type</Typography>
             <Stack className="tags-list" direction="row" flexWrap="wrap" gap={1}>
               {tags.map((tag, index) => (
-                <Box key={index} className="tag-item">
+                <Box
+                  key={index}
+                  className={`tag-item${selectedArticleType === tag ? " tag-item-active" : ""}`}
+                  onClick={() => setSelectedArticleType(selectedArticleType === tag ? null : tag)}
+                  sx={{ cursor: "pointer" }}
+                >
                   {tag}
                 </Box>
               ))}
@@ -328,7 +344,7 @@ const Community: NextPage = () => {
         </Stack>
 
         {/* Main Content */}
-        <CommunityCard articles={articles} />
+        <CommunityCard articles={filteredArticles} />
       </Stack>
     </Stack>
   );
