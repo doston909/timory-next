@@ -1,5 +1,5 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import { Stack, Box, Typography } from "@mui/material";
+import { Stack, Box, Typography, IconButton } from "@mui/material";
 import { NextPage } from "next";
 import {
   ShoppingBagOutlined,
@@ -9,6 +9,7 @@ import {
   ArrowBackIos,
   ArrowForwardIos,
 } from "@mui/icons-material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import CommunityCard from "@/libs/components/community/CommunityCard";
@@ -40,6 +41,10 @@ const Community: NextPage = () => {
 
   const tags = ["Free Board", "Recommendation", "News"] as const;
   const [selectedArticleType, setSelectedArticleType] = useState<string | null>(null);
+
+  const handleFilterReset = () => {
+    setSelectedArticleType(null);
+  };
 
   const bestSellers = [
     {
@@ -214,7 +219,27 @@ const Community: NextPage = () => {
 
             {/* Tags */}
           <Box className="sidebar-section">
-            <Typography className="sidebar-title">Type</Typography>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", marginBottom: 1, flexDirection: "row" }}>
+              <Typography className="sidebar-title" sx={{ margin: 0 }}>Type</Typography>
+              <IconButton
+                onClick={handleFilterReset}
+                sx={{
+                  padding: "8px",
+                  color: "#000000ff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  "&:hover": {
+                    color: "#f9a63bff",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    borderRadius: "50%",
+                  },
+                }}
+              >
+                <RefreshIcon sx={{ fontSize: "30px" }} />
+              </IconButton>
+            </Box>
             <Stack className="tags-list" direction="row" flexWrap="wrap" gap={1}>
               {tags.map((tag, index) => (
                 <Box

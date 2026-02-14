@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Box, Stack, Typography, Button, Checkbox } from "@mui/material";
 import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowUpward, Close, Delete, WatchLaterOutlined, ArrowDropDown } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useReactiveVar } from "@apollo/client";
@@ -225,6 +225,7 @@ const MyPage = () => {
     image: null as string | null,
     title: "",
     content: "",
+    articleType: "" as string,
   });
   const [newWatch, setNewWatch] = useState({
     modelName: "",
@@ -2155,10 +2156,24 @@ const MyPage = () => {
                     }
                   />
                   <Box className="mypage-add-watch-limited">
-                    <label className="mypage-add-watch-limited-label">
-                      <input
-                        type="checkbox"
-                        className="mypage-add-watch-limited-checkbox"
+                    <Box
+                      onClick={() =>
+                        setNewWatch((prev) => ({
+                          ...prev,
+                          limitedEdition: !prev.limitedEdition,
+                        }))
+                      }
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Typography className="mypage-add-watch-label" sx={{ userSelect: "none", marginTop: "20px" }}>
+                        Limited Edition
+                      </Typography>
+                      <Checkbox
                         checked={newWatch.limitedEdition}
                         onChange={(e) =>
                           setNewWatch((prev) => ({
@@ -2166,9 +2181,9 @@ const MyPage = () => {
                             limitedEdition: e.target.checked,
                           }))
                         }
+                        sx={{ padding: "4px", marginTop: "20px", "&.Mui-checked": { color: "#000000" } }}
                       />
-                      <span>Limited Edition</span>
-                    </label>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -2328,11 +2343,50 @@ const MyPage = () => {
                 />
               </Box>
 
+              <Box className="mypage-add-article-field">
+                <Typography className="mypage-add-article-label">
+                  Article Type 
+                </Typography>
+                <Stack direction="row" flexWrap="wrap" gap={3} sx={{ alignItems: "center", marginTop: 0.5 }}>
+                  {(["Free Board", "Recommendation", "News"] as const).map((type) => (
+                    <Box
+                      key={type}
+                      onClick={() =>
+                        setNewArticle((prev) => ({
+                          ...prev,
+                          articleType: newArticle.articleType === type ? "" : type,
+                        }))
+                      }
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Typography sx={{ color: "#000000", fontSize: 17, userSelect: "none", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+                        {type}
+                      </Typography>
+                      <Checkbox
+                        checked={newArticle.articleType === type}
+                        onChange={() =>
+                          setNewArticle((prev) => ({
+                            ...prev,
+                            articleType: newArticle.articleType === type ? "" : type,
+                          }))
+                        }
+                        sx={{ padding: "4px", "&.Mui-checked": { color: "#000000" } }}
+                      />
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
+
               <Box className="mypage-edit-profile-footer">
                 <Button
                   className="mypage-edit-profile-update-button"
                   onClick={() => {
-                    setNewArticle({ image: null, title: "", content: "" });
+                    setNewArticle({ image: null, title: "", content: "", articleType: "" });
                     setIsAddArticleOpen(false);
                   }}
                 >
