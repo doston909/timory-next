@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import CloseIcon from "@mui/icons-material/Close";
 import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
 import { useReactiveVar } from "@apollo/client";
 import { socketVar, userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";

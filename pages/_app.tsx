@@ -7,6 +7,7 @@ import { useState, useEffect, useMemo } from "react";
 
 import ScrollToTop from "@/libs/components/ScrollTotop";
 import Chat from "@/libs/components/Chat";
+import AIChatBot from "@/libs/components/AIChatBot";
 import { CartProvider } from "@/libs/context/CartContext";
 import {
   ThemeContext,
@@ -51,6 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
             <ScrollToTop />
             <Chat />
+            <AIChatBot />
           </CartProvider>
         </ThemeProvider>
       </ThemeContext.Provider>

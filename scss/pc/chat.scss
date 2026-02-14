@@ -1,11 +1,11 @@
 @import "/scss/variables.scss";
 
-/** Online Chat - floating widget */
+/** Online Chat - floating widget (AI Chat bilan bir vaqtda ochiq bo'lishi mumkin) */
 .chatting {
   position: fixed;
-  bottom: 170px;
+  bottom: 150px;
   right: 50px;
-  z-index: 9999;
+  z-index: 10000;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
