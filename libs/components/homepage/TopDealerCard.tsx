@@ -1,5 +1,6 @@
 import { Box, Stack, Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
@@ -20,6 +21,7 @@ export interface TopDealerCardProps {
   watches: number;
   responseTime: string;
   verified?: boolean;
+  homepageSectionId?: string;
   onViewProfile?: () => void;
   onContact?: () => void;
 }
@@ -36,6 +38,7 @@ const TopDealerCard = ({
   watches: activeListings,
   responseTime,
   verified = false,
+  homepageSectionId,
   onViewProfile,
   onContact,
 }: TopDealerCardProps) => {
@@ -43,6 +46,7 @@ const TopDealerCard = ({
 
   const handleCardClick = () => {
     if (id) {
+      if (homepageSectionId) saveHomepageSectionBeforeNav(homepageSectionId);
       router.push(`/dealer/detail?id=${id}`);
     }
   };

@@ -1,4 +1,7 @@
 import { Stack, Box } from "@mui/material";
+import { useRouter } from "next/router";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 
 type SpotlightWatch = {
   id: number;
@@ -68,6 +71,8 @@ const spotlightWatches: SpotlightWatch[] = [
 ];
 
 const LimitedEdition = () => {
+  const router = useRouter();
+
   return (
     <Stack className="limited-spotlight-section">
       <h2 className="section-title">Limited Editions Spotlight</h2>
@@ -75,9 +80,21 @@ const LimitedEdition = () => {
       {spotlightWatches.length === 0 ? (
         <p className="empty-label">No Limited Editions Available</p>
       ) : (
-        <Stack className="spotlight-grid">
+        <Stack
+          className="spotlight-grid"
+          onClick={(e) => {
+            const card = (e.target as HTMLElement).closest(".spotlight-card");
+            if (card) {
+              const watchId = (card as HTMLElement).getAttribute("data-watch-id");
+              if (watchId) {
+                saveHomepageSectionBeforeNav("limited-edition");
+                router.push(`/watch/detail?id=${watchId}`);
+              }
+            }
+          }}
+        >
           {spotlightWatches.map((w) => (
-            <Stack key={w.id} className="spotlight-card">
+            <Stack key={w.id} className="spotlight-card" data-watch-id={w.id} sx={{ cursor: "pointer" }}>
               <Box className="image-box">
                 <img className="main-img" src={w.image} alt={w.model} />
                 <img className="hover-img" src={w.hoverImage} alt={w.model} />
@@ -91,6 +108,18 @@ const LimitedEdition = () => {
           ))}
         </Stack>
       )}
+
+      <Box className="dealers-see-all-wrapper">
+        <Box
+          className="see-all-text"
+          onClick={() => {
+              saveHomepageSectionBeforeNav("limited-edition");
+              router.push("/watch?sort=limited-editions");
+            }}
+        >
+          See All <ArrowForwardIcon className="see-all-arrow" />
+        </Box>
+      </Box>
     </Stack>
   );
 };

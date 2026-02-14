@@ -1,5 +1,6 @@
 import { Stack, Box, Button } from "@mui/material";
 import { useRouter } from "next/router";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import { useState, useEffect } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -34,6 +35,7 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
   }, [story.image, currentImage]);
 
   const handleButtonClick = () => {
+    saveHomepageSectionBeforeNav("watch-stories");
     // id 1–6 bo'lsa Brand Stories page ga, mos id bilan o'tkazamiz
     if (story.id >= 1 && story.id <= 6) {
       router.push({

@@ -953,6 +953,26 @@
           box-shadow: 0 2px 6px rgba(243, 151, 46, 0.4);
         }
       }
+
+      &.action-btn-liked {
+        background: #6b5a51;
+
+        svg {
+          color: #e5c8a3;
+
+          path {
+            fill-opacity: 1;
+          }
+        }
+
+        &:hover {
+          background: #5a4a41;
+
+          svg {
+            color: #e5c8a3;
+          }
+        }
+      }
     }
 
     .text-box {

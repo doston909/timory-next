@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Stack, Box } from "@mui/material";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularWatchesCard, { PopularWatch } from "./PopularWatchesCard";
 
@@ -47,6 +48,7 @@ const PopularWatches = () => {
   const router = useRouter();
 
   const handleSeeAllClick = () => {
+    saveHomepageSectionBeforeNav("popular-watches");
     router.push("/watch");
   };
 
@@ -59,7 +61,7 @@ const PopularWatches = () => {
           <p className="empty-text">Popular Watches Not Found</p>
         ) : (
           popularWatches.map((watch) => (
-            <PopularWatchesCard key={watch.id} watch={watch} />
+            <PopularWatchesCard key={watch.id} watch={watch} homepageSectionId="popular-watches" />
           ))
         )}
       </Box>

@@ -1,5 +1,6 @@
 import { Box, Stack, IconButton, Button } from "@mui/material";
 import { useRouter } from "next/router";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -165,6 +166,7 @@ const TopDealers = () => {
             <SwiperSlide key={index}>
               <TopDealerCard
                 {...dealer}
+                homepageSectionId="top-dealers"
                 onViewProfile={() => handleViewProfile(dealer.dealerName)}
                 onContact={() => handleContact(dealer.dealerName)}
               />
@@ -184,7 +186,10 @@ const TopDealers = () => {
       <Box className="dealers-see-all-wrapper">
         <Box
           className="see-all-text"
-          onClick={() => router.push("/dealer")}
+          onClick={() => {
+            saveHomepageSectionBeforeNav("top-dealers");
+            router.push("/dealer");
+          }}
         >
           See All <ArrowForwardIcon className="see-all-arrow" />
         </Box>

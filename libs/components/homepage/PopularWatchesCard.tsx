@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -21,9 +22,10 @@ export type PopularWatch = {
 
 type Props = {
   watch: PopularWatch;
+  homepageSectionId?: string;
 };
 
-const PopularWatchesCard = ({ watch }: Props) => {
+const PopularWatchesCard = ({ watch, homepageSectionId }: Props) => {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(watch.likes ?? 0);
@@ -54,6 +56,7 @@ const PopularWatchesCard = ({ watch }: Props) => {
   };
 
   const handleCardClick = () => {
+    if (homepageSectionId) saveHomepageSectionBeforeNav(homepageSectionId);
     router.push(`/watch/detail?id=${watch.id}`);
   };
 

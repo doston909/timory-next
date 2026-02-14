@@ -1,6 +1,7 @@
 import { Stack, Box, Select, MenuItem, IconButton, OutlinedInput, InputAdornment, Typography } from "@mui/material";
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -276,8 +277,15 @@ const watches: Watch[] = [
 ];
 
 const WatchList: NextPage = () => {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("newest");
+
+  useEffect(() => {
+    if (router.isReady && router.query.sort === "limited-editions") {
+      setSortBy("limited-editions");
+    }
+  }, [router.isReady, router.query.sort]);
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);

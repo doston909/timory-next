@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import { Stack, Box, IconButton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -148,6 +149,7 @@ const BestSeller = () => {
   );
 
   const handleCardClick = (watchId: number) => {
+    saveHomepageSectionBeforeNav("best-seller");
     router.push(`/watch/detail?id=${watchId}`);
   };
 
@@ -177,6 +179,7 @@ const BestSeller = () => {
   };
 
   const handleSeeAllClick = () => {
+    saveHomepageSectionBeforeNav("best-seller");
     router.push("/watch");
   };
 
