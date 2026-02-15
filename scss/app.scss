@@ -35,6 +35,15 @@
   --text-subtle: #9a9a9a;
 }
 
+/* All MUI MenuItems — font va hover */
+.MuiMenuItem-root {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+
+  &:hover {
+    background-color: rgb(213, 213, 213) !important; /* gold yengil hover */
+  }
+}
+
 /** VERSION: PC **/
 #pc-wrap {
   width: 100%;

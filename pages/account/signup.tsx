@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -25,6 +25,22 @@ const AccountSignup: NextPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationType, setRegistrationType] = useState<"user" | "agent" | null>(null);
 
+  useEffect(() => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setAgreeToTerms(false);
+    setRegistrationType(null);
+    const t = setTimeout(() => {
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    }, 100);
+    return () => clearTimeout(t);
+  }, [router.asPath]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: implement real signup logic
@@ -37,7 +53,7 @@ const AccountSignup: NextPage = () => {
         <div className="account-card account-card-signup">
           <Typography className="account-title">Create Account</Typography>
 
-          <form onSubmit={handleSubmit} className="account-form">
+          <form onSubmit={handleSubmit} className="account-form" autoComplete="off">
             <div className="account-field">
               <Typography className="account-label">Name</Typography>
               <TextField
@@ -45,6 +61,8 @@ const AccountSignup: NextPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 variant="outlined"
+                autoComplete="off"
+                inputProps={{ autoComplete: "off" }}
                 InputProps={{ classes: { root: "account-input" } }}
               />
             </div>
@@ -56,6 +74,8 @@ const AccountSignup: NextPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 variant="outlined"
+                autoComplete="off"
+                inputProps={{ autoComplete: "off" }}
                 InputProps={{ classes: { root: "account-input" } }}
               />
             </div>
@@ -69,6 +89,8 @@ const AccountSignup: NextPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   variant="outlined"
+                  autoComplete="new-password"
+                  inputProps={{ autoComplete: "new-password" }}
                   InputProps={{
                     classes: { root: "account-input" },
                     endAdornment: (
@@ -90,6 +112,8 @@ const AccountSignup: NextPage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   variant="outlined"
+                  autoComplete="new-password"
+                  inputProps={{ autoComplete: "new-password" }}
                   InputProps={{
                     classes: { root: "account-input" },
                     endAdornment: (

@@ -6,10 +6,10 @@ import { NextPage } from "next";
 import { useEffect } from "react";
 import BestSeller from "@/libs/components/homepage/BestSeller";
 import WatchStories from "@/libs/components/homepage/WatchStories";
-import CreateAI from "@/libs/components/homepage/CreateAI";
 import OurGoal from "@/libs/components/homepage/OurGoal";
 import News from "@/libs/components/homepage/News";
 import TopDealers from "@/libs/components/homepage/TopDealers";
+import AIWatchFinder from "@/libs/components/homepage/AIWatchFinder";
 import LimitedEdition from "@/libs/components/homepage/LimitedEdition";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 import { GET_WATCHES } from "@/apollo/user/query";
@@ -69,8 +69,8 @@ console.log("getWatchesData", getWatchesData);
       <Box id="top-dealers">
         <TopDealers />
       </Box>
-      <Box id="create-ai">
-        <CreateAI />
+      <Box id="ai-watch-finder">
+        <AIWatchFinder />
       </Box>
       <Box id="best-seller">
         <BestSeller />

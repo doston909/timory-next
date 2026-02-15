@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -21,6 +21,17 @@ const AccountLogin: NextPage = () => {
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    setEmail("");
+    setPassword("");
+    setStayLoggedIn(false);
+    const t = setTimeout(() => {
+      setEmail("");
+      setPassword("");
+    }, 100);
+    return () => clearTimeout(t);
+  }, [router.asPath]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: implement real login logic
@@ -33,7 +44,7 @@ const AccountLogin: NextPage = () => {
         <div className="account-card">
           <Typography className="account-title">Log in</Typography>
 
-          <form onSubmit={handleSubmit} className="account-form">
+          <form onSubmit={handleSubmit} className="account-form" autoComplete="off">
             <div className="account-field">
               <Typography className="account-label">Name</Typography>
               <TextField
@@ -41,6 +52,8 @@ const AccountLogin: NextPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 variant="outlined"
+                autoComplete="off"
+                inputProps={{ autoComplete: "off" }}
                 InputProps={{ classes: { root: "account-input" } }}
               />
             </div>
@@ -54,6 +67,8 @@ const AccountLogin: NextPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   variant="outlined"
+                  autoComplete="new-password"
+                  inputProps={{ autoComplete: "new-password" }}
                   InputProps={{
                     classes: { root: "account-input" },
                     endAdornment: (

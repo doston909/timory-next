@@ -58,7 +58,13 @@ const AIChatBot = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "AI xizmatida xatolik yuz berdi.");
+        const retrySec = data.retryAfter;
+        const msg = res.status === 429
+          ? (retrySec
+              ? `So‘rovlar limiti. ${retrySec} soniyadan keyin qayta urinib ko‘ring.`
+              : data.error || "So‘rovlar limiti. Keyinroq qayta urinib ko‘ring.")
+          : (data.error || "AI xizmatida xatolik yuz berdi.");
+        throw new Error(msg);
       }
 
       setMessages((prev) => [

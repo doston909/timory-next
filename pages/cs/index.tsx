@@ -226,6 +226,11 @@ const CustomerService: NextPage = () => {
     useState<FaqCategory>("Account");
   const [openFaqItemId, setOpenFaqItemId] = useState<number | null>(null);
   const [activeCsButton, setActiveCsButton] = useState<CsButtonKey | null>("notice");
+  const [contactFormKey, setContactFormKey] = useState(0);
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactSubject, setContactSubject] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
 
   // When coming from About page with /cs#cs-contact-section, open Contact tab and scroll
   useEffect(() => {
@@ -736,7 +741,7 @@ const CustomerService: NextPage = () => {
                 </Typography>
 
                 <Box className="cs-contact-container">
-                  <Box className="cs-contact-form">
+                  <Box key={contactFormKey} className="cs-contact-form">
                     <Typography className="cs-contact-form-title" >
                       Tell Us Your Message
                     </Typography>
@@ -749,6 +754,8 @@ const CustomerService: NextPage = () => {
                         className="cs-contact-input"
                         type="text"
                         placeholder="Full Name..."
+                        value={contactName}
+                        onChange={(e) => setContactName(e.target.value)}
                       />
                     </Box>
 
@@ -760,6 +767,8 @@ const CustomerService: NextPage = () => {
                         className="cs-contact-input"
                         type="email"
                         placeholder="Email Address..."
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
                       />
                     </Box>
 
@@ -771,6 +780,8 @@ const CustomerService: NextPage = () => {
                         className="cs-contact-input"
                         type="text"
                         placeholder="Subject..."
+                        value={contactSubject}
+                        onChange={(e) => setContactSubject(e.target.value)}
                       />
                     </Box>
 
@@ -781,10 +792,21 @@ const CustomerService: NextPage = () => {
                       <textarea
                         className="cs-contact-textarea"
                         placeholder="Message..."
+                        value={contactMessage}
+                        onChange={(e) => setContactMessage(e.target.value)}
                       />
                     </Box>
 
-                    <Button className="cs-contact-submit">
+                    <Button
+                      className="cs-contact-submit"
+                      onClick={() => {
+                        setContactName("");
+                        setContactEmail("");
+                        setContactSubject("");
+                        setContactMessage("");
+                        setContactFormKey((k) => k + 1);
+                      }}
+                    >
                       Send Message
                       <ArrowForward className="cs-contact-submit-icon" />
                     </Button>
