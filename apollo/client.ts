@@ -145,10 +145,7 @@ function createApolloClient() {
 	return new ApolloClient({
 		ssrMode: typeof window === 'undefined',
 		link: createIsomorphicLink(),
-	cache: new InMemoryCache({
-		// Apollo 3.14: canonizeResults deprecated, opt out to avoid warning
-		canonizeResults: false,
-	}),
+	cache: new InMemoryCache(),
 	resolvers: {},
 	});
 }

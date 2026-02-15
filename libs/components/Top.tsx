@@ -50,7 +50,8 @@ const Top = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery);
+      router.push("/watch?search=" + encodeURIComponent(searchQuery.trim()));
+      setIsSearchOpen(false);
     }
   };
 
@@ -521,11 +522,56 @@ const Top = () => {
             <div className="search-suggestions">
               <p className="search-suggestions-title">Popular Searches</p>
               <div className="search-tags">
-                <button className="search-tag">Rolex</button>
-                <button className="search-tag">Omega</button>
-                <button className="search-tag">Cartier</button>
-                <button className="search-tag">Vintage</button>
-                <button className="search-tag">Sport Watches</button>
+                <button
+                  type="button"
+                  className="search-tag"
+                  onClick={() => {
+                    router.push("/watch?brand=" + encodeURIComponent("Rolex"));
+                    setIsSearchOpen(false);
+                  }}
+                >
+                  Rolex
+                </button>
+                <button
+                  type="button"
+                  className="search-tag"
+                  onClick={() => {
+                    router.push("/watch?brand=" + encodeURIComponent("Omega"));
+                    setIsSearchOpen(false);
+                  }}
+                >
+                  Omega
+                </button>
+                <button
+                  type="button"
+                  className="search-tag"
+                  onClick={() => {
+                    router.push("/watch?brand=" + encodeURIComponent("Cartier"));
+                    setIsSearchOpen(false);
+                  }}
+                >
+                  Cartier
+                </button>
+                <button
+                  type="button"
+                  className="search-tag"
+                  onClick={() => {
+                    router.push("/watch?watchType=" + encodeURIComponent("Sport"));
+                    setIsSearchOpen(false);
+                  }}
+                >
+                  Sport Watches
+                </button>
+                <button
+                  type="button"
+                  className="search-tag"
+                  onClick={() => {
+                    router.push("/community?type=" + encodeURIComponent("News"));
+                    setIsSearchOpen(false);
+                  }}
+                >
+                  News
+                </button>
               </div>
             </div>
           </div>

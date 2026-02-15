@@ -286,10 +286,34 @@ const WatchList: NextPage = () => {
       setSortBy("limited-editions");
     }
   }, [router.isReady, router.query.sort]);
+
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
+  // Open watch page with brand/watchType from URL (e.g. search tags: Rolex, Omega, Sport Watches)
+  useEffect(() => {
+    if (!router.isReady) return;
+    const brand = router.query.brand;
+    const watchType = router.query.watchType;
+    if (typeof brand === "string" && brand) {
+      setSelectedBrands([decodeURIComponent(brand)]);
+    }
+    if (typeof watchType === "string" && watchType) {
+      setSelectedTypes([decodeURIComponent(watchType)]);
+    }
+  }, [router.isReady, router.query.brand, router.query.watchType]);
+
+  // Search from URL (e.g. header search → /watch?search=...)
+  useEffect(() => {
+    if (!router.isReady) return;
+    const search = router.query.search;
+    if (typeof search === "string" && search) {
+      setSearchText(decodeURIComponent(search));
+    }
+  }, [router.isReady, router.query.search]);
+
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedDialColors, setSelectedDialColors] = useState<string[]>([]);
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
@@ -298,11 +322,15 @@ const WatchList: NextPage = () => {
     end: 10000000,
   });
   
-  // Search orqali filter qilingan watchlar
-  const searchedWatches = searchText.trim()
-    ? watches.filter((watch) =>
-        watch.name.toLowerCase().includes(searchText.toLowerCase().trim())
-      )
+  // Search orqali filter qilingan watchlar (name, brand, type bo‘yicha)
+  const searchLower = searchText.toLowerCase().trim();
+  const searchedWatches = searchLower
+    ? watches.filter((watch) => {
+        const name = (watch.name || "").toLowerCase();
+        const brand = (watch.brand || "").toLowerCase();
+        const type = (watch.type || "").toLowerCase();
+        return name.includes(searchLower) || brand.includes(searchLower) || type.includes(searchLower);
+      })
     : watches;
   
   // Brand filter

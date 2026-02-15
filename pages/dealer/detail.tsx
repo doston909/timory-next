@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowForward } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
+import { getDealerById, dealers } from "@/libs/data/dealers";
 
 type Watch = {
   id: number;
@@ -137,6 +138,12 @@ const ARTICLES_PER_PAGE = 3;
 const DealerDetailPage = () => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const dealerIdParam = router.query.id;
+  const displayDealer = useMemo(() => {
+    const id = typeof dealerIdParam === "string" ? parseInt(dealerIdParam, 10) : NaN;
+    const found = !isNaN(id) ? getDealerById(id) : undefined;
+    return found ?? dealers[0];
+  }, [dealerIdParam]);
   // Asosiy dealer uchun Follow/Unfollow
   const [isDealerFollowing, setIsDealerFollowing] = useState(false);
   // Followers tab uchun umumiy son (asosiy Follow tugmasiga bog'langan)
@@ -346,16 +353,22 @@ const DealerDetailPage = () => {
         <Box className="dealer-detail-hero-content">
           <Box className="dealer-detail-profile">
             <Box className="dealer-avatar-wrapper">
-              <img
-                src="/img/profile/ceo.png"
-                alt="Caroline"
-                className="dealer-avatar"
-              />
+              {displayDealer.image ? (
+                <img
+                  src={displayDealer.image}
+                  alt={displayDealer.name}
+                  className="dealer-avatar"
+                />
+              ) : (
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", backgroundColor: "action.hover" }}>
+                  <PersonOutline sx={{ fontSize: 64, color: "action.disabled" }} />
+                </Box>
+              )}
             </Box>
 
             <Box className="dealer-profile-text">
               <Typography className="dealer-profile-name">
-                Caroline
+                {displayDealer.name}
               </Typography>
               <Typography className="dealer-profile-phone">
                 (010) 123-41234

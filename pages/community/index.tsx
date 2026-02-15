@@ -1,5 +1,5 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import { Stack, Box, Typography, IconButton } from "@mui/material";
+import { Stack, Box, Typography, IconButton, OutlinedInput, InputAdornment } from "@mui/material";
 import { NextPage } from "next";
 import {
   ShoppingBagOutlined,
@@ -9,12 +9,14 @@ import {
   ArrowBackIos,
   ArrowForwardIos,
 } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import CommunityCard from "@/libs/components/community/CommunityCard";
 import { useCart } from "@/libs/context/CartContext";
 import { getViewCount } from "@/libs/viewCountStorage";
+import { getDealerByName } from "@/libs/data/dealers";
 
 
 
@@ -29,9 +31,20 @@ const Community: NextPage = () => {
 
   const tags = ["Free Board", "Recommendation", "News"] as const;
   const [selectedArticleType, setSelectedArticleType] = useState<string | null>(null);
+  const [communitySearch, setCommunitySearch] = useState("");
+
+  // Open with type from URL (e.g. search tag "News" → /community?type=News)
+  useEffect(() => {
+    if (!router.isReady) return;
+    const type = router.query.type;
+    if (typeof type === "string" && type && tags.includes(type as typeof tags[number])) {
+      setSelectedArticleType(type);
+    }
+  }, [router.isReady, router.query.type]);
 
   const handleFilterReset = () => {
     setSelectedArticleType(null);
+    setCommunitySearch("");
   };
 
   const bestSellers = [
@@ -137,9 +150,19 @@ const Community: NextPage = () => {
     },
   ];
 
-  const filteredArticles = selectedArticleType
+  const typeFilteredArticles = selectedArticleType
     ? articles.filter((a) => (a as { articleType?: string }).articleType === selectedArticleType)
     : articles;
+
+  // Article title va author (dealer name) bo‘yicha qidiruv
+  const searchLower = communitySearch.toLowerCase().trim();
+  const filteredArticles = searchLower
+    ? typeFilteredArticles.filter((a) => {
+        const title = (a.title || "").toLowerCase();
+        const author = (a.author || "").toLowerCase();
+        return title.includes(searchLower) || author.includes(searchLower);
+      })
+    : typeFilteredArticles;
 
   const handlePrevBestSeller = () => {
     setBestSellerIndex((prev) =>
@@ -204,6 +227,36 @@ const Community: NextPage = () => {
       <Stack className="community-container">
         {/* Left Sidebar */}
         <Stack className="community-sidebar">
+
+            {/* Search */}
+          <Box className="sidebar-section" sx={{ marginBottom: 2 }}>
+            <Typography className="sidebar-title" sx={{ marginBottom: 1 }}>Search</Typography>
+            <OutlinedInput
+              placeholder="Article, dealer name..."
+              value={communitySearch}
+              onChange={(e) => setCommunitySearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                const dealer = getDealerByName(communitySearch);
+                if (dealer) {
+                  e.preventDefault();
+                  router.push(`/dealer/detail?id=${dealer.id}`);
+                }
+              }}
+              size="small"
+              fullWidth
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "text.secondary", fontSize: 20 }} />
+                </InputAdornment>
+              }
+              sx={{
+                backgroundColor: "background.paper",
+                "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
+              }}
+            />
+          </Box>
 
             {/* Tags */}
           <Box className="sidebar-section">

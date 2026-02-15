@@ -8,29 +8,31 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const HeroCarousel = () => {
+  const router = useRouter();
   const slides = [
     {
       id: 1,
       title: "The Stone Series",
       subtitle: "Great Leather Collection",
       description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home1.jpeg",
+      image: "/img/watch/home7.jpeg",
     },
     {
       id: 2,
       title: "Nice Top Series",
       subtitle: "Black Great Addition",
       description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home4.jpeg",
+      image: "/img/watch/home55.jpg",
     },
     {
       id: 3,
       title: "The Stone Series",
       subtitle: "A Great Addition",
       description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home7.jpeg",
+      image: "/img/watch/home11.jpg",
     },
   ];
 
@@ -71,7 +73,11 @@ const HeroCarousel = () => {
                   <span className="slide-label">{slide.title}</span>
                   <h2 className="slide-title">{slide.subtitle}</h2>
                   <p className="slide-description">{slide.description}</p>
-                  <Button className="shopping-now-btn" variant="contained">
+                  <Button
+                    className="shopping-now-btn"
+                    variant="contained"
+                    onClick={() => router.push("/watch")}
+                  >
                     Shopping Now
                   </Button>
                 </Stack>

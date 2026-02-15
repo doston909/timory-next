@@ -266,7 +266,7 @@
         outline: none;
         font-size: 18px;
         font-family: $font;
-        color: #333;
+        color: #000000;
         background: transparent;
 
         &::placeholder {
@@ -295,18 +295,18 @@
     .search-submit-button {
       align-self: flex-end;
       padding: 14px 40px;
-      background: #e5c28c;
+      background: #f09620 ;
       color: white;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
       font-family: $font;
       cursor: pointer;
       transition: all 0.3s ease;
 
       &:hover {
-        background: #d4b078;
+        background: #d78c29 ;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(229, 194, 140, 0.3);
       }
@@ -322,7 +322,7 @@
     }
 
     .search-suggestions-title {
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 600;
       color: #666;
       margin-bottom: 15px;
@@ -520,15 +520,16 @@
       background: #f5f5f5;
       border: 1px solid #e0e0e0;
       border-radius: 20px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: $font;
+      font-weight: 500;
       color: #333;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: #e5c28c;
-        border-color: #e5c28c;
+        background: #f09620 ;
+        border-color: #f09620 ;
         color: white;
         transform: translateY(-2px);
       }
