@@ -832,7 +832,7 @@ const WatchDetail = () => {
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Message"
+                  placeholder="Message..."
                   className="review-textarea"
                   value={newReviewText}
                   onChange={(e) => setNewReviewText(e.target.value)}
@@ -848,7 +848,7 @@ const WatchDetail = () => {
                       overflowX: "hidden !important",
                     },
                     "& .MuiOutlinedInput-root": {
-                      overflow: "visible !important",
+                      overflow: "hidden !important",
                     },
                   }}
                 />
