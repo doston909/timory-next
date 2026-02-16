@@ -441,6 +441,7 @@
           direction: ltr;
           display: flex;
           flex-direction: column-reverse;
+         
 
           .review-item {
             display: block;
@@ -455,6 +456,7 @@
             position: relative;
             flex-shrink: 0;
             overflow: visible;
+            border-radius: 20px;
 
             .review-number {
               position: absolute;
@@ -654,7 +656,7 @@
           .review-input,
           .review-textarea {
             .MuiOutlinedInput-root {
-              border-radius: 0;
+              border-radius: 20px;
               font-family: $font;
               background-color: #ffffff;
               border: 1px solid rgba(207, 207, 207, 0.2);
@@ -691,6 +693,7 @@
               align-items: flex-start;
               padding: 0;
               overflow: visible !important;
+              border-radius: 20px;
             }
 
             .MuiInputBase-input {

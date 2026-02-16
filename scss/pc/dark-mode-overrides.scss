@@ -239,6 +239,7 @@
   .dealer-detail-page .container,
   .watch-detail-page,
   .watch-list-page,
+  .community-page,
   .community-detail-page,
   .account-page,
   .cs-page {
@@ -399,6 +400,570 @@
 
       svg {
         color: #f09620  !important;
+      }
+    }
+  }
+
+  /* community/detail.tsx — community detail page */
+  .community-detail-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+
+    .community-detail-container {
+      color: #e4e4e4;
+    }
+
+    .article-main {
+      .article-image {
+        border-radius: 20px !important;
+        overflow: hidden;
+
+        img {
+          border-radius: 20px !important;
+        }
+      }
+
+      .article-header {
+        .article-meta {
+          .meta-item {
+            color: #b0b0b0;
+            
+
+            .meta-icon {
+              color: #f9a63b;
+            }
+
+            .meta-text {
+              color: #b0b0b0;
+            }
+          }
+
+          .meta-author-avatar {
+            border-color: rgba(255, 255, 255, 0.2);
+            background-color: #252525;
+          }
+        }
+
+        .article-title {
+          color: #e4e4e4;
+        }
+      }
+
+      .article-content {
+        background-color: #263351;
+        border-radius: 20px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        .article-text {
+          color: #b0b0b0;
+        }
+      }
+
+      .watch-back-wrapper {
+        .see-all-text {
+          color: #e4e4e4;
+
+          .see-all-arrow {
+            color: #e4e4e4;
+          }
+
+          &:hover {
+            color: #f9a63b;
+
+            .see-all-arrow {
+              color: #f9a63b;
+            }
+          }
+        }
+      }
+
+      .article-navigation {
+        border-top-color: rgba(255, 255, 255, 0.12);
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+
+        .nav-button {
+          color: #e4e4e4;
+
+          &:hover {
+            color: #f9a63b;
+          }
+        }
+      }
+
+      /* comments-section — watch/detail .reviews-content bilan bir xil dark style */
+      .comments-section {
+        background-color: #263351 !important;
+        border-radius: 20px;
+        color: #e4e4e4;
+        overflow: hidden;
+
+        .comments-title-wrapper .comments-title-icon {
+          color: #f9a63b !important;
+        }
+
+        .comments-title-wrapper .comments-title,
+        .comments-title {
+          color: #e4e4e4 !important;
+        }
+
+        .comments-list .comment-item {
+          background-color: #20293d !important;
+          border-color: rgba(255, 255, 255, 0.12) !important;
+
+          .comment-number {
+            color: #b0b0b0 !important;
+          }
+
+          .comment-meta {
+            border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+          }
+
+          .comment-meta-item .comment-meta-icon,
+          .comment-meta-item .comment-meta-text {
+            color: #b0b0b0 !important;
+          }
+
+          .comment-text-wrapper {
+            .comment-edited {
+              color: #888 !important;
+            }
+
+            .comment-text {
+              color: #e4e4e4 !important;
+            }
+
+            .comment-actions {
+              .comment-reply-btn .reply-icon {
+                color: #e4e4e4 !important;
+              }
+
+              .comment-reply-btn:hover {
+                background-color: rgba(249, 166, 59, 0.2);
+
+                .reply-icon {
+                  color: #f9a63b !important;
+                }
+              }
+
+              .comment-like-btn {
+                background-color: #5c5c5c !important;
+
+                .like-icon {
+                  color: #b0b0b0 !important;
+                }
+
+                .like-badge {
+                  background-color: #f9a63b;
+                  color: #1e1e1e;
+                  border-color: #252525;
+                }
+
+                &:hover .like-icon,
+                &.liked .like-icon {
+                  color: #f9a63b !important;
+                }
+
+                &.liked {
+                  background-color: rgba(249, 166, 59, 0.15) !important;
+                }
+              }
+            }
+          }
+        }
+
+        .no-comments .no-comments-text {
+          color: #b0b0b0 !important;
+        }
+
+        /* comment-form — watch/detail .review-form bilan 100% bir xil */
+        .comment-form {
+          .comment-form-title {
+            color: #e4e4e4 !important;
+          }
+
+          .comment-textarea {
+            max-height: 212px !important;
+            overflow: hidden !important;
+          }
+
+          .comment-submit-wrapper {
+            background-color: #263351 !important;
+            position: relative !important;
+            z-index: 1 !important;
+          }
+
+          .comment-input :global(.MuiOutlinedInput-root) {
+            background-color: #1e1e1e !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+
+            fieldset {
+              border-color: rgba(255, 255, 255, 0.2) !important;
+            }
+
+            &:hover fieldset {
+              border-color: rgba(255, 255, 255, 0.35) !important;
+            }
+
+            &.Mui-focused fieldset {
+              border-color: #f9a63b !important;
+            }
+          }
+
+          .comment-textarea :global(.MuiOutlinedInput-root) {
+            background-color: transparent !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            min-height: 0 !important;
+            height: 212px !important;
+            overflow: hidden !important;
+
+            fieldset {
+              border-color: rgba(255, 255, 255, 0.2) !important;
+            }
+
+            &:hover fieldset {
+              border-color: rgba(255, 255, 255, 0.35) !important;
+            }
+
+            &.Mui-focused fieldset {
+              border-color: #f9a63b !important;
+            }
+          }
+
+          .comment-textarea :global(.MuiInputBase-input) {
+            min-height: 180px !important;
+            box-sizing: border-box !important;
+          }
+
+          .comment-input :global(.MuiInputBase-input),
+          .comment-textarea :global(.MuiInputBase-input),
+          .comment-textarea textarea {
+            color: #e4e4e4 !important;
+          }
+
+          .comment-textarea textarea,
+          .comment-form textarea {
+            background-color: #1B253B !important;
+            min-height: 180px !important;
+            box-sizing: border-box !important;
+          }
+
+          .comment-form :global(.MuiOutlinedInput-root) {
+            background-color: transparent !important;
+          }
+
+          .comment-input :global(.MuiInputBase-input)::placeholder,
+          .comment-textarea :global(.MuiInputBase-input)::placeholder,
+          .comment-textarea textarea::placeholder {
+            color: #fff !important;
+          }
+
+          .comment-textarea textarea::-webkit-input-placeholder,
+          .comment-textarea :global(.MuiInputBase-input)::-webkit-input-placeholder {
+            color: #fff !important;
+          }
+          .comment-textarea textarea::-moz-placeholder,
+          .comment-textarea :global(.MuiInputBase-input)::-moz-placeholder {
+            color: #fff !important;
+          }
+          .comment-textarea textarea:-ms-input-placeholder,
+          .comment-textarea :global(.MuiInputBase-input):-ms-input-placeholder {
+            color: #fff !important;
+          }
+          .comment-textarea textarea::placeholder,
+          .comment-textarea :global(.MuiInputBase-input)::placeholder {
+            color: #fff !important;
+          }
+
+          .comment-submit-button {
+            background-color: #252525 !important;
+            color: #e4e4e4 !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+
+            &:hover {
+              background-color: #f9a63b !important;
+              color: #1e1e1e !important;
+              border-color: #f9a63b !important;
+            }
+          }
+
+          .MuiIconButton-root {
+            color: #b0b0b0 !important;
+
+            &:hover {
+              color: #f9a63b !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* watch-list-page — watch-pagination (watch/index.tsx) */
+  .watch-list-page .watch-pagination {
+    .pagination-number {
+      color: #b0b0b0 !important;
+
+      &:hover {
+        color: #f09620 !important;
+      }
+
+      &.active {
+        color: #f09620 !important;
+        text-decoration-color: #f09620;
+      }
+    }
+  }
+
+  /* community/index.tsx — community page */
+  .community-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+
+    .community-container {
+      color: #e4e4e4;
+    }
+
+    .community-sidebar {
+      .sidebar-section {
+        .sidebar-title {
+          color: #e4e4e4 !important;
+
+          &::after {
+            background-color: rgba(255, 255, 255, 0.2);
+          }
+        }
+
+        .MuiIconButton-root {
+          color: #e4e4e4 !important;
+
+          &:hover {
+            color: #f9a63b !important;
+          }
+        }
+
+        .partnership-box-text {
+          color: #e4e4e4;
+        }
+
+        .MuiStack-root > .MuiBox-root {
+          border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .tags-list .tag-item {
+          border-color: rgba(255, 255, 255, 0.3);
+          color: #e4e4e4;
+          background: #252525;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+          }
+
+          &.tag-item-active {
+            background: #f9a63b !important;
+            color: #1e1e1e !important;
+            border-color: #f9a63b;
+          }
+        }
+
+        .best-seller-card {
+          background-color: #263351!important;
+          border-color: rgba(255, 255, 255, 0.12);
+
+          &:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            .best-seller-title,
+            .best-seller-price {
+              background-color: #07142a !important;
+            }
+          }
+
+          .best-seller-title,
+          .best-seller-price {
+            color: #e4e4e4 !important;
+            background-color: #07142a !important;
+          }
+
+          .best-seller-icons .icon-wrapper {
+            background: rgba(255, 255, 255, 0.12) !important;
+
+            svg {
+              color: #e4e4e4 !important;
+            }
+
+            &:hover svg {
+              color: #f9a63b !important;
+            }
+
+            &.icon-wrapper-liked {
+              svg {
+                color: #f9a63b !important;
+              }
+            }
+
+            .icon-wrapper-count {
+              background: #f9a63b;
+              color: #1e1e1e;
+            }
+          }
+        }
+      }
+
+      .best-seller-navigation .nav-arrow {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.3);
+
+        svg {
+          color: #e4e4e4 !important;
+        }
+
+        &:hover {
+          background: #f9a63b !important;
+          border-color: #f9a63b;
+
+          svg {
+            color: #1e1e1e !important;
+          }
+        }
+      }
+    }
+
+  }
+
+  /* community-main — dark rejim (alohida) */
+  .community-main {
+    background-color: #1c222f !important;
+    border-left-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e4e4e4;
+    overflow: visible;
+
+    &::after {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .community-header {
+      background: transparent !important;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .sort-label {
+        color: #e4e4e4 !important;
+      }
+
+      /* Select: fon faqat border ichida — root transparent, rang faqat inputda */
+      .sort-select :global(.MuiOutlinedInput-root) {
+        background-color: transparent !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: 6px !important;
+        overflow: hidden !important;
+      }
+
+      .sort-select :global(.MuiInputBase-root) {
+        overflow: hidden !important;
+        border-radius: 6px !important;
+      }
+
+      .sort-select :global(.MuiOutlinedInput-notchedOutline) {
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 6px !important;
+      }
+
+      /* Rang faqat shu elementda — border ichida qoladi */
+      .sort-select :global(.MuiSelect-select),
+      .sort-select :global(.MuiInputBase-input) {
+        background-color: #1c222f !important;
+        color: #e4e4e4 !important;
+        padding: 8px 14px !important;
+        border-radius: 4px !important;
+        box-sizing: border-box !important;
+      }
+
+      :global(.MuiSvgIcon-root) {
+        color: #e4e4e4 !important;
+      }
+    }
+
+    .articles-grid .article-card {
+      background-color: #263351 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 30px;
+
+      .article-image {
+        border-radius: 12px !important;
+        overflow: hidden;
+
+        img {
+          border-radius: 12px !important;
+        }
+      }
+
+      .article-type-label {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: #fff;
+      }
+
+      .article-image-icons .icon-wrapper {
+        background: rgba(244, 244, 244, 0.965) !important;
+
+        svg {
+          color: #000000  !important;
+        }
+
+        &:hover svg {
+          color: #f9a63b !important;
+        }
+
+        &.icon-wrapper-liked svg {
+          color: #f9a63b !important;
+        }
+
+        .icon-wrapper-count {
+          background: #f9a63b;
+          color: #1e1e1e;
+        }
+      }
+
+      .article-content {
+        .article-meta {
+          color: #b0b0b0 !important;
+        }
+
+        .article-member-type {
+          color: #b0b0b0 !important;
+        }
+
+        .article-author {
+          color: #e4e4e4 !important;
+        }
+
+        .article-title {
+          color: #e4e4e4 !important;
+
+          &:hover {
+            color: #f9a63b !important;
+          }
+        }
+
+        .article-description {
+          color: #b0b0b0 !important;
+        }
+      }
+    }
+
+    .pagination .watch-pagination .pagination-number {
+      color: #b0b0b0 !important;
+
+      &:hover {
+        color: #f9a63b !important;
+      }
+
+      &.active {
+        color: #f9a63b !important;
+        text-decoration-color: #f9a63b;
       }
     }
   }
@@ -595,6 +1160,7 @@
 
       .reviews-title-wrapper .reviews-title-icon {
         color: #f9a63b !important;
+       
       }
 
       .reviews-title-wrapper .reviews-title {
@@ -604,6 +1170,7 @@
       .reviews-list .review-item {
         background-color:  #20293d !important;
         border-color: rgba(255, 255, 255, 0.12) !important;
+        
 
         .review-number {
           color: #b0b0b0 !important;

@@ -228,36 +228,6 @@ const Community: NextPage = () => {
         {/* Left Sidebar */}
         <Stack className="community-sidebar">
 
-            {/* Search */}
-          <Box className="sidebar-section" sx={{ marginBottom: 2 }}>
-            <Typography className="sidebar-title" sx={{ marginBottom: 1 }}>Search</Typography>
-            <OutlinedInput
-              placeholder="Article, dealer name..."
-              value={communitySearch}
-              onChange={(e) => setCommunitySearch(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                const dealer = getDealerByName(communitySearch);
-                if (dealer) {
-                  e.preventDefault();
-                  router.push(`/dealer/detail?id=${dealer.id}`);
-                }
-              }}
-              size="small"
-              fullWidth
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "text.secondary", fontSize: 20 }} />
-                </InputAdornment>
-              }
-              sx={{
-                backgroundColor: "background.paper",
-                "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
-                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
-              }}
-            />
-          </Box>
-
             {/* Tags */}
           <Box className="sidebar-section">
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", marginBottom: 1, flexDirection: "row" }}>
