@@ -1302,47 +1302,6 @@
       }
     }
 
-    /* OUR GOAL SECTION (about page) — homepage dagi bilan bir xil ruhda dark mode */
-    .our-goal-section {
-      background: #1c222f !important;
-      padding-top: 80px;
-
-      .stats-section {
-        .stats-title {
-          color: #fbd7d7 !important;
-        }
-
-        .stats-grid {
-          .stat-box {
-            border-color: rgba(225, 225, 225, 0.12);
-            background: #e4e4e49f !important;
-
-            &::before {
-              /* hover gradientni dark fonda ham ko‘rinadigan qilamiz */
-              background: linear-gradient(
-                135deg,
-                rgba(201, 168, 106, 0.32) 0%,
-                rgba(229, 200, 163, 0.24) 40%,
-                rgba(214, 176, 116, 0.16) 100%
-              );
-            }
-
-            .stat-icon img {
-              filter: brightness(0.9) contrast(1.05);
-            }
-
-            .stat-title {
-              color: #f9a63b;
-            }
-
-            .stat-description {
-              color: #ffffff !important;
-            }
-          }
-        }
-      }
-    }
-
     /* ABOUT CTA SECTION */
     .about-cta-section {
       background-color: #263351 !important;
@@ -1367,6 +1326,42 @@
     }
   }
 
+  /* our-goal-section va stat-box — homepage (OurGoal.tsx) va about page ikkalasida dark mode */
+  .our-goal-section {
+    background: #1c222f !important;
+    padding-top: 80px;
+
+    .stats-section .stats-title {
+      color: #fbd7d7 !important;
+    }
+  }
+
+  .our-goal-section .stats-section .stats-grid .stat-box {
+    border-color: rgba(225, 225, 225, 0.12) !important;
+    background: #e4e4e484 !important;
+
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(201, 168, 106, 0.32) 0%,
+        rgba(229, 200, 163, 0.24) 40%,
+        rgba(214, 176, 116, 0.16) 100%
+      );
+    }
+
+    .stat-icon img {
+      filter: brightness(0.9) contrast(1.05);
+    }
+
+    .stat-title {
+      color: #f7f7f7 !important;
+    }
+
+    .stat-description {
+      color: #ffffff !important;
+    }
+  }
+
   /* watch-list-page — watch-pagination (watch/index.tsx) */
   .watch-list-page .watch-pagination {
     .pagination-number {
@@ -1380,6 +1375,100 @@
         color: #f09620 !important;
         text-decoration-color: #f09620;
       }
+    }
+  }
+
+  /* pages/brand-stories/index.tsx — brand story page dark mode */
+  .brand-story-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+
+    .brand-story-title {
+      color: #fff !important;
+    }
+
+    .brand-story-history-title {
+      color: #fff !important;
+    }
+
+    .brand-story-section {
+      background-color: #263351 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-story-card {
+      background-color: #263351 !important;
+    }
+
+    .brand-story-content {
+      background-color: transparent !important;
+    }
+
+    .brand-story-name-year-wrapper {
+      background-color: transparent !important;
+    }
+
+    .brand-story-name {
+      color: #ffffff !important;
+    }
+
+    .brand-story-year {
+      color: #b0b0b0 !important;
+    }
+
+    .brand-story-quote {
+      color: #e4e4e4 !important;
+    }
+
+    .brand-story-image-right {
+      background-color: transparent !important;
+    }
+
+    .brand-story-portrait-wrapper {
+      background-color: transparent !important;
+    }
+
+    .watch-back-wrapper .see-all-text {
+      color: #e4e4e4 !important;
+
+      &:hover {
+        color: #f09620 !important;
+      }
+
+      .see-all-arrow {
+        color: #e4e4e4 !important;
+      }
+
+      &:hover .see-all-arrow {
+        color: #f09620 !important;
+      }
+    }
+
+    .brand-story-video-box {
+      background-color: #000000 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-story-boxes {
+      background-color: #263351 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-story-boxes .brand-story-content {
+      color: #e4e4e4 !important;
+    }
+
+    .brand-story-image {
+      background-color: #263351  !important;
+    }
+
+    .brand-story-boxes .brand-story-image-right {
+      background-color: #263351  !important;
+    }
+
+    .brand-story-text-1,
+    .brand-story-text-2 {
+      color: #b0b0b0 !important;
     }
   }
 
