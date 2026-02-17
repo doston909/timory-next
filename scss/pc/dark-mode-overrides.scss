@@ -698,6 +698,138 @@
     }
   }
 
+  /* about/index.tsx — about page */
+  #pc-wrap .about-page .about-cta-section .about-cta-subtitle {
+    color: #d0d4e4 !important;
+  }
+
+  .about-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+    .about-content {
+      .about-image-wrapper {
+        border-radius: 16px;
+
+        .about-image {
+          filter: brightness(0.9) contrast(1.05);
+        }
+      }
+
+      .about-text-content {
+        .about-text {
+          color: #ffffffd1 !important;
+          background-color: #263351 !important;
+          border-left-color: #f9a63b;
+        }
+      }
+    }
+
+    .testimonial-section-title {
+      color: #e4e4e4;
+    }
+
+    .testimonial-section {
+      background-color: #263351 !important;
+
+      &::-webkit-scrollbar-track {
+        background: #1c222f;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #8c6f5a;
+      }
+
+      .testimonial-card {
+        .testimonial-image-left {
+          .testimonial-portrait {
+            border-radius: 20px;
+            filter: brightness(0.9) contrast(1.05);
+          }
+        }
+
+        .testimonial-content {
+         background-color: #263351 !important;
+
+          .testimonial-name {
+            color: #f9a63b;
+          }
+
+          .testimonial-role {
+            color: #b0b0b0;
+          }
+
+          .testimonial-quote {
+            color: #e4e4e4;
+          }
+        }
+      }
+    }
+
+    /* OUR GOAL SECTION (about page) — homepage dagi bilan bir xil ruhda dark mode */
+    .our-goal-section {
+      background: #1c222f !important;
+      padding-top: 80px;
+
+      .stats-section {
+        .stats-title {
+          color: #fbd7d7 !important;
+        }
+
+        .stats-grid {
+          .stat-box {
+            border-color: rgba(225, 225, 225, 0.12);
+            background: #e4e4e49f !important;
+
+            &::before {
+              /* hover gradientni dark fonda ham ko‘rinadigan qilamiz */
+              background: linear-gradient(
+                135deg,
+                rgba(201, 168, 106, 0.32) 0%,
+                rgba(229, 200, 163, 0.24) 40%,
+                rgba(214, 176, 116, 0.16) 100%
+              );
+            }
+
+            .stat-icon img {
+              filter: brightness(0.9) contrast(1.05);
+            }
+
+            .stat-title {
+              color: #f9a63b;
+            }
+
+            .stat-description {
+              color: #ffffff !important;
+            }
+          }
+        }
+      }
+    }
+
+    /* ABOUT CTA SECTION */
+    .about-cta-section {
+      background-color: #263351 !important;
+      border-radius: 25px;
+    
+
+      .about-cta-title {
+        color: #ffffff !important;
+      }
+
+      .about-cta-button {
+        background-color: #252525 !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3)!important;
+
+        &:hover {
+          background-color: #f9a63b !important;
+          color: #1e1e1e;
+          border-color: #f9a63b;
+        }
+      }
+    }
+  }
+
   /* watch-list-page — watch-pagination (watch/index.tsx) */
   .watch-list-page .watch-pagination {
     .pagination-number {
