@@ -141,11 +141,21 @@
       }
     }
 
-    .user-menu-item {
-      color: #e4e4e4 !important;
+    .user-menu {
+      .user-menu-dropdown {
+        background-color: #1e1e1e !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgb(255, 255, 255);
+        border-radius: 10px;
+      }
 
-      &:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
+      .user-menu-item {
+        color: #e4e4e4 !important;
+
+        &:hover {
+          background-color: rgb(214, 214, 214) !important;
+          color: #333333 !important;
+        }
       }
     }
   }
@@ -254,7 +264,117 @@
     background-color: #263351 !important;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
-  }ras
+  }
+
+  /* account/index.tsx — dark mode */
+  #account-page {
+    background-color: #1c222f !important;
+
+    .account-card {
+      background-color: #263351 !important;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .account-title {
+      color: #fff !important;
+    }
+
+    .account-label {
+      color: #e4e4e4 !important;
+    }
+
+    .account-input {
+      .MuiOutlinedInput-notchedOutline {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+      }
+
+      &:hover .MuiOutlinedInput-notchedOutline,
+      &.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      .MuiInputBase-input {
+        color: #e4e4e4 !important;
+      }
+    }
+
+    .account-password-wrapper .MuiIconButton-root,
+    .account-password-wrapper .MuiIconButton-root svg {
+      color: #e4e4e4 !important;
+    }
+
+    .account-options .account-helper,
+    .account-options .account-link-button {
+      color: #e4e4e4 !important;
+    }
+
+    .account-options .account-link-button:hover {
+      color: #f09620 !important;
+    }
+
+    .account-options .MuiCheckbox-root {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .account-options .MuiCheckbox-root.Mui-checked {
+      color: #f09620 !important;
+    }
+
+    /* signup.tsx — registrationType (User / Dealer) checkboxes and labels */
+    .account-card-signup .account-helper {
+      color: #e4e4e4 !important;
+    }
+
+    .account-card-signup .MuiFormControlLabel-root .MuiCheckbox-root {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .account-card-signup .MuiFormControlLabel-root .MuiCheckbox-root.Mui-checked {
+      color: #f09620 !important;
+    }
+
+    .account-submit-button {
+      background-color: #101c36 !important;
+      color: #fff !important;
+    }
+
+    .account-submit-button:hover {
+      background-color: #264382 !important;
+    }
+
+    .account-divider span:first-child,
+    .account-divider span:last-child {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .account-divider span:nth-child(2) {
+      color: #b0b0b0 !important;
+    }
+
+    .account-oauth-button {
+      background-color: #1e1e1e !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      color: #e4e4e4 !important;
+    }
+
+    .account-oauth-button:hover {
+      background-color: #2d2d2d !important;
+      border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .account-oauth-button img[src*="apple"] {
+      filter: brightness(0) invert(1);
+    }
+
+    .account-footer .account-helper,
+    .account-footer .account-link-button {
+      color: #e4e4e4 !important;
+    }
+
+    .account-footer .account-link-button:hover {
+      color: #f09620 !important;
+    }
+  }
 
   /* MUI Paper (TableContainer) theme override — inject stillar ustidan */
   html.theme-dark .notice-page .notice-content :global(.notice-table-container.MuiPaper-root) {
