@@ -145,7 +145,7 @@ const FOLLOWERS_PER_PAGE = 4;
 const ARTICLES_PER_PAGE = 3;
 
 const MyPage = () => {
-  const router = useRouter();
+	const router = useRouter();
   const { addToCart } = useCart();
   const user = useReactiveVar(userVar);
   const isDealer = true;
@@ -162,7 +162,7 @@ const MyPage = () => {
   const [followersPage, setFollowersPage] = useState(1);
   const [watchesList, setWatchesList] = useState<Watch[]>(watches);
 
-  useEffect(() => {
+	useEffect(() => {
     if (!isDealer && activeTab === "Watches") setActiveTab("Favorites");
   }, [isDealer, activeTab]);
 
@@ -2382,7 +2382,7 @@ const MyPage = () => {
                       />
                     </Box>
                   ))}
-                </Stack>
+								</Stack>
               </Box>
 
               <Box className="mypage-edit-profile-footer">
@@ -2401,8 +2401,8 @@ const MyPage = () => {
         </Box>
       )}
 
-    </Stack>
-  );
+							</Stack>
+		);
 };
 
 export default withLayoutBasic(MyPage);

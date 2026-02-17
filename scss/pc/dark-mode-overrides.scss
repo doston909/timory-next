@@ -248,6 +248,72 @@
     border-color: rgba(255, 255, 255, 0.12);
   }
 
+  /* notice.tsx — TableBody dark mode (to‘liq selector + MUI class, boshqa kodga ta’sir qilmaydi) */
+  /* notice.tsx — jadval konteyner va header dark mode */
+  html.theme-dark .notice-page .notice-content .notice-table-container {
+    background-color: #263351 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+  }ras
+
+  /* MUI Paper (TableContainer) theme override — inject stillar ustidan */
+  html.theme-dark .notice-page .notice-content :global(.notice-table-container.MuiPaper-root) {
+    background-color: #263351 !important;
+  }
+
+  html.theme-dark .notice-page .notice-content .notice-table-container .notice-table .notice-table-header {
+    background-color: #263351 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+
+    .notice-header-cell {
+      color: #e4e4e4 !important;
+    }
+  }
+
+  html.theme-dark .notice-page .notice-content .notice-table-container .notice-table tbody .notice-table-row {
+    background-color: #2d3d5c !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+    &:hover {
+      background-color: #354560 !important;
+    }
+
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    .notice-cell {
+      color: #fff !important;
+
+      &.notice-number-cell,
+      &.notice-date-cell,
+      &.notice-title-cell {
+        color: #fff !important;
+      }
+    }
+  }
+
+  /* MUI TableCell — theme rangini bosib, matn aniq oq */
+  html.theme-dark .notice-page .notice-content .notice-table-container .notice-table :global(tbody td.MuiTableCell-root.notice-cell) {
+    color: #fff !important;
+
+    &,
+    *,
+    .MuiTypography-root,
+    span {
+      color: #fff !important;
+    }
+  }
+
+  /* MUI TableRow theme override (notice jadvali uchun) */
+  html.theme-dark .notice-page .notice-content .notice-table-container .notice-table :global(tbody tr.MuiTableRow-root.notice-table-row) {
+    background-color: #2d3d5c !important;
+
+    &:hover {
+      background-color: #354560 !important;
+    }
+  }
+
   /* watch-filter-sidebar (filter sidebar) */
   .watch-filter-sidebar {
     background-color: transparent;
@@ -823,7 +889,7 @@
 
         &:hover {
           background-color: #f9a63b !important;
-          color: #1e1e1e;
+          color: #000000 !important;
           border-color: #f9a63b;
         }
       }

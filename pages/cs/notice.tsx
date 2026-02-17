@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { Stack, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { NextPage } from "next";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import Footer from "@/libs/components/Footer";
+import { useTheme } from "@/libs/context/ThemeContext";
+
+const NOTICE_DARK_STYLE_ID = "notice-table-dark-text";
 
 interface Notice {
   id: number;
@@ -25,6 +29,32 @@ const notices: Notice[] = [
 ];
 
 const NoticePage: NextPage = () => {
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
+  const whiteStyle = isDark ? { color: "#fff" } : undefined;
+
+  useEffect(() => {
+    const isDarkMode =
+      document.documentElement.classList.contains("theme-dark");
+    if (!isDarkMode) {
+      const el = document.getElementById(NOTICE_DARK_STYLE_ID);
+      if (el) el.remove();
+      return;
+    }
+    const css = `.notice-page .notice-content .notice-table-container,
+.notice-page .notice-content .notice-table-container * { color: #fff !important; }`;
+    let el = document.getElementById(NOTICE_DARK_STYLE_ID);
+    if (!el) {
+      el = document.createElement("style");
+      el.id = NOTICE_DARK_STYLE_ID;
+      document.body.appendChild(el);
+    }
+    el.textContent = css;
+    return () => {
+      document.getElementById(NOTICE_DARK_STYLE_ID)?.remove();
+    };
+  }, [mode]);
+
   return (
     <>
       <Stack id="pc-wrap">
@@ -45,12 +75,18 @@ const NoticePage: NextPage = () => {
                   <TableBody>
                     {notices.map((notice) => (
                       <TableRow key={notice.id} className="notice-table-row">
-                        <TableCell className="notice-cell notice-number-cell">{notice.number}</TableCell>
-                        <TableCell className="notice-cell notice-title-cell">
-                          {notice.title}
-                          {notice.hasIcon && <span className="notice-icon">🔧</span>}
+                        <TableCell className="notice-cell notice-number-cell">
+                          <span style={whiteStyle}>{notice.number}</span>
                         </TableCell>
-                        <TableCell className="notice-cell notice-date-cell">{notice.date}</TableCell>
+                        <TableCell className="notice-cell notice-title-cell">
+                          <span style={whiteStyle}>
+                            {notice.title}
+                            {notice.hasIcon && <span className="notice-icon">🔧</span>}
+                          </span>
+                        </TableCell>
+                        <TableCell className="notice-cell notice-date-cell">
+                          <span style={whiteStyle}>{notice.date}</span>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

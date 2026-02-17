@@ -17,6 +17,11 @@ const AIChatBot = () => {
   const [messageInput, setMessageInput] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   /** Xabarlar o'zgarganda pastga scroll */
   useEffect(() => {
@@ -150,7 +155,7 @@ const AIChatBot = () => {
 
   return (
     <>
-      {typeof document !== "undefined" &&
+      {mounted && typeof document !== "undefined" &&
         createPortal(frameContent, document.body)}
       <Stack className="ai-chatbot">
         <button type="button" className="ai-chat-button" onClick={handleOpenChat}>
