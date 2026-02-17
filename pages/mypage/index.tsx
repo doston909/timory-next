@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Box, Stack, Typography, Button, Checkbox } from "@mui/material";
-import { ShoppingBagOutlined, FavoriteBorder, Favorite, VisibilityOutlined, CommentOutlined, ArrowForwardIos, PersonOutline, ArrowUpward, Close, Delete, WatchLaterOutlined, ArrowDropDown } from "@mui/icons-material";
+import {
+  ShoppingBagOutlined,
+  FavoriteBorder,
+  Favorite,
+  VisibilityOutlined,
+  CommentOutlined,
+  ArrowForwardIos,
+  PersonOutline,
+  ArrowUpward,
+  Close,
+  Delete,
+  WatchLaterOutlined,
+  ArrowDropDown,
+} from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useReactiveVar } from "@apollo/client";
 import { useCart } from "@/libs/context/CartContext";
 import { userVar } from "@/apollo/store";
-import {
-  getWatchStatus,
-  setWatchStatus,
-} from "@/libs/watchStatusStorage";
+import { getWatchStatus, setWatchStatus } from "@/libs/watchStatusStorage";
 import {
   getArticleStatus,
   setArticleStatus,
@@ -145,7 +155,7 @@ const FOLLOWERS_PER_PAGE = 4;
 const ARTICLES_PER_PAGE = 3;
 
 const MyPage = () => {
-	const router = useRouter();
+  const router = useRouter();
   const { addToCart } = useCart();
   const user = useReactiveVar(userVar);
   const isDealer = true;
@@ -162,18 +172,23 @@ const MyPage = () => {
   const [followersPage, setFollowersPage] = useState(1);
   const [watchesList, setWatchesList] = useState<Watch[]>(watches);
 
-	useEffect(() => {
+  useEffect(() => {
     if (!isDealer && activeTab === "Watches") setActiveTab("Favorites");
   }, [isDealer, activeTab]);
 
   const totalPagesWatches = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
   useEffect(() => {
-    if (currentPage > totalPagesWatches && totalPagesWatches > 0) setCurrentPage(1);
+    if (currentPage > totalPagesWatches && totalPagesWatches > 0)
+      setCurrentPage(1);
   }, [watchesList.length, currentPage, totalPagesWatches]);
   // Followers / Followings tablari uchun alohida follow holatlari (tab + id bo'yicha)
-  const [followersFollowing, setFollowersFollowing] = useState<{ [key: string]: boolean }>({});
+  const [followersFollowing, setFollowersFollowing] = useState<{
+    [key: string]: boolean;
+  }>({});
   // Har bir box uchun Followers soni (kalit: "followers-1", "followings-1", ...)
-  const [followersCounts, setFollowersCounts] = useState<{ [key: string]: number }>(() => {
+  const [followersCounts, setFollowersCounts] = useState<{
+    [key: string]: number;
+  }>(() => {
     const initial: { [key: string]: number } = {};
     for (let i = 1; i <= 6; i += 1) {
       initial[`followers-${i}`] = 10; // Followers tab uchun boshlang'ich qiymat
@@ -181,31 +196,37 @@ const MyPage = () => {
     }
     return initial;
   });
-  const [likedWatches, setLikedWatches] = useState<{ [key: number]: boolean }>({});
-  const [watchLikes, setWatchLikes] = useState<{ [key: number]: number }>(() => {
-    const initialLikes: { [key: number]: number } = {};
-    watches.forEach((watch) => {
-      initialLikes[watch.id] = watch.likes || 0;
-    });
-    // Favorites (101–107) va Recently Visited (201–207) uchun like soni
-    initialLikes[101] = 5;
-    initialLikes[102] = 3;
-    initialLikes[103] = 4;
-    initialLikes[104] = 6;
-    initialLikes[105] = 2;
-    initialLikes[106] = 5;
-    initialLikes[107] = 3;
-    initialLikes[201] = 4;
-    initialLikes[202] = 6;
-    initialLikes[203] = 5;
-    initialLikes[204] = 3;
-    initialLikes[205] = 7;
-    initialLikes[206] = 4;
-    initialLikes[207] = 2;
-    return initialLikes;
-  });
+  const [likedWatches, setLikedWatches] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+  const [watchLikes, setWatchLikes] = useState<{ [key: number]: number }>(
+    () => {
+      const initialLikes: { [key: number]: number } = {};
+      watches.forEach((watch) => {
+        initialLikes[watch.id] = watch.likes || 0;
+      });
+      // Favorites (101–107) va Recently Visited (201–207) uchun like soni
+      initialLikes[101] = 5;
+      initialLikes[102] = 3;
+      initialLikes[103] = 4;
+      initialLikes[104] = 6;
+      initialLikes[105] = 2;
+      initialLikes[106] = 5;
+      initialLikes[107] = 3;
+      initialLikes[201] = 4;
+      initialLikes[202] = 6;
+      initialLikes[203] = 5;
+      initialLikes[204] = 3;
+      initialLikes[205] = 7;
+      initialLikes[206] = 4;
+      initialLikes[207] = 2;
+      return initialLikes;
+    }
+  );
   // Articles uchun like holati va count
-  const [articleLiked, setArticleLiked] = useState<{ [key: number]: boolean }>({});
+  const [articleLiked, setArticleLiked] = useState<{ [key: number]: boolean }>(
+    {}
+  );
   const [articleLikes, setArticleLikes] = useState<{ [key: number]: number }>({
     1: 12,
     2: 8,
@@ -477,18 +498,31 @@ const MyPage = () => {
 
   const totalPages = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
   const totalFavoritesPages = Math.ceil(favorites.length / ITEMS_PER_PAGE);
-  const totalRecentlyVisitedPages = Math.ceil(recentlyVisited.length / ITEMS_PER_PAGE);
+  const totalRecentlyVisitedPages = Math.ceil(
+    recentlyVisited.length / ITEMS_PER_PAGE
+  );
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentWatches = watchesList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentWatches = watchesList.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   const favoritesStartIndex = (favoritesPage - 1) * ITEMS_PER_PAGE;
-  const currentFavorites = favorites.slice(favoritesStartIndex, favoritesStartIndex + ITEMS_PER_PAGE);
+  const currentFavorites = favorites.slice(
+    favoritesStartIndex,
+    favoritesStartIndex + ITEMS_PER_PAGE
+  );
 
   const recentlyVisitedStartIndex = (recentlyVisitedPage - 1) * ITEMS_PER_PAGE;
-  const currentRecentlyVisited = recentlyVisited.slice(recentlyVisitedStartIndex, recentlyVisitedStartIndex + ITEMS_PER_PAGE);
+  const currentRecentlyVisited = recentlyVisited.slice(
+    recentlyVisitedStartIndex,
+    recentlyVisitedStartIndex + ITEMS_PER_PAGE
+  );
 
   const followerBoxes = Array.from({ length: 6 }, (_, i) => i + 1);
-  const totalFollowersPages = Math.ceil(followerBoxes.length / FOLLOWERS_PER_PAGE);
+  const totalFollowersPages = Math.ceil(
+    followerBoxes.length / FOLLOWERS_PER_PAGE
+  );
   const followersStartIndex = (followersPage - 1) * FOLLOWERS_PER_PAGE;
   const currentFollowerBoxes = followerBoxes.slice(
     followersStartIndex,
@@ -577,7 +611,8 @@ const MyPage = () => {
   );
 
   useEffect(() => {
-    if (articlePage > totalArticlePages && totalArticlePages > 0) setArticlePage(1);
+    if (articlePage > totalArticlePages && totalArticlePages > 0)
+      setArticlePage(1);
   }, [articlesList.length, articlePage, totalArticlePages]);
 
   const getArticleExcerpt = (content: string, wordLimit = 18) => {
@@ -678,11 +713,23 @@ const MyPage = () => {
                   {displayProfile.email}
                 </Typography>
               )}
-              <Typography className="mypage-profile-role">{isDealer ? "Dealer" : "User"}</Typography>
+              <Typography className="mypage-profile-role">
+                {isDealer ? "Dealer" : "User"}
+              </Typography>
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "16px", marginTop: "auto", paddingBottom: "40px", marginRight: "-60px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-end",
+              gap: "16px",
+              marginTop: "auto",
+              paddingBottom: "40px",
+              marginRight: "-60px",
+            }}
+          >
             <Button
               className="mypage-edit-profile-button"
               onClick={() => setIsEditProfileOpen(true)}
@@ -705,38 +752,50 @@ const MyPage = () => {
       <Box className="mypage-tabs">
         {isDealer && (
           <Box
-            className={`mypage-tab${activeTab === "Watches" ? " mypage-tab-active" : ""}`}
+            className={`mypage-tab${
+              activeTab === "Watches" ? " mypage-tab-active" : ""
+            }`}
             onClick={() => setActiveTab("Watches")}
           >
             Watches ({watchesList.length})
           </Box>
         )}
         <Box
-          className={`mypage-tab${activeTab === "Favorites" ? " mypage-tab-active" : ""}`}
+          className={`mypage-tab${
+            activeTab === "Favorites" ? " mypage-tab-active" : ""
+          }`}
           onClick={() => setActiveTab("Favorites")}
         >
           Favorites ({favorites.length})
         </Box>
         <Box
-          className={`mypage-tab${activeTab === "Recently Visited" ? " mypage-tab-active" : ""}`}
+          className={`mypage-tab${
+            activeTab === "Recently Visited" ? " mypage-tab-active" : ""
+          }`}
           onClick={() => setActiveTab("Recently Visited")}
         >
           Recently Visited ({recentlyVisited.length})
         </Box>
         <Box
-          className={`mypage-tab${activeTab === "Followers" ? " mypage-tab-active" : ""}`}
+          className={`mypage-tab${
+            activeTab === "Followers" ? " mypage-tab-active" : ""
+          }`}
           onClick={() => setActiveTab("Followers")}
         >
           Followers ({totalFollowersCount})
         </Box>
         <Box
-          className={`mypage-tab${activeTab === "Followings" ? " mypage-tab-active" : ""}`}
+          className={`mypage-tab${
+            activeTab === "Followings" ? " mypage-tab-active" : ""
+          }`}
           onClick={() => setActiveTab("Followings")}
         >
           Followings ({followerBoxes.length})
         </Box>
         <Box
-          className={`mypage-tab${activeTab === "Articles" ? " mypage-tab-active" : ""}`}
+          className={`mypage-tab${
+            activeTab === "Articles" ? " mypage-tab-active" : ""
+          }`}
           onClick={() => setActiveTab("Articles")}
         >
           Articles ({articlesList.length})
@@ -746,7 +805,9 @@ const MyPage = () => {
       {isDealer && activeTab === "Watches" && (
         <Box className="mypage-watches-container">
           <Box className="mypage-watches-header">
-            <Typography className="mypage-watches-container-title">Watches</Typography>
+            <Typography className="mypage-watches-container-title">
+              Watches
+            </Typography>
             <Button
               className="mypage-add-watch-button"
               onClick={() => {
@@ -774,35 +835,72 @@ const MyPage = () => {
                         style={{ cursor: "pointer" }}
                       />
                       <Box className="mypage-watch-item-icons">
-                        <Box className="action-btn" onClick={(e) => handleAddToCart(watch, e)}>
+                        <Box
+                          className="action-btn"
+                          onClick={(e) => handleAddToCart(watch, e)}
+                        >
                           <ShoppingBagOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
                         </Box>
-                        <Box 
-                          className={`action-btn action-btn-with-count${likedWatches[watch.id] ? " action-btn-liked" : ""}`}
+                        <Box
+                          className={`action-btn action-btn-with-count${
+                            likedWatches[watch.id] ? " action-btn-liked" : ""
+                          }`}
                           onClick={(e) => handleLikeClick(watch.id, e)}
                         >
                           {likedWatches[watch.id] ? (
-                            <Favorite sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <Favorite
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           ) : (
-                            <FavoriteBorder sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <FavoriteBorder
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           )}
                           {watchLikes[watch.id] > 0 && (
-                            <span className="action-count">{watchLikes[watch.id]}</span>
+                            <span className="action-count">
+                              {watchLikes[watch.id]}
+                            </span>
                           )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <VisibilityOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.views && <span className="action-count">{watch.views}</span>}
+                          {watch.views && (
+                            <span className="action-count">{watch.views}</span>
+                          )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <CommentOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.comments && <span className="action-count">{watch.comments}</span>}
+                          {watch.comments && (
+                            <span className="action-count">
+                              {watch.comments}
+                            </span>
+                          )}
                         </Box>
                       </Box>
                     </Box>
@@ -817,7 +915,7 @@ const MyPage = () => {
                           {watch.brand}
                         </Typography>
                       )}
-                      <Typography 
+                      <Typography
                         className="mypage-watch-item-name"
                         onClick={() => handleWatchClick(watch.id)}
                         style={{ cursor: "pointer" }}
@@ -838,17 +936,17 @@ const MyPage = () => {
                             getWatchStatus(watch.id)?.status === "deleted"
                               ? " mypage-watch-item-status-deleted"
                               : watch.watchStatus === false
-                                ? " mypage-watch-item-status-sold-out"
-                                : ""
+                              ? " mypage-watch-item-status-sold-out"
+                              : ""
                           }`}
                           value={
                             getWatchStatus(watch.id)?.status === "deleted"
                               ? "delete"
                               : watch.watchStatus === true
-                                ? "on_sale"
-                                : watch.watchStatus === false
-                                  ? "sold_out"
-                                  : "on_sale"
+                              ? "on_sale"
+                              : watch.watchStatus === false
+                              ? "sold_out"
+                              : "on_sale"
                           }
                           onChange={(e) => {
                             const v = e.target.value;
@@ -866,19 +964,29 @@ const MyPage = () => {
                             //  - dealer pagedagi Watches ro'yxatidan ham o'chib ketadi
                             //  - boshqa joylarda ham ko'rinmaydi
                             if (v === "remove") {
-                              setWatchesList((prev) => prev.filter((w) => w.id !== watch.id));
+                              setWatchesList((prev) =>
+                                prev.filter((w) => w.id !== watch.id)
+                              );
                               setWatchStatus(watch.id, "removed", user?._id);
                               return;
                             }
 
                             if (v === "on_sale") {
                               setWatchesList((prev) =>
-                                prev.map((w) => (w.id === watch.id ? { ...w, watchStatus: true } : w))
+                                prev.map((w) =>
+                                  w.id === watch.id
+                                    ? { ...w, watchStatus: true }
+                                    : w
+                                )
                               );
                               setWatchStatus(watch.id, "on_sale");
                             } else {
                               setWatchesList((prev) =>
-                                prev.map((w) => (w.id === watch.id ? { ...w, watchStatus: false } : w))
+                                prev.map((w) =>
+                                  w.id === watch.id
+                                    ? { ...w, watchStatus: false }
+                                    : w
+                                )
                               );
                               setWatchStatus(watch.id, "sold_out");
                             }
@@ -919,7 +1027,9 @@ const MyPage = () => {
 
       {activeTab === "Favorites" && (
         <Box className="mypage-watches-container">
-          <Typography className="mypage-watches-container-title">Favorites</Typography>
+          <Typography className="mypage-watches-container-title">
+            Favorites
+          </Typography>
           {favorites.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No favorites yet...
@@ -938,35 +1048,72 @@ const MyPage = () => {
                         style={{ cursor: "pointer" }}
                       />
                       <Box className="mypage-watch-item-icons">
-                        <Box className="action-btn" onClick={(e) => handleAddToCart(watch, e)}>
+                        <Box
+                          className="action-btn"
+                          onClick={(e) => handleAddToCart(watch, e)}
+                        >
                           <ShoppingBagOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
                         </Box>
-                        <Box 
-                          className={`action-btn action-btn-with-count${likedWatches[watch.id] ? " action-btn-liked" : ""}`}
+                        <Box
+                          className={`action-btn action-btn-with-count${
+                            likedWatches[watch.id] ? " action-btn-liked" : ""
+                          }`}
                           onClick={(e) => handleLikeClick(watch.id, e)}
                         >
                           {likedWatches[watch.id] ? (
-                            <Favorite sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <Favorite
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           ) : (
-                            <FavoriteBorder sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <FavoriteBorder
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           )}
                           {watchLikes[watch.id] > 0 && (
-                            <span className="action-count">{watchLikes[watch.id]}</span>
+                            <span className="action-count">
+                              {watchLikes[watch.id]}
+                            </span>
                           )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <VisibilityOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.views && <span className="action-count">{watch.views}</span>}
+                          {watch.views && (
+                            <span className="action-count">{watch.views}</span>
+                          )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <CommentOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.comments && <span className="action-count">{watch.comments}</span>}
+                          {watch.comments && (
+                            <span className="action-count">
+                              {watch.comments}
+                            </span>
+                          )}
                         </Box>
                       </Box>
                     </Box>
@@ -981,7 +1128,7 @@ const MyPage = () => {
                           {watch.brand}
                         </Typography>
                       )}
-                      <Typography 
+                      <Typography
                         className="mypage-watch-item-name"
                         onClick={() => handleWatchClick(watch.id)}
                         style={{ cursor: "pointer" }}
@@ -999,7 +1146,9 @@ const MyPage = () => {
                       {watch.watchStatus !== undefined && (
                         <Typography
                           className={`mypage-watch-item-status${
-                            !watch.watchStatus ? " mypage-watch-item-status-sold-out" : ""
+                            !watch.watchStatus
+                              ? " mypage-watch-item-status-sold-out"
+                              : ""
                           }`}
                         >
                           {watch.watchStatus ? "on sale" : "sold out"}
@@ -1011,20 +1160,22 @@ const MyPage = () => {
               </Box>
               {totalFavoritesPages > 1 && (
                 <Box className="mypage-watches-pagination">
-                  {Array.from({ length: totalFavoritesPages }).map((_, index) => {
-                    const page = index + 1;
-                    return (
-                      <button
-                        key={page}
-                        className={`mypage-watches-page-number${
-                          page === favoritesPage ? " active" : ""
-                        }`}
-                        onClick={() => setFavoritesPage(page)}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
+                  {Array.from({ length: totalFavoritesPages }).map(
+                    (_, index) => {
+                      const page = index + 1;
+                      return (
+                        <button
+                          key={page}
+                          className={`mypage-watches-page-number${
+                            page === favoritesPage ? " active" : ""
+                          }`}
+                          onClick={() => setFavoritesPage(page)}
+                        >
+                          {page}
+                        </button>
+                      );
+                    }
+                  )}
                 </Box>
               )}
             </>
@@ -1034,7 +1185,9 @@ const MyPage = () => {
 
       {activeTab === "Recently Visited" && (
         <Box className="mypage-watches-container">
-          <Typography className="mypage-watches-container-title">Recently Visited</Typography>
+          <Typography className="mypage-watches-container-title">
+            Recently Visited
+          </Typography>
           {recentlyVisited.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No recently visited watches...
@@ -1053,35 +1206,72 @@ const MyPage = () => {
                         style={{ cursor: "pointer" }}
                       />
                       <Box className="mypage-watch-item-icons">
-                        <Box className="action-btn" onClick={(e) => handleAddToCart(watch, e)}>
+                        <Box
+                          className="action-btn"
+                          onClick={(e) => handleAddToCart(watch, e)}
+                        >
                           <ShoppingBagOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
                         </Box>
-                        <Box 
-                          className={`action-btn action-btn-with-count${likedWatches[watch.id] ? " action-btn-liked" : ""}`}
+                        <Box
+                          className={`action-btn action-btn-with-count${
+                            likedWatches[watch.id] ? " action-btn-liked" : ""
+                          }`}
                           onClick={(e) => handleLikeClick(watch.id, e)}
                         >
                           {likedWatches[watch.id] ? (
-                            <Favorite sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <Favorite
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           ) : (
-                            <FavoriteBorder sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
+                            <FavoriteBorder
+                              sx={{
+                                fontSize: 24,
+                                color: "#000",
+                                fontWeight: 300,
+                              }}
+                            />
                           )}
                           {watchLikes[watch.id] > 0 && (
-                            <span className="action-count">{watchLikes[watch.id]}</span>
+                            <span className="action-count">
+                              {watchLikes[watch.id]}
+                            </span>
                           )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <VisibilityOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.views && <span className="action-count">{watch.views}</span>}
+                          {watch.views && (
+                            <span className="action-count">{watch.views}</span>
+                          )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
                           <CommentOutlined
-                            sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+                            sx={{
+                              fontSize: 24,
+                              color: "#000",
+                              fontWeight: 300,
+                            }}
                           />
-                          {watch.comments && <span className="action-count">{watch.comments}</span>}
+                          {watch.comments && (
+                            <span className="action-count">
+                              {watch.comments}
+                            </span>
+                          )}
                         </Box>
                       </Box>
                     </Box>
@@ -1096,7 +1286,7 @@ const MyPage = () => {
                           {watch.brand}
                         </Typography>
                       )}
-                      <Typography 
+                      <Typography
                         className="mypage-watch-item-name"
                         onClick={() => handleWatchClick(watch.id)}
                         style={{ cursor: "pointer" }}
@@ -1114,7 +1304,9 @@ const MyPage = () => {
                       {watch.watchStatus !== undefined && (
                         <Typography
                           className={`mypage-watch-item-status${
-                            !watch.watchStatus ? " mypage-watch-item-status-sold-out" : ""
+                            !watch.watchStatus
+                              ? " mypage-watch-item-status-sold-out"
+                              : ""
                           }`}
                         >
                           {watch.watchStatus ? "on sale" : "sold out"}
@@ -1126,20 +1318,22 @@ const MyPage = () => {
               </Box>
               {totalRecentlyVisitedPages > 1 && (
                 <Box className="mypage-watches-pagination">
-                  {Array.from({ length: totalRecentlyVisitedPages }).map((_, index) => {
-                    const page = index + 1;
-                    return (
-                      <button
-                        key={page}
-                        className={`mypage-watches-page-number${
-                          page === recentlyVisitedPage ? " active" : ""
-                        }`}
-                        onClick={() => setRecentlyVisitedPage(page)}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
+                  {Array.from({ length: totalRecentlyVisitedPages }).map(
+                    (_, index) => {
+                      const page = index + 1;
+                      return (
+                        <button
+                          key={page}
+                          className={`mypage-watches-page-number${
+                            page === recentlyVisitedPage ? " active" : ""
+                          }`}
+                          onClick={() => setRecentlyVisitedPage(page)}
+                        >
+                          {page}
+                        </button>
+                      );
+                    }
+                  )}
                 </Box>
               )}
             </>
@@ -1149,7 +1343,9 @@ const MyPage = () => {
 
       {activeTab === "Followers" && (
         <Box className="mypage-followers-container">
-          <Typography className="mypage-watches-container-title">Followers</Typography>
+          <Typography className="mypage-watches-container-title">
+            Followers
+          </Typography>
           {currentFollowerBoxes.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No Followers...
@@ -1167,8 +1363,12 @@ const MyPage = () => {
                       />
                     </Box>
                     <Box className="mypage-followers-box-part part-2">
-                      <Typography className="mypage-followers-name">You</Typography>
-                      <Typography className="mypage-followers-role">User</Typography>
+                      <Typography className="mypage-followers-name">
+                        You
+                      </Typography>
+                      <Typography className="mypage-followers-role">
+                        User
+                      </Typography>
                     </Box>
                     <Box className="mypage-followers-box-part part-3">
                       <Typography className="mypage-followers-label">
@@ -1185,7 +1385,9 @@ const MyPage = () => {
                         className={`mypage-follow-button mypage-follow-button-active`}
                         onClick={() =>
                           setIsDealerFollowing((prev) => {
-                            setTotalFollowersCount((count) => count + (prev ? -1 : 1));
+                            setTotalFollowersCount(
+                              (count) => count + (prev ? -1 : 1)
+                            );
                             setIsCurrentUserFollower(!prev);
                             return !prev;
                           })
@@ -1214,8 +1416,12 @@ const MyPage = () => {
                         )}
                       </Box>
                       <Box className="mypage-followers-box-part part-2">
-                        <Typography className="mypage-followers-name">User name</Typography>
-                        <Typography className="mypage-followers-role">Dealer</Typography>
+                        <Typography className="mypage-followers-name">
+                          User name
+                        </Typography>
+                        <Typography className="mypage-followers-role">
+                          Dealer
+                        </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-3">
                         <Typography className="mypage-followers-label">
@@ -1230,7 +1436,9 @@ const MyPage = () => {
                       <Box className="mypage-followers-box-part part-5">
                         <Button
                           className={`mypage-follow-button${
-                            isFollowerFollowing ? " mypage-follow-button-active" : ""
+                            isFollowerFollowing
+                              ? " mypage-follow-button-active"
+                              : ""
                           }`}
                           onClick={() => handleFollowerFollowToggle(key)}
                         >
@@ -1243,20 +1451,22 @@ const MyPage = () => {
               </Box>
               {totalFollowersPages > 1 && (
                 <Box className="mypage-watches-pagination">
-                  {Array.from({ length: totalFollowersPages }).map((_, index) => {
-                    const page = index + 1;
-                    return (
-                      <button
-                        key={page}
-                        className={`mypage-watches-page-number${
-                          page === followersPage ? " active" : ""
-                        }`}
-                        onClick={() => setFollowersPage(page)}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
+                  {Array.from({ length: totalFollowersPages }).map(
+                    (_, index) => {
+                      const page = index + 1;
+                      return (
+                        <button
+                          key={page}
+                          className={`mypage-watches-page-number${
+                            page === followersPage ? " active" : ""
+                          }`}
+                          onClick={() => setFollowersPage(page)}
+                        >
+                          {page}
+                        </button>
+                      );
+                    }
+                  )}
                 </Box>
               )}
             </>
@@ -1266,7 +1476,9 @@ const MyPage = () => {
 
       {activeTab === "Followings" && (
         <Box className="mypage-followers-container">
-          <Typography className="mypage-watches-container-title">Followings</Typography>
+          <Typography className="mypage-watches-container-title">
+            Followings
+          </Typography>
           {currentFollowerBoxes.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No Followings...
@@ -1292,8 +1504,12 @@ const MyPage = () => {
                         )}
                       </Box>
                       <Box className="mypage-followers-box-part part-2">
-                        <Typography className="mypage-followers-name">User name</Typography>
-                        <Typography className="mypage-followers-role">Dealer</Typography>
+                        <Typography className="mypage-followers-name">
+                          User name
+                        </Typography>
+                        <Typography className="mypage-followers-role">
+                          Dealer
+                        </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-3">
                         <Typography className="mypage-followers-label">
@@ -1308,7 +1524,9 @@ const MyPage = () => {
                       <Box className="mypage-followers-box-part part-5">
                         <Button
                           className={`mypage-follow-button${
-                            isFollowerFollowing ? " mypage-follow-button-active" : ""
+                            isFollowerFollowing
+                              ? " mypage-follow-button-active"
+                              : ""
                           }`}
                           onClick={() => handleFollowerFollowToggle(key)}
                         >
@@ -1321,20 +1539,22 @@ const MyPage = () => {
               </Box>
               {totalFollowersPages > 1 && (
                 <Box className="mypage-watches-pagination">
-                  {Array.from({ length: totalFollowersPages }).map((_, index) => {
-                    const page = index + 1;
-		return (
-                      <button
-                        key={page}
-                        className={`mypage-watches-page-number${
-                          page === followersPage ? " active" : ""
-                        }`}
-                        onClick={() => setFollowersPage(page)}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
+                  {Array.from({ length: totalFollowersPages }).map(
+                    (_, index) => {
+                      const page = index + 1;
+                      return (
+                        <button
+                          key={page}
+                          className={`mypage-watches-page-number${
+                            page === followersPage ? " active" : ""
+                          }`}
+                          onClick={() => setFollowersPage(page)}
+                        >
+                          {page}
+                        </button>
+                      );
+                    }
+                  )}
                 </Box>
               )}
             </>
@@ -1345,7 +1565,9 @@ const MyPage = () => {
       {activeTab === "Articles" && (
         <Box className="mypage-followers-container">
           <Box className="mypage-watches-header">
-            <Typography className="mypage-watches-container-title">Articles</Typography>
+            <Typography className="mypage-watches-container-title">
+              Articles
+            </Typography>
             <Button
               className="mypage-add-watch-button"
               onClick={() => setIsAddArticleOpen(true)}
@@ -1375,7 +1597,9 @@ const MyPage = () => {
                       <Box className="mypage-article-body">
                         <Box
                           className="mypage-article-title"
-                          onClick={() => router.push(`/community/detail?id=${article.id}`)}
+                          onClick={() =>
+                            router.push(`/community/detail?id=${article.id}`)
+                          }
                           sx={{ cursor: "pointer" }}
                         >
                           <Typography className="mypage-article-title-text">
@@ -1391,7 +1615,9 @@ const MyPage = () => {
                         <Box className="mypage-article-actions">
                           <Box
                             className="mypage-article-read-more"
-                            onClick={() => router.push(`/community/detail?id=${article.id}`)}
+                            onClick={() =>
+                              router.push(`/community/detail?id=${article.id}`)
+                            }
                           >
                             <Typography className="mypage-article-read-more-text">
                               Read more
@@ -1435,25 +1661,37 @@ const MyPage = () => {
                             <Box className="mypage-article-status-control">
                               <select
                                 className={`mypage-article-status-select${
-                                  getArticleStatus(article.id)?.status === "deleted"
+                                  getArticleStatus(article.id)?.status ===
+                                  "deleted"
                                     ? " mypage-article-status-deleted"
                                     : ""
                                 }`}
                                 value={
-                                  getArticleStatus(article.id)?.status === "deleted"
+                                  getArticleStatus(article.id)?.status ===
+                                  "deleted"
                                     ? "delete"
                                     : "publishing"
                                 }
                                 onChange={(e) => {
                                   const v = e.target.value;
                                   if (v === "delete") {
-                                    setArticleStatus(article.id, "deleted", user?._id);
+                                    setArticleStatus(
+                                      article.id,
+                                      "deleted",
+                                      user?._id
+                                    );
                                     setArticlesList((prev) => [...prev]);
                                     return;
                                   }
                                   if (v === "remove") {
-                                    setArticlesList((prev) => prev.filter((a) => a.id !== article.id));
-                                    setArticleStatus(article.id, "removed", user?._id);
+                                    setArticlesList((prev) =>
+                                      prev.filter((a) => a.id !== article.id)
+                                    );
+                                    setArticleStatus(
+                                      article.id,
+                                      "removed",
+                                      user?._id
+                                    );
                                     return;
                                   }
                                   setArticleStatus(article.id, "publishing");
@@ -1500,10 +1738,15 @@ const MyPage = () => {
 
       {isEditProfileOpen && (
         <Box className="mypage-edit-profile-modal">
-          <Box className="mypage-edit-profile-modal-overlay" onClick={() => setIsEditProfileOpen(false)} />
+          <Box
+            className="mypage-edit-profile-modal-overlay"
+            onClick={() => setIsEditProfileOpen(false)}
+          />
           <Box className="mypage-edit-profile-modal-content">
             <Box className="mypage-edit-profile-modal-header">
-              <Typography className="mypage-edit-profile-modal-title">Edit Profile</Typography>
+              <Typography className="mypage-edit-profile-modal-title">
+                Edit Profile
+              </Typography>
               <Button
                 className="mypage-edit-profile-modal-close"
                 onClick={() => setIsEditProfileOpen(false)}
@@ -1514,12 +1757,18 @@ const MyPage = () => {
 
             <Box className="mypage-edit-profile-form">
               <Box className="mypage-edit-profile-section">
-                <Typography className="mypage-edit-profile-section-title">Photo</Typography>
+                <Typography className="mypage-edit-profile-section-title">
+                  Photo
+                </Typography>
                 <Box className="mypage-edit-profile-photo-section">
                   <Box className="mypage-edit-profile-photo-wrapper">
                     <Box className="mypage-edit-profile-photo-placeholder">
                       {profileData.photo ? (
-                        <img src={profileData.photo} alt="Profile" className="mypage-edit-profile-photo" />
+                        <img
+                          src={profileData.photo}
+                          alt="Profile"
+                          className="mypage-edit-profile-photo"
+                        />
                       ) : (
                         <PersonOutline className="mypage-edit-profile-photo-icon" />
                       )}
@@ -1527,7 +1776,9 @@ const MyPage = () => {
                     {profileData.photo && (
                       <Button
                         className="mypage-edit-profile-photo-cancel"
-                        onClick={() => setProfileData({ ...profileData, photo: null })}
+                        onClick={() =>
+                          setProfileData({ ...profileData, photo: null })
+                        }
                       >
                         <Delete />
                       </Button>
@@ -1556,7 +1807,9 @@ const MyPage = () => {
                     <Button
                       className="mypage-edit-profile-upload-button"
                       onClick={() => {
-                        const input = document.getElementById("mypage-profile-image-upload");
+                        const input = document.getElementById(
+                          "mypage-profile-image-upload"
+                        );
                         input?.click();
                       }}
                     >
@@ -1571,44 +1824,66 @@ const MyPage = () => {
 
               <Box className="mypage-edit-profile-fields">
                 <Box className="mypage-edit-profile-field">
-                  <Typography className="mypage-edit-profile-label">Username</Typography>
+                  <Typography className="mypage-edit-profile-label">
+                    Username
+                  </Typography>
                   <input
                     type="text"
                     className="mypage-edit-profile-input"
                     value={profileData.username}
-                    onChange={(e) => setProfileData({ ...profileData, username: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        username: e.target.value,
+                      })
+                    }
                   />
                 </Box>
 
                 <Box className="mypage-edit-profile-field">
-                  <Typography className="mypage-edit-profile-label">Phone</Typography>
+                  <Typography className="mypage-edit-profile-label">
+                    Phone
+                  </Typography>
                   <input
                     type="text"
                     className="mypage-edit-profile-input"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, phone: e.target.value })
+                    }
                   />
                 </Box>
 
                 <Box className="mypage-edit-profile-field">
-                  <Typography className="mypage-edit-profile-label">Email</Typography>
+                  <Typography className="mypage-edit-profile-label">
+                    Email
+                  </Typography>
                   <input
                     type="email"
                     className="mypage-edit-profile-input"
                     value={profileData.email}
                     placeholder="Your email"
-                    onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, email: e.target.value })
+                    }
                   />
                 </Box>
 
                 <Box className="mypage-edit-profile-field">
-                  <Typography className="mypage-edit-profile-label">Address</Typography>
+                  <Typography className="mypage-edit-profile-label">
+                    Address
+                  </Typography>
                   <input
                     type="text"
                     className="mypage-edit-profile-input"
                     value={profileData.address}
                     placeholder="Your address"
-                    onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        address: e.target.value,
+                      })
+                    }
                   />
                 </Box>
               </Box>
@@ -1628,7 +1903,6 @@ const MyPage = () => {
                   }}
                 >
                   Update Profile
-                  
                 </Button>
               </Box>
             </Box>
@@ -1658,7 +1932,6 @@ const MyPage = () => {
             <Box className="mypage-add-watch-form">
               <Box className="mypage-add-watch-images-section">
                 <Box className="mypage-add-watch-image-block">
-                 
                   <Box className="mypage-add-watch-image-wrapper">
                     <Box className="mypage-add-watch-image-placeholder">
                       {newWatch.image1 ? (
@@ -1720,7 +1993,6 @@ const MyPage = () => {
                 </Box>
 
                 <Box className="mypage-add-watch-image-block">
-                 
                   <Box className="mypage-add-watch-image-wrapper">
                     <Box className="mypage-add-watch-image-placeholder">
                       {newWatch.image2 ? (
@@ -1828,7 +2100,10 @@ const MyPage = () => {
                     <Typography className="mypage-add-watch-label">
                       Watch Type
                     </Typography>
-                    <Box className="mypage-add-watch-input-with-arrow" onClick={() => setIsWatchTypeOpen((prev) => !prev)}>
+                    <Box
+                      className="mypage-add-watch-input-with-arrow"
+                      onClick={() => setIsWatchTypeOpen((prev) => !prev)}
+                    >
                       <input
                         type="text"
                         className="mypage-add-watch-input"
@@ -1908,9 +2183,7 @@ const MyPage = () => {
                     </Typography>
                     <Box
                       className="mypage-add-watch-input-with-arrow"
-                      onClick={() =>
-                        setIsCaseShapeOpen((prev) => !prev)
-                      }
+                      onClick={() => setIsCaseShapeOpen((prev) => !prev)}
                     >
                       <input
                         type="text"
@@ -1964,9 +2237,7 @@ const MyPage = () => {
                     </Typography>
                     <Box
                       className="mypage-add-watch-input-with-arrow"
-                      onClick={() =>
-                        setIsCaseSizeOpen((prev) => !prev)
-                      }
+                      onClick={() => setIsCaseSizeOpen((prev) => !prev)}
                     >
                       <input
                         type="text"
@@ -2092,9 +2363,7 @@ const MyPage = () => {
                     </Typography>
                     <Box
                       className="mypage-add-watch-input-with-arrow"
-                      onClick={() =>
-                        setIsMaterialOpen((prev) => !prev)
-                      }
+                      onClick={() => setIsMaterialOpen((prev) => !prev)}
                     >
                       <input
                         type="text"
@@ -2142,8 +2411,6 @@ const MyPage = () => {
 
                 {/* Last row: Limited Edition + Description full width */}
                 <Box className="mypage-add-watch-field mypage-add-watch-field-full">
-                  
-
                   <Typography className="mypage-add-watch-label">
                     Description
                   </Typography>
@@ -2173,7 +2440,10 @@ const MyPage = () => {
                         cursor: "pointer",
                       }}
                     >
-                      <Typography className="mypage-add-watch-label" sx={{ userSelect: "none", marginTop: "20px" }}>
+                      <Typography
+                        className="mypage-add-watch-label"
+                        sx={{ userSelect: "none", marginTop: "20px" }}
+                      >
                         Limited Edition
                       </Typography>
                       <Checkbox
@@ -2184,7 +2454,11 @@ const MyPage = () => {
                             limitedEdition: e.target.checked,
                           }))
                         }
-                        sx={{ padding: "4px", marginTop: "20px", "&.Mui-checked": { color: "#000000" } }}
+                        sx={{
+                          padding: "4px",
+                          marginTop: "20px",
+                          "&.Mui-checked": { color: "#000000" },
+                        }}
                       />
                     </Box>
                   </Box>
@@ -2324,7 +2598,10 @@ const MyPage = () => {
                   placeholder="Enter article title"
                   value={newArticle.title}
                   onChange={(e) =>
-                    setNewArticle((prev) => ({ ...prev, title: e.target.value }))
+                    setNewArticle((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }))
                   }
                 />
               </Box>
@@ -2348,48 +2625,73 @@ const MyPage = () => {
 
               <Box className="mypage-add-article-field">
                 <Typography className="mypage-add-article-label">
-                  Article Type 
+                  Article Type
                 </Typography>
-                <Stack direction="row" flexWrap="wrap" gap={3} sx={{ alignItems: "center", marginTop: 0.5 }}>
-                  {(["Free Board", "Recommendation", "News"] as const).map((type) => (
-                    <Box
-                      key={type}
-                      onClick={() =>
-                        setNewArticle((prev) => ({
-                          ...prev,
-                          articleType: newArticle.articleType === type ? "" : type,
-                        }))
-                      }
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Typography sx={{ color: "#000000", fontSize: 17, userSelect: "none", fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-                        {type}
-                      </Typography>
-                      <Checkbox
-                        checked={newArticle.articleType === type}
-                        onChange={() =>
+                <Stack
+                  direction="row"
+                  flexWrap="wrap"
+                  gap={3}
+                  sx={{ alignItems: "center", marginTop: 0.5 }}
+                >
+                  {(["Free Board", "Recommendation", "News"] as const).map(
+                    (type) => (
+                      <Box
+                        key={type}
+                        onClick={() =>
                           setNewArticle((prev) => ({
                             ...prev,
-                            articleType: newArticle.articleType === type ? "" : type,
+                            articleType:
+                              newArticle.articleType === type ? "" : type,
                           }))
                         }
-                        sx={{ padding: "4px", "&.Mui-checked": { color: "#000000" } }}
-                      />
-                    </Box>
-                  ))}
-								</Stack>
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "#000000",
+                            fontSize: 17,
+                            userSelect: "none",
+                            fontFamily:
+                              "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                          }}
+                        >
+                          {type}
+                        </Typography>
+                        <Checkbox
+                          checked={newArticle.articleType === type}
+                          onChange={() =>
+                            setNewArticle((prev) => ({
+                              ...prev,
+                              articleType:
+                                newArticle.articleType === type ? "" : type,
+                            }))
+                          }
+                          sx={{
+                            padding: "4px",
+                            "&.Mui-checked": { color: "#000000" },
+                          }}
+                        />
+                      </Box>
+                    )
+                  )}
+                </Stack>
               </Box>
 
               <Box className="mypage-edit-profile-footer">
                 <Button
                   className="mypage-edit-profile-update-button"
                   onClick={() => {
-                    setNewArticle({ image: null, title: "", content: "", articleType: "" });
+                    setNewArticle({
+                      image: null,
+                      title: "",
+                      content: "",
+                      articleType: "",
+                    });
                     setIsAddArticleOpen(false);
                   }}
                 >
@@ -2400,9 +2702,8 @@ const MyPage = () => {
           </Box>
         </Box>
       )}
-
-							</Stack>
-		);
+    </Stack>
+  );
 };
 
 export default withLayoutBasic(MyPage);

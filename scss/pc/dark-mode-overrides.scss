@@ -242,9 +242,7 @@
   .mypage-wrap,
   .mypage-profile-section,
   .mypage-content-box,
-  .mypage-articles-box,
   .mypage-watches-container,
-  .mypage-article-card,
   .mypage-watch-item,
   .dealer-detail-page .container,
   .watch-detail-page,
@@ -256,6 +254,10 @@
     background-color: #1c222f !important;
     color: #e8e8e8;
     border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .mypage-article-card {
+    background-color: #353e53 !important;
   }
 
   /* mypage/index.tsx — main layout, hero, tabs dark mode */
@@ -281,16 +283,26 @@
         color: #000000 !important;
       }
 
-      .mypage-edit-profile-button,
-      .mypage-logout-button {
-        background-color: rgb(43, 43, 43) !important;
-        color: #e4e4e4 !important;
-        border-color: rgba(255, 255, 255, 0.2) !important;
+      .mypage-edit-profile-button {
+            background-color: #c4ecb8;
+        color: #000000;
+        border: 1px solid #1a1a1a;
 
         &:hover {
-          background-color: #f09620 !important;
-          color: #000000 !important;
-          border-color: #f09620 !important;
+          background-color: #000000 !important;
+          color: #ffffff !important;
+          border-color: #000000 !important;
+        }
+      }
+      .mypage-logout-button {
+        background-color: rgb(33, 33, 33) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+
+        &:hover {
+          background-color: #000000 !important;
+          color: #ffffff !important;
+          border-color: #000000 !important;
         }
       }
     }
@@ -316,6 +328,285 @@
         background-color: transparent !important;
       }
     }
+
+    /* mypage-followers-container (Followers / Followings tab) dark mode */
+    .mypage-followers-container {
+      background-color: #263351 !important;
+      border: 1px solid #263351;
+
+      .mypage-watches-container-title {
+        color: #fff !important;
+      }
+
+      .mypage-watches-empty-message {
+        color: #b0b0b0 !important;
+      }
+
+      .mypage-add-watch-button {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #fff !important;
+          border-color: #f09620 !important;
+        }
+      }
+
+      /* + Add Article: light style saqlansin (faqat articles container) */
+      &:has(.mypage-articles-box) .mypage-add-watch-button {
+        background-color: #c4ecb8 !important;
+        color: #000000 !important;
+        border-color: #1a1a1a !important;
+
+        &:hover {
+          background-color: #000000 !important;
+          color: #ffffff !important;
+          border-color: #000000 !important;
+        }
+      }
+
+      .mypage-follow-button {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #fff !important;
+          border-color: #f09620 !important;
+        }
+      }
+
+      .mypage-follow-button-active {
+        background-color: #f09620 !important;
+        color: #fff !important;
+        border-color: #f09620 !important;
+      }
+
+      .mypage-followers-box {
+        background-color: #263351 !important;
+        border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      .mypage-followers-box-part {
+        background-color: #263351 !important;
+        border-color: #263351 !important;
+      }
+
+      .mypage-followers-avatar-icon {
+        color: #b0b0b0 !important;
+      }
+
+      .mypage-followers-name {
+        color: #fff !important;
+      }
+
+      .mypage-followers-role {
+        color: #b0b0b0 !important;
+      }
+
+      .mypage-followers-label {
+        color: #fff !important;
+      }
+    }
+
+    .mypage-watches-pagination {
+      .mypage-watches-page-number {
+        color: #ffffff !important;
+
+        &:hover {
+          color: #f09620 !important;
+        }
+
+        &.active {
+          color: #f09620 !important;
+          text-decoration-color: #f09620 !important;
+        }
+      }
+    }
+
+    /* mypage-articles-box (Articles tab) dark mode */
+    .mypage-articles-box {
+      background-color: #263351 !important;
+      border-color: #263351 !important;
+      color: #e4e4e4;
+
+      .mypage-article-card {
+        background-color: #353e53 !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+
+        .mypage-article-header,
+        .mypage-article-body {
+          background-color: transparent !important;
+        }
+      }
+
+      .mypage-article-type {
+        background-color: #353e53 !important;
+        color: #fff !important;
+      }
+
+      .mypage-article-date {
+        color: #b0b0b0 !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .mypage-article-title-text {
+        background-color: #353e53 !important;
+        color: #fff !important;
+
+        &:hover {
+          color: #f09620 !important;
+        }
+      }
+
+      .mypage-article-excerpt-text {
+        background-color: #353e53 !important;
+        color: #b0b0b0 !important;
+      }
+
+      .mypage-article-read-more-text {
+        background-color: #353e53 !important;
+        color: #e4e4e4 !important;
+      }
+
+      .mypage-article-read-more-arrow {
+        background-color: #353e53 !important;
+        color: #e4e4e4 !important;
+      }
+
+      .mypage-article-read-more:hover .mypage-article-read-more-text,
+      .mypage-article-read-more:hover .mypage-article-read-more-arrow {
+        background-color: #353e53 !important;
+        color: #f09620 !important;
+      }
+
+      .mypage-article-actions-right {
+        color: #fff !important;
+
+        .mypage-article-action svg {
+          color: #fff !important;
+        }
+
+        .mypage-article-action-count {
+          color: #e0e0e0 !important;
+        }
+      }
+    }
+  }
+
+  /* mypage-edit-profile-modal — Edit Profile modal dark mode */
+  .mypage-edit-profile-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .mypage-edit-profile-modal-content {
+    background-color: #263351 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mypage-edit-profile-modal-title {
+    color: #fff !important;
+  }
+
+  .mypage-edit-profile-modal-close {
+    color: #e4e4e4 !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    svg {
+      color: inherit;
+    }
+  }
+
+  .mypage-edit-profile-section-title,
+  .mypage-edit-profile-label {
+    color: #e4e4e4 !important;
+  }
+
+  .mypage-edit-profile-photo-placeholder {
+    background-color: #353e53 !important;
+  }
+
+  .mypage-edit-profile-photo-icon {
+    color: #b0b0b0 !important;
+  }
+
+  .mypage-edit-profile-photo-hint {
+    color: #b0b0b0 !important;
+  }
+
+  .mypage-edit-profile-upload-button {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #e4e4e4 !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+
+    &:hover {
+      background-color: #000000 !important;
+      color: #fff !important;
+      border-color: #000000 !important;
+    }
+  }
+
+  .mypage-edit-profile-input {
+    background-color: #353e53 !important;
+    color: #e4e4e4 !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+
+    &::placeholder {
+      color: #888 !important;
+    }
+
+    &:focus {
+      border-color: #f09620 !important;
+    }
+  }
+
+  .mypage-edit-profile-update-button {
+    background-color: rgb(255, 255, 255) !important;
+    color: #000000 !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+
+    &:hover {
+      background-color: #000000 !important;
+      color: #fff !important;
+      border-color: #000000 !important;
+    }
+  }
+
+  /* Add Watch modal — Limited Edition checkbox dark mode */
+  .mypage-add-watch-limited .mypage-add-watch-label {
+    color: #e4e4e4 !important;
+  }
+
+  .mypage-add-watch-limited .MuiCheckbox-root {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .mypage-add-watch-limited .MuiCheckbox-root.Mui-checked {
+    color: #f09620 !important;
+  }
+
+  /* Add Article modal — Article Type checkboxes dark mode */
+  .mypage-add-article-form .mypage-add-article-label {
+    color: #e4e4e4 !important;
+  }
+
+  .mypage-add-article-form .MuiCheckbox-root {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .mypage-add-article-form .MuiCheckbox-root.Mui-checked {
+    color: #f09620 !important;
+  }
+
+  .mypage-add-article-form .mypage-add-article-field .MuiStack-root .MuiTypography-root {
+    color: #e4e4e4 !important;
   }
 
   /* notice.tsx — TableBody dark mode (to‘liq selector + MUI class, boshqa kodga ta’sir qilmaydi) */
@@ -1792,11 +2083,8 @@
     }
   }
 
-  .mypage-article-card,
   .mypage-watch-item,
-  .mypage-followers-box,
-  .mypage-article-header,
-  .mypage-article-body {
+  .mypage-followers-box {
     background-color: #252525 !important;
     border-color: rgba(255, 255, 255, 0.08);
   }
