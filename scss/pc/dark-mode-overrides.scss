@@ -258,6 +258,66 @@
     border-color: rgba(255, 255, 255, 0.12);
   }
 
+  /* mypage/index.tsx — main layout, hero, tabs dark mode */
+  .mypage-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+
+    .mypage-hero {
+      background-color: #263351 !important;
+
+      .mypage-hero-bg {
+        filter: grayscale(1) brightness(0.4);
+        opacity: 0.9;
+      }
+
+      .mypage-profile-name {
+        color: #000000 !important;
+      }
+
+      .mypage-profile-phone,
+      .mypage-profile-email,
+      .mypage-profile-role {
+        color: #000000 !important;
+      }
+
+      .mypage-edit-profile-button,
+      .mypage-logout-button {
+        background-color: rgb(43, 43, 43) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #000000 !important;
+          border-color: #f09620 !important;
+        }
+      }
+    }
+
+    .mypage-tabs {
+      background-color: #263351 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+
+      .mypage-tab {
+        color: #ffffff !important;
+
+        &.mypage-tab-active {
+          color: #f09620 !important;
+          border-bottom-color: #f09620 !important;
+        }
+      }
+    }
+
+    .mypage-watches-container {
+      background-color: #263351 !important;
+
+      .mypage-watches-grid {
+        background-color: transparent !important;
+      }
+    }
+  }
+
   /* notice.tsx — TableBody dark mode (to‘liq selector + MUI class, boshqa kodga ta’sir qilmaydi) */
   /* notice.tsx — jadval konteyner va header dark mode */
   html.theme-dark .notice-page .notice-content .notice-table-container {
@@ -1739,6 +1799,34 @@
   .mypage-article-body {
     background-color: #252525 !important;
     border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* mypage-watch-item — Watches grid cards explicit override */
+  .mypage-watches-container .mypage-watch-item {
+    background-color: #353e53 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .mypage-watches-container .mypage-watch-item-left {
+    background-color: #3e485e !important;
+    border-radius: 10px;
+
+    /* Ichidagi oq blok va ikon foni ham dark bo‘lsin */
+    .mypage-watch-item-image {
+      background-color: #353e53 !important;
+    }
+
+    .mypage-watch-item-icons {
+      color: #f09620 !important;
+
+      .action-btn {
+        background: rgba(121, 121, 121, 0.35) !important;
+
+        svg {
+          color: #f09620 !important;
+        }
+      }
+    }
   }
 
   .mypage-profile-role,
