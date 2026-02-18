@@ -28,10 +28,12 @@ const Top = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { mode, setMode } = useTheme();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const { isCartOpen, setIsCartOpen, cartItems, removeFromCart } = useCart();
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const langMenuRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -74,16 +76,19 @@ const Top = () => {
       if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setIsUserMenuOpen(false);
       }
+      if (langMenuRef.current && !langMenuRef.current.contains(target)) {
+        setIsLangMenuOpen(false);
+      }
     };
 
-    if (isUserMenuOpen) {
+    if (isUserMenuOpen || isLangMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isUserMenuOpen]);
+  }, [isUserMenuOpen, isLangMenuOpen]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -386,7 +391,11 @@ const Top = () => {
                     display: "flex",
                     alignItems: "center",
                     gap: 0.5,
+                    position: "relative",
+                    cursor: "pointer",
                   }}
+                  onClick={() => setIsLangMenuOpen((prev) => !prev)}
+                  ref={langMenuRef}
                 >
                   <Language
                     sx={{
@@ -394,7 +403,23 @@ const Top = () => {
                       "&:hover": { color: "#f09620", cursor: "pointer" },
                     }}
                   />
-                  
+                  {isLangMenuOpen && (
+                    <Box
+                      className="lang-menu-dropdown"
+                      onMouseLeave={() => setIsLangMenuOpen(false)}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                        ENG
+                      </Box>
+                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                        KOR
+                      </Box>
+                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                        RUS
+                      </Box>
+                    </Box>
+                  )}
                 </Box>
 
                 {/* USER */}
