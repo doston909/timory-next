@@ -3,7 +3,6 @@ import { Stack, Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { ArrowForward } from "@mui/icons-material";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import Footer from "@/libs/components/Footer";
 
 type BrandStory = {
   id: number;
@@ -207,10 +206,6 @@ const BrandStories: NextPage = () => {
               </Box>
             </Box>
           </Stack>
-        </Stack>
-
-        <Stack id="footer">
-          <Footer />
         </Stack>
       </Stack>
     </>

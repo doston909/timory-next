@@ -10,7 +10,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import WatchCard from "@/libs/components/watch/WatchCard";
 import Filter from "@/libs/components/watch/Filter";
 import Top from "@/libs/components/Top";
-import Footer from "@/libs/components/Footer";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 
 interface Watch {
@@ -570,10 +569,6 @@ const WatchList: NextPage = () => {
               </Box>
             </Box>
           </Stack>
-        </Stack>
-
-        <Stack id={"footer"}>
-          <Footer />
         </Stack>
       </Stack>
     </>

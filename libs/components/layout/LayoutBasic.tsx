@@ -25,7 +25,7 @@ const withLayoutBasic = (Component: any) => {
         'signup': 'Sign Up',
         'reset': 'Reset Password',
         'register': 'Register',
-        'detail': 'Detail',
+        'detail': 'Detail Page',
         'index': 'Home',
       };
       

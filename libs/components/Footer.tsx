@@ -1,73 +1,107 @@
+import Link from "next/link";
 import { Box, Stack } from "@mui/material";
-import { FacebookOutlined } from "@mui/icons-material";
-import TelegramIcon from "@mui/icons-material/Telegram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import AndroidIcon from "@mui/icons-material/Android";
+import AppleIcon from "@mui/icons-material/Apple";
 
 const Footer = () => {
   return (
-    <Stack className={"footer-container"}>
-      <Stack className={"main"}>
-        <Stack className={"left"}>
-          <Box component={"div"} className={"footer-box"}>
-            <img src="/img/logo/logoWhite.svg" alt="" className={"logo"} />
+    <Stack className="footer-wrap">
+      <Box className="footer-box footer-box--top">
+        <Stack direction="row" className="footer-row">
+          <Box className="footer-col footer-col--logo">
+            <img src="/img/logo/logoo.png" alt="Logo" className="footer-col-logo" />
           </Box>
-          <Box component={"div"} className={"footer-box"}>
-            <span>Total free custumer care</span>
-            <p>+82 10 7640 9293</p>
-          </Box>
-          <Box component={"div"} className={"footer-box"}>
-            <span>Nee live</span>
-            <p>+82 10 7640 9293</p>
-            <span>Support?</span>
-          </Box>
-          <Box component={"div"} className={"footer-box"}>
-            <p>Follow us on social media</p>
-            <div className={"media-box"}>
-              <FacebookOutlined />
-              <TelegramIcon />
-              <InstagramIcon />
-              <TwitterIcon />
-            </div>
-          </Box>
-        </Stack>
-        <Stack className={"right"}>
-          <Box component={"div"} className={"top"}>
-            <strong>keep tourself up to date</strong>
-            <div>
-              <input type="text" placeholder={"Your Email"} />
-              <span>Subscribe</span>
-            </div>
-          </Box>
-          <Box component={"div"} className={"bottom"}>
-            <div>
-              <strong>Popular Search</strong>
-              <span>Property for Rent</span>
-              <span>Property Low to hide</span>
-            </div>
-            <div>
-              <strong>Quick Links</strong>
-              <span>Terms of Use</span>
-              <span>Privacy Policy</span>
-              <span>Pricing Plans</span>
-              <span>Our Services</span>
-              <span>Contact Support</span>
-              <span>FAQs</span>
-            </div>
-            <div>
-              <strong>Discover</strong>
-              <span>Seoul</span>
-              <span>Gyeongido</span>
-              <span>Busan</span>
-              <span>Jejudo</span>
-            </div>
+          <Box className="footer-col footer-col--tagline"> Timory   ( Time + Story ) — Where time, trust, and elegance meet</Box>
+          <Box className="footer-col footer-col--social">
+            <Box className="footer-social">
+              <Box className="footer-social-icon" component="a" href="#" aria-label="Facebook">
+                <img src="/img/logo/facebook.png" alt="Facebook" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              </Box>
+              <Box className="footer-social-icon" component="a" href="#" aria-label="LinkedIn">
+                <img src="/img/logo/linkedin.png" alt="LinkedIn" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              </Box>
+              <Box className="footer-social-icon" component="a" href="#" aria-label="Instagram">
+               <img src="/img/logo/instagram.png" alt="Instagram" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              </Box>
+              <Box className="footer-social-icon" component="a" href="#" aria-label="Telegram">
+                <img src="/img/logo/telegram.png" alt="Telegram" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+              </Box>
+            </Box>
           </Box>
         </Stack>
-      </Stack>
-      <Stack className={"second"}>
-        <span>Nestar - All rights reserved. Nestar 2024</span>
-        <span>Privacy - Terms - Sitemap</span>
-      </Stack>
+      </Box>
+      <Box className="footer-box footer-box--middle">
+        <Stack direction="row" className="footer-row">
+          <Box className="footer-col footer-col--company">
+            <Stack className="footer-col-list footer-col-list--company" direction="column" spacing={1}>
+              <Box component="span" className="footer-col-list-title">Company</Box>
+              <Link href="/watch" className="footer-col-list-item" style={{ textDecoration: "none" }}>Watches</Link>
+              <Link href="/community" className="footer-col-list-item" style={{ textDecoration: "none" }}>Community</Link>
+              <Link href="/about" className="footer-col-list-item" style={{ textDecoration: "none" }}>About Us</Link>
+              <Link href="/cs" className="footer-col-list-item" style={{ textDecoration: "none" }}>Cs</Link>
+            </Stack>
+          </Box>
+          <Box className="footer-col footer-col--support">
+            <Stack className="footer-col-list footer-col-list--support" direction="column" spacing={1}>
+              <Box component="span" className="footer-col-list-title">Support</Box>
+              <Link href="/cs#notice" className="footer-col-list-item" style={{ textDecoration: "none" }}>Notice</Link>
+              <Link href="/cs#terms" className="footer-col-list-item" style={{ textDecoration: "none" }}>Terms & Conditions</Link>
+              <Link href="/cs#privacy" className="footer-col-list-item" style={{ textDecoration: "none" }}>Privacy Policy</Link>
+              <Link href="/cs#cs-contact-section" className="footer-col-list-item" style={{ textDecoration: "none" }}>Contact Us</Link>
+              <Link href="/cs#faq" className="footer-col-list-item" style={{ textDecoration: "none" }}>FAQ</Link>
+            </Stack>
+          </Box>
+          <Box className="footer-col">
+            <Stack className="footer-col-list footer-col-list--contact" direction="column" spacing={1}>
+              <Box component="span" className="footer-col-list-title">Contact</Box>
+              <Box component="span" className="footer-col-list-item footer-col-list-item--no-hover">Email: timoryapp@gmail.com </Box>
+              <Box component="span" className="footer-col-list-item footer-col-list-item--no-hover">Phone: +82 (010) 7640-9293</Box>
+            </Stack>
+          </Box>
+          <Box className="footer-col">
+            <Stack className="footer-app" direction="column" spacing={2}>
+              <Box component="span" className="footer-col-list-title">
+                Download Our App
+              </Box>
+              <Stack className="footer-app-buttons" direction="column" spacing={1.5}>
+                <Box className="footer-app-button footer-app-button--play" component="a" href="#">
+                  <Box className="footer-app-icon footer-app-icon--play">
+                    <img src="/img/logo/playstore.png" alt="Google Play" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  </Box>
+                  <Box className="footer-app-text">
+                    <span className="footer-app-text-small">GET IT ON</span>
+                    <span className="footer-app-text-main">Google Play</span>
+                  </Box>
+                </Box>
+                <Box className="footer-app-button footer-app-button--store" component="a" href="#">
+                  <Box className="footer-app-icon footer-app-icon--store">
+                    <img src="/img/logo/app-store.png" alt="App Store" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  </Box>
+                  <Box className="footer-app-text">
+                    <span className="footer-app-text-small">Download on the</span>
+                    <span className="footer-app-text-main">App Store</span>
+                  </Box>
+                </Box>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Box>
+      <Box className="footer-box footer-box--compact">
+        <Stack direction="row" className="footer-row">
+          <Box className="footer-col">
+            <Stack className="footer-owned-row" direction="row" spacing={1}>
+              <Box component="span"><span className="footer-owned-brand"><span className="footer-owned-symbol">&copy;</span> TIMORY</span> <span className="footer-owned-by">is owned by</span></Box>
+              <Box component="span" className="footer-owned-name">Ahmadaliev Dostonbek</Box>
+            </Stack>
+          </Box>
+          <Box className="footer-col footer-col--copyright"><span className="footer-copyright-symbol">&copy;</span> TIMORY 2026 - All rights reserved.</Box>
+        </Stack>
+      </Box>
     </Stack>
   );
 };

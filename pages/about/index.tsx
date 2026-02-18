@@ -3,7 +3,6 @@ import { ArrowForward } from "@mui/icons-material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import Footer from "@/libs/components/Footer";
 
 const About: NextPage = () => {
   const router = useRouter();
@@ -235,10 +234,6 @@ const About: NextPage = () => {
               </button>
             </Box>
           </Stack>
-        </Stack>
-
-        <Stack id={"footer"}>
-          <Footer />
         </Stack>
       </Stack>
     </>

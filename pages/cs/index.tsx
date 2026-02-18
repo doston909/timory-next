@@ -1,10 +1,9 @@
 import { Stack, Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { ArrowForward, KeyboardArrowDown } from "@mui/icons-material";
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
-import Footer from "@/libs/components/Footer";
 import { useTheme } from "@/libs/context/ThemeContext";
 
 interface Notice {
@@ -233,10 +232,14 @@ const CustomerService: NextPage = () => {
   const [contactEmail, setContactEmail] = useState("");
   const [contactSubject, setContactSubject] = useState("");
   const [contactMessage, setContactMessage] = useState("");
+  const contactOpenedFromHashRef = useRef(false);
+  const termsOpenedFromHashRef = useRef(false);
+  const privacyOpenedFromHashRef = useRef(false);
 
-  // When coming from About page with /cs#cs-contact-section, open Contact tab and scroll
+  // When coming with /cs#cs-contact-section (Footer, About), open Contact tab (no scroll when from hash)
   useEffect(() => {
     if (router.asPath.includes("#cs-contact-section")) {
+      contactOpenedFromHashRef.current = true;
       setShowNotice(false);
       setShowTerms(false);
       setShowPrivacy(false);
@@ -246,14 +249,96 @@ const CustomerService: NextPage = () => {
     }
   }, [router.asPath]);
 
-  // After Contact section is visible, scroll it into view
+  // When coming with /cs#notice, open Notice section
+  useEffect(() => {
+    if (router.asPath.includes("#notice")) {
+      setShowNotice(true);
+      setShowTerms(false);
+      setShowPrivacy(false);
+      setShowFaq(false);
+      setShowContact(false);
+      setActiveCsButton("notice");
+    }
+  }, [router.asPath]);
+
+  // When coming with /cs#terms, open Terms section (no scroll)
+  useEffect(() => {
+    if (router.asPath.includes("#terms")) {
+      termsOpenedFromHashRef.current = true;
+      setShowNotice(false);
+      setShowTerms(true);
+      setShowPrivacy(false);
+      setShowFaq(false);
+      setShowContact(false);
+      setActiveCsButton("terms");
+    }
+  }, [router.asPath]);
+
+  // When coming with /cs#privacy, open Privacy section (no scroll)
+  useEffect(() => {
+    if (router.asPath.includes("#privacy")) {
+      privacyOpenedFromHashRef.current = true;
+      setShowNotice(false);
+      setShowTerms(false);
+      setShowPrivacy(true);
+      setShowFaq(false);
+      setShowContact(false);
+      setActiveCsButton("privacy");
+    }
+  }, [router.asPath]);
+
+  // When coming with /cs#faq, open FAQ section (no scroll)
+  useEffect(() => {
+    if (router.asPath.includes("#faq")) {
+      setShowNotice(false);
+      setShowTerms(false);
+      setShowPrivacy(false);
+      setShowFaq(true);
+      setShowContact(false);
+      setActiveCsButton("faq");
+      setActiveFaqCategory("Account");
+      setOpenFaqItemId(null);
+    }
+  }, [router.asPath]);
+
+  // After Contact section is visible, scroll only when opened by button (not from hash)
   useEffect(() => {
     if (!showContact) return;
+    if (contactOpenedFromHashRef.current) {
+      contactOpenedFromHashRef.current = false;
+      return;
+    }
     const el = document.getElementById("cs-contact-section");
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [showContact]);
+
+  // After Terms section is visible, scroll only when opened by button (not from hash)
+  useEffect(() => {
+    if (!showTerms) return;
+    if (termsOpenedFromHashRef.current) {
+      termsOpenedFromHashRef.current = false;
+      return;
+    }
+    const el = document.getElementById("cs-terms-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showTerms]);
+
+  // After Privacy section is visible, scroll only when opened by button (not from hash)
+  useEffect(() => {
+    if (!showPrivacy) return;
+    if (privacyOpenedFromHashRef.current) {
+      privacyOpenedFromHashRef.current = false;
+      return;
+    }
+    const el = document.getElementById("cs-privacy-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showPrivacy]);
 
   const renderFaqsForCategory = (): FaqItem[] => {
     switch (activeFaqCategory) {
@@ -420,7 +505,7 @@ const CustomerService: NextPage = () => {
             )}
 
             {showTerms && (
-              <Box className="cs-terms-section">
+              <Box id="cs-terms-section" className="cs-terms-section">
                 <Typography className="cs-terms-title">
                   Terms &amp; Conditions
                 </Typography>
@@ -624,7 +709,7 @@ const CustomerService: NextPage = () => {
             )}
 
             {showPrivacy && (
-              <Box className="cs-privacy-section">
+              <Box id="cs-privacy-section" className="cs-privacy-section">
                 <Typography className="cs-privacy-title">
                   Privacy Policy
                 </Typography>
@@ -941,10 +1026,6 @@ const CustomerService: NextPage = () => {
               </Box>
             )}
           </Stack>
-        </Stack>
-
-        <Stack id={"footer"}>
-          <Footer />
         </Stack>
       </Stack>
     </>
