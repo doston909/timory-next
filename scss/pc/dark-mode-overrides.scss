@@ -182,6 +182,92 @@
     }
   }
 
+  /* Top.tsx — search-modal-overlay va ichidagi barcha classlar dark mode */
+  /* #pc-wrap #top orqali light #pc-wrap #top .search-modal-* dan ustun */
+  #pc-wrap #top .search-modal-overlay {
+    background: rgba(0, 0, 0, 0.225) !important;
+    backdrop-filter: blur(12px);
+
+    .search-modal-content {
+      background: #263351 !important;
+     
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .search-form {
+      color: #e4e4e4;
+    }
+
+    .search-input-wrapper {
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      background: #353e53 !important;
+
+      &:focus-within {
+        border-color: #c9c9c980 !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+       
+      }
+
+      .search-icon-large {
+        opacity: 0.8;
+        filter: brightness(0) invert(0.9);
+      }
+
+      .search-input {
+        color: #e4e4e4 !important;
+        background: transparent !important;
+
+        &::placeholder {
+          color: #888 !important;
+        }
+      }
+
+      .search-clear-button {
+        &:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        svg {
+          color: #b0b0b0 !important;
+        }
+      }
+    }
+
+    .search-submit-button {
+      background: #f09620 !important;
+      color: #000000 !important;
+
+      &:hover {
+        background: #d8881a !important;
+        box-shadow: 0 4px 12px rgba(240, 150, 32, 0.3);
+      }
+    }
+
+    .search-suggestions {
+      border-top-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .search-suggestions-title {
+      color: #e4e4e4 !important;
+    }
+
+    .search-tags {
+      gap: 10px;
+    }
+
+    .search-tag {
+      background: #353e53 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      color: #e4e4e4 !important;
+
+      &:hover {
+        background: #f09620 !important;
+        border-color: #f09620 !important;
+        color: #000000 !important;
+      }
+    }
+  }
+
   #pc-wrap {
     background-color: #121212;
     color: #e4e4e4;
