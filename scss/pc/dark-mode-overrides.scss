@@ -589,8 +589,7 @@
   [class*="watch-"],
   [class*="community-"],
   [class*="account-"],
-  [class*="about-"],
-  [class*="cs-"] {
+  [class*="about-"] {
     --dm-bg: #1e1e1e;
     --dm-bg-alt: #252525;
     --dm-text: #e4e4e4;
@@ -615,6 +614,259 @@
     background-color: #1c222f !important;
     color: #e8e8e8;
     border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* pages/cs/index.tsx — cs-page dark mode */
+  .cs-page {
+    background-color: #1c222f !important;
+
+    .cs-content .cs-title {
+      color: #fff !important;
+    }
+
+    .cs-content .cs-subtitle {
+      color: #b0b0b0 !important;
+    }
+
+    .cs-button {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: #e4e4e4 !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+
+      &:hover {
+        background-color: #353e53  !important;
+        color: #fff !important;
+        border-color: #353e53 !important;
+      }
+
+      &.cs-button-faq {
+        background-color: #f09620  !important;
+        color: #000000 !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+      }
+    }
+
+    .cs-notice-section .cs-notice-title {
+      color: #fff !important;
+    }
+
+    .cs-notice-table-container {
+      background-color: #263351 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .cs-notice-table-header {
+      background-color: #1c222f !important;
+      border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+
+      .cs-notice-header-cell {
+        color: #e4e4e4 !important;
+      }
+    }
+
+    .cs-notice-table-row {
+      border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+      }
+
+      .cs-notice-cell {
+        color: #e4e4e4 !important;
+
+        &.cs-notice-number-cell,
+        &.cs-notice-date-cell {
+          color: #b0b0b0 !important;
+        }
+      }
+    }
+
+    .cs-terms-section .cs-terms-title,
+    .cs-terms-section .cs-terms-updated,
+    .cs-terms-section .cs-terms-paragraph,
+    .cs-terms-section .cs-terms-section-title,
+    .cs-terms-section .cs-terms-list li {
+      color: #e4e4e4 !important;
+    }
+
+    .cs-terms-section .cs-terms-paragraph strong {
+      color: #fff !important;
+    }
+
+    .cs-privacy-section .cs-privacy-title,
+    .cs-privacy-section .cs-privacy-section-title,
+    .cs-privacy-section .cs-privacy-paragraph,
+    .cs-privacy-section .cs-privacy-list li {
+      color: #e4e4e4 !important;
+    }
+
+    .cs-privacy-section .cs-privacy-updated {
+      color: #8bc34a !important;
+    }
+
+    .cs-privacy-section .cs-privacy-paragraph strong {
+      color: #fff !important;
+    }
+
+    .cs-contact-title,
+    .cs-contact-intro-title,
+    .cs-contact-intro-subtitle,
+    .cs-contact-intro-thanks,
+    .cs-contact-form-title,
+    .cs-contact-info-title,
+    .cs-contact-info-heading {
+      color: #fff !important;
+    }
+
+    .cs-contact-intro-text,
+    .cs-contact-intro-list li,
+    .cs-contact-info-text,
+    .cs-contact-info-line {
+      color: #b0b0b0 !important;
+    }
+
+    .cs-contact-container {
+      background-color: #263351 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .cs-contact-info {
+      background-color: #353e53 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    .cs-contact-info-block {
+      border-top-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .cs-contact-label {
+      color: #e4e4e4 !important;
+    }
+
+    .cs-contact-input,
+    .cs-contact-textarea {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      color: #e4e4e4 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+
+      &::placeholder {
+        color: #888 !important;
+      }
+
+      &:focus {
+        border-color: #f09620 !important;
+      }
+    }
+
+  }
+
+  /* pages/cs/index.tsx — Contact "Send Message" tugmasi dark mode (alohida blok) */
+  html.theme-dark #pc-wrap .cs-page .cs-contact-submit,
+  html.theme-dark #pc-wrap .cs-contact-section .cs-contact-submit {
+    background-color: #353e53 !important;
+    color: #fff !important;
+    border: 1px solid #f09620 !important;
+
+    &:hover {
+      background-color: #f09620 !important;
+      color: #fff !important;
+      border-color: #f09620 !important;
+    }
+
+    .cs-contact-submit-icon {
+      color: #fff !important;
+    }
+  }
+
+  /* pages/cs/index.tsx — FAQ bo‘limi dark mode */
+  html.theme-dark #pc-wrap .faq-page,
+  .theme-dark .faq-page {
+    color: #e4e4e4;
+
+    .faq-title {
+      color: #fff !important;
+    }
+
+    .faq-tabs {
+      border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .faq-tab {
+      color: #fff !important;
+    }
+
+    /* Tanlanmagan tablar: label va count oq (#pc-wrap specificity ustidan) */
+    html.theme-dark #pc-wrap .cs-page .faq-page .faq-tab .faq-tab-label,
+    html.theme-dark #pc-wrap .cs-page .faq-page .faq-tab .faq-tab-count,
+    html.theme-dark #pc-wrap .faq-page .faq-tab .faq-tab-label,
+    html.theme-dark #pc-wrap .faq-page .faq-tab .faq-tab-count,
+    .faq-tab-label,
+    .faq-tab-count {
+      color: #fff !important;
+    }
+
+    .faq-tab.active {
+      color: #f09620 !important;
+      font-weight: 600;
+    }
+
+    .faq-tab.active .faq-tab-label,
+    .faq-tab.active .faq-tab-count {
+      color: #f09620 !important;
+    }
+
+    .faq-tab.active::after {
+      background-color: #f09620 !important;
+    }
+
+    .faq-item {
+      background-color: #353e53 !important;
+      border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .faq-item:hover {
+      background-color: #263351 !important;
+    }
+
+    .faq-item-main {
+      background-color: #2b3141 !important;
+      border-bottom: none !important;
+    }
+
+    .faq-icon-box {
+      background-color: #263351 !important;
+      border-color: #f09620 !important;
+    }
+
+    .faq-icon-letter {
+      color: #fff !important;
+    }
+
+    .faq-icon-boxs {
+      background-color: #263351 !important;
+      border-color: #f09620 !important;
+    }
+
+    .faq-icon-letters {
+      color: #f09620 !important;
+    }
+
+    .faq-question {
+      color: #000000 !important;
+    }
+
+    .faq-toggle-arrow {
+      color: #000000 !important;
+    }
+
+    .faq-answer {
+      background-color: #47526d !important;
+    }
+
+    .faq-answer-text {
+      color: #b0b0b0 !important;
+    }
   }
 
   .mypage-article-card {
@@ -1685,6 +1937,15 @@
         }
       }
     }
+  }
+
+  /* pages/cs/terms.tsx — terms-updated dark modeda light mode styleni saqlash */
+  html.theme-dark #pc-wrap .terms-page .terms-content .terms-box .terms-updated,
+  html.theme-dark #pc-wrap .terms-page .terms-content .terms-box p.MuiTypography-root.terms-updated {
+    color: green !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    margin: 0 0 16px 0 !important;
   }
 
   /* our-goal-section va stat-box — homepage (OurGoal.tsx) va about page ikkalasida dark mode */

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import Footer from "@/libs/components/Footer";
+import { useTheme } from "@/libs/context/ThemeContext";
 
 interface Notice {
   id: number;
@@ -216,6 +217,7 @@ const notices: Notice[] = [
 
 const CustomerService: NextPage = () => {
   const router = useRouter();
+  const { mode } = useTheme();
   const [isDescriptionMode, setIsDescriptionMode] = useState(false);
   const [showNotice, setShowNotice] = useState(true); // Cs ga kirilganda Notice default ochiq
   const [showTerms, setShowTerms] = useState(false);
@@ -422,7 +424,13 @@ const CustomerService: NextPage = () => {
                 <Typography className="cs-terms-title">
                   Terms &amp; Conditions
                 </Typography>
-                <Typography className="cs-terms-updated" sx={{ fontSize: 15 }}>
+                <Typography
+                  className="cs-terms-updated"
+                  sx={{
+                    fontSize: 15,
+                    ...(mode === "dark" && { color: "green" }),
+                  }}
+                >
                   Last Updated: February 2026
                 </Typography>
 

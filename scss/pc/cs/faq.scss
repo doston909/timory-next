@@ -100,7 +100,8 @@
     width: 50px;
     height: 50px;
     border-radius: 12px;
-    background-color: #8C6F5A;
+    background-color: #ffffff;
+    border: 2px solid #8C6F5A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,7 +111,7 @@
   .faq-icon-letter {
     font-size: 30px;
     font-weight: 400;
-    color: #ffffff;
+    color: #8C6F5A;
   }
    .faq-icon-boxs {
     width: 50px;
@@ -177,6 +178,81 @@
     opacity: 1;
     padding: 40px 80px 40px 120px; /* ochilganda eski padding */
   }
+}
+
+/* Dark mode: tab label va count oq (faq.scss ichida, #pc-wrap dan ustun) */
+html.theme-dark #pc-wrap .faq-tab,
+html.theme-dark #pc-wrap .faq-tab .faq-tab-label,
+html.theme-dark #pc-wrap .faq-tab .faq-tab-count {
+  color: #fff !important;
+}
+
+html.theme-dark #pc-wrap .faq-tab.active .faq-tab-label,
+html.theme-dark #pc-wrap .faq-tab.active .faq-tab-count {
+  color: #f09620 !important;
+}
+
+/* .faq-list dark mode — html.theme-dark #pc-wrap orqali #pc-wrap dan ustun */
+html.theme-dark #pc-wrap .faq-page .faq-list {
+  background-color: #263351 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* .faq-item — oq fondan qutqarish (#pc-wrap .faq-item ustidan) */
+html.theme-dark #pc-wrap .faq-page .faq-item {
+  background-color: #353e53 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item:hover {
+  background-color: #3b4a6c !important;
+}
+
+/* .faq-item-main va ichidagi barcha elementlar dark mode (#pc-wrap ustidan) */
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main {
+  background-color: transparent !important;
+  color: #e4e4e4 !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .faq-icon-box {
+  background-color: #353e53be !important;
+  border: 2px solid #ffffff5a !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .faq-icon-letter {
+  color: #ffffff5b !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .faq-question,
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .MuiTypography-root.faq-question {
+  color: #e4e4e4 !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .faq-toggle-arrow,
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-item-main .faq-toggle-arrow svg {
+  color: #b0b0b0 !important;
+  fill: #b0b0b0 !important;
+}
+
+/* .faq-answer (Typography) va ichidagi elementlar dark mode */
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-answer {
+  background-color: #263351 !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-answer .faq-icon-boxs {
+  background-color: #353e53 !important;
+  border: 2px solid #ffffff5a!important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-answer .faq-icon-letters {
+  color: #ffffff5b !important;
+}
+
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-answer .faq-answer-text,
+html.theme-dark #pc-wrap .faq-page .faq-item .faq-answer.MuiTypography-root .faq-answer-text {
+  color: #b0b0b0 !important;
 }
 
 
