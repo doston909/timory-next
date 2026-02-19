@@ -13,6 +13,7 @@ import {
 import RefreshIcon from "@mui/icons-material/Refresh";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 // PRICE LIST
 const priceRanges = [
@@ -95,7 +96,7 @@ const Filter = ({
   watchPrice,
   setWatchPrice
 }: FilterProps) => {
-
+  const { t } = useTranslation();
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
 
@@ -146,7 +147,7 @@ const Filter = ({
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography className="title" sx={{ display: "flex", alignItems: "center" }}>Find Your Watch</Typography>
+        <Typography className="title" sx={{ display: "flex", alignItems: "center" }}>{t("filter.findYourWatch")}</Typography>
         <IconButton
           onClick={handleReset}
           sx={{
@@ -190,7 +191,7 @@ const Filter = ({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Typography className="title">Brand</Typography>
+          <Typography className="title">{t("filter.brand")}</Typography>
           {isSectionOpen("brand", selectedBrands) ? (
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
@@ -272,7 +273,7 @@ const Filter = ({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Typography className="title">Watch Type</Typography>
+          <Typography className="title">{t("filter.watchType")}</Typography>
           {isSectionOpen("watchType", selectedTypes) ? (
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' , marginBottom: '10px'}}>
               <KeyboardArrowUpIcon 
@@ -352,7 +353,7 @@ const Filter = ({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Typography className="title">Case Size</Typography>
+          <Typography className="title">{t("filter.caseSize")}</Typography>
           {isSectionOpen("caseSize", selectedSizes) ? (
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
@@ -432,7 +433,7 @@ const Filter = ({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Typography className="title">Dial Color</Typography>
+          <Typography className="title">{t("filter.dialColor")}</Typography>
           {isSectionOpen("dialColor", selectedDialColors) ? (
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
@@ -514,7 +515,7 @@ const Filter = ({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-          <Typography className="title">Material</Typography>
+          <Typography className="title">{t("filter.material")}</Typography>
           {isSectionOpen("material", selectedMaterials) ? (
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
@@ -576,11 +577,11 @@ const Filter = ({
 
       {/* PRICE RANGE */}
       <Stack className="filter-section" mb="30px">
-        <Typography className="title">Price Range</Typography>
+        <Typography className="title">{t("filter.priceRange")}</Typography>
 
         <Stack className="price-row">
           <FormControl>
-            <InputLabel>Min</InputLabel>
+            <InputLabel>{t("filter.min")}</InputLabel>
             <Select
               value={watchPrice.start}
               onChange={(e) =>
@@ -611,7 +612,7 @@ const Filter = ({
           <div className="central-divider"></div>
 
           <FormControl>
-            <InputLabel>Max</InputLabel>
+            <InputLabel>{t("filter.max")}</InputLabel>
             <Select
               value={watchPrice.end}
               onChange={(e) =>

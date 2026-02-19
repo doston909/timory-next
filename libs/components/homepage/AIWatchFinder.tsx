@@ -1,5 +1,6 @@
 import { Stack, Box, Typography, Select, MenuItem, Button } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 export type AIWatchResult = {
   model: string;
@@ -25,6 +26,7 @@ function getImageForWatch(brand: string, _model: string): string {
 }
 
 const AIWatchFinder = () => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     gender: "",
     style: "",
@@ -65,7 +67,7 @@ const AIWatchFinder = () => {
       }));
       setResults(mapped);
     } catch {
-      setError("Tavsiyalar yuklanmadi. Keyinroq urinib ko‘ring.");
+      setError(t("home.aiError"));
     } finally {
       setLoading(false);
     }
@@ -73,9 +75,9 @@ const AIWatchFinder = () => {
 
   return (
     <Stack className="ai-watch-finder-section">
-      <Typography className="ai-watch-finder-title">AI Watch Finder</Typography>
+      <Typography className="ai-watch-finder-title">{t("home.aiWatchFinder")}</Typography>
       <Typography className="ai-watch-finder-subtitle">
-        Tell us your style — our AI will pick the perfect watch for you.
+        {t("home.aiWatchFinderSubtitle")}
       </Typography>
 
       <Stack className="ai-watch-finder-row" direction="row" flexWrap="wrap">
@@ -96,51 +98,51 @@ const AIWatchFinder = () => {
               value={form.gender}
               onChange={(e) => handleChange("gender", e.target.value)}
               className="ai-watch-finder-select"
-              renderValue={(v) => v || "Gender"}
+              renderValue={(v) => v ? t(`home.${v}`) : t("home.gender")}
             >
-              <MenuItem value="men">Men</MenuItem>
-              <MenuItem value="women">Women</MenuItem>
-              <MenuItem value="unisex">Unisex</MenuItem>
+              <MenuItem value="men">{t("home.men")}</MenuItem>
+              <MenuItem value="women">{t("home.women")}</MenuItem>
+              <MenuItem value="unisex">{t("home.unisex")}</MenuItem>
             </Select>
             <Select
               displayEmpty
               value={form.style}
               onChange={(e) => handleChange("style", e.target.value)}
               className="ai-watch-finder-select"
-              renderValue={(v) => v || "Style"}
+              renderValue={(v) => v ? t(`home.${v}`) : t("home.style")}
             >
-              <MenuItem value="classic">Classic</MenuItem>
-              <MenuItem value="sport">Sport</MenuItem>
-              <MenuItem value="luxury">Luxury</MenuItem>
-              <MenuItem value="minimal">Minimal</MenuItem>
+              <MenuItem value="classic">{t("home.classic")}</MenuItem>
+              <MenuItem value="sport">{t("home.sport")}</MenuItem>
+              <MenuItem value="luxury">{t("home.luxury")}</MenuItem>
+              <MenuItem value="minimal">{t("home.minimal")}</MenuItem>
             </Select>
             <Select
               displayEmpty
               value={form.budget}
               onChange={(e) => handleChange("budget", e.target.value)}
               className="ai-watch-finder-select"
-              renderValue={(v) => v || "Budget"}
+              renderValue={(v) => (v ? (v === "under-5k" ? t("home.under5k") : v === "5k-10k" ? t("home.budget5k10k") : t("home.budget10kPlus")) : t("home.budget"))}
             >
-              <MenuItem value="under-5k">Under $5,000</MenuItem>
-              <MenuItem value="5k-10k">$5,000 – $10,000</MenuItem>
-              <MenuItem value="10k-plus">$10,000+</MenuItem>
+              <MenuItem value="under-5k">{t("home.under5k")}</MenuItem>
+              <MenuItem value="5k-10k">{t("home.budget5k10k")}</MenuItem>
+              <MenuItem value="10k-plus">{t("home.budget10kPlus")}</MenuItem>
             </Select>
             <Select
               displayEmpty
               value={form.color}
               onChange={(e) => handleChange("color", e.target.value)}
               className="ai-watch-finder-select"
-              renderValue={(v) => v || "Color"}
+              renderValue={(v) => v ? t(`home.${v === "two-tone" ? "twoTone" : v}`) : t("home.color")}
             >
-              <MenuItem value="silver">Silver</MenuItem>
-              <MenuItem value="gold">Gold</MenuItem>
-              <MenuItem value="black">Black</MenuItem>
-              <MenuItem value="two-tone">Two-tone</MenuItem>
+              <MenuItem value="silver">{t("home.silver")}</MenuItem>
+              <MenuItem value="gold">{t("home.gold")}</MenuItem>
+              <MenuItem value="black">{t("home.black")}</MenuItem>
+              <MenuItem value="two-tone">{t("home.twoTone")}</MenuItem>
             </Select>
             <Box className="ai-watch-finder-thought-wrap">
               <textarea
                 className="ai-watch-finder-thought"
-                placeholder="Write your thoughts — what kind of watch are you looking for?"
+                placeholder={t("home.thoughtsPlaceholder")}
                 value={form.thought}
                 onChange={(e) => handleChange("thought", e.target.value)}
                 rows={5}
@@ -153,7 +155,7 @@ const AIWatchFinder = () => {
             onClick={handleFind}
             disabled={loading}
           >
-            {loading ? "Loading…" : "Find my watch"}
+            {loading ? t("home.loading") : t("home.findMyWatch")}
           </Button>
           {error && (
             <Typography className="ai-watch-finder-error" sx={{ mt: 1 }}>

@@ -2,6 +2,7 @@ import { Stack, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 type SpotlightWatch = {
   id: number;
@@ -72,13 +73,13 @@ const spotlightWatches: SpotlightWatch[] = [
 
 const LimitedEdition = () => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   return (
     <Stack className="limited-spotlight-section">
       <h2 className="section-title">Limited Editions Spotlight</h2>
 
       {spotlightWatches.length === 0 ? (
-        <p className="empty-label">No Limited Editions Available</p>
+        <p className="empty-label">{t("home.noLimitedEditions")}</p>
       ) : (
         <Stack
           className="spotlight-grid"
@@ -117,7 +118,7 @@ const LimitedEdition = () => {
               router.push("/watch?sort=limited-editions");
             }}
         >
-          See All <ArrowForwardIcon className="see-all-arrow" />
+          {t("home.seeAll")} <ArrowForwardIcon className="see-all-arrow" />
         </Box>
       </Box>
     </Stack>

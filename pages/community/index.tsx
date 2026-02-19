@@ -17,12 +17,20 @@ import CommunityCard from "@/libs/components/community/CommunityCard";
 import { useCart } from "@/libs/context/CartContext";
 import { getViewCount } from "@/libs/viewCountStorage";
 import { getDealerByName } from "@/libs/data/dealers";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 
+
+const COMMUNITY_TAG_KEYS: Record<string, string> = {
+  "Free Board": "community.freeBoard",
+  "Recommendation": "community.recommendation",
+  "News": "community.news",
+};
 
 const Community: NextPage = () => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const { t } = useTranslation();
   const [bestSellerIndex, setBestSellerIndex] = useState(0);
   const [likedWatches, setLikedWatches] = useState<Record<number, boolean>>({});
   const [likeCounts, setLikeCounts] = useState<Record<number, number>>({});
@@ -231,7 +239,7 @@ const Community: NextPage = () => {
             {/* Tags */}
           <Box className="sidebar-section">
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", marginBottom: 1, flexDirection: "row" }}>
-              <Typography className="sidebar-title" sx={{ margin: 0 }}>Type</Typography>
+              <Typography className="sidebar-title" sx={{ margin: 0 }}>{t("community.type")}</Typography>
               <IconButton
                 onClick={handleFilterReset}
                 sx={{
@@ -259,7 +267,7 @@ const Community: NextPage = () => {
                   onClick={() => setSelectedArticleType(selectedArticleType === tag ? null : tag)}
                   sx={{ cursor: "pointer" }}
                 >
-                  {tag}
+                  {t(COMMUNITY_TAG_KEYS[tag] ?? tag)}
                 </Box>
               ))}
             </Stack>
@@ -267,7 +275,7 @@ const Community: NextPage = () => {
 
           {/* Recent Articles */}
           <Box className="sidebar-section">
-            <Typography className="sidebar-title">For Business Partnership</Typography>
+            <Typography className="sidebar-title">{t("community.forBusinessPartnership")}</Typography>
             <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
               <Box 
                 sx={{ 
@@ -300,7 +308,7 @@ const Community: NextPage = () => {
                   }}
                 />
                 <Typography className="partnership-box-text" sx={{ position: 'relative', zIndex: 1 }}>
-                  Your business can be advertised here...
+                  {t("community.advertiseHere")}
                 </Typography>
               </Box>
               <Box 
@@ -334,7 +342,7 @@ const Community: NextPage = () => {
                   }}
                 />
                 <Typography className="partnership-box-text" sx={{ position: 'relative', zIndex: 1 }}>
-                  Your business can be advertised here...
+                  {t("community.advertiseHere")}
                 </Typography>
               </Box>
             </Stack>
@@ -344,7 +352,7 @@ const Community: NextPage = () => {
 
           {/* Best Sellers */}
           <Box className="sidebar-section">
-            <Typography className="sidebar-title">Best Sellers</Typography>
+            <Typography className="sidebar-title">{t("community.bestSellers")}</Typography>
             <Box
               className="best-seller-card"
               onClick={handleCardClick}

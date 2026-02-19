@@ -9,31 +9,15 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const HeroCarousel = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const slides = [
-    {
-      id: 1,
-      title: "The Stone Series",
-      subtitle: "Great Leather Collection",
-      description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home7.jpeg",
-    },
-    {
-      id: 2,
-      title: "Nice Top Series",
-      subtitle: "Black Great Addition",
-      description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home55.jpg",
-    },
-    {
-      id: 3,
-      title: "The Stone Series",
-      subtitle: "A Great Addition",
-      description: "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-      image: "/img/watch/home11.jpg",
-    },
+    { id: 1, image: "/img/watch/home7.jpeg" },
+    { id: 2, image: "/img/watch/home55.jpg" },
+    { id: 3, image: "/img/watch/home11.jpg" },
   ];
 
   return (
@@ -61,7 +45,7 @@ const HeroCarousel = () => {
               <div className="slide-background">
                 <Image
                   src={slide.image}
-                  alt={slide.title}
+                  alt=""
                   fill
                   priority={slide.id === 1}
                   style={{ objectFit: "cover" }}
@@ -70,15 +54,15 @@ const HeroCarousel = () => {
               </div>
               <Stack className="slide-content container">
                 <Stack className="slide-text">
-                  <span className="slide-label">{slide.title}</span>
-                  <h2 className="slide-title">{slide.subtitle}</h2>
-                  <p className="slide-description">{slide.description}</p>
+                  <span className="slide-label">{t(`home.heroSlide${slide.id}Title`)}</span>
+                  <h2 className="slide-title">{t(`home.heroSlide${slide.id}Subtitle`)}</h2>
+                  <p className="slide-description">{t(`home.heroSlide${slide.id}Desc`)}</p>
                   <Button
                     className="shopping-now-btn"
                     variant="contained"
                     onClick={() => router.push("/watch")}
                   >
-                    Shopping Now
+                    {t("home.shoppingNow")}
                   </Button>
                 </Stack>
               </Stack>

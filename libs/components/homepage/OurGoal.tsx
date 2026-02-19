@@ -5,8 +5,10 @@ import StarIcon from "@mui/icons-material/Star";
 import PeopleIcon from "@mui/icons-material/People";
 import SecurityIcon from "@mui/icons-material/Security";
 import StoreIcon from "@mui/icons-material/Store";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const OurGoal = () => {
+  const { t } = useTranslation();
   const stats = [
     {
       id: 1,
@@ -18,9 +20,8 @@ const OurGoal = () => {
       height={190}
     />
   ),
-
-      title: "4.7 out of 5 stars",
-      description: "from 5,000 reviews worldwide",
+      titleKey: "home.stats1Title",
+      descKey: "home.stats1Desc",
     },
     {
       id: 2,
@@ -32,8 +33,8 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "10.000",
-      description: "watch enthusiasts use Timory each month",
+      titleKey: "home.stats2Title",
+      descKey: "home.stats2Desc",
     },
     {
       id: 3,
@@ -45,8 +46,8 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "Over 23,000",
-      description: "customers choose Buyer Protection annually",
+      titleKey: "home.stats3Title",
+      descKey: "home.stats3Desc",
     },
     {
       id: 4,
@@ -58,34 +59,27 @@ const OurGoal = () => {
       height={170}
     />
   ),
-      title: "More than 17,000",
-      description: "trustworthy sellers",
+      titleKey: "home.stats4Title",
+      descKey: "home.stats4Desc",
     },
   ];
 
-  const features = [
-    "Payment via the Escrow Service",
-    "Commitment to Authenticity",
-    "Global money-back guarantee",
-    "Strict dealer guidelines",
-    "Insured shipments",
-    "Timory's quality & security team",
-  ];
+  const featureKeys = ["home.feature1", "home.feature2", "home.feature3", "home.feature4", "home.feature5", "home.feature6"];
 
   return (
     <Stack className="our-goal-section">
       {/* Top Section: Marketplace Statistics */}
       <Box className="stats-section">
         <Typography className="stats-title">
-          The Leading Marketplace for TIMORY Since 2025
+          {t("home.leadingMarketplace")}
         </Typography>
         <Box className="stats-grid">
           {stats.map((stat) => (
             <Box key={stat.id} className="stat-box">
               <Box className="stat-icon">{stat.icon}</Box>
-              <Typography className="stat-title">{stat.title}</Typography>
+              <Typography className="stat-title">{t(stat.titleKey)}</Typography>
               <Typography className="stat-description">
-                {stat.description}
+                {t(stat.descKey)}
               </Typography>
             </Box>
           ))}
@@ -96,18 +90,18 @@ const OurGoal = () => {
       <Box className="protection-section">
         <Box className="protection-content">
           <Typography className="protection-title">
-            Timory Buyer Protection
+            {t("home.buyerProtection")}
           </Typography>
           <Box className="features-list">
-            {features.map((feature, index) => (
+            {featureKeys.map((key, index) => (
               <Box key={index} className="feature-item">
                 <CheckOutlinedIcon className="check-icon" />
-                <Typography className="feature-text">{feature}</Typography>
+                <Typography className="feature-text">{t(key)}</Typography>
               </Box>
             ))}
           </Box>
           <Button className="learn-more-btn" variant="outlined">
-            Learn more about security on Timory
+            {t("home.learnMoreSecurity")}
           </Button>
         </Box>
         <Box className="protection-image">

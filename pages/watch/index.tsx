@@ -11,6 +11,7 @@ import WatchCard from "@/libs/components/watch/WatchCard";
 import Filter from "@/libs/components/watch/Filter";
 import Top from "@/libs/components/Top";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 interface Watch {
   id: number;
@@ -277,6 +278,7 @@ const watches: Watch[] = [
 
 const WatchList: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("newest");
 
@@ -458,7 +460,7 @@ const WatchList: NextPage = () => {
                         value={searchText}
                         type={"text"}
                         className={"filter-search-input"}
-                        placeholder={"Search..."}
+                        placeholder={t("watch.searchPlaceholder")}
                         onChange={(e: any) => {
                           setSearchText(e.target.value);
                           setCurrentPage(1); // Search qilganda birinchi sahifaga qaytamiz
@@ -501,7 +503,7 @@ const WatchList: NextPage = () => {
 
                   {/* Sort Dropdown */}
                   <Box className="sort-dropdown">
-                    <span className="sort-label">Sort by</span>
+                    <span className="sort-label">{t("watch.sortBy")}</span>
                     <Select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
@@ -526,10 +528,10 @@ const WatchList: NextPage = () => {
                         }
                       }}
                     >
-                      <MenuItem value="newest">Newest</MenuItem>
-                      <MenuItem value="price-asc">Price: Low to High</MenuItem>
-                      <MenuItem value="price-desc">Price: High to Low</MenuItem>
-                      <MenuItem value="limited-editions">Limited Editions</MenuItem>
+                      <MenuItem value="newest">{t("watch.newest")}</MenuItem>
+                      <MenuItem value="price-asc">{t("watch.priceLowToHigh")}</MenuItem>
+                      <MenuItem value="price-desc">{t("watch.priceHighToLow")}</MenuItem>
+                      <MenuItem value="limited-editions">{t("watch.limitedEditions")}</MenuItem>
                     </Select>
                   </Box>
                 </Box>
@@ -545,8 +547,8 @@ const WatchList: NextPage = () => {
                   <Box className="watch-not-found">
                     <Typography className="not-found-text">
                       {searchText.trim() 
-                        ? `No results found for "${searchText}"`
-                        : "Watch Not Found"
+                        ? `${t("watch.noResultsFor")} "${searchText}"`
+                        : t("watch.watchNotFound")
                       }
                     </Typography>
                   </Box>

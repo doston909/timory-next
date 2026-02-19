@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import TopBrandsCard, { TopBrand } from "./TopBrandsCard";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const topBrands: TopBrand[] = [
   {
@@ -91,6 +92,7 @@ const topBrands: TopBrand[] = [
 
 const TopBrands = () => {
   const [isPaused, setIsPaused] = useState(false);
+  const { t } = useTranslation();
 
   // Duplicate brands 2 times for seamless infinite scroll
   const duplicatedBrands = [...topBrands, ...topBrands];
@@ -98,7 +100,7 @@ const TopBrands = () => {
   return (
     <Stack className="top-brands-section">
       {topBrands.length === 0 ? (
-        <p className="empty-text">No Brands Available</p>
+        <p className="empty-text">{t("home.noBrandsAvailable")}</p>
       ) : (
         <div
           className="top-brands-wrapper"

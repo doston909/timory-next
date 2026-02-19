@@ -2,9 +2,11 @@ import { Box, Stack, TextField, Button } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const News = () => {
   const [email, setEmail] = useState("");
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,11 +31,11 @@ const News = () => {
         </Box>
 
         {/* Title */}
-        <h2 className="news-title">Newsletter Signup</h2>
+        <h2 className="news-title">{t("home.newsletterSignup")}</h2>
 
         {/* Description */}
         <p className="news-description">
-          Join our list and get 15% off your first purchase! Don't worry we don't spam
+          {t("home.joinOurList")}
         </p>
 
         {/* Email Form */}
@@ -41,7 +43,7 @@ const News = () => {
           <TextField
             variant="standard"
             type="email"
-            placeholder="Enter your email..."
+            placeholder={t("home.enterYourEmail")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="news-email-input"
@@ -51,7 +53,7 @@ const News = () => {
             required
           />
           <Button type="submit" className="news-subscribe-btn">
-            SUBMIT <ArrowForwardIcon className="news-subscribe-arrow" />
+            {t("home.submit")} <ArrowForwardIcon className="news-subscribe-arrow" />
           </Button>
         </form>
       </Box>

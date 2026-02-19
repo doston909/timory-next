@@ -3,41 +3,43 @@ import { ArrowForward } from "@mui/icons-material";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const About: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const stats = [
     {
       id: 1,
       icon: (
         <img src="/img/flag/tr4.png" alt="rating" width={280} height={190} />
       ),
-      title: "4.7 out of 5 stars",
-      description: "from 5,000 reviews worldwide",
+      titleKey: "home.stats1Title",
+      descKey: "home.stats1Desc",
     },
     {
       id: 2,
       icon: (
         <img src="/img/flag/tr3.png" alt="rating" width={260} height={170} />
       ),
-      title: "10.000",
-      description: "watch enthusiasts use Timory each month",
+      titleKey: "home.stats2Title",
+      descKey: "home.stats2Desc",
     },
     {
       id: 3,
       icon: (
         <img src="/img/flag/tr2.png" alt="rating" width={280} height={170} />
       ),
-      title: "Over 23,000",
-      description: "customers choose Buyer Protection annually",
+      titleKey: "home.stats3Title",
+      descKey: "home.stats3Desc",
     },
     {
       id: 4,
       icon: (
         <img src="/img/flag/tr1.png" alt="rating" width={280} height={170} />
       ),
-      title: "More than 17,000",
-      description: "trustworthy sellers",
+      titleKey: "home.stats4Title",
+      descKey: "home.stats4Desc",
     },
   ];
 
@@ -48,7 +50,7 @@ const About: NextPage = () => {
           <Stack className="about-page">
             <Box className="about-content">
               <Typography className="about-main-title">
-                Timory   ( Time + Story ) — Where time, trust, and elegance meet
+                {t("about.tagline")}
               </Typography>
               <Box className="about-image-wrapper">
                 <img
@@ -59,41 +61,25 @@ const About: NextPage = () => {
               </Box>
               <Box className="about-text-content">
                 <Typography className="about-text">
-                  TIMORY is a digital platform designed to help people discover,
-                  explore, and compare watches with ease. We bring together
-                  watch information, modern technology, and intelligent
-                  recommendations to simplify the way users find timepieces that
-                  match their style, preferences, and lifestyle.
+                  {t("about.paragraph1")}
                 </Typography>
 
                 <Typography className="about-text">
-                  Our goal is to create a transparent and user-friendly
-                  environment where watch enthusiasts and everyday users can
-                  access reliable information without complexity. TIMORY does
-                  not sell watches directly. Instead, we focus on providing
-                  curated content and guiding users to official brands and
-                  trusted retailers.
+                  {t("about.paragraph2")}
                 </Typography>
 
                 <Typography className="about-text">
-                  By combining data-driven insights with artificial
-                  intelligence, TIMORY delivers personalized recommendations and
-                  a smarter discovery experience. We believe that finding the
-                  right watch should be intuitive, informative, and enjoyable.
+                  {t("about.paragraph3")}
                 </Typography>
 
                 <Typography className="about-text">
-                  TIMORY is built by a team of developers, designers, and
-                  digital strategists who are passionate about technology,
-                  product design, and innovation. We are continuously improving
-                  the platform to offer better features, better insights, and a
-                  better experience for our users.
+                  {t("about.paragraph4")}
                 </Typography>
               </Box>
             </Box>
 
             <Typography className="testimonial-section-title">
-              WHAT OUR TEAMS SAY
+              {t("about.whatOurTeamsSay")}
             </Typography>
 
             <Box className="testimonial-section">
@@ -190,10 +176,10 @@ const About: NextPage = () => {
                     <Box key={stat.id} className="stat-box">
                       <Box className="stat-icon">{stat.icon}</Box>
                       <Typography className="stat-title">
-                        {stat.title}
+                        {t(stat.titleKey)}
                       </Typography>
                       <Typography className="stat-description">
-                        {stat.description}
+                        {t(stat.descKey)}
                       </Typography>
                     </Box>
                   ))}
@@ -214,11 +200,10 @@ const About: NextPage = () => {
 
             <Box className="about-cta-section">
               <Typography className="about-cta-title">
-                Do you have any ideas ?
+                {t("about.ctaTitle")}
               </Typography>
               <Typography className="about-cta-subtitle">
-                Can&apos;t find the answer you&apos;re looking for? Please chat
-                to our friendly team.
+                {t("about.ctaSubtitle")}
               </Typography>
               <button
                 className="about-cta-button"
@@ -229,7 +214,7 @@ const About: NextPage = () => {
                   })
                 }
               >
-                Contact us
+                {t("about.contactUs")}
                 <ArrowForward sx={{ ml: 1, fontSize: 24 }} />
               </button>
             </Box>

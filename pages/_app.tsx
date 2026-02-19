@@ -15,6 +15,12 @@ import {
   storeThemeMode,
   type ThemeMode,
 } from "@/libs/context/ThemeContext";
+import {
+  LocaleContext,
+  getStoredLocale,
+  storeLocale,
+  type Locale,
+} from "@/libs/context/LocaleContext";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "@/apollo/client";
 import "../scss/app.scss";
@@ -23,10 +29,12 @@ import "../scss/pc/main.scss";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [mode, setMode] = useState<ThemeMode>("light");
+  const [locale, setLocaleState] = useState<Locale>("en");
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setMode(getStoredThemeMode());
+    setLocaleState(getStoredLocale());
     setHydrated(true);
   }, []);
 
@@ -35,6 +43,11 @@ export default function App({ Component, pageProps }: AppProps) {
     storeThemeMode(mode);
     document.documentElement.classList.toggle("theme-dark", mode === "dark");
   }, [mode, hydrated]);
+
+  const setLocale = (next: Locale) => {
+    setLocaleState(next);
+    storeLocale(next);
+  };
 
   const theme = useMemo(
     () => createTheme((mode === "dark" ? dark : light) as ThemeOptions),
@@ -46,6 +59,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeContext.Provider value={{ mode, setMode }}>
+        <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <CartProvider>
@@ -55,6 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <AIChatBot />
           </CartProvider>
         </ThemeProvider>
+        </LocaleContext.Provider>
       </ThemeContext.Provider>
     </ApolloProvider>
   );

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import WatchStoriesCard, { WatchStory } from "./WatchStoriesCard";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const watchStories: WatchStory[] = [
   {
@@ -70,6 +71,7 @@ const WatchStories = () => {
   const hasProcessedQuery = useRef(false);
   const totalPages = Math.ceil(watchStories.length / STORIES_PER_PAGE);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleNext = () => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -137,8 +139,8 @@ const WatchStories = () => {
 
   return (
     <Stack id="watch-story-section" className="watch-story-section">
-      <h2 className="section-title">Brands Story</h2>
-      <p className="section-subtitle">History speaks about us</p>
+      <h2 className="section-title">{t("home.brandsStory")}</h2>
+      <p className="section-subtitle">{t("home.historySpeaksAboutUs")}</p>
 
       <Box className="watch-story-container">
         <IconButton

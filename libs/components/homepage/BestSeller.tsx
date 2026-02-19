@@ -15,6 +15,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useCart } from "@/libs/context/CartContext";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -143,6 +144,7 @@ const bestSellers: BestSellerWatch[] = [
 const BestSeller = () => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const { t } = useTranslation();
   const [likedWatches, setLikedWatches] = useState<Record<number, boolean>>({});
   const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
     bestSellers.reduce((acc, w) => ({ ...acc, [w.id]: w.likes }), {})
@@ -185,8 +187,8 @@ const BestSeller = () => {
 
   return (
     <Stack className="best-seller-section">
-      <h2 className="section-title">Best Sellers</h2>
-      <p className="section-subtitle">Most demanded luxury timepieces.</p>
+      <h2 className="section-title">{t("home.bestSellers")}</h2>
+      <p className="section-subtitle">{t("home.bestSellersSubtitle")}</p>
 
       <Box className="best-seller-container">
         <IconButton
@@ -266,7 +268,7 @@ const BestSeller = () => {
 
       <Box className="dealers-see-all-wrapper" onClick={handleSeeAllClick} sx={{ cursor: "pointer" }}>
         <Box className="see-all-text">
-          See All <ArrowForwardIcon className="see-all-arrow" />
+          {t("home.seeAll")} <ArrowForwardIcon className="see-all-arrow" />
         </Box>
       </Box>
     </Stack>

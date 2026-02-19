@@ -7,6 +7,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import TopDealerCard, { TopDealerCardProps } from "./TopDealerCard";
+import { useTranslation } from "@/libs/context/useTranslation";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -128,6 +129,7 @@ const dealersData: TopDealerCardProps[] = [
 
 const TopDealers = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const handleViewProfile = (dealerName: string) => {
     console.log(`Viewing profile of ${dealerName}`);
   };
@@ -139,7 +141,7 @@ const TopDealers = () => {
   return (
     <Stack className="top-dealers-section">
       {/* TITLE */}
-      <h2 className="section-title">Top Dealers</h2>
+      <h2 className="section-title">{t("home.topDealers")}</h2>
 
       {/* Swiper Container - 3 cards visible */}
       <Box className="top-dealers-container">
@@ -191,7 +193,7 @@ const TopDealers = () => {
             router.push("/dealer");
           }}
         >
-          See All <ArrowForwardIcon className="see-all-arrow" />
+          {t("home.seeAll")} <ArrowForwardIcon className="see-all-arrow" />
         </Box>
       </Box>
     </Stack>

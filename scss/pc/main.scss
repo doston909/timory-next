@@ -216,6 +216,7 @@
                   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                   cursor: pointer;
                   transition: background-color 0.2s ease, color 0.2s ease;
+                  white-space: nowrap;
 
                   &:hover {
                     background-color: #000000;

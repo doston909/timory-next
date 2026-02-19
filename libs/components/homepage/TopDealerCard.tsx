@@ -1,6 +1,7 @@
 import { Box, Stack, Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
+import { useTranslation } from "@/libs/context/useTranslation";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
@@ -43,6 +44,7 @@ const TopDealerCard = ({
   onContact,
 }: TopDealerCardProps) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleCardClick = () => {
     if (id) {
@@ -63,14 +65,14 @@ const TopDealerCard = ({
           <Stack className="dealer-info-row" direction="row" spacing={1}>
             <StarBorderOutlinedIcon className="info-icon" />
             <Typography className="info-text">
-              {rating.toFixed(1)} ({reviewCount} reviews)
+              {rating.toFixed(1)} ({reviewCount} {t("home.reviews")})
             </Typography>
           </Stack>
 
            <Stack className="dealer-info-row" direction="row" spacing={1}>
             <FavoriteBorderOutlinedIcon className="info-icon" />
             <Typography className="info-text">
-              {like} Likes
+              {like} {t("home.likes")}
             </Typography>
           </Stack>
 
@@ -78,7 +80,7 @@ const TopDealerCard = ({
           <Stack className="dealer-info-row" direction="row" spacing={1}>
             <WatchLaterIcon className="info-icon" />
             <Typography className="info-text">
-              {activeListings} Watches
+              {activeListings} {t("home.listingsWatches")}
             </Typography>
           </Stack>
 

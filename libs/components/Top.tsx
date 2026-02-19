@@ -10,13 +10,14 @@ import {
   LightMode,
   Language,
   PersonOutline,
-  
 } from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
 import { useTheme } from "@/libs/context/ThemeContext";
+import { useLocale } from "@/libs/context/LocaleContext";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const Top = () => {
   const router = useRouter();
@@ -27,6 +28,8 @@ const Top = () => {
   const [isSliding, setIsSliding] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { mode, setMode } = useTheme();
+  const { locale, setLocale } = useLocale();
+  const { t } = useTranslation();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -231,7 +234,7 @@ const Top = () => {
                 }`}
                 onClick={() => router.push("/")}
               >
-                <span>Home</span>
+                <span>{t("nav.home")}</span>
               </div>
             </div>
 
@@ -243,7 +246,7 @@ const Top = () => {
                 }`}
                 onClick={() => router.push("/watch")}
               >
-                <span>Watches</span>
+                <span>{t("nav.watches")}</span>
               </div>
             </div>
 
@@ -255,7 +258,7 @@ const Top = () => {
                 }`}
                 onClick={() => router.push("/community")}
               >
-                <span>Community</span>
+                <span>{t("nav.community")}</span>
               </div>
             </div>
 
@@ -267,7 +270,7 @@ const Top = () => {
               <div className={`nav-item ${
                 router.pathname.startsWith("/about") ? "active" : ""
               }`}>
-                <span>About Us</span>
+                <span>{t("nav.aboutUs")}</span>
               </div>
             </div>
 
@@ -281,7 +284,7 @@ const Top = () => {
                   router.pathname.startsWith("/cs") ? "active" : ""
                 }`}
               >
-                <span>Cs</span>
+                <span>{t("nav.cs")}</span>
               </div>
             </div>
           </Box>
@@ -409,13 +412,43 @@ const Top = () => {
                       onMouseLeave={() => setIsLangMenuOpen(false)}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                      <Box
+                        className="lang-menu-item"
+                        onClick={() => {
+                          setLocale("en");
+                          setIsLangMenuOpen(false);
+                        }}
+                        sx={{
+                          backgroundColor: locale === "en" ? "#2196f3" : undefined,
+                          color: locale === "en" ? "#fff" : undefined,
+                        }}
+                      >
                         ENG
                       </Box>
-                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                      <Box
+                        className="lang-menu-item"
+                        onClick={() => {
+                          setLocale("ko");
+                          setIsLangMenuOpen(false);
+                        }}
+                        sx={{
+                          backgroundColor: locale === "ko" ? "#2196f3" : undefined,
+                          color: locale === "ko" ? "#fff" : undefined,
+                        }}
+                      >
                         KOR
                       </Box>
-                      <Box className="lang-menu-item" onClick={() => setIsLangMenuOpen(false)}>
+                      <Box
+                        className="lang-menu-item"
+                        onClick={() => {
+                          setLocale("ru");
+                          setIsLangMenuOpen(false);
+                        }}
+                        sx={{
+                          backgroundColor: locale === "ru" ? "#2196f3" : undefined,
+                          color: locale === "ru" ? "#fff" : undefined,
+                        }}
+                      >
                         RUS
                       </Box>
                     </Box>
@@ -445,6 +478,9 @@ const Top = () => {
                       className="user-menu-dropdown"
                       ref={userMenuRef}
                       onMouseLeave={() => setIsUserMenuOpen(false)}
+                      sx={{
+                        minWidth: locale === "ko" || locale === "ru" ? 300 : undefined,
+                      }}
                     >
                       {isUserLoggedIn ? (
                         <>
@@ -478,7 +514,7 @@ const Top = () => {
                               router.push("/account");
                             }}
                           >
-                            Login / Signup
+                            {t("nav.loginSignup")}
                           </Box>
                           <Box
                             className="user-menu-item"
@@ -487,7 +523,7 @@ const Top = () => {
                               router.push("/cs#cs-contact-section");
                             }}
                           >
-                            Contact Admin
+                            {t("nav.contactAdmin")}
                           </Box>
                         </>
                       )}
@@ -614,7 +650,7 @@ const Top = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <Box className="cart-modal-header">
-              <Typography className="cart-modal-title">Notification Cart</Typography>
+              <Typography className="cart-modal-title">{t("nav.notificationCart")}</Typography>
               <IconButton
                 onClick={() => setIsNotificationOpen(false)}
                 sx={{
@@ -628,7 +664,7 @@ const Top = () => {
               </IconButton>
             </Box>
             <Box className="cart-empty-state">
-              <Typography className="cart-empty-text">Notification Cart is Empty...</Typography>
+              <Typography className="cart-empty-text">{t("nav.notificationCartEmpty")}</Typography>
             </Box>
           </div>
         </div>
@@ -645,7 +681,7 @@ const Top = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <Box className="cart-modal-header">
-              <Typography className="cart-modal-title">Wishlist Cart</Typography>
+              <Typography className="cart-modal-title">{t("nav.wishlistCart")}</Typography>
               <IconButton
                 onClick={() => setIsCartOpen(false)}
                 sx={{
@@ -661,15 +697,15 @@ const Top = () => {
 
             {cartItems.length === 0 ? (
               <Box className="cart-empty-state">
-                <Typography className="cart-empty-text">Wishlist Cart is Empty...</Typography>
+                <Typography className="cart-empty-text">{t("nav.wishlistCartEmpty")}</Typography>
               </Box>
             ) : (
               <TableContainer component={Paper} className="cart-table-container">
                 <Table>
                   <TableHead>
                     <TableRow className="cart-table-header">
-                      <TableCell>IMAGE</TableCell>
-                      <TableCell>WATCH</TableCell>
+                      <TableCell>{t("nav.image")}</TableCell>
+                      <TableCell>{t("nav.watch")}</TableCell>
                       <TableCell>PRICE</TableCell>
                       <TableCell>PURCHASE</TableCell>
                       <TableCell>REMOVE</TableCell>

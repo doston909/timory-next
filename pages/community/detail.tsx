@@ -1,5 +1,6 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import { communityComments } from "@/libs/data/communityComments";
+import { useTranslation } from "@/libs/context/useTranslation";
 import { Stack, Box, Typography, TextField, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { NextPage } from "next";
 import { CalendarToday, Comment, Person, ArrowForward } from "@mui/icons-material";
@@ -80,6 +81,7 @@ const articles = [
 
 const CommunityDetail: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   const [article, setArticle] = useState<any>(null);
   const [likedComments, setLikedComments] = useState<number[]>([]);
@@ -212,7 +214,7 @@ const CommunityDetail: NextPage = () => {
   if (!article) {
     return (
       <Stack className="community-detail-page">
-        <Typography>Loading...</Typography>
+        <Typography>{t("commDetail.loading")}</Typography>
       </Stack>
     );
   }
@@ -240,7 +242,7 @@ const CommunityDetail: NextPage = () => {
               <Box component="span" className="meta-item">
                 <Comment className="meta-icon" />
                 <Typography component="span" className="meta-text">
-                  {commentsCount} Comment{commentsCount !== 1 ? "s" : ""}
+                  {commentsCount} {commentsCount !== 1 ? t("commDetail.commentCountPlural") : t("commDetail.commentCount")}
                 </Typography>
               </Box>
               <Box component="span" className="meta-item meta-author">
@@ -274,7 +276,7 @@ const CommunityDetail: NextPage = () => {
           {/* Back Link */}
           <Box className="watch-back-wrapper">
             <Box className="see-all-text" onClick={() => router.push("/community")}>
-              Back <ArrowForward className="see-all-arrow" />
+              {t("commDetail.back")} <ArrowForward className="see-all-arrow" />
             </Box>
           </Box>
   
@@ -283,7 +285,7 @@ const CommunityDetail: NextPage = () => {
             <Box className="comments-title-wrapper">
               <Comment className="comments-title-icon" />
               <Typography className="comments-title">
-                {commentsCount} Comment{commentsCount !== 1 ? "s" : ""}
+                {commentsCount} {commentsCount !== 1 ? t("commDetail.commentCountPlural") : t("commDetail.commentCount")}
               </Typography>
             </Box>
 
@@ -291,7 +293,7 @@ const CommunityDetail: NextPage = () => {
             <Box className="comments-list" ref={commentsListRef}>
               {commentsCount === 0 ? (
                 <Box className="no-comments">
-                  <Typography className="no-comments-text">No comment...</Typography>
+                  <Typography className="no-comments-text">{t("commDetail.noComment")}</Typography>
                 </Box>
               ) : (
                 sortedComments.map((comment, index) => (
@@ -386,17 +388,17 @@ const CommunityDetail: NextPage = () => {
             >
               <MenuItem
                 onClick={() => {
-                  if (openMenuCommentId !== null) handleEditComment(openMenuCommentId);
-                }}
-              >
-                Edit
+if (openMenuCommentId !== null) handleEditComment(openMenuCommentId);
+                  }}
+                >
+                {t("commDetail.edit")}
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   if (openMenuCommentId !== null) handleDeleteComment(openMenuCommentId);
                 }}
               >
-                Delete
+                {t("commDetail.delete")}
               </MenuItem>
             </Menu>
 
@@ -404,7 +406,7 @@ const CommunityDetail: NextPage = () => {
             <Box className="comment-form">
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
                 <Typography className="comment-form-title">
-                  {editingCommentId !== null ? "Edit comment" : "Leave a comment"}
+                  {editingCommentId !== null ? t("commDetail.editComment") : t("commDetail.leaveComment")}
                 </Typography>
                 {editingCommentId !== null && (
                   <IconButton
@@ -423,7 +425,7 @@ const CommunityDetail: NextPage = () => {
                 fullWidth
                 multiline
                 rows={6}
-                placeholder="Message"
+                placeholder={t("commDetail.messagePlaceholder")}
                 className="comment-textarea"
                 value={newCommentText}
                 onChange={(e) => setNewCommentText(e.target.value)}
@@ -445,7 +447,7 @@ const CommunityDetail: NextPage = () => {
               />
               <Box className="comment-submit-wrapper">
                 <Button className="comment-submit-button" onClick={handleSubmitComment}>
-                  Post comment
+                  {t("commDetail.postComment")}
                   <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                 </Button>
               </Box>

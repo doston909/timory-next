@@ -1,5 +1,6 @@
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 import PopularWatchesCard, {
   PopularWatch,
@@ -43,6 +44,7 @@ import Close from "@mui/icons-material/Close";
 const WatchDetail = () => {
   const device = useDeviceDetect();
   const router = useRouter();
+  const { t } = useTranslation();
   const user = useReactiveVar(userVar);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
@@ -400,25 +402,25 @@ const WatchDetail = () => {
               </Typography>
             </Box>
             <Box className="detail-item">
-              <Typography className="detail-label">Type:</Typography>
+              <Typography className="detail-label">{t("detail.type")}</Typography>
               <Typography className="detail-value">{watch.type}</Typography>
             </Box>
             <Box className="detail-item">
-              <Typography className="detail-label">Data:</Typography>
+              <Typography className="detail-label">{t("detail.data")}</Typography>
               <Typography className="detail-value">{watch.data}</Typography>
             </Box>
             <Box className="detail-item">
-              <Typography className="detail-label">Made in:</Typography>
+              <Typography className="detail-label">{t("detail.madeIn")}</Typography>
               <Typography className="detail-value">{watch.country}</Typography>
             </Box>
             <Box className="detail-item">
-              <Typography className="detail-label">Availability:</Typography>
+              <Typography className="detail-label">{t("detail.availability")}</Typography>
               <Typography className="detail-value availability">
                 {availabilityText}
               </Typography>
             </Box>{" "}
             <Box className="detail-item">
-              <Typography className="detail-label">Dealer:</Typography>
+              <Typography className="detail-label">{t("detail.dealer")}</Typography>
               <Typography className="detail-value availability">
                 Elit Watch
               </Typography>
@@ -441,10 +443,10 @@ const WatchDetail = () => {
                 });
               }}
             >
-              Add to Wishlist <ArrowForward sx={{ ml: 1 }} />
+              {t("detail.addToWishlist")} <ArrowForward sx={{ ml: 1 }} />
             </Button>
             <Button className="action-btn contact-dealer-btn">
-              Contact Dealer <ArrowForward sx={{ ml: 1 }} />
+              {t("detail.contactDealer")} <ArrowForward sx={{ ml: 1 }} />
             </Button>
           </Box>
 
@@ -453,13 +455,13 @@ const WatchDetail = () => {
             <Box className="metric-item">
               <VisibilityIcon className="metric-icon" />
               <Typography className="metric-text">
-                {watch.viewers} People are viewing this right now
+                {watch.viewers} {t("detail.peopleViewing")}
               </Typography>
             </Box>
             <Box className="metric-item">
               <LocalFireDepartmentIcon className="metric-icon" />
               <Typography className="metric-text">
-                Sold {watch.sold} Products in last {watch.soldHours} Hours
+                {t("detail.soldProducts").replace("{sold}", String(watch.sold)).replace("{hours}", String(watch.soldHours))}
               </Typography>
             </Box>
           </Box>
@@ -467,7 +469,7 @@ const WatchDetail = () => {
           {/* Back Link */}
           <Box className="watch-back-wrapper">
             <Box className="see-all-text" onClick={() => router.push("/watch")}>
-              Back <ArrowForward className="see-all-arrow" />
+              {t("detail.back")} <ArrowForward className="see-all-arrow" />
             </Box>
           </Box>
         </Box>
@@ -521,9 +523,9 @@ const WatchDetail = () => {
           },
         }}
       >
-        <Tab label="Description" />
-        <Tab label="Shopping Information" />
-        <Tab label="Reviews" />
+        <Tab label={t("detail.tabDescription")} />
+        <Tab label={t("detail.tabShoppingInfo")} />
+        <Tab label={t("detail.tabReviews")} />
       </Tabs>
 
       {/* Description/Reviews Section */}
@@ -673,7 +675,7 @@ const WatchDetail = () => {
               <Box className="reviews-title-wrapper">
                 <Comment className="reviews-title-icon" />
                 <Typography className="reviews-title">
-                  {reviewsCount} Review{reviewsCount !== 1 ? "s" : ""}
+                  {reviewsCount} {reviewsCount !== 1 ? t("detail.reviewCountPlural") : t("detail.reviewCount")}
                 </Typography>
               </Box>
 
@@ -682,7 +684,7 @@ const WatchDetail = () => {
                 {reviewsCount === 0 ? (
                   <Box className="no-reviews">
                     <Typography className="no-reviews-text">
-                      No review...
+                      {t("detail.noReview")}
                     </Typography>
                   </Box>
                 ) : (
@@ -770,7 +772,7 @@ const WatchDetail = () => {
                           </Box>
                           {editedReviewTexts[review.id] && (
                             <Typography className="review-edited">
-                              edited
+                              {t("detail.edited")}
                             </Typography>
                           )}
                         </Box>
@@ -799,14 +801,14 @@ const WatchDetail = () => {
                     if (openMenuReviewId !== null) handleEditReview(openMenuReviewId);
                   }}
                 >
-                  Edit
+                  {t("detail.edit")}
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
                     if (openMenuReviewId !== null) handleDeleteReview(openMenuReviewId);
                   }}
                 >
-                  Delete
+                  {t("detail.delete")}
                 </MenuItem>
               </Menu>
 
@@ -814,7 +816,7 @@ const WatchDetail = () => {
               <Box className="review-form">
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
                   <Typography className="review-form-title">
-                    {editingReviewId !== null ? "Edit review" : "Leave a review"}
+                    {editingReviewId !== null ? t("detail.editReview") : t("detail.leaveReview")}
                   </Typography>
                   {editingReviewId !== null && (
                     <IconButton
@@ -832,7 +834,7 @@ const WatchDetail = () => {
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Message..."
+                  placeholder={t("detail.messagePlaceholder")}
                   className="review-textarea"
                   value={newReviewText}
                   onChange={(e) => setNewReviewText(e.target.value)}
@@ -854,7 +856,7 @@ const WatchDetail = () => {
                 />
                 <Box className="review-submit-wrapper">
                   <Button className="review-submit-btn" onClick={handleSubmitReview}>
-                    Post comment
+                    {t("detail.postComment")}
                     <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                   </Button>
                 </Box>
@@ -866,7 +868,7 @@ const WatchDetail = () => {
 
       {/* Popular Watches Section */}
       <Box className="popular-watches-section">
-        <h2 className="section-title">Recommended products</h2>
+        <h2 className="section-title">{t("detail.recommendedProducts")}</h2>
 
         <Box className="popular-watches-grid">
           {popularWatches.map((watch) => (

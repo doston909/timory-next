@@ -4,6 +4,7 @@ import { Stack, Box } from "@mui/material";
 import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularWatchesCard, { PopularWatch } from "./PopularWatchesCard";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 const popularWatches: PopularWatch[] = [
   {
@@ -46,6 +47,7 @@ const popularWatches: PopularWatch[] = [
 
 const PopularWatches = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSeeAllClick = () => {
     saveHomepageSectionBeforeNav("popular-watches");
@@ -54,11 +56,11 @@ const PopularWatches = () => {
 
   return (
     <Stack className="popular-watches-section">
-      <h2 className="section-title">Our Most Popular Models</h2>
+      <h2 className="section-title">{t("home.ourMostPopularModels")}</h2>
 
       <Box className="popular-watches-grid">
         {popularWatches.length === 0 ? (
-          <p className="empty-text">Popular Watches Not Found</p>
+          <p className="empty-text">{t("home.popularWatchesNotFound")}</p>
         ) : (
           popularWatches.map((watch) => (
             <PopularWatchesCard key={watch.id} watch={watch} homepageSectionId="popular-watches" />
@@ -68,7 +70,7 @@ const PopularWatches = () => {
 
       <Box className="dealers-see-all-wrapper" onClick={handleSeeAllClick} sx={{ cursor: "pointer" }}>
         <Box className="see-all-text">
-          See All <ArrowForwardIcon className="see-all-arrow" />
+          {t("home.seeAll")} <ArrowForwardIcon className="see-all-arrow" />
         </Box>
       </Box>
     </Stack>
