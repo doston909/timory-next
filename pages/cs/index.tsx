@@ -301,42 +301,24 @@ const CustomerService: NextPage = () => {
     }
   }, [router.asPath]);
 
-  // After Contact section is visible, scroll only when opened by button (not from hash)
+  // Contact section: open without scroll (ref reset only)
   useEffect(() => {
-    if (!showContact) return;
-    if (contactOpenedFromHashRef.current) {
+    if (showContact && contactOpenedFromHashRef.current) {
       contactOpenedFromHashRef.current = false;
-      return;
-    }
-    const el = document.getElementById("cs-contact-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [showContact]);
 
-  // After Terms section is visible, scroll only when opened by button (not from hash)
+  // Terms section: open without scroll (ref reset only)
   useEffect(() => {
-    if (!showTerms) return;
-    if (termsOpenedFromHashRef.current) {
+    if (showTerms && termsOpenedFromHashRef.current) {
       termsOpenedFromHashRef.current = false;
-      return;
-    }
-    const el = document.getElementById("cs-terms-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [showTerms]);
 
-  // After Privacy section is visible, scroll only when opened by button (not from hash)
+  // Privacy section: open without scroll (ref reset only)
   useEffect(() => {
-    if (!showPrivacy) return;
-    if (privacyOpenedFromHashRef.current) {
+    if (showPrivacy && privacyOpenedFromHashRef.current) {
       privacyOpenedFromHashRef.current = false;
-      return;
-    }
-    const el = document.getElementById("cs-privacy-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [showPrivacy]);
 

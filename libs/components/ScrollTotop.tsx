@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 
 const ScrollToTop = () => {
   const [showButton, setShowButton] = useState(false);
@@ -32,14 +31,11 @@ const ScrollToTop = () => {
       onClick={scrollToTop}
       style={{
         position: "fixed",
-        bottom: "30px",
-        right: "50px",
-        padding: "20px",
-        
+        bottom: "20px",
+        right: "10px",
+        padding: 0,
         border: "none",
-        backgroundColor: "#E5C8A3",
-        color: "#000",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+        background: "none",
         cursor: "pointer",
         zIndex: 9999,
         display: "flex",
@@ -48,7 +44,7 @@ const ScrollToTop = () => {
       }}
       aria-label="Scroll to top"
     >
-      <WatchLaterOutlinedIcon fontSize="large" />
+      <img src="/img/logo/top.png" alt="Top" style={{ width: 80, height: 80, objectFit: "contain" }} />
     </button>
   ) : null;
 };
