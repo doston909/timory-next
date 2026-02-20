@@ -14,6 +14,9 @@ import {
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { getJwtToken } from "@/libs/auth-token";
 import { useCart } from "@/libs/context/CartContext";
 import { useTheme } from "@/libs/context/ThemeContext";
 import { useLocale } from "@/libs/context/LocaleContext";
@@ -32,7 +35,9 @@ const Top = () => {
   const { t } = useTranslation();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const user = useReactiveVar(userVar);
+  const hasToken = typeof window !== "undefined" ? !!getJwtToken() : false;
+  const isUserLoggedIn = !!user?._id || hasToken;
   const { isCartOpen, setIsCartOpen, cartItems, removeFromCart } = useCart();
   const routerBoxRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
@@ -167,14 +172,6 @@ const Top = () => {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, []);
-
-  // Simple auth check based on jwtToken in localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("jwtToken");
-      setIsUserLoggedIn(!!token);
-    }
   }, []);
 
   // Original o'lchamlarni birinchi marta saqlash
@@ -495,11 +492,10 @@ const Top = () => {
                           </Box>
                           <Box
                             className="user-menu-item"
-                            onClick={() => {
+                            onClick={async () => {
                               setIsUserMenuOpen(false);
-                              // TODO: integrate real logout when auth is implemented
-                              localStorage.removeItem("jwtToken");
-                              setIsUserLoggedIn(false);
+                              const { logOut } = await import("@/libs/auth");
+                              logOut();
                             }}
                           >
                             Logout

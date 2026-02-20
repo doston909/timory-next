@@ -6,13 +6,21 @@ export interface WatchUpdate {
 	watchStatus?: WatchStatus;
 	watchLocation?: WatchLocation;
 	watchAddress?: string;
-	watchTitle?: string;
+	watchModelName?: string;
+	watchLimitedEdition?: boolean;
 	watchPrice?: number;
 	watchImages?: string[];
-	watchDesc?: string;
-	watchBarter?: boolean;
-	watchRent?: boolean;
+	watchBrand?: string;
+	watchColor?: string;
+	watchCaseShape?: string;
+	watchCaseSize?: string;
+	watchCountry?: string;
+	watchMakeData?: string;
+	watchWaterResistance?: number;
+	watchAvailability?: number;
+	watchMaterial?: string;
+	watchDescription?: string;
 	soldAt?: Date;
 	deletedAt?: Date;
-	createdAt?: Date;
+	updatedAt?: Date;
 }

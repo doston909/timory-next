@@ -11,20 +11,22 @@ export const SIGN_UP = gql`
 			memberType
 			memberStatus
 			memberAuthType
+			memberName
+			memberEmail
 			memberPhone
-			memberNick
-			memberFullName
-			memberImage
+			memberPhoto
 			memberAddress
-			memberDesc
-			memberWarnings
-			memberBlocks
 			memberWatches
-			memberRank
 			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -40,19 +42,22 @@ export const LOGIN = gql`
 			memberType
 			memberStatus
 			memberAuthType
+			memberName
+			memberEmail
 			memberPhone
-			memberNick
-			memberFullName
-			memberImage
+			memberPhoto
 			memberAddress
-			memberDesc
-			memberWarnings
-			memberBlocks
 			memberWatches
-			memberRank
+			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -130,14 +135,24 @@ export const CREATE_WATCH = gql`
         watchStatus
         watchLocation
         watchAddress
-        watchTitle
+        watchModelName
+        watchLimitedEdition
         watchPrice
         watchViews
         watchLikes
         watchComments
         watchRank
         watchImages
-        watchDesc
+        watchBrand
+        watchColor
+        watchCaseShape
+        watchCaseSize
+        watchCountry
+        watchMakeData
+        watchWaterResistance
+        watchAvailability
+        watchMaterial
+        watchDescription
         memberId
         soldAt
         deletedAt
@@ -155,23 +170,31 @@ mutation UpdateWatch($input: WatchUpdate!) {
         watchStatus
         watchLocation
         watchAddress
-        watchTitle
+        watchModelName
+        watchLimitedEdition
         watchPrice
         watchViews
         watchLikes
         watchComments
         watchRank
         watchImages
-        watchDesc
+        watchBrand
+        watchColor
+        watchCaseShape
+        watchCaseSize
+        watchCountry
+        watchMakeData
+        watchWaterResistance
+        watchAvailability
+        watchMaterial
+        watchDescription
         memberId
-        dealerIds
         soldAt
         deletedAt
         createdAt
         updatedAt
     }
 }
-
 `;
 
 export const LIKE_TARGET_WATCH = gql`
@@ -182,15 +205,16 @@ mutation LikeTargetWatch($input: String!) {
         watchStatus
         watchLocation
         watchAddress
-        watchTitle
+        watchModelName
+        watchLimitedEdition
         watchPrice
         watchViews
         watchLikes
         watchComments
         watchRank
         watchImages
-        watchDesc
-        brandId
+        watchBrand
+        watchDescription
         memberId
         soldAt
         deletedAt

@@ -41,10 +41,49 @@ const AccountSignup: NextPage = () => {
     return () => clearTimeout(t);
   }, [router.asPath]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: implement real signup logic
-    console.log("Signup:", { name, email, password, confirmPassword, agreeToTerms });
+
+    const { sweetMixinErrorAlert } = await import("../../libs/sweetAlert");
+
+    if (!name.trim()) {
+      await sweetMixinErrorAlert("Please enter your name");
+      return;
+    }
+    if (!email.trim()) {
+      await sweetMixinErrorAlert("Please enter your email");
+      return;
+    }
+    if (password.length < 5 || password.length > 50) {
+      await sweetMixinErrorAlert("Password must be 5–50 characters long");
+      return;
+    }
+    if (password !== confirmPassword) {
+      await sweetMixinErrorAlert("Password and confirmation must match");
+      return;
+    }
+    if (!agreeToTerms) {
+      await sweetMixinErrorAlert("You must agree to the terms and conditions");
+      return;
+    }
+    if (registrationType !== "user" && registrationType !== "agent") {
+      await sweetMixinErrorAlert("Please select User or Dealer");
+      return;
+    }
+
+    try {
+      const { signUp } = await import("../../libs/auth");
+      await signUp(
+        name.trim(),
+        email.trim(),
+        password,
+        confirmPassword,
+        registrationType === "user" ? "USER" : "DEALER"
+      );
+      await router.replace("/");
+    } catch {
+      // Error already shown by auth lib
+    }
   };
 
   return (

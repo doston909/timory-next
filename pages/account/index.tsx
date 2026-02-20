@@ -16,26 +16,33 @@ import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 
 const AccountLogin: NextPage = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [memberName, setMemberName] = useState("");
   const [password, setPassword] = useState("");
   const [stayLoggedIn, setStayLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    setEmail("");
+    setMemberName("");
     setPassword("");
     setStayLoggedIn(false);
     const t = setTimeout(() => {
-      setEmail("");
+      setMemberName("");
       setPassword("");
     }, 100);
     return () => clearTimeout(t);
   }, [router.asPath]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: implement real login logic
-    console.log("Login:", { email, password, stayLoggedIn });
+    if (!memberName.trim()) return;
+    if (!password) return;
+    try {
+      const { logIn } = await import("../../libs/auth");
+      await logIn(memberName.trim(), password);
+      await router.replace("/");
+    } catch {
+      // Error already shown by auth lib
+    }
   };
 
   return (
@@ -49,8 +56,8 @@ const AccountLogin: NextPage = () => {
               <Typography className="account-label">Name</Typography>
               <TextField
                 fullWidth
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={memberName}
+                onChange={(e) => setMemberName(e.target.value)}
                 variant="outlined"
                 autoComplete="off"
                 inputProps={{ autoComplete: "off" }}

@@ -9,15 +9,24 @@ query GetWatches ($input: WatchesInquiry!) {
             watchStatus
             watchLocation
             watchAddress
-            watchTitle
+            watchModelName
+            watchLimitedEdition
             watchPrice
             watchViews
             watchLikes
             watchComments
             watchRank
             watchImages
-            watchDesc
-            brandId
+            watchBrand
+            watchColor
+            watchCaseShape
+            watchCaseSize
+            watchCountry
+            watchMakeData
+            watchWaterResistance
+            watchAvailability
+            watchMaterial
+            watchDescription
             memberId
             soldAt
             deletedAt

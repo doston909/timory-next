@@ -38,6 +38,14 @@ export default function App({ Component, pageProps }: AppProps) {
     setHydrated(true);
   }, []);
 
+  // Hydrate user state from stored token so header shows My Page / Logout after refresh or login (client-only to avoid SSR loading auth/sweetAlert)
+  useEffect(() => {
+    import("@/libs/auth").then(({ getJwtToken, updateUserInfo }) => {
+      const token = getJwtToken();
+      if (token) updateUserInfo(token);
+    });
+  }, []);
+
   useEffect(() => {
     if (!hydrated) return;
     storeThemeMode(mode);

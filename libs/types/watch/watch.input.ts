@@ -2,26 +2,49 @@ import { WatchLocation, WatchStatus, WatchType } from '../../enums/watch.enum';
 import { Direction } from '../../enums/common.enum';
 
 export interface WatchInput {
-	watchType: WatchType;
-	watchAddress: string;
-	watchTitle: string;
-	watchPrice: number;
 	watchImages: string[];
-	watchDesc?: string;
+	watchModelName: string;
+	watchLimitedEdition?: boolean;
+	watchBrand?: string;
+	watchType: WatchType;
+	watchPrice: number;
+	watchColor?: string;
+	watchCaseShape?: string;
+	watchCaseSize?: string;
+	watchCountry?: string;
+	watchMakeData?: string;
+	watchWaterResistance?: number;
+	watchAvailability?: number;
+	watchMaterial?: string;
+	watchDescription?: string;
 	memberId?: string;
-	createdAt?: string;
 }
 
-interface PISearch {
-	memberId?: string;
-	locationList?: WatchLocation[];
+export interface PricesRange {
+	start: number;
+	end: number;
+}
+
+export interface SizesRange {
+	start: number;
+	end: number;
+}
+
+export interface PeriodsRange {
+	start: Date;
+	end: Date;
+}
+
+interface WISearch {
+	brandId?: string;
+	dealerId?: string;
 	typeList?: WatchType[];
-	roomsList?: Number[];
+	statusList?: WatchStatus[];
+	locationList?: WatchLocation[];
 	options?: string[];
-	bedsList?: Number[];
-	pricesRange?: Range;
+	pricesRange?: PricesRange;
+	sizesRange?: SizesRange;
 	periodsRange?: PeriodsRange;
-	squaresRange?: Range;
 	text?: string;
 }
 
@@ -30,11 +53,12 @@ export interface WatchesInquiry {
 	limit: number;
 	sort?: string;
 	direction?: Direction;
-	search: PISearch;
+	search: WISearch;
 }
 
-interface APISearch {
+interface DWISearch {
 	watchStatus?: WatchStatus;
+	text?: string;
 }
 
 export interface DealerWatchesInquiry {
@@ -42,12 +66,13 @@ export interface DealerWatchesInquiry {
 	limit: number;
 	sort?: string;
 	direction?: Direction;
-	search: APISearch;
+	search: DWISearch;
 }
 
-interface ALPISearch {
+interface ALWISearch {
 	watchStatus?: WatchStatus;
 	watchLocationList?: WatchLocation[];
+	watchTypeList?: WatchType[];
 }
 
 export interface AllWatchesInquiry {
@@ -55,15 +80,10 @@ export interface AllWatchesInquiry {
 	limit: number;
 	sort?: string;
 	direction?: Direction;
-	search: ALPISearch;
+	search: ALWISearch;
 }
 
-interface Range {
-	start: number;
-	end: number;
-}
-
-interface PeriodsRange {
-	start: Date | number;
-	end: Date | number;
+export interface OrdinaryInquiry {
+	page: number;
+	limit: number;
 }
