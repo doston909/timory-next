@@ -3,6 +3,7 @@ import { Stack, Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { ArrowForward } from "@mui/icons-material";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 type BrandStory = {
   id: number;
@@ -29,7 +30,7 @@ const stories: BrandStory[] = [
     name: "Hans Wilsdorf",
     year: "(1881-1960)",
     quote:
-      "“I tried combining the letters of the alphabet in every possible way. This gave me some hundred names, but none of them felt quite right. One morning, while riding on the upper deck of a horse-drawn omnibus along Cheapside in the City of London, a genie whispered ‘Rolex’ in my ear.”",
+      "I tried combining the letters of the alphabet in every possible way. This gave me some hundred names, but none of them felt quite right. One morning, while riding on the upper deck of a horse-drawn omnibus along Cheapside in the City of London, a genie whispered ‘Rolex’ in my ear.",
     content1:
       "Alfred Davis and his brother-in-law Hans Wilsdorf founded Wilsdorf and Davis, the company that would eventually become Rolex SA, in London in 1905. Wilsdorf and Davis's main commercial activity at the time involved importing Hermann Aegler's Swiss movements to England and placing them in watch cases made by Dennison and others. These early wristwatches were sold to many jewellers, who then put their own names on the dial. The earliest watches from Wilsdorf and Davis were usually hallmarked 'W&D' inside the caseback. In 1908, Wilsdorf registered the trademark Rolex, which became the brand name of watches from Wilsdorf and Davis. He opened an office in La Chaux-de-Fonds, Switzerland. Wilsdorf wanted the brand name to be easily pronounceable in any language, and short enough to fit on the face of a watch. He also thought that the name Rolex was onomatopoeic, sounding like a watch being wound.",
     content2:
@@ -119,6 +120,7 @@ const stories: BrandStory[] = [
 
 const BrandStories: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { id } = router.query;
   const storyId =
@@ -129,6 +131,13 @@ const BrandStories: NextPage = () => {
       : 1;
 
   const story = stories.find((item) => item.id === storyId) ?? stories[0];
+
+  const quoteKey = `brandStory.${story.id}.quote`;
+  const content1Key = `brandStory.${story.id}.content1`;
+  const content2Key = `brandStory.${story.id}.content2`;
+  const quoteText = t(quoteKey) !== quoteKey ? t(quoteKey) : story.quote;
+  const content1Text = t(content1Key) !== content1Key ? t(content1Key) : story.content1;
+  const content2Text = t(content2Key) !== content2Key ? t(content2Key) : story.content2;
 
   return (
     <>
@@ -149,7 +158,7 @@ const BrandStories: NextPage = () => {
                     </Typography>
                   </Box>
                   <Typography className="brand-story-quote">
-                    "{story.quote}"
+                    "{quoteText}"
                   </Typography>
                 </Box>
 
@@ -202,14 +211,14 @@ const BrandStories: NextPage = () => {
                   alt="Watch"
                   className="brand-story-image"
                 />
-                <p className="brand-story-text-1">{story.content1}</p>
+                <p className="brand-story-text-1">{content1Text}</p>
 
                 <img
                   src={story.image3}
                   alt="Watch 2"
                   className="brand-story-image-right"
                 />
-                <p className="brand-story-text-2">{story.content2}</p>
+                <p className="brand-story-text-2">{content2Text}</p>
               </Box>
             </Box>
           </Stack>

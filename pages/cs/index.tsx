@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import { useTheme } from "@/libs/context/ThemeContext";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 interface Notice {
   id: number;
@@ -202,7 +203,7 @@ const generalFaqs: FaqItem[] = [
 ];
 
 const notices: Notice[] = [
-  { id: 1, number: 1, title: "New Dealers Added to CarMoa", date: "2025.12.03" },
+  { id: 1, number: 1, title: "New Dealers Added to Timory", date: "2025.12.03" },
   { id: 2, number: 2, title: "Return & Exchange Guidelines Updated", date: "2025.12.03" },
   { id: 3, number: 3, title: "Fraud Prevention Notice", date: "2025.12.03" },
   { id: 4, number: 4, title: "Holiday Shipping Schedule", date: "2025.12.03" },
@@ -211,12 +212,23 @@ const notices: Notice[] = [
   { id: 7, number: 7, title: "Dealer Verification Reminder", date: "2025.12.03" },
   { id: 8, number: 8, title: "Delivery Delay Notice (Winter Season)", date: "2025.12.03" },
   { id: 9, number: 9, title: "Scheduled System Maintenance", date: "2025.12.03" },
-  { id: 10, number: 10, title: "CarMoa Service Launch Announcement", date: "2025.12.03", hasIcon: true },
+  { id: 10, number: 10, title: "Timory Service Launch Announcement", date: "2025.12.03", hasIcon: true },
 ];
+
+const faqCategoryToKey: Record<FaqCategory, string> = {
+  Account: "account",
+  Order: "order",
+  Payment: "payment",
+  Shipping: "shipping",
+  Returns: "returns",
+  "For Dealers": "dealers",
+  General: "general",
+};
 
 const CustomerService: NextPage = () => {
   const router = useRouter();
   const { mode } = useTheme();
+  const { t } = useTranslation();
   const [isDescriptionMode, setIsDescriptionMode] = useState(false);
   const [showNotice, setShowNotice] = useState(true); // Cs ga kirilganda Notice default ochiq
   const [showTerms, setShowTerms] = useState(false);
@@ -361,8 +373,8 @@ const CustomerService: NextPage = () => {
         <Stack id={"main"}>
           <Stack className="cs-page">
             <Box className="cs-content">
-              <Typography className="cs-title">Cs center</Typography>
-              <Typography className="cs-subtitle">We will answer your questions</Typography>
+              <Typography className="cs-title">{t("cs.title")}</Typography>
+              <Typography className="cs-subtitle">{t("cs.subtitle")}</Typography>
               
               <Box
                 className={`cs-buttons ${isDescriptionMode ? "description-mode" : ""}`}
@@ -383,7 +395,7 @@ const CustomerService: NextPage = () => {
                     setShowFaq(false);
                   }}
                 >
-                  {isDescriptionMode ? "Description" : "Notice"}
+                  {isDescriptionMode ? t("cs.description") : t("cs.notice")}
                 </Button>
 
                
@@ -401,7 +413,7 @@ const CustomerService: NextPage = () => {
                     setShowFaq(false);
                   }}
                 >
-                  {isDescriptionMode ? "Description" : "Terms & Conditions"}
+                  {isDescriptionMode ? t("cs.description") : t("cs.termsConditions")}
                 </Button>
                 <Button
                   className={`cs-button ${
@@ -417,7 +429,7 @@ const CustomerService: NextPage = () => {
                     setShowFaq(false);
                   }}
                 >
-                  {isDescriptionMode ? "Description" : "Privacy Policy"}
+                  {isDescriptionMode ? t("cs.description") : t("cs.privacyPolicy")}
                 </Button>
                  <Button
                   className={`cs-button ${
@@ -433,7 +445,7 @@ const CustomerService: NextPage = () => {
                     setShowFaq(false);
                   }}
                 >
-                  {isDescriptionMode ? "Description" : "Contact Us"}
+                  {isDescriptionMode ? t("cs.description") : t("cs.contactUs")}
                 </Button>
                 <Button
                   className={`cs-button ${
@@ -451,22 +463,22 @@ const CustomerService: NextPage = () => {
                     setOpenFaqItemId(null);
                   }}
                 >
-                  {isDescriptionMode ? "Description" : "FAQ"}
+                  {isDescriptionMode ? t("cs.description") : t("cs.faq")}
                 </Button>
               </Box>
             </Box>
 
             {showNotice && (
               <Box className="cs-notice-section">
-                <Typography className="cs-notice-title">Notice</Typography>
+                <Typography className="cs-notice-title">{t("cs.noticeTitle")}</Typography>
                 
                 <TableContainer component={Paper} className="cs-notice-table-container">
                   <Table className="cs-notice-table">
                     <TableHead>
                       <TableRow className="cs-notice-table-header">
-                        <TableCell className="cs-notice-header-cell cs-notice-number-header">Number</TableCell>
-                        <TableCell className="cs-notice-header-cell cs-notice-title-header">Title</TableCell>
-                        <TableCell className="cs-notice-header-cell cs-notice-date-header">Date</TableCell>
+                        <TableCell className="cs-notice-header-cell cs-notice-number-header">{t("cs.number")}</TableCell>
+                        <TableCell className="cs-notice-header-cell cs-notice-title-header">{t("cs.titleHeader")}</TableCell>
+                        <TableCell className="cs-notice-header-cell cs-notice-date-header">{t("cs.date")}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -474,7 +486,7 @@ const CustomerService: NextPage = () => {
                         <TableRow key={notice.id} className="cs-notice-table-row">
                           <TableCell className="cs-notice-cell cs-notice-number-cell">{notice.number}</TableCell>
                           <TableCell className="cs-notice-cell cs-notice-title-cell">
-                            {notice.title}
+                            {t(`cs.notice.${notice.id}.title`)}
                             {notice.hasIcon && <span className="cs-notice-icon"></span>}
                           </TableCell>
                           <TableCell className="cs-notice-cell cs-notice-date-cell">{notice.date}</TableCell>
@@ -812,23 +824,23 @@ const CustomerService: NextPage = () => {
             {showContact && (
               <Box id="cs-contact-section" className="cs-contact-section">
                 <Typography className="cs-contact-title">
-                  Contact Us
+                  {t("cs.contactTitle")}
                 </Typography>
 
                 <Box className="cs-contact-container">
                   <Box key={contactFormKey} className="cs-contact-form">
                     <Typography className="cs-contact-form-title" >
-                      Tell Us Your Message
+                      {t("cs.tellUsMessage")}
                     </Typography>
 
                     <Box className="cs-contact-form-group">
                       <Typography className="cs-contact-label">
-                        Your Name <span className="cs-contact-required">*</span>
+                        {t("cs.yourName")} <span className="cs-contact-required">*</span>
                       </Typography>
                       <input
                         className="cs-contact-input"
                         type="text"
-                        placeholder="Full Name..."
+                        placeholder={t("cs.fullNamePlaceholder")}
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                       />
@@ -836,12 +848,12 @@ const CustomerService: NextPage = () => {
 
                     <Box className="cs-contact-form-group">
                       <Typography className="cs-contact-label">
-                        Your Email <span className="cs-contact-required">*</span>
+                        {t("cs.yourEmail")} <span className="cs-contact-required">*</span>
                       </Typography>
                       <input
                         className="cs-contact-input"
                         type="email"
-                        placeholder="Email Address..."
+                        placeholder={t("cs.emailPlaceholder")}
                         value={contactEmail}
                         onChange={(e) => setContactEmail(e.target.value)}
                       />
@@ -849,12 +861,12 @@ const CustomerService: NextPage = () => {
 
                     <Box className="cs-contact-form-group">
                       <Typography className="cs-contact-label">
-                        Subject
+                        {t("cs.subject")}
                       </Typography>
                       <input
                         className="cs-contact-input"
                         type="text"
-                        placeholder="Subject..."
+                        placeholder={t("cs.subjectPlaceholder")}
                         value={contactSubject}
                         onChange={(e) => setContactSubject(e.target.value)}
                       />
@@ -862,11 +874,11 @@ const CustomerService: NextPage = () => {
 
                     <Box className="cs-contact-form-group">
                       <Typography className="cs-contact-label">
-                        Your Message
+                        {t("cs.yourMessage")}
                       </Typography>
                       <textarea
                         className="cs-contact-textarea"
-                        placeholder="Message..."
+                        placeholder={t("cs.messagePlaceholder")}
                         value={contactMessage}
                         onChange={(e) => setContactMessage(e.target.value)}
                       />
@@ -882,32 +894,23 @@ const CustomerService: NextPage = () => {
                         setContactFormKey((k) => k + 1);
                       }}
                     >
-                      Send Message
+                      {t("cs.sendMessage")}
                       <ArrowForward className="cs-contact-submit-icon" />
                     </Button>
                   </Box>
 
                   <Box className="cs-contact-info">
                     <Typography className="cs-contact-info-title">
-                      Contact Us
+                      {t("cs.contactInfoTitle")}
                     </Typography>
                     <Typography className="cs-contact-info-text">
-                      We&rsquo;re here to help.
-                     
-                      <br />
-                      If you have any questions, feedback, or suggestions regarding the TIMORY platform, please feel free to reach out to us. Our team is always open to hearing from you and improving your experience.
-                      <br />
-                      
-                      Please fill out the contact form below with your details and message.
-                      We will review your request and get back to you as soon as possible.
-                      <br />
-                      Thank you for using TIMORY.
+                      {t("cs.contactInfoText")}
                     </Typography>
 
                     <Box className="cs-contact-info-block">
                       <Typography className="cs-contact-info-heading">
                         <span className="cs-contact-info-icon"></span>
-                        Address:
+                        {t("cs.address")}
                       </Typography>
                       <Typography className="cs-contact-info-line">
                         29 Banryong-ro 28beongil, Buk-gu, Gwangju, South Korea
@@ -917,7 +920,7 @@ const CustomerService: NextPage = () => {
                     <Box className="cs-contact-info-block">
                       <Typography className="cs-contact-info-heading">
                         <span className="cs-contact-info-icon"></span>
-                        Phone:
+                        {t("cs.phone")}
                       </Typography>
                       <Typography className="cs-contact-info-line">
                         Mobile: 010-7640-9293
@@ -927,7 +930,7 @@ const CustomerService: NextPage = () => {
                     <Box className="cs-contact-info-block">
                       <Typography className="cs-contact-info-heading">
                         <span className="cs-contact-info-icon"></span>
-                        Email:
+                        {t("cs.emailLabel")}
                       </Typography>
                       <Typography className="cs-contact-info-line">
                         ahmadalievd382@gmail.com
@@ -944,7 +947,7 @@ const CustomerService: NextPage = () => {
             {showFaq && (
               <Box className="faq-page">
                 <Typography className="faq-title">
-                  FAQ
+                  {t("cs.faqTitle")}
                 </Typography>
 
                 <Box className="faq-tabs">
@@ -959,7 +962,7 @@ const CustomerService: NextPage = () => {
                         setOpenFaqItemId(null);
                       }}
                     >
-                      <span className="faq-tab-label">{cat.label}</span>
+                      <span className="faq-tab-label">{t(`cs.faqCategory.${faqCategoryToKey[cat.key]}`)}</span>
                       <span className="faq-tab-count">({cat.count})</span>
                     </button>
                   ))}
@@ -983,7 +986,7 @@ const CustomerService: NextPage = () => {
                             <span className="faq-icon-letter">Q</span>
                           </Box>
                           <Typography className="faq-question">
-                            {faq.question}
+                            {t(`cs.faq.${faqCategoryToKey[activeFaqCategory]}.${faq.id}.question`)}
                           </Typography>
                           <span className="faq-toggle-icon">
                             <KeyboardArrowDown
@@ -999,7 +1002,7 @@ const CustomerService: NextPage = () => {
                           <Box className="faq-icon-boxs">
                             <span className="faq-icon-letters">A</span>
                           </Box>
-                          <span className="faq-answer-text">{faq.answer}</span>
+                          <span className="faq-answer-text">{t(`cs.faq.${faqCategoryToKey[activeFaqCategory]}.${faq.id}.answer`)}</span>
                         </Typography>
                       </Box>
                     );

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import { useState, useEffect } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useTranslation } from "@/libs/context/useTranslation";
 
 export type WatchStory = {
   id: number;
@@ -15,6 +16,7 @@ export type WatchStory = {
 
 const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [prevImage, setPrevImage] = useState(story.image);
   const [currentImage, setCurrentImage] = useState(story.image);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -72,13 +74,13 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
           </Box>
           <Box className="story-content-box">
             <h2 className="story-title">{story.title}</h2>
-            <p className="story-description">{story.description}</p>
+            <p className="story-description">{t(`watchStory.${story.id}.description`)}</p>
             <Button
               className="story-button"
               variant="outlined"
               onClick={handleButtonClick}
             >
-              {story.buttonText}
+              {t("home.fullView")}
               <ArrowForwardIcon sx={{ ml: 1, fontSize: 24 }} />
             </Button>
           </Box>
@@ -87,13 +89,13 @@ const WatchStoriesCard = ({ story }: { story: WatchStory }) => {
         <>
           <Box className="story-content-box">
             <h2 className="story-title">{story.title}</h2>
-            <p className="story-description">{story.description}</p>
+            <p className="story-description">{t(`watchStory.${story.id}.description`)}</p>
             <Button
               className="story-button"
               variant="outlined"
               onClick={handleButtonClick}
             >
-              {story.buttonText}
+              {t("home.fullView")}
               <ArrowForwardIcon sx={{ ml: 1, fontSize: 24 }} />
             </Button>
           </Box>
