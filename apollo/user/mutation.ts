@@ -74,11 +74,9 @@ export const UPDATE_MEMBER = gql`
 			memberStatus
 			memberAuthType
 			memberPhone
-			memberNick
-			memberFullName
-			memberImage
+			memberName
+			memberPhoto
 			memberAddress
-			memberDesc
 			memberWatches
 			memberRank
 			memberArticles
@@ -103,11 +101,9 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberStatus
 			memberAuthType
 			memberPhone
-			memberNick
-			memberFullName
-			memberImage
+			memberName
+			memberPhoto
 			memberAddress
-			memberDesc
 			memberWarnings
 			memberBlocks
 			memberWatches
@@ -128,8 +124,8 @@ export const LIKE_TARGET_MEMBER = gql`
  *************************/
 
 export const CREATE_WATCH = gql`
-	mutation CreateDealerWatch($input: WatchInput!) {
-    createDealerWatch(input: $input) {
+	mutation CreateWatch($input: WatchInput!) {
+    createWatch(input: $input) {
         _id
         watchType
         watchStatus
@@ -197,6 +193,14 @@ mutation UpdateWatch($input: WatchUpdate!) {
 }
 `;
 
+export const REMOVE_WATCH = gql`
+  mutation RemoveWatch($watchId: String!) {
+    removeWatch(watchId: $watchId) {
+      _id
+    }
+  }
+`;
+
 export const LIKE_TARGET_WATCH = gql`
 mutation LikeTargetWatch($input: String!) {
     likeTargetWatch(watchId: $input) {
@@ -226,12 +230,10 @@ mutation LikeTargetWatch($input: String!) {
             memberStatus
             memberAuthType
             memberPhone
-            memberNick
             memberWatches
-            memberFullName
-            memberImage
+            memberName
+            memberPhoto
             memberAddress
-            memberDesc
             memberArticles
             memberFollowers
             memberFollowings
@@ -276,11 +278,10 @@ mutation CreateBoardArticle($input: BoardArticleInput!) {
             memberStatus
             memberAuthType
             memberPhone
-            memberNick
-            memberFullName
-            memberImage
+            memberWatches
+            memberName
+            memberPhoto
             memberAddress
-            memberDesc
             memberArticles
             memberFollowers
             memberFollowings
@@ -321,11 +322,10 @@ mutation UpdateBoardArticle($input: BoardArticleUpdate!){
             memberStatus
             memberAuthType
             memberPhone
-            memberNick
-            memberFullName
-            memberImage
+            memberWatches
+            memberName
+            memberPhoto
             memberAddress
-            memberDesc
             memberArticles
             memberFollowers
             memberFollowings
@@ -387,11 +387,10 @@ export const CREATE_COMMENT = gql`
             memberStatus
             memberAuthType
             memberPhone
-            memberNick
-            memberFullName
-            memberImage
+            memberWatches
+            memberName
+            memberPhoto
             memberAddress
-            memberDesc
             memberArticles
             memberFollowers
             memberFollowings
@@ -429,11 +428,10 @@ export const UPDATE_COMMENT = gql`
             memberStatus
             memberAuthType
             memberPhone
-            memberNick
-            memberFullName
-            memberImage
+            memberWatches
+            memberName
+            memberPhoto
             memberAddress
-            memberDesc
             memberArticles
             memberFollowers
             memberFollowings

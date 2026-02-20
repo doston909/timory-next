@@ -38,12 +38,10 @@ query GetWatches ($input: WatchesInquiry!) {
                 memberStatus
                 memberAuthType
                 memberPhone
-                memberNick
                 memberWatches
-                memberFullName
-                memberImage
+                memberName
+                memberPhoto
                 memberAddress
-                memberDesc
                 memberArticles
                 memberFollowers
                 memberFollowings
@@ -65,4 +63,44 @@ query GetWatches ($input: WatchesInquiry!) {
         }
     }
 }
+`;
+
+export const GET_DEALER_WATCHES = gql`
+  query GetDealerWatches($input: DealerWatchesInquiry!) {
+    getDealerWatches(input: $input) {
+      list {
+        _id
+        watchType
+        watchStatus
+        watchLocation
+        watchAddress
+        watchModelName
+        watchLimitedEdition
+        watchPrice
+        watchViews
+        watchLikes
+        watchComments
+        watchRank
+        watchImages
+        watchBrand
+        watchColor
+        watchCaseShape
+        watchCaseSize
+        watchCountry
+        watchMakeData
+        watchWaterResistance
+        watchAvailability
+        watchMaterial
+        watchDescription
+        memberId
+        soldAt
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
 `;

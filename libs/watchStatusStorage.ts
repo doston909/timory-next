@@ -26,13 +26,13 @@ function setStorage(data: Record<string, StoredWatchStatus>) {
   } catch {}
 }
 
-export function getWatchStatus(watchId: number): StoredWatchStatus | undefined {
+export function getWatchStatus(watchId: string | number): StoredWatchStatus | undefined {
   const key = String(watchId);
   return getStorage()[key];
 }
 
 export function setWatchStatus(
-  watchId: number,
+  watchId: string | number,
   status: WatchStatusValue,
   dealerId?: string
 ) {
@@ -51,7 +51,7 @@ export function setWatchStatus(
 
 // Returns true if this watch SHOULD be hidden from the current visitor.
 export function isWatchDeletedForVisitor(
-  watchId: number,
+  watchId: string | number,
   currentUserId: string | undefined
 ): boolean {
   const stored = getWatchStatus(watchId);

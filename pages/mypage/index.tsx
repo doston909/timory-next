@@ -24,131 +24,28 @@ import {
   setArticleStatus,
 } from "@/libs/articleStatusStorage";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
+import { useQuery, useMutation } from "@apollo/client";
+import { CREATE_WATCH, UPDATE_WATCH, REMOVE_WATCH } from "../../apollo/user/mutation";
+import { GET_DEALER_WATCHES } from "../../apollo/user/query";
+import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
+import { sweetMixinErrorAlert } from "../../libs/sweetAlert";
 
-type Watch = {
-  id: number;
-  name: string;
-  image: string;
-  price: string;
-  brand?: string;
-  likes?: number;
-  views?: number;
-  comments?: number;
-  datePosted?: string;
-  status?: string;
-  limitedEdition?: boolean;
-  watchStatus?: boolean;
+/** Dealer watch from API (getDealerWatches list item) */
+type DealerWatch = {
+  _id: string;
+  watchType: string;
+  watchStatus: string;
+  watchModelName: string;
+  watchImages: string[];
+  watchPrice: number;
+  watchBrand?: string;
+  watchViews: number;
+  watchLikes: number;
+  watchComments: number;
+  watchLimitedEdition?: boolean;
+  watchDescription?: string;
+  createdAt?: string;
 };
-
-const watches: Watch[] = [
-  {
-    id: 1,
-    name: "Analog Strap Watch",
-    image: "/img/watch/rasm3.png",
-    price: "$ 4,500.00",
-    brand: "Rolex",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-15 14:30",
-    status: "Active",
-    limitedEdition: true,
-    watchStatus: true,
-  },
-  {
-    id: 2,
-    name: "Luxury Watch",
-    image: "/img/watch/rasm3.png",
-    price: "$ 6,200.00",
-    brand: "Omega",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-14 10:20",
-    status: "Active",
-    limitedEdition: true,
-    watchStatus: false,
-  },
-  {
-    id: 3,
-    name: "Premium Collection",
-    image: "/img/watch/rasm3.png",
-    price: "$ 8,900.00",
-    brand: "Patek Philippe",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-13 16:45",
-    status: "Active",
-    watchStatus: true,
-  },
-  {
-    id: 4,
-    name: "Elegant Design",
-    image: "/img/watch/rasm3.png",
-    price: "$ 5,100.00",
-    brand: "Cartier",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-12 09:15",
-    status: "Active",
-    watchStatus: false,
-  },
-  {
-    id: 5,
-    name: "Modern Classic",
-    image: "/img/watch/rasm3.png",
-    price: "$ 7,300.00",
-    brand: "Tag Heuer",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-11 13:00",
-    status: "Active",
-    limitedEdition: true,
-    watchStatus: true,
-  },
-  {
-    id: 6,
-    name: "Heritage Series",
-    image: "/img/watch/rasm3.png",
-    price: "$ 9,500.00",
-    brand: "Audemars Piguet",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-10 11:30",
-    status: "Active",
-    watchStatus: false,
-  },
-  {
-    id: 7,
-    name: "Signature Model",
-    image: "/img/watch/rasm3.png",
-    price: "$ 6,800.00",
-    brand: "Breitling",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-09 15:20",
-    status: "Active",
-    watchStatus: true,
-  },
-  {
-    id: 8,
-    name: "Elite Edition",
-    image: "/img/watch/rasm3.png",
-    price: "$ 10,200.00",
-    brand: "IWC",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    datePosted: "2024-01-08 12:45",
-    status: "Active",
-    watchStatus: false,
-  },
-];
 
 const ITEMS_PER_PAGE = 6;
 const FOLLOWERS_PER_PAGE = 4;
@@ -170,7 +67,58 @@ const MyPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Watches");
   const [followersPage, setFollowersPage] = useState(1);
-  const [watchesList, setWatchesList] = useState<Watch[]>(watches);
+  const [watchesList, setWatchesList] = useState<DealerWatch[]>([]);
+  const { data: dealerWatchesData, refetch: refetchDealerWatches } = useQuery(
+    GET_DEALER_WATCHES,
+    {
+      variables: {
+        input: { page: 1, limit: 500, search: {} },
+      },
+      skip: !user?._id,
+    }
+  );
+  useEffect(() => {
+    const list = dealerWatchesData?.getDealerWatches?.list;
+    if (list) setWatchesList(list);
+  }, [dealerWatchesData]);
+  const [createWatchMutation, { loading: createWatchLoading }] = useMutation(
+    CREATE_WATCH,
+    {
+      onCompleted: () => {
+        refetchDealerWatches();
+        setNewWatch({
+          modelName: "",
+          watchBrand: "",
+          watchType: "",
+          price: "",
+          color: "",
+          caseShape: "",
+          caseSize: "",
+          madeIn: "",
+          date: "",
+          waterResistance: "",
+          availability: "",
+          material: "",
+          description: "",
+          limitedEdition: false,
+          image1: null,
+          image2: null,
+        });
+        setIsAddWatchOpen(false);
+      },
+      onError: (err) => {
+        sweetMixinErrorAlert(err?.message ?? "Failed to add watch.");
+      },
+    }
+  );
+  const [updateWatchMutation] = useMutation(UPDATE_WATCH, {
+    onCompleted: () => refetchDealerWatches(),
+    onError: (err) => sweetMixinErrorAlert(err?.message ?? "Failed to update watch."),
+  });
+  const [removeWatchMutation] = useMutation(REMOVE_WATCH, {
+    onCompleted: () => refetchDealerWatches(),
+    onError: (err) => sweetMixinErrorAlert(err?.message ?? "Failed to remove watch."),
+  });
 
   useEffect(() => {
     if (!isDealer && activeTab === "Watches") setActiveTab("Favorites");
@@ -196,33 +144,10 @@ const MyPage = () => {
     }
     return initial;
   });
-  const [likedWatches, setLikedWatches] = useState<{ [key: number]: boolean }>(
+  const [likedWatches, setLikedWatches] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [watchLikes, setWatchLikes] = useState<{ [key: number]: number }>(
-    () => {
-      const initialLikes: { [key: number]: number } = {};
-      watches.forEach((watch) => {
-        initialLikes[watch.id] = watch.likes || 0;
-      });
-      // Favorites (101–107) va Recently Visited (201–207) uchun like soni
-      initialLikes[101] = 5;
-      initialLikes[102] = 3;
-      initialLikes[103] = 4;
-      initialLikes[104] = 6;
-      initialLikes[105] = 2;
-      initialLikes[106] = 5;
-      initialLikes[107] = 3;
-      initialLikes[201] = 4;
-      initialLikes[202] = 6;
-      initialLikes[203] = 5;
-      initialLikes[204] = 3;
-      initialLikes[205] = 7;
-      initialLikes[206] = 4;
-      initialLikes[207] = 2;
-      return initialLikes;
-    }
-  );
+  const [watchLikes, setWatchLikes] = useState<{ [key: string]: number }>({});
   // Articles uchun like holati va count
   const [articleLiked, setArticleLiked] = useState<{ [key: number]: boolean }>(
     {}
@@ -294,207 +219,21 @@ const MyPage = () => {
     photo: "/img/profile/ceo.png",
   });
 
-  const favorites: Watch[] = [
-    {
-      id: 101,
-      name: "Favorite Watch 1",
-      image: "/img/watch/rasm3.png",
-      price: "$ 5,500.00",
-      brand: "Rolex",
-      likes: 5,
-      views: 50,
-      comments: 20,
-      datePosted: "2024-01-20 10:00",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 102,
-      name: "Favorite Watch 2",
-      image: "/img/watch/rasm3.png",
-      price: "$ 7,200.00",
-      brand: "Omega",
-      likes: 3,
-      views: 40,
-      comments: 15,
-      datePosted: "2024-01-19 14:30",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: true,
-    },
-    {
-      id: 103,
-      name: "Favorite Watch 3",
-      image: "/img/watch/rasm3.png",
-      price: "$ 5,800.00",
-      brand: "Rolex",
-      likes: 4,
-      views: 45,
-      comments: 18,
-      datePosted: "2024-01-18 12:00",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 104,
-      name: "Favorite Watch 4",
-      image: "/img/watch/rasm3.png",
-      price: "$ 6,900.00",
-      brand: "Tag Heuer",
-      likes: 6,
-      views: 52,
-      comments: 21,
-      datePosted: "2024-01-17 09:00",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: true,
-    },
-    {
-      id: 105,
-      name: "Favorite Watch 5",
-      image: "/img/watch/rasm3.png",
-      price: "$ 8,100.00",
-      brand: "IWC",
-      likes: 2,
-      views: 38,
-      comments: 14,
-      datePosted: "2024-01-16 15:30",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 106,
-      name: "Favorite Watch 6",
-      image: "/img/watch/rasm3.png",
-      price: "$ 5,200.00",
-      brand: "Cartier",
-      likes: 5,
-      views: 48,
-      comments: 19,
-      datePosted: "2024-01-15 11:20",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: false,
-    },
-    {
-      id: 107,
-      name: "Favorite Watch 7",
-      image: "/img/watch/rasm3.png",
-      price: "$ 7,600.00",
-      brand: "Breitling",
-      likes: 3,
-      views: 42,
-      comments: 16,
-      datePosted: "2024-01-14 14:00",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-  ];
-
-  const recentlyVisited: Watch[] = [
-    {
-      id: 201,
-      name: "Recently Visited Watch 1",
-      image: "/img/watch/rasm3.png",
-      price: "$ 6,000.00",
-      brand: "Patek Philippe",
-      likes: 4,
-      views: 60,
-      comments: 25,
-      datePosted: "2024-01-21 09:15",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 202,
-      name: "Recently Visited Watch 2",
-      image: "/img/watch/rasm3.png",
-      price: "$ 8,500.00",
-      brand: "Cartier",
-      likes: 6,
-      views: 70,
-      comments: 30,
-      datePosted: "2024-01-20 16:45",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: false,
-    },
-    {
-      id: 203,
-      name: "Recently Visited Watch 3",
-      image: "/img/watch/rasm3.png",
-      price: "$ 6,200.00",
-      brand: "Patek Philippe",
-      likes: 5,
-      views: 55,
-      comments: 22,
-      datePosted: "2024-01-19 11:00",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 204,
-      name: "Recently Visited Watch 4",
-      image: "/img/watch/rasm3.png",
-      price: "$ 9,100.00",
-      brand: "Audemars Piguet",
-      likes: 3,
-      views: 62,
-      comments: 28,
-      datePosted: "2024-01-18 13:45",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: true,
-    },
-    {
-      id: 205,
-      name: "Recently Visited Watch 5",
-      image: "/img/watch/rasm3.png",
-      price: "$ 5,400.00",
-      brand: "Omega",
-      likes: 7,
-      views: 58,
-      comments: 24,
-      datePosted: "2024-01-17 10:30",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-    {
-      id: 206,
-      name: "Recently Visited Watch 6",
-      image: "/img/watch/rasm3.png",
-      price: "$ 7,800.00",
-      brand: "Rolex",
-      likes: 4,
-      views: 65,
-      comments: 26,
-      datePosted: "2024-01-16 16:00",
-      status: "Active",
-      limitedEdition: true,
-      watchStatus: false,
-    },
-    {
-      id: 207,
-      name: "Recently Visited Watch 7",
-      image: "/img/watch/rasm3.png",
-      price: "$ 6,600.00",
-      brand: "Tag Heuer",
-      likes: 2,
-      views: 44,
-      comments: 20,
-      datePosted: "2024-01-15 09:15",
-      status: "Active",
-      limitedEdition: false,
-      watchStatus: true,
-    },
-  ];
+  type GridWatch = {
+    id: string;
+    name: string;
+    image: string;
+    price: string;
+    brand?: string;
+    likes: number;
+    views: number;
+    comments: number;
+    datePosted?: string;
+    limitedEdition?: boolean;
+    watchStatus?: boolean;
+  };
+  const favorites: GridWatch[] = [];
+  const recentlyVisited: GridWatch[] = [];
 
   const totalPages = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
   const totalFavoritesPages = Math.ceil(favorites.length / ITEMS_PER_PAGE);
@@ -656,7 +395,7 @@ const MyPage = () => {
     setCurrentPage(page);
   };
 
-  const handleLikeClick = (watchId: number, e: React.MouseEvent) => {
+  const handleLikeClick = (watchId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const isLiked = likedWatches[watchId];
     setLikedWatches((prev) => ({
@@ -665,26 +404,28 @@ const MyPage = () => {
     }));
     setWatchLikes((prev) => ({
       ...prev,
-      [watchId]: isLiked ? prev[watchId] - 1 : prev[watchId] + 1,
+      [watchId]: (isLiked ? (prev[watchId] ?? 0) - 1 : (prev[watchId] ?? 0) + 1),
     }));
   };
 
-  const handleAddToCart = (watch: Watch, e: React.MouseEvent) => {
+  const handleAddToCart = (watch: DealerWatch, e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart({
-      id: watch.id,
-      name: watch.name,
-      model: watch.name,
-      brand: watch.brand || "",
-      price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "")) || 0,
-      image: watch.image,
+      id: watch._id,
+      name: watch.watchModelName,
+      model: watch.watchModelName,
+      brand: watch.watchBrand || "",
+      price: watch.watchPrice ?? 0,
+      image: watch.watchImages?.[0] ?? "",
       quantity: 1,
     });
   };
 
-  const handleWatchClick = (watchId: number) => {
+  const handleWatchClick = (watchId: string) => {
     router.push(`/watch/detail?id=${watchId}`);
   };
+  const formatWatchPrice = (n: number) =>
+    `$ ${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 
   return (
     <Stack className="mypage-page">
@@ -825,13 +566,13 @@ const MyPage = () => {
             <>
               <Box className="mypage-watches-grid">
                 {currentWatches.map((watch) => (
-                  <Box key={watch.id} className="mypage-watch-item">
+                  <Box key={watch._id} className="mypage-watch-item">
                     <Box className="mypage-watch-item-left">
                       <img
-                        src={watch.image}
-                        alt={watch.name}
+                        src={watch.watchImages?.[0] ?? "/img/watch/rasm3.png"}
+                        alt={watch.watchModelName}
                         className="mypage-watch-item-image"
-                        onClick={() => handleWatchClick(watch.id)}
+                        onClick={() => handleWatchClick(watch._id)}
                         style={{ cursor: "pointer" }}
                       />
                       <Box className="mypage-watch-item-icons">
@@ -849,11 +590,11 @@ const MyPage = () => {
                         </Box>
                         <Box
                           className={`action-btn action-btn-with-count${
-                            likedWatches[watch.id] ? " action-btn-liked" : ""
+                            likedWatches[watch._id] ? " action-btn-liked" : ""
                           }`}
-                          onClick={(e) => handleLikeClick(watch.id, e)}
+                          onClick={(e) => handleLikeClick(watch._id, e)}
                         >
-                          {likedWatches[watch.id] ? (
+                          {likedWatches[watch._id] ? (
                             <Favorite
                               sx={{
                                 fontSize: 24,
@@ -870,9 +611,9 @@ const MyPage = () => {
                               }}
                             />
                           )}
-                          {watchLikes[watch.id] > 0 && (
+                          {(watchLikes[watch._id] ?? watch.watchLikes) > 0 && (
                             <span className="action-count">
-                              {watchLikes[watch.id]}
+                              {watchLikes[watch._id] ?? watch.watchLikes}
                             </span>
                           )}
                         </Box>
@@ -884,8 +625,8 @@ const MyPage = () => {
                               fontWeight: 300,
                             }}
                           />
-                          {watch.views && (
-                            <span className="action-count">{watch.views}</span>
+                          {watch.watchViews != null && watch.watchViews > 0 && (
+                            <span className="action-count">{watch.watchViews}</span>
                           )}
                         </Box>
                         <Box className="action-btn action-btn-with-count">
@@ -896,100 +637,87 @@ const MyPage = () => {
                               fontWeight: 300,
                             }}
                           />
-                          {watch.comments && (
+                          {(watch.watchComments ?? 0) > 0 && (
                             <span className="action-count">
-                              {watch.comments}
+                              {watch.watchComments}
                             </span>
                           )}
                         </Box>
                       </Box>
                     </Box>
                     <Box className="mypage-watch-item-right">
-                      {watch.limitedEdition && (
+                      {watch.watchLimitedEdition && (
                         <Typography className="mypage-watch-limited-edition">
                           Limited edition
                         </Typography>
                       )}
-                      {watch.brand && (
+                      {watch.watchBrand && (
                         <Typography className="mypage-watch-item-brand">
-                          {watch.brand}
+                          {watch.watchBrand}
                         </Typography>
                       )}
                       <Typography
                         className="mypage-watch-item-name"
-                        onClick={() => handleWatchClick(watch.id)}
+                        onClick={() => handleWatchClick(watch._id)}
                         style={{ cursor: "pointer" }}
                       >
-                        {watch.name}
+                        {watch.watchModelName}
                       </Typography>
                       <Typography className="mypage-watch-item-price">
-                        {watch.price}
+                        {formatWatchPrice(watch.watchPrice)}
                       </Typography>
-                      {watch.datePosted && (
+                      {watch.createdAt && (
                         <Typography className="mypage-watch-item-date">
-                          {watch.datePosted}
+                          {watch.createdAt}
                         </Typography>
                       )}
                       <Box className="mypage-watch-status-control">
                         <select
                           className={`mypage-watch-status-select${
-                            getWatchStatus(watch.id)?.status === "deleted"
+                            watch.watchStatus === "DELETE"
                               ? " mypage-watch-item-status-deleted"
-                              : watch.watchStatus === false
+                              : watch.watchStatus === "SOLD"
                               ? " mypage-watch-item-status-sold-out"
                               : ""
                           }`}
                           value={
-                            getWatchStatus(watch.id)?.status === "deleted"
-                              ? "delete"
-                              : watch.watchStatus === true
+                            watch.watchStatus === "ACTIVE"
                               ? "on_sale"
-                              : watch.watchStatus === false
+                              : watch.watchStatus === "SOLD"
                               ? "sold_out"
+                              : watch.watchStatus === "DELETE"
+                              ? "delete"
                               : "on_sale"
                           }
                           onChange={(e) => {
                             const v = e.target.value;
-
-                            // DELETE = soft delete:
-                            //  - faqat shu dealer pagedagi Watches da ko'rinadi
-                            //  - boshqa joylarda (watch/detail, listlar) ko'rinmaydi
-                            if (v === "delete") {
-                              setWatchStatus(watch.id, "deleted", user?._id);
-                              setWatchesList((prev) => [...prev]); // re-render so select shows "delete"
-                              return;
-                            }
-
-                            // REMOVE = hard delete:
-                            //  - dealer pagedagi Watches ro'yxatidan ham o'chib ketadi
-                            //  - boshqa joylarda ham ko'rinmaydi
                             if (v === "remove") {
+                              removeWatchMutation({
+                                variables: { watchId: watch._id },
+                              });
                               setWatchesList((prev) =>
-                                prev.filter((w) => w.id !== watch.id)
+                                prev.filter((w) => w._id !== watch._id)
                               );
-                              setWatchStatus(watch.id, "removed", user?._id);
                               return;
                             }
-
-                            if (v === "on_sale") {
-                              setWatchesList((prev) =>
-                                prev.map((w) =>
-                                  w.id === watch.id
-                                    ? { ...w, watchStatus: true }
-                                    : w
-                                )
-                              );
-                              setWatchStatus(watch.id, "on_sale");
-                            } else {
-                              setWatchesList((prev) =>
-                                prev.map((w) =>
-                                  w.id === watch.id
-                                    ? { ...w, watchStatus: false }
-                                    : w
-                                )
-                              );
-                              setWatchStatus(watch.id, "sold_out");
-                            }
+                            const status =
+                              v === "delete"
+                                ? WatchStatusEnum.DELETE
+                                : v === "on_sale"
+                                ? WatchStatusEnum.ACTIVE
+                                : WatchStatusEnum.SOLD;
+                            updateWatchMutation({
+                              variables: {
+                                input: { _id: watch._id, watchStatus: status },
+                              },
+                            });
+                            setWatchesList((prev) =>
+                              prev.map((w) =>
+                                w._id === watch._id
+                                  ? { ...w, watchStatus: status }
+                                  : w
+                              )
+                            );
                           }}
                         >
                           <option value="on_sale">ON SALE</option>
@@ -2468,33 +2196,46 @@ const MyPage = () => {
               <Box className="mypage-add-watch-footer">
                 <Button
                   className="mypage-add-watch-submit-button"
-                  disabled={!isAddWatchValid}
+                  disabled={!isAddWatchValid || createWatchLoading}
                   onClick={() => {
                     if (!isAddWatchValid) return;
-                    // Add Watch submit functionality (hozircha faqat modalni yopamiz)
-                    // Formani to'liq qayta boshlash
-                    setNewWatch({
-                      modelName: "",
-                      watchBrand: "",
-                      watchType: "",
-                      price: "",
-                      color: "",
-                      caseShape: "",
-                      caseSize: "",
-                      madeIn: "",
-                      date: "",
-                      waterResistance: "",
-                      availability: "",
-                      material: "",
-                      description: "",
-                      limitedEdition: false,
-                      image1: null,
-                      image2: null,
+                    const watchTypeMap: Record<string, WatchTypeEnum> = {
+                      Men: WatchTypeEnum.MEN,
+                      Women: WatchTypeEnum.WOMEN,
+                      Unisex: WatchTypeEnum.UNISEX,
+                      Sport: WatchTypeEnum.ELITE_SPORT,
+                    };
+                    createWatchMutation({
+                      variables: {
+                        input: {
+                          watchImages: [newWatch.image1, newWatch.image2].filter(
+                            (x): x is string => x != null && x !== ""
+                          ),
+                          watchModelName: newWatch.modelName,
+                          watchType:
+                            watchTypeMap[newWatch.watchType] ?? WatchTypeEnum.UNISEX,
+                          watchPrice: parsePrice(newWatch.price),
+                          watchLimitedEdition: newWatch.limitedEdition,
+                          watchBrand: newWatch.watchBrand || undefined,
+                          watchColor: newWatch.color || undefined,
+                          watchCaseShape: newWatch.caseShape || undefined,
+                          watchCaseSize: newWatch.caseSize || undefined,
+                          watchCountry: newWatch.madeIn || undefined,
+                          watchMakeData: newWatch.date || undefined,
+                          watchWaterResistance: newWatch.waterResistance
+                            ? Number(newWatch.waterResistance)
+                            : undefined,
+                          watchAvailability: newWatch.availability
+                            ? Number(newWatch.availability)
+                            : undefined,
+                          watchMaterial: newWatch.material || undefined,
+                          watchDescription: newWatch.description || undefined,
+                        },
+                      },
                     });
-                    setIsAddWatchOpen(false);
                   }}
                 >
-                  Add Watch
+                  {createWatchLoading ? "Adding…" : "Add Watch"}
                 </Button>
               </Box>
             </Box>
