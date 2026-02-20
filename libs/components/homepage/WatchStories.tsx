@@ -9,55 +9,55 @@ import { useTranslation } from "@/libs/context/useTranslation";
 const watchStories: WatchStory[] = [
   {
     id: 1,
-    title: "VINTAGE MEN & WOMEN'S WATCH",
+    title: "Rolex",
     description:
-      "Torbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story.webp",
+      "Alfred Davis and his brother-in-law Hans Wilsdorf founded Wilsdorf and Davis, the company that would eventually become Rolex SA, in London in 1905. Wilsdorf and Davis's main commercial activity at the time involved importing Hermann Aegler's Swiss movements to England and placing...",
+    image: "/img/brand/r7.jpg",
     imagePosition: "left",
     buttonText: "Full view",
   },
   {
     id: 2,
-    title: "WATCH REPAIR & SERVICES",
+    title: "Patek Philippe",
     description:
-      "Morbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/story2.webp",
+      "The company traces its origins to the mid-19th century, when Polish watchmaker Antoni Patek and his Czech-born Polish business partner Franciszek Czapek formed Patek, Czapek & Cie in Geneva on 1 May 1839 and started...",
+    image: "/img/brand/p7.webp",
     imagePosition: "right",
     buttonText: "Full view",
   },
   {
     id: 3,
-    title: "LUXURY TIMEKEEPING COLLECTION",
+    title: "Jacob & Co",
     description:
-      "Torbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/st1.jpeg",
+      "After graduating early from a jewelry design course in 1981 in New York City, Jacob Arabo opened a small booth in New York City's Diamond District, where he began designing for jewelry labels and private clients. In 1986, Arabo opened his own company, called 'Diamond Quasar'..",
+    image: "/img/brand/j6.avif",
     imagePosition: "left",
     buttonText: "Full view",
   },
   {
     id: 4,
-    title: "PRECISION ENGINEERING MASTERY",
+    title: "Richard Mille",
     description:
-      "Morbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/st2.jpeg",
+      "Richard Mille is a Swiss luxury watch company founded in 2001 by Dominique Guenat and Richard Mille, based in Les Breuleux, Switzerland. The brand specialises in high-priced clockwork watches, which have been criticised by some as ridiculous and unnecessarily extravagant...",
+    image: "/img/brand/r6.webp",
     imagePosition: "right",
     buttonText: "Full view",
   },
   {
     id: 5,
-    title: "HERITAGE WATCHMAKING ART",
+    title: "Audemars Piguet",
     description:
-      "Torbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/st3.jpeg",
+      "In 1875 Audemars opened his own atelier in his family’s farmhouse, dedicated to “complicated” ébauches. Six years later, in 1881, he partnered with his friend and fellow watchmaker Edward Auguste Piguet to create Audemars Piguet & Cie...",
+    image: "/img/brand/a6.jpg",
     imagePosition: "left",
     buttonText: "Full view",
   },
   {
     id: 6,
-    title: "MODERN HOROLOGICAL INNOVATION",
+    title: "Omega",
     description:
-      "Morbi tincidunt augue interdum velit euismod. Nulla pharetra diam sit amet nisl. Et netus et malesuada fames ac turpis egestas maecenas. Penatibus et magnis dis parturient.",
-    image: "/img/brand/st4.jpeg",
+      "In 1848, Louis Brandt founded the company that would become Omega in La Chaux-de-Fonds, Switzerland. He assembled key-wound precision pocket watches from parts supplied by local craftsmen.[13] He sold his watches from Italy to Scandinavia by way of England...",
+    image: "/img/brand/o6.webp",
     imagePosition: "right",
     buttonText: "Full view",
   },
