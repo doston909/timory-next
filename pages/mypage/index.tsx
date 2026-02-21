@@ -2360,13 +2360,19 @@ const MyPage = () => {
                         Unisex: WatchTypeEnum.UNISEX,
                         Sport: WatchTypeEnum.ELITE_SPORT,
                       };
+                      const watchTypeEnum =
+                        watchTypeMap[newWatch.watchType] ?? WatchTypeEnum.UNISEX;
+                      // GraphQL WatchType enum uses ELITE_SPORT (underscore), not ELITE-SPORT
+                      const watchTypeForApi =
+                        watchTypeEnum === WatchTypeEnum.ELITE_SPORT
+                          ? "ELITE_SPORT"
+                          : watchTypeEnum;
                       createWatchMutation({
                         variables: {
                           input: {
                             watchImages: urls,
                             watchModelName: newWatch.modelName,
-                            watchType:
-                              watchTypeMap[newWatch.watchType] ?? WatchTypeEnum.UNISEX,
+                            watchType: watchTypeForApi,
                             watchPrice: parsePrice(newWatch.price),
                             watchLimitedEdition: newWatch.limitedEdition,
                             watchBrand: newWatch.watchBrand || undefined,

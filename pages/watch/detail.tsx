@@ -21,8 +21,8 @@ import { useState, useRef, useLayoutEffect, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useReactiveVar, useQuery, useMutation } from "@apollo/client";
 import { userVar } from "@/apollo/store";
-import { GET_WATCH } from "@/apollo/user/query";
-import { CREATE_COMMENT } from "@/apollo/user/mutation";
+import { GET_WATCH, GET_COMMENTS } from "@/apollo/user/query";
+import { CREATE_COMMENT, UPDATE_COMMENT, REMOVE_COMMENT, LIKE_TARGET_WATCH } from "@/apollo/user/mutation";
 import { watchImageUrl } from "@/libs/utils";
 import { useCart } from "@/libs/context/CartContext";
 import {
@@ -52,15 +52,13 @@ const WatchDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [likedReviews, setLikedReviews] = useState<number[]>([]);
-  const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
+  const [likedReviews, setLikedReviews] = useState<string[]>([]);
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const [newReviewText, setNewReviewText] = useState("");
-  const [extraReviews, setExtraReviews] = useState<{ id: number; date: string; author: string; text: string }[]>([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const [openMenuReviewId, setOpenMenuReviewId] = useState<number | null>(null);
-  const [deletedReviewIds, setDeletedReviewIds] = useState<number[]>([]);
-  const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
-  const [editedReviewTexts, setEditedReviewTexts] = useState<Record<number, string>>({});
+  const [openMenuReviewId, setOpenMenuReviewId] = useState<string | null>(null);
+  const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
+  const [editedCommentIds, setEditedCommentIds] = useState<Set<string>>(new Set());
   const { addToCart } = useCart();
 
   const reviewsListRef = useRef<HTMLDivElement>(null);
@@ -82,18 +80,110 @@ const WatchDetail = () => {
   });
   const apiWatch = watchData?.getWatch;
 
+  const { data: commentsData, refetch: refetchComments } = useQuery(GET_COMMENTS, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 500,
+        search: { commentRefId: watchIdStr ?? "" },
+      },
+    },
+    skip: !watchIdStr,
+    fetchPolicy: "network-only",
+  });
+
+  const apiCommentsList = commentsData?.getComments?.list ?? [];
+
   const [createCommentMutation, { loading: commentSubmitting }] = useMutation(CREATE_COMMENT, {
+    refetchQueries: watchIdStr
+      ? [
+          { query: GET_WATCH, variables: { watchId: watchIdStr } },
+          {
+            query: GET_COMMENTS,
+            variables: {
+              input: { page: 1, limit: 500, search: { commentRefId: watchIdStr } },
+            },
+          },
+        ]
+      : [],
+  });
+
+  const [updateCommentMutation, { loading: commentUpdating }] = useMutation(UPDATE_COMMENT, {
+    refetchQueries: watchIdStr
+      ? [
+          { query: GET_WATCH, variables: { watchId: watchIdStr } },
+          {
+            query: GET_COMMENTS,
+            variables: {
+              input: { page: 1, limit: 500, search: { commentRefId: watchIdStr } },
+            },
+          },
+        ]
+      : [],
+  });
+
+  const [removeCommentMutation] = useMutation(REMOVE_COMMENT, {
+    refetchQueries: watchIdStr
+      ? [
+          { query: GET_WATCH, variables: { watchId: watchIdStr } },
+          {
+            query: GET_COMMENTS,
+            variables: {
+              input: { page: 1, limit: 500, search: { commentRefId: watchIdStr } },
+            },
+          },
+        ]
+      : [],
+  });
+
+  const [likeTargetWatchMutation] = useMutation(LIKE_TARGET_WATCH, {
     refetchQueries: watchIdStr ? [{ query: GET_WATCH, variables: { watchId: watchIdStr } }] : [],
   });
 
   const watchCommentsCount = apiWatch?.watchComments ?? 0;
-  const baseReviews: { id: number; date: string; author: string; text: string }[] = [];
+  const watchLikesCount = apiWatch?.watchLikes ?? 0;
+  const isWatchLiked = (apiWatch?.meLiked != null && apiWatch.meLiked.length > 0) ?? false;
 
-  const allReviews = [...baseReviews, ...extraReviews].filter((r) => !deletedReviewIds.includes(r.id));
-  const sortedReviews = [...allReviews].reverse();
-  const reviewsCount = allReviews.length;
+  type ReviewItem = {
+    id: string;
+    date: string;
+    author: string;
+    text: string;
+    memberId: string;
+    isEdited: boolean;
+  };
+  const allReviews: ReviewItem[] = useMemo(
+    () =>
+      apiCommentsList.map((c: any) => {
+        const created = c.createdAt ? new Date(c.createdAt).getTime() : 0;
+        const updated = c.updatedAt ? new Date(c.updatedAt).getTime() : 0;
+        const isEdited =
+          (updated > 0 && updated > created) ||
+          (c.updatedAt != null && c.createdAt != null && String(c.updatedAt) !== String(c.createdAt));
+        return {
+          id: c._id,
+          date: c.createdAt
+            ? new Date(c.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            : "",
+          author: c.memberData?.memberName ?? "—",
+          text: c.commentContent ?? "",
+          memberId: c.memberId ?? "",
+          isEdited,
+        };
+      }),
+    [apiCommentsList]
+  );
+  const mostRecentLimit = 200;
+  const sortedReviews = [...allReviews].slice(0, mostRecentLimit);
+  const reviewsCount = sortedReviews.length;
+  const isCommentAuthor = (memberId: string) =>
+    user?._id != null && String(user._id) === String(memberId);
 
-  const handleReviewMenuOpen = (event: React.MouseEvent<HTMLElement>, reviewId: number) => {
+  const handleReviewMenuOpen = (event: React.MouseEvent<HTMLElement>, reviewId: string) => {
     event.stopPropagation();
     setMenuAnchorEl(event.currentTarget);
     setOpenMenuReviewId(reviewId);
@@ -104,12 +194,12 @@ const WatchDetail = () => {
     setOpenMenuReviewId(null);
   };
 
-  const handleEditReview = (reviewId: number) => {
+  const handleEditReview = (commentId: string) => {
     handleReviewMenuClose();
-    const review = allReviews.find((r) => r.id === reviewId);
+    const review = allReviews.find((r) => r.id === commentId);
     if (review) {
-      setNewReviewText(editedReviewTexts[reviewId] ?? review.text);
-      setEditingReviewId(reviewId);
+      setNewReviewText(review.text);
+      setEditingReviewId(commentId);
     }
   };
 
@@ -118,65 +208,56 @@ const WatchDetail = () => {
     setNewReviewText("");
   };
 
-  const handleDeleteReview = (reviewId: number) => {
-    setDeletedReviewIds((prev) => [...prev, reviewId]);
-    setExtraReviews((prev) => prev.filter((r) => r.id !== reviewId));
+  const handleDeleteReview = async (commentId: string) => {
     handleReviewMenuClose();
+    try {
+      await removeCommentMutation({ variables: { commentId } });
+    } catch (err) {
+      if (typeof window !== "undefined") console.error("removeComment error:", err);
+    }
   };
 
   const handleSubmitReview = async () => {
     const text = newReviewText.trim();
     if (!text) return;
     if (editingReviewId !== null) {
-      const allReviewsList = [...baseReviews, ...extraReviews].filter((r) => !deletedReviewIds.includes(r.id));
-      const review = allReviewsList.find((r) => r.id === editingReviewId);
-      const originalText = review?.text ?? "";
-      if (text !== originalText) {
-        setEditedReviewTexts((prev) => ({ ...prev, [editingReviewId]: text }));
-      } else {
-        setEditedReviewTexts((prev) => {
-          const next = { ...prev };
-          delete next[editingReviewId];
-          return next;
-        });
-      }
-      setExtraReviews((prev) =>
-        prev.map((r) => (r.id === editingReviewId ? { ...r, text } : r))
-      );
-      setEditingReviewId(null);
-      setNewReviewText("");
-    } else {
-      // Yangi comment — backend createComment
-      if (!watchIdStr) return;
-      if (!user?._id) {
-        if (typeof window !== "undefined") alert(t("detail.loginToComment") || "Comment yozish uchun tizimga kiring.");
-        return;
-      }
       try {
-        const res = await createCommentMutation({
+        await updateCommentMutation({
           variables: {
             input: {
-              commentGroup: "WATCH",
+              _id: editingReviewId,
               commentContent: text.slice(0, 100),
-              commentRefId: watchIdStr,
             },
           },
         });
-        const created = res.data?.createComment;
-        const authorName = created?.memberData?.memberName ?? user?.memberName ?? "You";
-        setExtraReviews((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            author: authorName,
-            text,
-          },
-        ]);
+        setEditedCommentIds((prev) => new Set(prev).add(editingReviewId));
+        setEditingReviewId(null);
         setNewReviewText("");
       } catch (err) {
-        if (typeof window !== "undefined") console.error("createComment error:", err);
+        if (typeof window !== "undefined") console.error("updateComment error:", err);
       }
+      return;
+    }
+    // Yangi comment — faqat login qilgan member yoza oladi
+    if (!watchIdStr) return;
+    if (!user?._id) {
+      if (typeof window !== "undefined")
+        alert(t("detail.loginToComment") || "Comment yozish uchun tizimga kiring.");
+      return;
+    }
+    try {
+      await createCommentMutation({
+        variables: {
+          input: {
+            commentGroup: "WATCH",
+            commentContent: text.slice(0, 100),
+            commentRefId: watchIdStr,
+          },
+        },
+      });
+      setNewReviewText("");
+    } catch (err) {
+      if (typeof window !== "undefined") console.error("createComment error:", err);
     }
   };
 
@@ -231,7 +312,10 @@ const WatchDetail = () => {
       brand: apiWatch.watchBrand ?? "",
       color: apiWatch.watchColor ?? "",
       caseShape: apiWatch.watchCaseShape ?? "",
-      waterResistance: apiWatch.watchWaterResistance ?? "",
+      waterResistance:
+        apiWatch.watchWaterResistance != null
+          ? `${Number(apiWatch.watchWaterResistance)} m`
+          : "—",
       type: apiWatch.watchType ?? "",
       data: apiWatch.watchMakeData ?? "",
       country: apiWatch.watchCountry ?? "",
@@ -475,6 +559,24 @@ const WatchDetail = () => {
                 {watch.viewers} {t("detail.peopleViewing")}
               </Typography>
             </Box>
+            <Box
+              className="metric-item"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (user?._id && watchIdStr)
+                  likeTargetWatchMutation({ variables: { input: watchIdStr } });
+              }}
+              sx={user?._id ? { cursor: "pointer" } : undefined}
+            >
+              {isWatchLiked ? (
+                <FavoriteIcon className="metric-icon" sx={{ color: "#c00" }} />
+              ) : (
+                <FavoriteBorderIcon className="metric-icon" />
+              )}
+              <Typography className="metric-text">
+                {watchLikesCount} Likes
+              </Typography>
+            </Box>
             <Box className="metric-item">
               <LocalFireDepartmentIcon className="metric-icon" />
               <Typography className="metric-text">
@@ -586,13 +688,17 @@ const WatchDetail = () => {
               <Box className="reviews-title-wrapper">
                 <Comment className="reviews-title-icon" />
                 <Typography className="reviews-title">
-                  {reviewsCount} {reviewsCount !== 1 ? t("detail.reviewCountPlural") : t("detail.reviewCount")}
+                  {watchCommentsCount} {watchCommentsCount !== 1 ? t("detail.reviewCountPlural") : t("detail.reviewCount")}
                 </Typography>
               </Box>
 
-              {/* Existing Reviews */}
-              <Box className="reviews-list" ref={reviewsListRef}>
-                {reviewsCount === 0 ? (
+              {/* Existing Reviews — birinchi 2 ta ko‘rinadi, qolgani scroll */}
+              <Box
+                className="reviews-list"
+                ref={reviewsListRef}
+                sx={{ overflowY: "auto" }}
+              >
+                {watchCommentsCount === 0 ? (
                   <Box className="no-reviews">
                     <Typography className="no-reviews-text">
                       {t("detail.noReview")}
@@ -626,7 +732,7 @@ const WatchDetail = () => {
                               </Typography>
                             </Box>
                           </Box>
-                          {editingReviewId !== review.id && review.author === "You" && (
+                          {editingReviewId !== review.id && isCommentAuthor(review.memberId) && (
                             <IconButton
                               className="review-more-btn"
                               size="small"
@@ -640,48 +746,46 @@ const WatchDetail = () => {
                         <Box className="review-text-wrapper">
                           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px", width: "100%" }}>
                             <Typography className="review-text">
-                              {editedReviewTexts[review.id] ?? review.text}
+                              {review.text}
                             </Typography>
-                          <Box className="review-actions">
-                            <Box className="review-reply-btn">
-                              <ReplyIcon className="reply-icon" />
-                            </Box>
-                            <Box
-                              className={`review-like-btn ${
-                                likedReviews.includes(review.id) ? "liked" : ""
-                              }`}
-                              onClick={() => {
-                                if (likedReviews.includes(review.id)) {
-                                  setLikedReviews(
-                                    likedReviews.filter(
-                                      (id) => id !== review.id
-                                    )
-                                  );
-                                  setLikeCounts((prev) => ({
-                                    ...prev,
-                                    [review.id]: (prev[review.id] || 2) - 1,
-                                  }));
-                                } else {
-                                  setLikedReviews([...likedReviews, review.id]);
-                                  setLikeCounts((prev) => ({
-                                    ...prev,
-                                    [review.id]: (prev[review.id] || 2) + 1,
-                                  }));
-                                }
-                              }}
-                            >
-                              {likedReviews.includes(review.id) ? (
-                                <FavoriteIcon className="like-icon" />
-                              ) : (
-                                <FavoriteBorderIcon className="like-icon" />
-                              )}
-                              <Box className="like-badge">
-                                {likeCounts[review.id] || 2}
+                            <Box className="review-actions">
+                              <Box className="review-reply-btn">
+                                <ReplyIcon className="reply-icon" />
+                              </Box>
+                              <Box
+                                className={`review-like-btn ${
+                                  likedReviews.includes(review.id) ? "liked" : ""
+                                }`}
+                                onClick={() => {
+                                  if (likedReviews.includes(review.id)) {
+                                    setLikedReviews(
+                                      likedReviews.filter((id) => id !== review.id)
+                                    );
+                                    setLikeCounts((prev) => ({
+                                      ...prev,
+                                      [review.id]: (prev[review.id] || 2) - 1,
+                                    }));
+                                  } else {
+                                    setLikedReviews([...likedReviews, review.id]);
+                                    setLikeCounts((prev) => ({
+                                      ...prev,
+                                      [review.id]: (prev[review.id] || 2) + 1,
+                                    }));
+                                  }
+                                }}
+                              >
+                                {likedReviews.includes(review.id) ? (
+                                  <FavoriteIcon className="like-icon" />
+                                ) : (
+                                  <FavoriteBorderIcon className="like-icon" />
+                                )}
+                                <Box className="like-badge">
+                                  {likeCounts[review.id] || 2}
+                                </Box>
                               </Box>
                             </Box>
                           </Box>
-                          </Box>
-                          {editedReviewTexts[review.id] && (
+                          {(review.isEdited || editedCommentIds.has(review.id)) && (
                             <Typography className="review-edited">
                               {t("detail.edited")}
                             </Typography>
@@ -766,8 +870,8 @@ const WatchDetail = () => {
                   }}
                 />
                 <Box className="review-submit-wrapper">
-                  <Button className="review-submit-btn" onClick={handleSubmitReview} disabled={commentSubmitting}>
-                    {commentSubmitting ? (t("detail.sending") || "Yuborilmoqda...") : t("detail.postComment")}
+                  <Button className="review-submit-btn" onClick={handleSubmitReview} disabled={commentSubmitting || commentUpdating}>
+                    {commentSubmitting || commentUpdating ? (t("detail.sending") || "Yuborilmoqda...") : t("detail.postComment")}
                     <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                   </Button>
                 </Box>

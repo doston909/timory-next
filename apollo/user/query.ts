@@ -32,6 +32,11 @@ query GetWatches ($input: WatchesInquiry!) {
             deletedAt
             createdAt
             updatedAt
+            meLiked {
+                memberId
+                likeRefId
+                myFavorite
+            }
             memberData {
                 _id
                 memberType
@@ -171,6 +176,31 @@ export const GET_DEALER_WATCHES = gql`
         deletedAt
         createdAt
         updatedAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+export const GET_COMMENTS = gql`
+  query GetComments($input: CommentsInquiry!) {
+    getComments(input: $input) {
+      list {
+        _id
+        commentStatus
+        commentGroup
+        commentContent
+        commentRefId
+        memberId
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          memberName
+          memberPhoto
+        }
       }
       metaCounter {
         total

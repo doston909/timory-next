@@ -18,24 +18,32 @@ export type PopularWatch = {
   likes?: number;
   views?: number;
   comments?: number;
+  meLiked?: { memberId: string; likeRefId: string; myFavorite: boolean }[];
 };
 
 type Props = {
   watch: PopularWatch;
   homepageSectionId?: string;
+  onLike?: (watchId: string) => void;
 };
 
-const PopularWatchesCard = ({ watch, homepageSectionId }: Props) => {
+const PopularWatchesCard = ({ watch, homepageSectionId, onLike }: Props) => {
   const router = useRouter();
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(watch.likes ?? 0);
+  const [isLikedLocal, setIsLikedLocal] = useState(false);
+  const [likeCountLocal, setLikeCountLocal] = useState(watch.likes ?? 0);
   const { addToCart } = useCart();
+  const isLiked = onLike ? (watch.meLiked != null && watch.meLiked.length > 0) : isLikedLocal;
+  const likeCount = onLike ? (watch.likes ?? 0) : likeCountLocal;
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked((prev) => {
+    if (onLike) {
+      onLike(String(watch.id));
+      return;
+    }
+    setIsLikedLocal((prev) => {
       const next = !prev;
-      setLikeCount((count) =>
+      setLikeCountLocal((count) =>
         next ? count + 1 : Math.max((watch.likes ?? 0), count - 1)
       );
       return next;

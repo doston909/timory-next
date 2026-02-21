@@ -24,17 +24,21 @@ interface Watch {
   views?: number;
   comments?: number;
   limitedEdition?: boolean;
+  meLiked?: { memberId: string; likeRefId: string; myFavorite: boolean }[];
 }
 
 interface WatchCardProps {
   watch: Watch;
+  onLike?: (watchId: string) => void;
 }
 
-const WatchCard = ({ watch }: WatchCardProps) => {
+const WatchCard = ({ watch, onLike }: WatchCardProps) => {
   const router = useRouter();
   const { addToCart } = useCart();
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(watch.likes ?? 0);
+  const [isLikedLocal, setIsLikedLocal] = useState(false);
+  const [likeCountLocal, setLikeCountLocal] = useState(watch.likes ?? 0);
+  const isLiked = onLike ? (watch.meLiked != null && watch.meLiked.length > 0) : isLikedLocal;
+  const likeCount = onLike ? (watch.likes ?? 0) : likeCountLocal;
 
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
@@ -65,9 +69,13 @@ const WatchCard = ({ watch }: WatchCardProps) => {
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked((prev) => {
+    if (onLike) {
+      onLike(String(watch.id));
+      return;
+    }
+    setIsLikedLocal((prev) => {
       const next = !prev;
-      setLikeCount((count) =>
+      setLikeCountLocal((count) =>
         next ? count + 1 : Math.max((watch.likes ?? 0), count - 1)
       );
       return next;

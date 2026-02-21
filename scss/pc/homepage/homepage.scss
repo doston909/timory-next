@@ -184,12 +184,12 @@
           svg {
             color: #e5c8a3;
 
-            path {
-              fill-opacity: 1;
-            }
+          path {
+            fill-opacity: 1;
           }
         }
       }
+    }
 
       .text-box {
         margin-top: 20px;
@@ -960,11 +960,11 @@
         }
       }
 
-      &:hover img {
+      .image-box:hover img {
         transform: scale(1.06);
       }
 
-      &:hover .image-box .watch-actions {
+      .image-box:hover .watch-actions {
         opacity: 1;
         pointer-events: all;
         transform: translateY(-50%) translateX(0);
@@ -1028,25 +1028,26 @@
         }
 
         &.action-btn-with-count {
-          .action-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #e8994a;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 500;
-            min-width: 22px;
-            min-height: 22px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            line-height: 1;
-            box-shadow: 0 2px 6px rgba(243, 151, 46, 0.4);
+          .action-count,
+          .action-count-badge {
+            position: absolute !important;
+            top: -8px !important;
+            right: -8px !important;
+            background: #e8994a !important;
+            color: #ffffff !important;
+            font-size: 11px !important;
+            font-weight: 500 !important;
+            min-width: 20px !important;
+            height: 20px !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            line-height: 1 !important;
+            box-sizing: border-box !important;
+            box-shadow: 0 2px 6px rgba(243, 151, 46, 0.4) !important;
           }
         }
 

@@ -12,8 +12,10 @@ import Filter from "@/libs/components/watch/Filter";
 import Top from "@/libs/components/Top";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import { useTranslation } from "@/libs/context/useTranslation";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 import { GET_WATCHES } from "@/apollo/user/query";
+import { LIKE_TARGET_WATCH } from "@/apollo/user/mutation";
 import { watchImageUrl } from "@/libs/utils";
 
 interface Watch {
@@ -31,7 +33,18 @@ interface Watch {
   comments?: number;
   createdAt?: string;
   limitedEdition?: boolean;
+  meLiked?: { memberId: string; likeRefId: string; myFavorite: boolean }[];
 }
+
+const WATCH_LIST_VARS = {
+  input: {
+    page: 1,
+    limit: 500,
+    sort: "createdAt",
+    direction: "DESC" as const,
+    search: {},
+  },
+};
 
 function mapApiToListWatch(w: any): Watch {
   return {
@@ -49,6 +62,7 @@ function mapApiToListWatch(w: any): Watch {
     comments: w.watchComments ?? 0,
     createdAt: w.createdAt ?? undefined,
     limitedEdition: w.watchLimitedEdition ?? false,
+    meLiked: w.meLiked ?? undefined,
   };
 }
 
@@ -58,16 +72,12 @@ const WatchList: NextPage = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("newest");
 
+  const user = useReactiveVar(userVar);
   const { data: watchesData } = useQuery(GET_WATCHES, {
-    variables: {
-      input: {
-        page: 1,
-        limit: 500,
-        sort: "createdAt",
-        direction: "DESC",
-        search: {},
-      },
-    },
+    variables: WATCH_LIST_VARS,
+  });
+  const [likeTargetWatchMutation] = useMutation(LIKE_TARGET_WATCH, {
+    refetchQueries: [{ query: GET_WATCHES, variables: WATCH_LIST_VARS }],
   });
   const watches: Watch[] = useMemo(
     () => (watchesData?.getWatches?.list ?? []).map(mapApiToListWatch),
@@ -350,7 +360,16 @@ const WatchList: NextPage = () => {
                 {currentWatches.length > 0 ? (
                   <Box className={`watch-grid ${viewMode}`}>
                     {currentWatches.map((watch) => (
-                      <WatchCard key={watch.id} watch={watch} />
+                      <WatchCard
+                        key={watch.id}
+                        watch={watch}
+                        onLike={
+                          user?._id
+                            ? (watchId: string) =>
+                                likeTargetWatchMutation({ variables: { input: watchId } })
+                            : undefined
+                        }
+                      />
                     ))}
                   </Box>
                 ) : (
