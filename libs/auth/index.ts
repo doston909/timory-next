@@ -16,11 +16,11 @@ export function setJwtToken(token: string) {
 
 export const logIn = async (memberName: string, password: string): Promise<void> => {
 	try {
-		const { jwtToken } = await requestJwtToken({ memberName, password });
+		const { jwtToken, member } = await requestJwtToken({ memberName, password });
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
-			updateUserInfo(jwtToken);
+			updateUserInfo(jwtToken, member);
 		}
 	} catch (err) {
 		console.warn('login err', err);
@@ -34,7 +34,7 @@ const requestJwtToken = async ({
 }: {
 	memberName: string;
 	password: string;
-}): Promise<{ jwtToken: string }> => {
+}): Promise<{ jwtToken: string; member?: any }> => {
 	const apolloClient = await initializeApollo();
 
 	try {
@@ -52,7 +52,7 @@ const requestJwtToken = async ({
 			else await sweetMixinErrorAlert('Invalid name or password, or account has been deleted');
 			throw new Error('token error');
 		}
-		return { jwtToken: accessToken };
+		return { jwtToken: accessToken, member: loginData };
 	} catch (err: any) {
 		if (err?.message === 'token error') throw err;
 		const msg = err?.graphQLErrors?.[0]?.message ?? err?.networkError?.message ?? err?.message ?? '';
@@ -75,7 +75,7 @@ export const signUp = async (
 	memberType: 'USER' | 'DEALER'
 ): Promise<void> => {
 	try {
-		const { jwtToken } = await requestSignUpJwtToken({
+		const { jwtToken, member } = await requestSignUpJwtToken({
 			memberName,
 			memberEmail,
 			memberPassword,
@@ -85,7 +85,7 @@ export const signUp = async (
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
-			updateUserInfo(jwtToken);
+			updateUserInfo(jwtToken, member);
 		}
 	} catch (err) {
 		console.warn('signup err', err);
@@ -105,7 +105,7 @@ const requestSignUpJwtToken = async ({
 	memberPassword: string;
 	memberConfirmPassword: string;
 	memberType: 'USER' | 'DEALER';
-}): Promise<{ jwtToken: string }> => {
+}): Promise<{ jwtToken: string; member?: any }> => {
 	const apolloClient = await initializeApollo();
 
 	try {
@@ -117,13 +117,14 @@ const requestSignUpJwtToken = async ({
 			fetchPolicy: 'network-only',
 		});
 
-		const accessToken = result?.data?.signup?.accessToken;
+		const signupData = result?.data?.signup;
+		const accessToken = signupData?.accessToken;
 		if (!accessToken) {
 			const msg = (result as any)?.errors?.[0]?.message ?? '';
 			if (msg) await sweetMixinErrorAlert(msg || 'Sign up failed');
 			throw new Error('token error');
 		}
-		return { jwtToken: accessToken };
+		return { jwtToken: accessToken, member: signupData };
 	} catch (err: any) {
 		if (err?.message === 'token error') throw err;
 		const msg = err?.graphQLErrors?.[0]?.message ?? err?.networkError?.message ?? err?.message ?? '';
@@ -145,31 +146,42 @@ export const updateStorage = ({ jwtToken }: { jwtToken: any }) => {
 function toId(value: any): string {
 	if (value == null) return '';
 	if (typeof value === 'string') return value;
-	if (typeof value === 'object' && value?.toString) return value.toString();
+	if (typeof value === 'object' && (value as any).$oid) return String((value as any).$oid);
+	if (typeof value === 'object' && value?.toString && value.toString !== Object.prototype.toString) return value.toString();
 	return String(value);
 }
 
-export const updateUserInfo = (jwtToken: any) => {
+export const updateUserInfo = (jwtToken: any, memberFromApi?: any) => {
 	if (!jwtToken) return false;
 
 	let claims: any;
 	try {
 		claims = decodeJWT<CustomJwtPayload>(jwtToken);
 	} catch {
-		// Token format unexpected – set minimal state so header shows logged in
+		let payload: any = {};
+		try {
+			const parts = String(jwtToken).split('.');
+			if (parts.length === 3 && typeof atob !== 'undefined') {
+				payload = JSON.parse(atob(parts[1]));
+			}
+		} catch {
+			// ignore
+		}
+		const fallbackId = toId(payload._id ?? payload.sub ?? payload.id);
+		const fallbackType = payload.memberType ?? '';
 		userVar({
-			_id: '1',
-			memberType: '',
-			memberStatus: '',
-			memberAuthType: '',
-			memberName: '',
-			memberEmail: '',
-			memberPhone: '',
-			memberPhoto: '/img/profile/defaultUser.svg',
+			_id: fallbackId,
+			memberType: fallbackType,
+			memberStatus: payload.memberStatus ?? '',
+			memberAuthType: payload.memberAuthType ?? '',
+			memberName: payload.memberName ?? payload.memberNick ?? '',
+			memberEmail: payload.memberEmail ?? '',
+			memberPhone: payload.memberPhone ?? '',
+			memberPhoto: payload.memberPhoto ?? payload.memberImage ?? '/img/profile/defaultUser.svg',
 			memberNick: '',
 			memberFullName: '',
 			memberImage: '',
-			memberAddress: '',
+			memberAddress: payload.memberAddress ?? '',
 			memberDesc: '',
 			memberWatches: 0,
 			memberRank: 0,
@@ -180,34 +192,43 @@ export const updateUserInfo = (jwtToken: any) => {
 			memberWarnings: 0,
 			memberBlocks: 0,
 		});
-		return false;
+		return !!fallbackId;
 	}
 
-	const photo = claims.memberPhoto ?? claims.memberImage ?? null;
-	const id = toId(claims._id ?? (claims as any).sub ?? (claims as any).id);
 	const num = (v: any) => (typeof v === 'number' && !Number.isNaN(v) ? v : 0);
+	const m = memberFromApi;
+	let existing: CustomJwtPayload | null = null;
+	try {
+		const cur = (userVar as unknown as (v?: CustomJwtPayload) => CustomJwtPayload)();
+		if (cur && (cur as CustomJwtPayload)._id) existing = cur as CustomJwtPayload;
+	} catch {
+		// ignore
+	}
+
+	const id = toId(m?._id ?? claims._id ?? (claims as any).sub ?? (claims as any).id);
+	const photo = m?.memberPhoto ?? m?.memberImage ?? claims.memberPhoto ?? claims.memberImage ?? existing?.memberPhoto ?? null;
 	userVar({
 		_id: id,
-		memberType: claims.memberType ?? '',
-		memberStatus: claims.memberStatus ?? '',
-		memberAuthType: claims.memberAuthType,
-		memberName: claims.memberName ?? claims.memberNick ?? '',
-		memberEmail: claims.memberEmail ?? '',
-		memberPhone: claims.memberPhone ?? '',
-		memberPhoto: photo === null || photo === undefined ? '/img/profile/defaultUser.svg' : `${photo}`,
-		memberNick: claims.memberNick ?? '',
-		memberFullName: claims.memberFullName ?? '',
-		memberImage: claims.memberImage ?? '',
-		memberAddress: claims.memberAddress ?? '',
-		memberDesc: claims.memberDesc ?? '',
-		memberWatches: num(claims.memberWatches),
-		memberRank: num(claims.memberRank),
-		memberArticles: num(claims.memberArticles),
-		memberPoints: num(claims.memberPoints),
-		memberLikes: num(claims.memberLikes),
-		memberViews: num(claims.memberViews),
-		memberWarnings: num(claims.memberWarnings),
-		memberBlocks: num(claims.memberBlocks),
+		memberType: m?.memberType ?? claims.memberType ?? existing?.memberType ?? '',
+		memberStatus: m?.memberStatus ?? claims.memberStatus ?? existing?.memberStatus ?? '',
+		memberAuthType: m?.memberAuthType ?? claims.memberAuthType ?? existing?.memberAuthType ?? '',
+		memberName: m?.memberName ?? claims.memberName ?? claims.memberNick ?? existing?.memberName ?? '',
+		memberEmail: m?.memberEmail ?? claims.memberEmail ?? existing?.memberEmail ?? '',
+		memberPhone: m?.memberPhone ?? claims.memberPhone ?? existing?.memberPhone ?? '',
+		memberPhoto: photo === null || photo === undefined ? (existing?.memberPhoto || '/img/profile/defaultUser.svg') : `${photo}`,
+		memberNick: m?.memberNick ?? claims.memberNick ?? existing?.memberNick ?? '',
+		memberFullName: m?.memberFullName ?? claims.memberFullName ?? existing?.memberFullName ?? '',
+		memberImage: m?.memberImage ?? claims.memberImage ?? existing?.memberImage ?? '',
+		memberAddress: m?.memberAddress ?? claims.memberAddress ?? existing?.memberAddress ?? '',
+		memberDesc: m?.memberDesc ?? claims.memberDesc ?? existing?.memberDesc ?? '',
+		memberWatches: num(m?.memberWatches ?? claims.memberWatches ?? existing?.memberWatches),
+		memberRank: num(m?.memberRank ?? claims.memberRank ?? existing?.memberRank),
+		memberArticles: num(m?.memberArticles ?? claims.memberArticles ?? existing?.memberArticles),
+		memberPoints: num(m?.memberPoints ?? claims.memberPoints ?? existing?.memberPoints),
+		memberLikes: num(m?.memberLikes ?? claims.memberLikes ?? existing?.memberLikes),
+		memberViews: num(m?.memberViews ?? claims.memberViews ?? existing?.memberViews),
+		memberWarnings: num(m?.memberWarnings ?? claims.memberWarnings ?? existing?.memberWarnings),
+		memberBlocks: num(m?.memberBlocks ?? claims.memberBlocks ?? existing?.memberBlocks),
 	});
 	return true;
 };

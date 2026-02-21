@@ -80,7 +80,7 @@ const AccountSignup: NextPage = () => {
         confirmPassword,
         registrationType === "user" ? "USER" : "DEALER"
       );
-      await router.replace("/");
+      if (typeof window !== "undefined") window.location.href = "/";
     } catch {
       // Error already shown by auth lib
     }

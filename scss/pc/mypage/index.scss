@@ -1453,10 +1453,21 @@
 
     .mypage-add-watch-image-placeholder {
       @extend .mypage-edit-profile-photo-placeholder;
+      border-radius: 8px;
+      /* Transparent PNG aniq ko‘rinsin: checkerboard fon */
+      background-color: #fff;
+      background-image:
+        linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+        linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+        linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
     }
 
     .mypage-add-watch-image {
       @extend .mypage-edit-profile-photo;
+      object-fit: contain;
     }
 
     .mypage-add-watch-image-icon {

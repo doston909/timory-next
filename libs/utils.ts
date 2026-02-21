@@ -1,5 +1,11 @@
-
 import numeral from 'numeral';
+
+export function watchImageUrl(path: string | undefined | null, fallback = "/img/watch/rasm3.png"): string {
+  if (!path) return fallback;
+  if (path.startsWith("http") || path.startsWith("data:")) return path;
+  const base = (process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "").replace(/\/graphql.*$/, "");
+  return base ? `${base}/${path.replace(/^\//, "")}` : (path.startsWith("/") ? path : `/${path}`);
+}
 import { sweetMixinErrorAlert } from './sweetAlert';
 
 export const formatterStr = (value: number | undefined): string => {

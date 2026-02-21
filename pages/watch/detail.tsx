@@ -17,10 +17,13 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useState, useRef, useLayoutEffect, useEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { useReactiveVar } from "@apollo/client";
+import { useReactiveVar, useQuery, useMutation } from "@apollo/client";
 import { userVar } from "@/apollo/store";
+import { GET_WATCH } from "@/apollo/user/query";
+import { CREATE_COMMENT } from "@/apollo/user/mutation";
+import { watchImageUrl } from "@/libs/utils";
 import { useCart } from "@/libs/context/CartContext";
 import {
   getWatchStatus,
@@ -63,49 +66,28 @@ const WatchDetail = () => {
   const reviewsListRef = useRef<HTMLDivElement>(null);
   const reviewItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const watchId = router.query.id ? parseInt(router.query.id as string, 10) : null;
+  const watchIdParam = router.query.id;
+  const watchIdStr =
+    typeof watchIdParam === "string"
+      ? watchIdParam
+      : Array.isArray(watchIdParam)
+        ? watchIdParam[0]
+        : undefined;
+  const watchId = watchIdStr ?? null;
 
-  const allWatchesData = [
-    { id: 1, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png", comments: 17 },
-    { id: 2, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png", comments: 17 },
-    { id: 3, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png", comments: 17 },
-    { id: 4, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png", comments: 17 },
-    { id: 5, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
-    { id: 6, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
-    { id: 7, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
-    { id: 8, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
-    { id: 9, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
-    { id: 10, name: "Analog Strap Watch", price: "Rs. 4,500.00", image: "/img/watch/rasm1.png", comments: 17 },
-    { id: 11, name: "Black Dail Strap", price: "Rs. 2,500.00", image: "/img/watch/rasm2.png", comments: 17 },
-    { id: 12, name: "Black Dial Classic", price: "Rs. 3,326.00", image: "/img/watch/rasm3.png", comments: 17 },
-    { id: 13, name: "Rose Gold Mesh", price: "Rs. 5,200.00", image: "/img/watch/rasmm.png", comments: 17 },
-    { id: 14, name: "Chronograph Brown", price: "Rs. 6,800.00", image: "/img/watch/rasmm2.png", comments: 17 },
-    { id: 15, name: "Classic Gold", price: "Rs. 4,100.00", image: "/img/watch/rasm3.png", comments: 17 },
-  ];
+  const { data: watchData, loading: watchLoading, error: watchError, refetch: refetchWatch } = useQuery(GET_WATCH, {
+    variables: { watchId: watchIdStr ?? "" },
+    skip: !watchIdStr,
+    fetchPolicy: "network-only",
+  });
+  const apiWatch = watchData?.getWatch;
 
-  const watchCommentsCount = watchId ? (allWatchesData.find((w: { id: number }) => w.id === watchId)?.comments ?? 4) : 4;
+  const [createCommentMutation, { loading: commentSubmitting }] = useMutation(CREATE_COMMENT, {
+    refetchQueries: watchIdStr ? [{ query: GET_WATCH, variables: { watchId: watchIdStr } }] : [],
+  });
 
-  const reviewPool = [
-    { id: 1, author: "John Doe", date: "2024-01-15", text: "Great watch! Very satisfied with the quality and design. Highly recommend!" },
-    { id: 2, author: "Jane Smith", date: "2024-01-10", text: "Excellent product. The watch looks exactly as shown in the pictures. Fast shipping too!" },
-    { id: 3, author: "Mike Johnson", date: "2024-01-08", text: "Amazing quality and craftsmanship. Worth every penny!" },
-    { id: 4, author: "Sarah Williams", date: "2024-01-05", text: "Beautiful watch, perfect for daily wear. Very comfortable and stylish." },
-    { id: 5, author: "David Brown", date: "2024-01-04", text: "Outstanding quality. Exceeded my expectations." },
-    { id: 6, author: "Emily Davis", date: "2024-01-03", text: "Love it! Perfect gift for my husband." },
-    { id: 7, author: "James Wilson", date: "2024-01-02", text: "Classic design, great value for money." },
-    { id: 8, author: "Lisa Anderson", date: "2024-01-01", text: "Very elegant and well-made watch." },
-    { id: 9, author: "Robert Taylor", date: "2023-12-30", text: "Fast delivery, exactly as described." },
-    { id: 10, author: "Maria Garcia", date: "2023-12-29", text: "Highly recommend this brand. Great quality." },
-    { id: 11, author: "Thomas Martinez", date: "2023-12-28", text: "Beautiful timepiece. Very impressed." },
-    { id: 12, author: "Jennifer Lee", date: "2023-12-27", text: "Perfect for everyday wear. Love the style." },
-    { id: 13, author: "Christopher Harris", date: "2023-12-26", text: "Excellent craftsmanship. Worth every penny." },
-    { id: 14, author: "Amanda Clark", date: "2023-12-25", text: "Great watch! Exceeded expectations." },
-    { id: 15, author: "Daniel Lewis", date: "2023-12-24", text: "Classic and elegant. Very satisfied." },
-    { id: 16, author: "Jessica Walker", date: "2023-12-23", text: "Beautiful design, comfortable to wear." },
-    { id: 17, author: "Matthew Hall", date: "2023-12-22", text: "Outstanding quality. Highly recommend!" },
-  ];
-
-  const baseReviews = reviewPool.slice(0, watchCommentsCount);
+  const watchCommentsCount = apiWatch?.watchComments ?? 0;
+  const baseReviews: { id: number; date: string; author: string; text: string }[] = [];
 
   const allReviews = [...baseReviews, ...extraReviews].filter((r) => !deletedReviewIds.includes(r.id));
   const sortedReviews = [...allReviews].reverse();
@@ -142,7 +124,7 @@ const WatchDetail = () => {
     handleReviewMenuClose();
   };
 
-  const handleSubmitReview = () => {
+  const handleSubmitReview = async () => {
     const text = newReviewText.trim();
     if (!text) return;
     if (editingReviewId !== null) {
@@ -164,16 +146,37 @@ const WatchDetail = () => {
       setEditingReviewId(null);
       setNewReviewText("");
     } else {
-      setExtraReviews((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-          author: "You",
-          text,
-        },
-      ]);
-      setNewReviewText("");
+      // Yangi comment — backend createComment
+      if (!watchIdStr) return;
+      if (!user?._id) {
+        if (typeof window !== "undefined") alert(t("detail.loginToComment") || "Comment yozish uchun tizimga kiring.");
+        return;
+      }
+      try {
+        const res = await createCommentMutation({
+          variables: {
+            input: {
+              commentGroup: "WATCH",
+              commentContent: text.slice(0, 100),
+              commentRefId: watchIdStr,
+            },
+          },
+        });
+        const created = res.data?.createComment;
+        const authorName = created?.memberData?.memberName ?? user?.memberName ?? "You";
+        setExtraReviews((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            author: authorName,
+            text,
+          },
+        ]);
+        setNewReviewText("");
+      } catch (err) {
+        if (typeof window !== "undefined") console.error("createComment error:", err);
+      }
     }
   };
 
@@ -198,54 +201,47 @@ const WatchDetail = () => {
     }
   }, [sortedReviews, reviewsCount]);
 
-  const allWatches = allWatchesData.map(({ comments, ...w }) => w);
-  const foundWatch = watchId ? allWatchesData.find((w: { id: number }) => w.id === watchId) : null;
-  
-  // Default watch data with additional properties
   const defaultWatchData = {
-    brand: "Rolex",
-    color: "Green",
-    caseShape: "Square",
-    waterResistance: "20m",
-    vendor: "Delxa",
-    type: "Men Watch",
-    data: 2007,
-    country: "Sweden",
-    availability: 30,
-    viewers: 188,
-    sold: 69,
-    soldHours: 16,
+    brand: "",
+    color: "",
+    caseShape: "",
+    waterResistance: "",
+    vendor: "",
+    type: "",
+    data: "",
+    country: "",
+    availability: 0,
+    viewers: 0,
+    sold: 0,
+    soldHours: 0,
   };
 
-  // Combine found watch with default data, or use default if not found
-  const watch = foundWatch 
-    ? {
-        ...foundWatch,
-        price: foundWatch.price.replace("Rs. ", "$ "), // Convert price format
-        ...defaultWatchData,
-      }
-    : {
-        id: 1,
-        name: "Black Dail Strap",
-        price: "$ 2,500.00",
-        image: "/img/watch/rasmm2.png",
-        ...defaultWatchData,
-      };
+  const watchFromApi = useMemo(() => {
+    if (!apiWatch) return null;
+    const priceStr = apiWatch.watchPrice != null
+      ? `$ ${Number(apiWatch.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}`
+      : "";
+    const img0 = watchImageUrl(apiWatch.watchImages?.[0]);
+    return {
+      ...defaultWatchData,
+      id: apiWatch._id,
+      name: apiWatch.watchModelName ?? "",
+      price: priceStr,
+      image: img0,
+      brand: apiWatch.watchBrand ?? "",
+      color: apiWatch.watchColor ?? "",
+      caseShape: apiWatch.watchCaseShape ?? "",
+      waterResistance: apiWatch.watchWaterResistance ?? "",
+      type: apiWatch.watchType ?? "",
+      data: apiWatch.watchMakeData ?? "",
+      country: apiWatch.watchCountry ?? "",
+      availability: apiWatch.watchAvailability ?? 0,
+      viewers: apiWatch.watchViews ?? 0,
+    };
+  }, [apiWatch]);
 
-  const storedStatus = watchId != null ? getWatchStatus(watchId) : undefined;
-  const isDeletedForVisitor =
-    watchId != null && isWatchDeletedForVisitor(watchId, user?._id);
-  const availabilityText =
-    storedStatus?.status === "sold_out" ? "sold out" : String(watch.availability);
+  const watch = watchFromApi;
 
-  // View count: sahifaga kirilganda 1ga oshirish
-  useEffect(() => {
-    if (watchId != null && !Number.isNaN(watchId)) {
-      incrementViewCount(watchId);
-    }
-  }, [watchId]);
-
-  // 2 ta rasm array - birinchi rasm watch.image, ikkinchi rasm boshqa rasm
   const getSecondImage = (image: string) => {
     if (image.includes("rasm1")) return image.replace("rasm1", "rasm2");
     if (image.includes("rasm2")) return image.replace("rasm2", "rasm3");
@@ -253,10 +249,66 @@ const WatchDetail = () => {
     if (image.includes("rasmm.png"))
       return image.replace("rasmm.png", "rasmm2.png");
     if (image.includes("rasmm2")) return image.replace("rasmm2", "rasmm");
-    return image; // Agar topilmasa, bir xil rasm
+    return image;
   };
 
-  const images = [watch.image, getSecondImage(watch.image)];
+  const images =
+    apiWatch?.watchImages?.length
+      ? apiWatch.watchImages.length >= 2
+        ? [watchImageUrl(apiWatch.watchImages[0]), watchImageUrl(apiWatch.watchImages[1])]
+        : watch
+          ? [watch.image, getSecondImage(watch.image)]
+          : []
+      : watch
+        ? [watch.image, getSecondImage(watch.image)]
+        : [];
+
+  const storedStatus = watchId != null ? getWatchStatus(String(watchId)) : undefined;
+  const isDeletedForVisitor =
+    watchId != null && isWatchDeletedForVisitor(String(watchId), user?._id);
+  const availabilityText = watch
+    ? (storedStatus?.status === "sold_out" ? "sold out" : String(watch.availability))
+    : "";
+
+  useEffect(() => {
+    if (watchId != null) {
+      incrementViewCount(String(watchId));
+    }
+  }, [watchId]);
+
+  if (!router.isReady || (watchIdStr && watchLoading)) {
+    return (
+      <Stack className="watch-detail-page">
+        <Box className="watch-detail-main" sx={{ p: 3, textAlign: "center" }}>
+          <Typography>Loading...</Typography>
+        </Box>
+      </Stack>
+    );
+  }
+  if (!watch) {
+    return (
+      <Stack className="watch-detail-page">
+        <Box className="watch-detail-main" sx={{ p: 3, textAlign: "center" }}>
+          <Typography variant="h6">
+            {watchIdStr ? "Watch not found." : "No watch selected."}
+          </Typography>
+          {watchError && (
+            <Typography sx={{ mt: 1, fontSize: 14, color: "text.secondary" }}>
+              {watchError.message}
+            </Typography>
+          )}
+          {watchIdStr && (
+            <Typography sx={{ mt: 0.5, fontSize: 12, color: "text.secondary" }}>
+              ID: {watchIdStr}
+            </Typography>
+          )}
+          <Button onClick={() => router.push("/watch")} sx={{ mt: 2 }}>
+            Back to list
+          </Button>
+        </Box>
+      </Stack>
+    );
+  }
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -276,48 +328,7 @@ const WatchDetail = () => {
     setActiveTab(newValue);
   };
 
-  const popularWatches: PopularWatch[] = [
-    {
-      id: 1,
-      brand: "Rolex",
-      model: "Datejust",
-      image: "/img/watch/rasmm.png",
-      price: "$ 2,500.00",
-      likes: 2,
-      views: 35,
-      comments: 17,
-    },
-    {
-      id: 2,
-      brand: "Rolex",
-      model: "Submariner",
-      image: "/img/watch/rasm1.png",
-      price: "$ 3,200.00",
-      likes: 2,
-      views: 35,
-      comments: 17,
-    },
-    {
-      id: 3,
-      brand: "Rolex",
-      model: "Daytona",
-      image: "/img/watch/rasmm2.png",
-      price: "$ 4,500.00",
-      likes: 2,
-      views: 35,
-      comments: 17,
-    },
-    {
-      id: 4,
-      brand: "Omega",
-      model: "Speedmaster",
-      image: "/img/watch/rasm3.png",
-      price: "$ 2,800.00",
-      likes: 2,
-      views: 35,
-      comments: 17,
-    },
-  ];
+  const popularWatches: PopularWatch[] = [];
 
   if (isDeletedForVisitor) {
     return (
@@ -333,7 +344,13 @@ const WatchDetail = () => {
   }
 
   if (device === "mobile") {
-    return <Stack>WATCH DETAIL MOBILE</Stack>;
+    return (
+      <Stack className="watch-detail-page">
+        <Box className="watch-detail-main" sx={{ p: 3, textAlign: "center" }}>
+          <Typography>WATCH DETAIL MOBILE</Typography>
+        </Box>
+      </Stack>
+    );
   }
 
   return (
@@ -422,7 +439,7 @@ const WatchDetail = () => {
             <Box className="detail-item">
               <Typography className="detail-label">{t("detail.dealer")}</Typography>
               <Typography className="detail-value availability">
-                Elit Watch
+                {apiWatch?.memberData?.memberName ?? "—"}
               </Typography>
             </Box>
           </Box>
@@ -538,113 +555,7 @@ const WatchDetail = () => {
           {activeTab === 0 && (
             <Box className="description-content">
               <Typography className="description-text">
-                Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                solicitud felis. Nam tempus turpis at metus scelerisque placerat
-                nulla deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis. Nam tempus turpis at metus
-                scelerisque placerat nulla deumantos solicitud felis. Nam tempus
-                turpis at metus scelerisque placerat nulla deumantos solicitud
-                felis. Nam tempus turpis at metus scelerisque placerat nulla
-                deumantos solicitud felis.
+                {apiWatch?.watchDescription ?? ""}
               </Typography>
             </Box>
           )}
@@ -855,8 +766,8 @@ const WatchDetail = () => {
                   }}
                 />
                 <Box className="review-submit-wrapper">
-                  <Button className="review-submit-btn" onClick={handleSubmitReview}>
-                    {t("detail.postComment")}
+                  <Button className="review-submit-btn" onClick={handleSubmitReview} disabled={commentSubmitting}>
+                    {commentSubmitting ? (t("detail.sending") || "Yuborilmoqda...") : t("detail.postComment")}
                     <ArrowForward sx={{ ml: 1, fontSize: 22 }} />
                   </Button>
                 </Box>

@@ -25,7 +25,6 @@ export const SIGN_UP = gql`
 			memberViews
 			memberComments
 			memberRank
-			memberWarnings
 			memberBlocks
 			deletedAt
 			createdAt
@@ -56,7 +55,6 @@ export const LOGIN = gql`
 			memberViews
 			memberComments
 			memberRank
-			memberWarnings
 			memberBlocks
 			deletedAt
 			createdAt
@@ -75,6 +73,7 @@ export const UPDATE_MEMBER = gql`
 			memberAuthType
 			memberPhone
 			memberName
+			memberEmail
 			memberPhoto
 			memberAddress
 			memberWatches
@@ -83,7 +82,6 @@ export const UPDATE_MEMBER = gql`
 			memberPoints
 			memberLikes
 			memberViews
-			memberWarnings
 			memberBlocks
 			deletedAt
 			createdAt
@@ -91,6 +89,18 @@ export const UPDATE_MEMBER = gql`
 			accessToken
 		}
 	}
+`;
+
+export const IMAGE_UPLOADER = gql`
+  mutation ImageUploader($file: Upload!, $target: String!) {
+    imageUploader(file: $file, target: $target)
+  }
+`;
+
+export const IMAGES_UPLOADER = gql`
+  mutation ImagesUploader($files: [Upload!]!, $target: String!) {
+    imagesUploader(files: $files, target: $target)
+  }
 `;
 
 export const LIKE_TARGET_MEMBER = gql`
@@ -104,7 +114,6 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberName
 			memberPhoto
 			memberAddress
-			memberWarnings
 			memberBlocks
 			memberWatches
 			memberRank
@@ -242,7 +251,6 @@ mutation LikeTargetWatch($input: String!) {
             memberViews
             memberComments
             memberRank
-            memberWarnings
             memberBlocks
             deletedAt
             createdAt
@@ -290,7 +298,6 @@ mutation CreateBoardArticle($input: BoardArticleInput!) {
             memberViews
             memberComments
             memberRank
-            memberWarnings
             memberBlocks
             deletedAt
             createdAt
@@ -334,7 +341,6 @@ mutation UpdateBoardArticle($input: BoardArticleUpdate!){
             memberViews
             memberComments
             memberRank
-            memberWarnings
             memberBlocks
             deletedAt
             createdAt
@@ -399,7 +405,6 @@ export const CREATE_COMMENT = gql`
             memberViews
             memberComments
             memberRank
-            memberWarnings
             memberBlocks
             deletedAt
             createdAt
@@ -440,7 +445,6 @@ export const UPDATE_COMMENT = gql`
             memberViews
             memberComments
             memberRank
-            memberWarnings
             memberBlocks
             deletedAt
             createdAt

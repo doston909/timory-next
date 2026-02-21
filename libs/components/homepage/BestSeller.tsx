@@ -11,17 +11,18 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import SellIcon from '@mui/icons-material/Sell';
-import StarRateIcon from '@mui/icons-material/StarRate';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useCart } from "@/libs/context/CartContext";
 import { useTranslation } from "@/libs/context/useTranslation";
+import { useQuery } from "@apollo/client";
+import { GET_WATCHES } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 type BestSellerWatch = {
-  id: number;
+  id: string | number;
   brand: string;
   model: string;
   price: string;
@@ -30,127 +31,40 @@ type BestSellerWatch = {
   views: number;
 };
 
-const bestSellers: BestSellerWatch[] = [
-  {
-    id: 1,
-    brand: "Rolex",
-    model: "Day-Date 40",
-    price: "$42,900",
-    image: "/img/watch/rasm3.png",
-    likes: 0,
-    views: 2450,
-  },
-  {
-    id: 2,
-    brand: "Patek Philippe",
-    model: "Nautilus 5711",
-    price: "$119,400",
-    image: "/img/watch/rasm3.png",
-    likes: 96,
-    views: 1890,
-  },
-  {
-    id: 3,
-    brand: "Audemars Piguet",
-    model: "Royal Oak 15500",
-    price: "$38,700",
-    image: "/img/watch/rasm3.png",
-    likes: 87,
-    views: 1650,
-  },
-  {
-    id: 4,
-    brand: "Richard Mille",
-    model: "RM 11-03",
-    price: "$189,000",
-    image: "/img/watch/rasm3.png",
-    likes: 103,
-    views: 21,
-  },
-  {
-    id: 5,
-    brand: "Rolex",
-    model: "Daytona",
-    price: "$32,500",
-    image: "/img/watch/rasm3.png",
-    likes: 78,
-    views: 1420,
-  },
-  {
-    id: 6,
-    brand: "Patek Philippe",
-    model: "Aquanaut",
-    price: "$59,900",
-    image: "/img/watch/rasm3.png",
-    likes: 112,
-    views: 1980,
-  },
-  {
-    id: 7,
-    brand: "Rolex",
-    model: "Day-Date 40",
-    price: "$42,900",
-    image: "/img/watch/rasm3.png",
-    likes: 128,
-    views: 2450,
-  },
-  {
-    id: 8,
-    brand: "Patek Philippe",
-    model: "Nautilus 5711",
-    price: "$119,400",
-    image: "/img/watch/rasm3.png",
-    likes: 96,
-    views: 1890,
-  },
-  {
-    id: 9,
-    brand: "Audemars Piguet",
-    model: "Royal Oak 15500",
-    price: "$38,700",
-    image: "/img/watch/rasm3.png",
-    likes: 87,
-    views: 1650,
-  },
-  {
-    id: 10,
-    brand: "Richard Mille",
-    model: "RM 11-03",
-    price: "$189,000",
-    image: "/img/watch/rasm3.png",
-    likes: 103,
-    views: 2100,
-  },
-  {
-    id: 12,
-    brand: "Rolex",
-    model: "Daytona",
-    price: "$32,500",
-    image: "/img/watch/rasm3.png",
-    likes: 78,
-    views: 1420,
-  },
-  {
-    id: 13,
-    brand: "Patek Philippe",
-    model: "Aquanaut",
-    price: "$59,900",
-    image: "/img/watch/rasm3.png",
-    likes: 112,
-    views: 1980,
-  },
-];
-
 const BestSeller = () => {
   const router = useRouter();
   const { addToCart } = useCart();
   const { t } = useTranslation();
-  const [likedWatches, setLikedWatches] = useState<Record<number, boolean>>({});
-  const [likeCounts, setLikeCounts] = useState<Record<number, number>>(
-    bestSellers.reduce((acc, w) => ({ ...acc, [w.id]: w.likes }), {})
+  const { data } = useQuery(GET_WATCHES, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 24,
+        sort: "createdAt",
+        direction: "ASC",
+        search: {},
+      },
+    },
+  });
+  const list = data?.getWatches?.list ?? [];
+  const mapped = list.map((w: any) => ({
+    id: w._id,
+    brand: w.watchBrand ?? "",
+    model: w.watchModelName ?? "",
+    price: w.watchPrice != null ? `$ ${Number(w.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "$0.00",
+    image: watchImageUrl(w.watchImages?.[0]),
+    likes: w.watchLikes ?? 0,
+    views: w.watchViews ?? 0,
+  }));
+  const byLikes = [...mapped].sort((a, b) => b.likes - a.likes);
+  const hasAnyLikes = byLikes.length > 0 && byLikes[0].likes > 0;
+  const bestSellers: BestSellerWatch[] = hasAnyLikes ? byLikes.slice(0, 8) : mapped.slice(0, 8);
+  const [likedWatches, setLikedWatches] = useState<Record<string, boolean>>({});
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(
+    bestSellers.reduce((acc, w) => ({ ...acc, [String(w.id)]: w.likes }), {})
   );
 
-  const handleCardClick = (watchId: number) => {
+  const handleCardClick = (watchId: string | number) => {
     saveHomepageSectionBeforeNav("best-seller");
     router.push(`/watch/detail?id=${watchId}`);
   };
@@ -162,21 +76,22 @@ const BestSeller = () => {
       name: watch.model,
       model: watch.model,
       brand: watch.brand,
-      price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "") || "0"),
+      price: parseFloat(String(watch.price).replace(/[^0-9.-]+/g, "")) || 0,
       image: watch.image,
       quantity: 1,
     });
   };
 
-  const handleLikeClick = (e: React.MouseEvent, watchId: number, originalLikes: number) => {
+  const handleLikeClick = (e: React.MouseEvent, watchId: string | number, originalLikes: number) => {
     e.stopPropagation();
+    const key = String(watchId);
     setLikedWatches((prev) => {
-      const isLiked = !prev[watchId];
+      const isLiked = !prev[key];
       setLikeCounts((counts) => ({
         ...counts,
-        [watchId]: isLiked ? counts[watchId] + 1 : Math.max(originalLikes, counts[watchId] - 1),
+        [key]: isLiked ? (counts[key] ?? 0) + 1 : Math.max(originalLikes, (counts[key] ?? 0) - 1),
       }));
-      return { ...prev, [watchId]: isLiked };
+      return { ...prev, [key]: isLiked };
     });
   };
 
@@ -211,7 +126,7 @@ const BestSeller = () => {
           className="best-seller-swiper"
         >
           {bestSellers.map((w) => (
-            <SwiperSlide key={w.id}>
+            <SwiperSlide key={String(w.id)}>
               <Box
                 className="best-watch-card"
                 onClick={() => handleCardClick(w.id)}
@@ -220,7 +135,6 @@ const BestSeller = () => {
                 <div className="image-box">
                   <img src={w.image} alt={w.model} />
 
-                
                   <div className="watch-actions">
                     <div className="action-btn" onClick={(e) => handleBagClick(e, w)}>
                       <ShoppingBagOutlinedIcon
@@ -229,22 +143,22 @@ const BestSeller = () => {
                     </div>
                     <div
                       className={`action-btn action-btn-with-count${
-                        likedWatches[w.id] ? " action-btn-liked" : ""
+                        likedWatches[String(w.id)] ? " action-btn-liked" : ""
                       }`}
                       onClick={(e) => handleLikeClick(e, w.id, w.likes)}
                     >
-                      {likedWatches[w.id] ? (
+                      {likedWatches[String(w.id)] ? (
                         <FavoriteIcon sx={{ fontSize: 24, fontWeight: 300 }} />
                       ) : (
                         <FavoriteBorderIcon sx={{ fontSize: 24, color: "#000", fontWeight: 300 }} />
                       )}
-                      <span className="action-count">{likeCounts[w.id]}</span>
+                      <span className="action-count">{likeCounts[String(w.id)] ?? w.likes}</span>
                     </div>
                     <div className="action-btn action-btn-with-count">
                       <CheckCircleIcon
                         sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
                       />
-                      <span className="action-count">{w.views}</span>
+                      <span className="action-count">{w.views ?? 0}</span>
                     </div>
                   </div>
                 </div>

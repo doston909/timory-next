@@ -208,6 +208,13 @@
           font-weight: 700;
           color: #9c1b1b;
         }
+
+        .price {
+          margin-top: 6px;
+          font-size: 20px;
+          font-weight: 500;
+          color: var(--text-primary);
+        }
       }
     }
 
@@ -926,12 +933,15 @@
       .image-box {
         position: relative;
         width: 100%;
+        min-height: 320px;
         display: flex;
         justify-content: center;
         align-items: center;
 
         img {
           width: 85%;
+          height: auto;
+          max-height: 320px;
           object-fit: contain;
           transition: 0.3s ease;
         }
@@ -1024,13 +1034,18 @@
             right: -8px;
             background: #e8994a;
             color: #ffffff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
-            padding: 2px 6px;
-            border-radius: 10px;
-            min-width: 18px;
-            text-align: center;
-            line-height: 1.4;
+            min-width: 22px;
+            min-height: 22px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            line-height: 1;
             box-shadow: 0 2px 6px rgba(243, 151, 46, 0.4);
           }
         }

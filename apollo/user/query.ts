@@ -50,7 +50,6 @@ query GetWatches ($input: WatchesInquiry!) {
                 memberViews
                 memberComments
                 memberRank
-                memberWarnings
                 memberBlocks
                 deletedAt
                 createdAt
@@ -63,6 +62,81 @@ query GetWatches ($input: WatchesInquiry!) {
         }
     }
 }
+`;
+
+export const GET_WATCH = gql`
+  query GetWatch($watchId: String!) {
+    getWatch(watchId: $watchId) {
+      _id
+      watchType
+      watchStatus
+      watchLocation
+      watchAddress
+      watchModelName
+      watchLimitedEdition
+      watchPrice
+      watchViews
+      watchLikes
+      watchComments
+      watchRank
+      watchImages
+      watchBrand
+      watchColor
+      watchCaseShape
+      watchCaseSize
+      watchCountry
+      watchMakeData
+      watchWaterResistance
+      watchAvailability
+      watchMaterial
+      watchDescription
+      memberId
+      soldAt
+      deletedAt
+      createdAt
+      updatedAt
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+      memberData {
+        _id
+        memberName
+        memberPhoto
+        memberAddress
+      }
+    }
+  }
+`;
+
+export const GET_MEMBER = gql`
+  query GetMember($memberId: String!) {
+    getMember(memberId: $memberId) {
+      _id
+      memberType
+      memberStatus
+      memberAuthType
+      memberName
+      memberEmail
+      memberPhone
+      memberPhoto
+      memberAddress
+      memberWatches
+      memberArticles
+      memberFollowers
+      memberFollowings
+      memberPoints
+      memberLikes
+      memberViews
+      memberComments
+      memberRank
+      memberBlocks
+      deletedAt
+      createdAt
+      updatedAt
+    }
+  }
 `;
 
 export const GET_DEALER_WATCHES = gql`

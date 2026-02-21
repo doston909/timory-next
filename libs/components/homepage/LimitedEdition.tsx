@@ -3,9 +3,12 @@ import { useRouter } from "next/router";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import { useTranslation } from "@/libs/context/useTranslation";
+import { useQuery } from "@apollo/client";
+import { GET_WATCHES } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 
 type SpotlightWatch = {
-  id: number;
+  id: string | number;
   title: string;
   model: string;
   image: string;
@@ -14,66 +17,32 @@ type SpotlightWatch = {
   hoverImage: string;
 };
 
-const spotlightWatches: SpotlightWatch[] = [
-  {
-    id: 1,
-    title: "Audemars Piguet",
-    model: "Royal Oak Frosted Gold",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Ultra-Rare",
-    price: "$128,000",
-  },
-  {
-    id: 2,
-    title: "Patek Philippe",
-    model: "Grand Complications 5204",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Collector Grade",
-    price: "$245,000",
-  },
-  {
-    id: 3,
-    title: "Rolex",
-    model: "Daytona Meteorite Dial",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Discontinued",
-    price: "$78,000",
-  },
-  {
-    id: 4,
-    title: "Richard Mille",
-    model: "RM 65-01",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Boutique-Only",
-    price: "$310,000",
-  },
-  {
-    id: 5,
-    title: "Richard Mille",
-    model: "RM 65-01",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Boutique-Only",
-    price: "$310,000",
-  },
-  {
-    id: 6,
-    title: "Rolex",
-    model: "Daytona Meteorite Dial",
-    image: "/img/watch/rasm1.png",
-    hoverImage: "/img/watch/rasm3.png",
-    rarity: "Discontinued",
-    price: "$78,000",
-  },
-];
-
 const LimitedEdition = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  // Faqat limited edition true, eng oxirgi yaratilgan 6 ta soat
+  const { data } = useQuery(GET_WATCHES, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 6,
+        sort: "createdAt",
+        direction: "DESC",
+        search: { watchLimitedEdition: true },
+      },
+    },
+  });
+  const list = data?.getWatches?.list ?? [];
+  const spotlightWatches: SpotlightWatch[] = list.map((w: any) => ({
+    id: w._id,
+    title: w.watchBrand ?? "",
+    model: w.watchModelName ?? "",
+    image: watchImageUrl(w.watchImages?.[0]),
+    hoverImage: watchImageUrl(w.watchImages?.[1] ?? w.watchImages?.[0]),
+    rarity: "Limited Edition",
+    price: w.watchPrice != null ? `$ ${Number(w.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "",
+  }));
+
   return (
     <Stack className="limited-spotlight-section">
       <h2 className="section-title">Limited Editions Spotlight</h2>
@@ -95,7 +64,7 @@ const LimitedEdition = () => {
           }}
         >
           {spotlightWatches.map((w) => (
-            <Stack key={w.id} className="spotlight-card" data-watch-id={w.id} sx={{ cursor: "pointer" }}>
+            <Stack key={String(w.id)} className="spotlight-card" data-watch-id={String(w.id)} sx={{ cursor: "pointer" }}>
               <Box className="image-box">
                 <img className="main-img" src={w.image} alt={w.model} />
                 <img className="hover-img" src={w.hoverImage} alt={w.model} />

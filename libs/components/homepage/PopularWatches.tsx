@@ -5,49 +5,43 @@ import { saveHomepageSectionBeforeNav } from "@/libs/homepageScroll";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PopularWatchesCard, { PopularWatch } from "./PopularWatchesCard";
 import { useTranslation } from "@/libs/context/useTranslation";
-
-const popularWatches: PopularWatch[] = [
-  {
-    id: 1,
-    brand: "Rolex",
-    model: "Datejust",
-    image: "/img/watch/rasmm.png",
-    likes: 2,
-    views: 35,
-    comments: 17,
-  },
-  {
-    id: 2,
-    brand: "Rolex",
-    model: "Submariner",
-    image: "/img/watch/rasm1.png",
-    likes: 2,
-    views: 35,
-    comments: 17,
-  },
-  {
-    id: 3,
-    brand: "Rolex",
-    model: "Daytona",
-    image: "/img/watch/rasmm2.png",
-    likes: 2,
-    views: 35,
-    comments: 17,
-  },
-  {
-    id: 4,
-    brand: "Omega",
-    model: "Speedmaster",
-    image: "/img/watch/rasm3.png",
-    likes: 2,
-    views: 35,
-    comments: 17,
-  },
-];
+import { useQuery } from "@apollo/client";
+import { GET_WATCHES } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 
 const PopularWatches = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const { data } = useQuery(GET_WATCHES, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 20,
+        sort: "createdAt",
+        direction: "DESC",
+        search: {},
+      },
+    },
+  });
+  const list = data?.getWatches?.list ?? [];
+  const mapped = list.map((w: any) => ({
+    id: w._id,
+    brand: w.watchBrand ?? "",
+    model: w.watchModelName ?? "",
+    image: watchImageUrl(w.watchImages?.[0]),
+    price: w.watchPrice != null ? `$ ${Number(w.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : undefined,
+    likes: w.watchLikes ?? 0,
+    views: w.watchViews ?? 0,
+    comments: w.watchComments ?? 0,
+  }));
+  const byPopularity = [...mapped].sort(
+    (a, b) => b.likes + b.views - (a.likes + a.views)
+  );
+  const hasAnyPopular =
+    byPopularity.length > 0 && (byPopularity[0].likes > 0 || byPopularity[0].views > 0);
+  const popularWatches: PopularWatch[] = hasAnyPopular
+    ? byPopularity.slice(0, 4)
+    : mapped.slice(0, 4);
 
   const handleSeeAllClick = () => {
     saveHomepageSectionBeforeNav("popular-watches");
@@ -63,7 +57,7 @@ const PopularWatches = () => {
           <p className="empty-text">{t("home.popularWatchesNotFound")}</p>
         ) : (
           popularWatches.map((watch) => (
-            <PopularWatchesCard key={watch.id} watch={watch} homepageSectionId="popular-watches" />
+            <PopularWatchesCard key={String(watch.id)} watch={watch} homepageSectionId="popular-watches" />
           ))
         )}
       </Box>

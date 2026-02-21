@@ -10,7 +10,7 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import { useCart } from "@/libs/context/CartContext";
 
 export type PopularWatch = {
-  id: number;
+  id: string | number;
   brand: string;
   model: string;
   image: string;
@@ -85,19 +85,19 @@ const PopularWatchesCard = ({ watch, homepageSectionId }: Props) => {
                 sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
               />
             )}
-            {likeCount > 0 && <span className="action-count">{likeCount}</span>}
+            <span className="action-count">{likeCount}</span>
           </div>
           <div className="action-btn action-btn-with-count">
             <VisibilityOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
             />
-            {watch.views && <span className="action-count">{watch.views}</span>}
+            <span className="action-count">{watch.views ?? 0}</span>
           </div>
           <div className="action-btn action-btn-with-count">
             <CommentOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
             />
-            {watch.comments && <span className="action-count">{watch.comments}</span>}
+            <span className="action-count">{watch.comments ?? 0}</span>
           </div>
         </div>
       </Box>

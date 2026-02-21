@@ -1,6 +1,6 @@
 import { Stack, Box, Select, MenuItem, IconButton, OutlinedInput, InputAdornment, Typography } from "@mui/material";
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -12,9 +12,12 @@ import Filter from "@/libs/components/watch/Filter";
 import Top from "@/libs/components/Top";
 import withLayoutBasic from "@/libs/components/layout/LayoutBasic";
 import { useTranslation } from "@/libs/context/useTranslation";
+import { useQuery } from "@apollo/client";
+import { GET_WATCHES } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 
 interface Watch {
-  id: number;
+  id: number | string;
   name: string;
   price: string;
   image: string;
@@ -30,257 +33,46 @@ interface Watch {
   limitedEdition?: boolean;
 }
 
-const watches: Watch[] = [
-  {
-    id: 1,
-    name: "Analog Strap Watch",
-    price: "$ 4,500.00",
-    image: "/img/watch/rasm1.png",
-    brand: "Rolex",
-    type: "Men",
-    caseSize: "41–44mm",
-    dialColor: "Black",
-    material: "Stainless Steel",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-01-10T10:00:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 2,
-    name: "Black Dail Strap",
-    price: "$ 2,500.00",
-    image: "/img/watch/rasm2.png",
-    brand: "Omega",
-    type: "Women",
-    caseSize: "28–32mm",
-    dialColor: "White",
-    material: "Leather",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-01-15T14:30:00Z",
-    limitedEdition: true,
-  },
-  {
-    id: 3,
-    name: "Black Dial Classic",
-    price: "$ 3,326.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Patek Philippe",
-    type: "Men",
-    caseSize: "37–40mm",
-    dialColor: "Black",
-    material: "Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-01-20T09:15:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 4,
-    name: "Rose Gold Mesh",
-    price: "$ 5,200.00",
-    image: "/img/watch/rasmm.png",
-    brand: "Rolex",
-    type: "Women",
-    caseSize: "33–36mm",
-    dialColor: "Silver",
-    material: "Rose Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-01-25T16:45:00Z",
-    limitedEdition: true,
-  },
-  {
-    id: 5,
-    name: "Chronograph Brown",
-    price: "$ 6,800.00",
-    image: "/img/watch/rasmm2.png",
-    brand: "Tag Heuer",
-    type: "Sport",
-    caseSize: "45mm+",
-    dialColor: "Brown",
-    material: "Titanium",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-01T11:20:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 6,
-    name: "Classic Gold",
-    price: "$ 4,100.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Omega",
-    type: "Unisex",
-    caseSize: "37–40mm",
-    dialColor: "Gold",
-    material: "Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-05T13:00:00Z",
-    limitedEdition: true,
-  },
-   {
-    id: 7,
-    name: "Chronograph Brown",
-    price: "$ 6,800.00",
-    image: "/img/watch/rasmm2.png",
-    brand: "Breitling",
-    type: "Men",
-    caseSize: "41–44mm",
-    dialColor: "Blue",
-    material: "Ceramic",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-08T10:30:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 8,
-    name: "Classic Gold",
-    price: "$ 4,100.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Cartier",
-    type: "Women",
-    caseSize: "28–32mm",
-    dialColor: "White",
-    material: "Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-10T15:00:00Z",
-    limitedEdition: true,
-  },
-   {
-    id: 9,
-    name: "Classic Gold",
-    price: "$ 4,100.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Rolex",
-    type: "Unisex",
-    caseSize: "37–40mm",
-    dialColor: "Green",
-    material: "Stainless Steel",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-12T08:45:00Z",
-    limitedEdition: false,
-  },
-   {
-    id: 10,
-    name: "Analog Strap Watch",
-    price: "$ 4,500.00",
-    image: "/img/watch/rasm1.png",
-    brand: "IWC",
-    type: "Sport",
-    caseSize: "45mm+",
-    dialColor: "Black",
-    material: "Carbon",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-13T12:00:00Z",
-    limitedEdition: true,
-  },
-  {
-    id: 11,
-    name: "Black Dail Strap",
-    price: "$ 2,500.00",
-    image: "/img/watch/rasm2.png",
-    brand: "Seiko",
-    type: "Men",
-    caseSize: "37–40mm",
-    dialColor: "Blue",
-    material: "Rubber",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-14T09:30:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 12,
-    name: "Black Dial Classic",
-    price: "$ 3,326.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Tudor",
-    type: "Women",
-    caseSize: "33–36mm",
-    dialColor: "Silver",
-    material: "Rose Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-15T14:15:00Z",
-    limitedEdition: true,
-  },
-  {
-    id: 13,
-    name: "Rose Gold Mesh",
-    price: "$ 5,200.00",
-    image: "/img/watch/rasmm.png",
-    brand: "Panerai",
-    type: "Men",
-    caseSize: "45mm+",
-    dialColor: "Skeleton",
-    material: "Titanium",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-16T11:00:00Z",
-    limitedEdition: false,
-  },
-  {
-    id: 14,
-    name: "Chronograph Brown",
-    price: "$ 6,800.00",
-    image: "/img/watch/rasmm2.png",
-    brand: "Hublot",
-    type: "Sport",
-    caseSize: "41–44mm",
-    dialColor: "Brown",
-    material: "Ceramic",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-17T16:30:00Z",
-    limitedEdition: true,
-  },
-  {
-    id: 15,
-    name: "Classic Gold",
-    price: "$ 4,100.00",
-    image: "/img/watch/rasm3.png",
-    brand: "Audemars Piguet",
-    type: "Unisex",
-    caseSize: "37–40mm",
-    dialColor: "Gold",
-    material: "Gold",
-    likes: 2,
-    views: 35,
-    comments: 17,
-    createdAt: "2024-02-18T10:00:00Z",
-    limitedEdition: false,
-  },
-  
-   
-   
-];
+function mapApiToListWatch(w: any): Watch {
+  return {
+    id: w._id,
+    name: w.watchModelName ?? "",
+    price: w.watchPrice != null ? `$ ${Number(w.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "",
+    image: watchImageUrl(w.watchImages?.[0]),
+    brand: w.watchBrand ?? undefined,
+    type: w.watchType ?? undefined,
+    caseSize: w.watchCaseSize ?? undefined,
+    dialColor: w.watchColor ?? undefined,
+    material: w.watchMaterial ?? undefined,
+    likes: w.watchLikes ?? 0,
+    views: w.watchViews ?? 0,
+    comments: w.watchComments ?? 0,
+    createdAt: w.createdAt ?? undefined,
+    limitedEdition: w.watchLimitedEdition ?? false,
+  };
+}
 
 const WatchList: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("newest");
+
+  const { data: watchesData } = useQuery(GET_WATCHES, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 500,
+        sort: "createdAt",
+        direction: "DESC",
+        search: {},
+      },
+    },
+  });
+  const watches: Watch[] = useMemo(
+    () => (watchesData?.getWatches?.list ?? []).map(mapApiToListWatch),
+    [watchesData]
+  );
 
   useEffect(() => {
     if (router.isReady && router.query.sort === "limited-editions") {
@@ -339,14 +131,32 @@ const WatchList: NextPage = () => {
     ? searchedWatches.filter((watch) => selectedBrands.includes(watch.brand || ""))
     : searchedWatches;
   
-  // Type filter
+  // Type filter: Filter uses "Men","Women","Unisex","Sport" but API returns "MEN","WOMEN","UNISEX","ELITE-SPORT"
+  const filterTypeToApi = (display: string) => {
+    const map: Record<string, string> = {
+      Men: "MEN",
+      Women: "WOMEN",
+      Unisex: "UNISEX",
+      Sport: "ELITE-SPORT",
+    };
+    return map[display] ?? display;
+  };
   const typeFiltered = selectedTypes.length > 0
-    ? brandFiltered.filter((watch) => selectedTypes.includes(watch.type || ""))
+    ? brandFiltered.filter((watch) =>
+        selectedTypes.some((sel) => {
+          const apiType = filterTypeToApi(sel);
+          const wType = watch.type || "";
+          return apiType === wType || (sel === "Sport" && (wType === "ELITE_SPORT" || wType === "ELITE-SPORT"));
+        })
+      )
     : brandFiltered;
   
-  // Case Size filter
+  // Case Size filter (normalize en-dash – and hyphen - so "37–40mm" matches "37-40mm")
+  const norm = (s: string) => (s || "").replace(/\u2013/g, "-").trim();
   const sizeFiltered = selectedSizes.length > 0
-    ? typeFiltered.filter((watch) => selectedSizes.includes(watch.caseSize || ""))
+    ? typeFiltered.filter((watch) =>
+        selectedSizes.some((sel) => norm(sel) === norm(watch.caseSize || ""))
+      )
     : typeFiltered;
   
   // Dial Color filter

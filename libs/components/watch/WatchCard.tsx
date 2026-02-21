@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
 
 interface Watch {
-  id: number;
+  id: number | string;
   name: string;
   price: string;
   image: string;
@@ -87,18 +87,26 @@ const WatchCard = ({ watch }: WatchCardProps) => {
     });
   };
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const goToDetail = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    console.log('Card clicked, watch ID:', watch.id);
-    console.log('Navigating to:', `/watch/detail?id=${watch.id}`);
-    router.push(`/watch/detail?id=${watch.id}`).catch((err) => {
-      console.error('Navigation error:', err);
-    });
+    const id = watch.id != null ? String(watch.id) : "";
+    if (id) router.push(`/watch/detail?id=${encodeURIComponent(id)}`);
   };
 
   return (
-    <Box className="watch-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+    <Box
+      className="watch-card"
+      onClick={goToDetail}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          goToDetail(e as unknown as React.MouseEvent);
+        }
+      }}
+      sx={{ cursor: "pointer" }}
+    >
       <Box className="watch-image-box">
         {/* Limited Edition Badge */}
         {watch.limitedEdition && (
@@ -153,13 +161,13 @@ const WatchCard = ({ watch }: WatchCardProps) => {
             <VisibilityOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
             />
-            {watch.views && <span className="action-count">{watch.views}</span>}
+            <span className="action-count">{watch.views ?? 0}</span>
           </div>
           <div className="action-btn action-btn-with-count">
             <CommentOutlinedIcon
               sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
             />
-            {watch.comments && <span className="action-count">{watch.comments}</span>}
+            <span className="action-count">{watch.comments ?? 0}</span>
           </div>
         </div>
 

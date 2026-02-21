@@ -12,8 +12,6 @@ import TopDealers from "@/libs/components/homepage/TopDealers";
 import AIWatchFinder from "@/libs/components/homepage/AIWatchFinder";
 import LimitedEdition from "@/libs/components/homepage/LimitedEdition";
 import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
-import { GET_WATCHES } from "@/apollo/user/query";
-import { useQuery } from "@apollo/client";
 import { consumeHomepageScrollRestore } from "@/libs/homepageScroll";
 
 const Home: NextPage = () => {
@@ -31,24 +29,6 @@ const Home: NextPage = () => {
     }
   }, []);
 
-  const {
-    loading: getWatchesLoading,
-    data: getWatchesData,
-    error: getWatchesError,
-    refetch: getWatchesRefetch,
-  } = useQuery(GET_WATCHES, {
-    fetchPolicy: "network-only",
-    variables: {
-      input: {
-        page: 1,
-        limit: 9,
-        sort: "createdAt",
-        direction: "DESC",
-        search: {},
-      },
-    },
-  });
-console.log("getWatchesData", getWatchesData);
   return (
     <Stack className={"home-page"}>
       <Box id="top-brands">

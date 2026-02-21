@@ -46,6 +46,7 @@ interface WISearch {
 	sizesRange?: SizesRange;
 	periodsRange?: PeriodsRange;
 	text?: string;
+	watchLimitedEdition?: boolean;
 }
 
 export interface WatchesInquiry {

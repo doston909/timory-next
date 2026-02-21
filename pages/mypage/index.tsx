@@ -25,10 +25,22 @@ import {
 } from "@/libs/articleStatusStorage";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 import { useQuery, useMutation } from "@apollo/client";
-import { CREATE_WATCH, UPDATE_WATCH, REMOVE_WATCH } from "../../apollo/user/mutation";
-import { GET_DEALER_WATCHES } from "../../apollo/user/query";
+import {
+  CREATE_WATCH,
+  UPDATE_WATCH,
+  REMOVE_WATCH,
+  IMAGES_UPLOADER,
+  IMAGE_UPLOADER,
+  UPDATE_MEMBER,
+  CREATE_BOARD_ARTICLE,
+} from "../../apollo/user/mutation";
+import { GET_DEALER_WATCHES, GET_MEMBER } from "../../apollo/user/query";
+import { getJwtToken } from "../../libs/auth-token";
+import { updateUserInfo } from "../../libs/auth";
 import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
+import { BoardArticleCategory } from "../../libs/enums/board-article.enum";
 import { sweetMixinErrorAlert } from "../../libs/sweetAlert";
+import { watchImageUrl } from "../../libs/utils";
 
 /** Dealer watch from API (getDealerWatches list item) */
 type DealerWatch = {
@@ -55,8 +67,11 @@ const MyPage = () => {
   const router = useRouter();
   const { addToCart } = useCart();
   const user = useReactiveVar(userVar);
-  const isDealer = true;
-  //const isDealer =  user?.memberType?.toLowerCase() === "dealer";
+
+  useEffect(() => {
+    const token = getJwtToken();
+    if (token && !user?._id) updateUserInfo(token);
+  }, [user?._id]);
 
   // Asosiy dealer uchun Follow/Unfollow
   const [isDealerFollowing, setIsDealerFollowing] = useState(false);
@@ -77,15 +92,73 @@ const MyPage = () => {
       skip: !user?._id,
     }
   );
+  const rawId = user?._id != null ? String(user._id) : "";
+  const isValidObjectId = rawId.length === 24 && /^[a-f0-9]+$/i.test(rawId);
+  const memberId = isValidObjectId ? rawId : "";
+  const shouldFetchMember = !!memberId;
+  const { data: memberData } = useQuery(GET_MEMBER, {
+    variables: { memberId },
+    skip: !shouldFetchMember,
+    fetchPolicy: "network-only",
+    onCompleted: (data) => {
+      const m = data?.getMember;
+      if (!m) return;
+      const current = (userVar as () => typeof user)();
+      if (!current?._id) return;
+      userVar({
+        ...current,
+        memberType: m.memberType ?? current.memberType,
+        memberName: m.memberName ?? current.memberName,
+        memberEmail: m.memberEmail ?? current.memberEmail,
+        memberPhone: m.memberPhone ?? current.memberPhone,
+        memberPhoto: m.memberPhoto ?? current.memberPhoto,
+        memberAddress: m.memberAddress ?? current.memberAddress,
+      });
+    },
+  });
+  const m = memberData?.getMember;
+  const displayName = m?.memberName ?? user?.memberName;
+  const displayPhone = m?.memberPhone ?? user?.memberPhone;
+  const displayEmail = m?.memberEmail ?? user?.memberEmail;
+  const displayPhoto = m?.memberPhoto ?? user?.memberPhoto;
+  const displayType = m?.memberType ?? user?.memberType;
+  const isDealer = String(displayType ?? "").toUpperCase() === "DEALER";
   useEffect(() => {
     const list = dealerWatchesData?.getDealerWatches?.list;
     if (list) setWatchesList(list);
   }, [dealerWatchesData]);
+  const [imagesUploaderMutation] = useMutation(IMAGES_UPLOADER, {
+    onError: (err) => sweetMixinErrorAlert(err?.message ?? "Image upload failed."),
+  });
+  const [imageUploaderMutation] = useMutation(IMAGE_UPLOADER, {
+    onError: (err) => sweetMixinErrorAlert(err?.message ?? "Image upload failed."),
+  });
+  const [updateMemberMutation] = useMutation(UPDATE_MEMBER, {
+    onCompleted: (data) => {
+      if (data?.updateMember && user) {
+        userVar({
+          ...user,
+          memberPhoto: data.updateMember.memberPhoto ?? user.memberPhoto,
+        });
+      }
+    },
+    onError: (err) =>
+      sweetMixinErrorAlert(err?.message ?? "Failed to update profile."),
+  });
+  const [createBoardArticleMutation, { loading: createArticleLoading }] =
+    useMutation(CREATE_BOARD_ARTICLE, {
+      onError: (err) =>
+        sweetMixinErrorAlert(err?.message ?? "Failed to add article."),
+    });
   const [createWatchMutation, { loading: createWatchLoading }] = useMutation(
     CREATE_WATCH,
     {
       onCompleted: () => {
         refetchDealerWatches();
+        if (watchImagePreview1) URL.revokeObjectURL(watchImagePreview1);
+        if (watchImagePreview2) URL.revokeObjectURL(watchImagePreview2);
+        setWatchImagePreview1(null);
+        setWatchImagePreview2(null);
         setNewWatch({
           modelName: "",
           watchBrand: "",
@@ -111,7 +184,38 @@ const MyPage = () => {
       },
     }
   );
+  const dealerWatchesVariables = {
+    input: { page: 1, limit: 500, search: {} },
+  };
   const [updateWatchMutation] = useMutation(UPDATE_WATCH, {
+    update(cache, { data }) {
+      const updated = data?.updateWatch;
+      if (!updated?._id) return;
+      try {
+        const existing = cache.readQuery<{
+          getDealerWatches: { list: DealerWatch[]; metaCounter?: { total: number } };
+        }>({
+          query: GET_DEALER_WATCHES,
+          variables: dealerWatchesVariables,
+        });
+        if (!existing?.getDealerWatches?.list) return;
+        const list = existing.getDealerWatches.list.map((w) =>
+          w._id === updated._id ? { ...w, ...updated } : w
+        );
+        cache.writeQuery({
+          query: GET_DEALER_WATCHES,
+          variables: dealerWatchesVariables,
+          data: {
+            getDealerWatches: {
+              ...existing.getDealerWatches,
+              list,
+            },
+          },
+        });
+      } catch {
+        // ignore cache errors
+      }
+    },
     onCompleted: () => refetchDealerWatches(),
     onError: (err) => sweetMixinErrorAlert(err?.message ?? "Failed to update watch."),
   });
@@ -167,6 +271,8 @@ const MyPage = () => {
   const [isCaseSizeOpen, setIsCaseSizeOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
   const [isAddArticleOpen, setIsAddArticleOpen] = useState(false);
+  const [newArticleImageFile, setNewArticleImageFile] = useState<File | null>(null);
+  const [newArticleImagePreview, setNewArticleImagePreview] = useState<string | null>(null);
   const [newArticle, setNewArticle] = useState({
     image: null as string | null,
     title: "",
@@ -188,9 +294,11 @@ const MyPage = () => {
     material: "",
     description: "",
     limitedEdition: false,
-    image1: null as string | null,
-    image2: null as string | null,
+    image1: null as File | null,
+    image2: null as File | null,
   });
+  const [watchImagePreview1, setWatchImagePreview1] = useState<string | null>(null);
+  const [watchImagePreview2, setWatchImagePreview2] = useState<string | null>(null);
   const isAddWatchValid =
     !!newWatch.modelName &&
     !!newWatch.watchBrand &&
@@ -204,20 +312,29 @@ const MyPage = () => {
     !!newWatch.waterResistance &&
     !!newWatch.availability &&
     !!newWatch.material &&
-    !!newWatch.description;
+    !!newWatch.description &&
+    (newWatch.image1 != null || newWatch.image2 != null);
+  const [profilePhotoFile, setProfilePhotoFile] = useState<File | null>(null);
+  const [profilePhotoPreview, setProfilePhotoPreview] = useState<string | null>(null);
   const [profileData, setProfileData] = useState({
-    username: "doston",
-    phone: "01076409293",
+    username: "",
+    phone: "",
     email: "",
     address: "",
     photo: null as string | null,
   });
-  const [displayProfile, setDisplayProfile] = useState({
-    username: "Caroline",
-    phone: "(010) 123-41234",
-    email: "",
-    photo: "/img/profile/ceo.png",
-  });
+  useEffect(() => {
+    if (user?._id) {
+      setProfileData((prev) => ({
+        ...prev,
+        username: user?.memberName ?? "",
+        phone: user?.memberPhone ?? "",
+        email: user?.memberEmail ?? "",
+        address: user?.memberAddress ?? "",
+        photo: user?.memberPhoto ?? null,
+      }));
+    }
+  }, [user?._id, user?.memberName, user?.memberPhone, user?.memberEmail, user?.memberAddress, user?.memberPhoto]);
 
   type GridWatch = {
     id: string;
@@ -416,7 +533,7 @@ const MyPage = () => {
       model: watch.watchModelName,
       brand: watch.watchBrand || "",
       price: watch.watchPrice ?? 0,
-      image: watch.watchImages?.[0] ?? "",
+      image: watchImageUrl(watch.watchImages?.[0]) || "",
       quantity: 1,
     });
   };
@@ -426,6 +543,8 @@ const MyPage = () => {
   };
   const formatWatchPrice = (n: number) =>
     `$ ${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+  const parsePrice = (s: string): number =>
+    parseFloat(String(s).replace(/[^0-9.-]/g, "")) || 0;
 
   return (
     <Stack className="mypage-page">
@@ -436,26 +555,24 @@ const MyPage = () => {
           <Box className="mypage-profile">
             <Box className="mypage-avatar-wrapper">
               <img
-                src={displayProfile.photo}
-                alt={displayProfile.username}
+                src={watchImageUrl(displayPhoto, "/img/profile/defaultUser.svg")}
+                alt={displayName ?? ""}
                 className="mypage-avatar"
               />
             </Box>
 
             <Box className="mypage-profile-text">
               <Typography className="mypage-profile-name">
-                {displayProfile.username}
+                {displayName || "—"}
               </Typography>
               <Typography className="mypage-profile-phone">
-                {displayProfile.phone}
+                {displayPhone || "—"}
               </Typography>
-              {displayProfile.email && (
-                <Typography className="mypage-profile-email">
-                  {displayProfile.email}
-                </Typography>
-              )}
+              <Typography className="mypage-profile-email">
+                {displayEmail || "—"}
+              </Typography>
               <Typography className="mypage-profile-role">
-                {isDealer ? "Dealer" : "User"}
+                {(displayType?.toUpperCase() === "DEALER" ? "Dealer" : "User") || "—"}
               </Typography>
             </Box>
           </Box>
@@ -569,7 +686,7 @@ const MyPage = () => {
                   <Box key={watch._id} className="mypage-watch-item">
                     <Box className="mypage-watch-item-left">
                       <img
-                        src={watch.watchImages?.[0] ?? "/img/watch/rasm3.png"}
+                        src={watchImageUrl(watch.watchImages?.[0])}
                         alt={watch.watchModelName}
                         className="mypage-watch-item-image"
                         onClick={() => handleWatchClick(watch._id)}
@@ -1491,9 +1608,12 @@ const MyPage = () => {
                 <Box className="mypage-edit-profile-photo-section">
                   <Box className="mypage-edit-profile-photo-wrapper">
                     <Box className="mypage-edit-profile-photo-placeholder">
-                      {profileData.photo ? (
+                      {profilePhotoPreview || profileData.photo ? (
                         <img
-                          src={profileData.photo}
+                          src={
+                            profilePhotoPreview ||
+                            watchImageUrl(profileData.photo, "/img/profile/ceo.png")
+                          }
                           alt="Profile"
                           className="mypage-edit-profile-photo"
                         />
@@ -1501,12 +1621,17 @@ const MyPage = () => {
                         <PersonOutline className="mypage-edit-profile-photo-icon" />
                       )}
                     </Box>
-                    {profileData.photo && (
+                    {(profilePhotoPreview || profileData.photo) && (
                       <Button
                         className="mypage-edit-profile-photo-cancel"
-                        onClick={() =>
-                          setProfileData({ ...profileData, photo: null })
-                        }
+                        onClick={() => {
+                          if (profilePhotoPreview) {
+                            URL.revokeObjectURL(profilePhotoPreview);
+                            setProfilePhotoPreview(null);
+                          }
+                          setProfilePhotoFile(null);
+                          setProfileData({ ...profileData, photo: null });
+                        }}
                       >
                         <Delete />
                       </Button>
@@ -1521,15 +1646,11 @@ const MyPage = () => {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setProfileData({
-                              ...profileData,
-                              photo: reader.result as string,
-                            });
-                          };
-                          reader.readAsDataURL(file);
+                          if (profilePhotoPreview) URL.revokeObjectURL(profilePhotoPreview);
+                          setProfilePhotoFile(file);
+                          setProfilePhotoPreview(URL.createObjectURL(file));
                         }
+                        e.target.value = "";
                       }}
                     />
                     <Button
@@ -1619,15 +1740,37 @@ const MyPage = () => {
               <Box className="mypage-edit-profile-footer">
                 <Button
                   className="mypage-edit-profile-update-button"
-                  onClick={() => {
-                    // Update profile functionality
-                    setDisplayProfile({
-                      username: profileData.username || "Caroline",
-                      phone: profileData.phone || "(010) 123-41234",
-                      email: profileData.email || "",
-                      photo: profileData.photo || "/img/profile/ceo.png",
-                    });
-                    setIsEditProfileOpen(false);
+                  onClick={async () => {
+                    let photoUrl: string | null = profileData.photo;
+                    if (profilePhotoFile) {
+                      try {
+                        const { data } = await imageUploaderMutation({
+                          variables: { file: profilePhotoFile, target: "member" },
+                        });
+                        if (data?.imageUploader) photoUrl = data.imageUploader;
+                        if (profilePhotoPreview) URL.revokeObjectURL(profilePhotoPreview);
+                        setProfilePhotoPreview(null);
+                        setProfilePhotoFile(null);
+                      } catch {
+                        return;
+                      }
+                    }
+                    try {
+                      await updateMemberMutation({
+                        variables: {
+                          input: {
+                            ...(photoUrl != null && { memberPhoto: photoUrl }),
+                            ...(profileData.username && { memberName: profileData.username }),
+                            ...(profileData.phone && { memberPhone: profileData.phone }),
+                            ...(profileData.email !== undefined && { memberEmail: profileData.email }),
+                            ...(profileData.address !== undefined && { memberAddress: profileData.address }),
+                          },
+                        },
+                      });
+                      setIsEditProfileOpen(false);
+                    } catch {
+                      // error already shown by mutation onError
+                    }
                   }}
                 >
                   Update Profile
@@ -1662,9 +1805,9 @@ const MyPage = () => {
                 <Box className="mypage-add-watch-image-block">
                   <Box className="mypage-add-watch-image-wrapper">
                     <Box className="mypage-add-watch-image-placeholder">
-                      {newWatch.image1 ? (
+                      {watchImagePreview1 ? (
                         <img
-                          src={newWatch.image1}
+                          src={watchImagePreview1}
                           alt="Watch 1"
                           className="mypage-add-watch-image"
                         />
@@ -1675,9 +1818,11 @@ const MyPage = () => {
                     {newWatch.image1 && (
                       <Button
                         className="mypage-add-watch-image-remove"
-                        onClick={() =>
-                          setNewWatch((prev) => ({ ...prev, image1: null }))
-                        }
+                        onClick={() => {
+                          if (watchImagePreview1) URL.revokeObjectURL(watchImagePreview1);
+                          setWatchImagePreview1(null);
+                          setNewWatch((prev) => ({ ...prev, image1: null }));
+                        }}
                       >
                         <Delete />
                       </Button>
@@ -1692,15 +1837,11 @@ const MyPage = () => {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setNewWatch((prev) => ({
-                              ...prev,
-                              image1: reader.result as string,
-                            }));
-                          };
-                          reader.readAsDataURL(file);
+                          if (watchImagePreview1) URL.revokeObjectURL(watchImagePreview1);
+                          setWatchImagePreview1(URL.createObjectURL(file));
+                          setNewWatch((prev) => ({ ...prev, image1: file }));
                         }
+                        e.target.value = "";
                       }}
                     />
                     <Button
@@ -1723,9 +1864,9 @@ const MyPage = () => {
                 <Box className="mypage-add-watch-image-block">
                   <Box className="mypage-add-watch-image-wrapper">
                     <Box className="mypage-add-watch-image-placeholder">
-                      {newWatch.image2 ? (
+                      {watchImagePreview2 ? (
                         <img
-                          src={newWatch.image2}
+                          src={watchImagePreview2}
                           alt="Watch 2"
                           className="mypage-add-watch-image"
                         />
@@ -1736,9 +1877,11 @@ const MyPage = () => {
                     {newWatch.image2 && (
                       <Button
                         className="mypage-add-watch-image-remove"
-                        onClick={() =>
-                          setNewWatch((prev) => ({ ...prev, image2: null }))
-                        }
+                        onClick={() => {
+                          if (watchImagePreview2) URL.revokeObjectURL(watchImagePreview2);
+                          setWatchImagePreview2(null);
+                          setNewWatch((prev) => ({ ...prev, image2: null }));
+                        }}
                       >
                         <Delete />
                       </Button>
@@ -1753,15 +1896,11 @@ const MyPage = () => {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setNewWatch((prev) => ({
-                              ...prev,
-                              image2: reader.result as string,
-                            }));
-                          };
-                          reader.readAsDataURL(file);
+                          if (watchImagePreview2) URL.revokeObjectURL(watchImagePreview2);
+                          setWatchImagePreview2(URL.createObjectURL(file));
+                          setNewWatch((prev) => ({ ...prev, image2: file }));
                         }
+                        e.target.value = "";
                       }}
                     />
                     <Button
@@ -2197,42 +2336,59 @@ const MyPage = () => {
                 <Button
                   className="mypage-add-watch-submit-button"
                   disabled={!isAddWatchValid || createWatchLoading}
-                  onClick={() => {
+                  onClick={async () => {
                     if (!isAddWatchValid) return;
-                    const watchTypeMap: Record<string, WatchTypeEnum> = {
-                      Men: WatchTypeEnum.MEN,
-                      Women: WatchTypeEnum.WOMEN,
-                      Unisex: WatchTypeEnum.UNISEX,
-                      Sport: WatchTypeEnum.ELITE_SPORT,
-                    };
-                    createWatchMutation({
-                      variables: {
-                        input: {
-                          watchImages: [newWatch.image1, newWatch.image2].filter(
-                            (x): x is string => x != null && x !== ""
-                          ),
-                          watchModelName: newWatch.modelName,
-                          watchType:
-                            watchTypeMap[newWatch.watchType] ?? WatchTypeEnum.UNISEX,
-                          watchPrice: parsePrice(newWatch.price),
-                          watchLimitedEdition: newWatch.limitedEdition,
-                          watchBrand: newWatch.watchBrand || undefined,
-                          watchColor: newWatch.color || undefined,
-                          watchCaseShape: newWatch.caseShape || undefined,
-                          watchCaseSize: newWatch.caseSize || undefined,
-                          watchCountry: newWatch.madeIn || undefined,
-                          watchMakeData: newWatch.date || undefined,
-                          watchWaterResistance: newWatch.waterResistance
-                            ? Number(newWatch.waterResistance)
-                            : undefined,
-                          watchAvailability: newWatch.availability
-                            ? Number(newWatch.availability)
-                            : undefined,
-                          watchMaterial: newWatch.material || undefined,
-                          watchDescription: newWatch.description || undefined,
+                    const files = [newWatch.image1, newWatch.image2].filter(
+                      (x): x is File => x != null
+                    );
+                    if (files.length === 0) {
+                      sweetMixinErrorAlert("Please add at least one image.");
+                      return;
+                    }
+                    try {
+                      const { data: uploadData } = await imagesUploaderMutation({
+                        variables: { files, target: "watch" },
+                      });
+                      const urls = uploadData?.imagesUploader;
+                      if (!urls?.length) {
+                        sweetMixinErrorAlert("Image upload failed.");
+                        return;
+                      }
+                      const watchTypeMap: Record<string, WatchTypeEnum> = {
+                        Men: WatchTypeEnum.MEN,
+                        Women: WatchTypeEnum.WOMEN,
+                        Unisex: WatchTypeEnum.UNISEX,
+                        Sport: WatchTypeEnum.ELITE_SPORT,
+                      };
+                      createWatchMutation({
+                        variables: {
+                          input: {
+                            watchImages: urls,
+                            watchModelName: newWatch.modelName,
+                            watchType:
+                              watchTypeMap[newWatch.watchType] ?? WatchTypeEnum.UNISEX,
+                            watchPrice: parsePrice(newWatch.price),
+                            watchLimitedEdition: newWatch.limitedEdition,
+                            watchBrand: newWatch.watchBrand || undefined,
+                            watchColor: newWatch.color || undefined,
+                            watchCaseShape: newWatch.caseShape || undefined,
+                            watchCaseSize: newWatch.caseSize || undefined,
+                            watchCountry: newWatch.madeIn || undefined,
+                            watchMakeData: newWatch.date || undefined,
+                            watchWaterResistance: newWatch.waterResistance
+                              ? Number(newWatch.waterResistance)
+                              : undefined,
+                            watchAvailability: newWatch.availability
+                              ? Number(newWatch.availability)
+                              : undefined,
+                            watchMaterial: newWatch.material || undefined,
+                            watchDescription: newWatch.description || undefined,
+                          },
                         },
-                      },
-                    });
+                      });
+                    } catch {
+                      // imagesUploaderMutation onError already shows alert
+                    }
                   }}
                 >
                   {createWatchLoading ? "Adding…" : "Add Watch"}
@@ -2270,9 +2426,9 @@ const MyPage = () => {
                 <Box className="mypage-add-article-photo-row">
                   <Box className="mypage-edit-profile-photo-wrapper">
                     <Box className="mypage-edit-profile-photo-placeholder">
-                      {newArticle.image ? (
+                      {newArticleImagePreview || newArticle.image ? (
                         <img
-                          src={newArticle.image}
+                          src={newArticleImagePreview || newArticle.image || ""}
                           alt="Article"
                           className="mypage-edit-profile-photo"
                         />
@@ -2280,12 +2436,17 @@ const MyPage = () => {
                         <PersonOutline className="mypage-edit-profile-photo-icon" />
                       )}
                     </Box>
-                    {newArticle.image && (
+                    {(newArticleImagePreview || newArticle.image) && (
                       <Button
                         className="mypage-edit-profile-photo-cancel"
-                        onClick={() =>
-                          setNewArticle((prev) => ({ ...prev, image: null }))
-                        }
+                        onClick={() => {
+                          if (newArticleImagePreview) {
+                            URL.revokeObjectURL(newArticleImagePreview);
+                            setNewArticleImagePreview(null);
+                          }
+                          setNewArticleImageFile(null);
+                          setNewArticle((prev) => ({ ...prev, image: null }));
+                        }}
                       >
                         <Delete />
                       </Button>
@@ -2300,15 +2461,12 @@ const MyPage = () => {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setNewArticle((prev) => ({
-                              ...prev,
-                              image: reader.result as string,
-                            }));
-                          };
-                          reader.readAsDataURL(file);
+                          if (newArticleImagePreview)
+                            URL.revokeObjectURL(newArticleImagePreview);
+                          setNewArticleImageFile(file);
+                          setNewArticleImagePreview(URL.createObjectURL(file));
                         }
+                        e.target.value = "";
                       }}
                     />
                     <Button
@@ -2426,14 +2584,62 @@ const MyPage = () => {
               <Box className="mypage-edit-profile-footer">
                 <Button
                   className="mypage-edit-profile-update-button"
-                  onClick={() => {
-                    setNewArticle({
-                      image: null,
-                      title: "",
-                      content: "",
-                      articleType: "",
-                    });
-                    setIsAddArticleOpen(false);
+                  disabled={
+                    !newArticle.title?.trim() ||
+                    !newArticle.content?.trim() ||
+                    !newArticle.articleType ||
+                    createArticleLoading
+                  }
+                  onClick={async () => {
+                    const articleCategoryMap: Record<string, BoardArticleCategory> = {
+                      "Free Board": BoardArticleCategory.FREE,
+                      Recommendation: BoardArticleCategory.RECOMMEND,
+                      News: BoardArticleCategory.NEWS,
+                    };
+                    const category = articleCategoryMap[newArticle.articleType];
+                    if (!category) {
+                      sweetMixinErrorAlert("Please select article type.");
+                      return;
+                    }
+                    let articleImageUrl: string | undefined;
+                    if (newArticleImageFile) {
+                      try {
+                        const { data } = await imageUploaderMutation({
+                          variables: {
+                            file: newArticleImageFile,
+                            target: "article",
+                          },
+                        });
+                        if (data?.imageUploader) articleImageUrl = data.imageUploader;
+                        if (newArticleImagePreview)
+                          URL.revokeObjectURL(newArticleImagePreview);
+                        setNewArticleImagePreview(null);
+                        setNewArticleImageFile(null);
+                      } catch {
+                        return;
+                      }
+                    }
+                    try {
+                      await createBoardArticleMutation({
+                        variables: {
+                          input: {
+                            articleCategory: category,
+                            articleTitle: newArticle.title.trim(),
+                            articleContent: newArticle.content.trim(),
+                            ...(articleImageUrl && { articleImage: articleImageUrl }),
+                          },
+                        },
+                      });
+                      setNewArticle({
+                        image: null,
+                        title: "",
+                        content: "",
+                        articleType: "",
+                      });
+                      setIsAddArticleOpen(false);
+                    } catch {
+                      // error already shown by mutation onError
+                    }
                   }}
                 >
                   Add Article

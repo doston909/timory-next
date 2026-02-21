@@ -39,7 +39,7 @@ const AccountLogin: NextPage = () => {
     try {
       const { logIn } = await import("../../libs/auth");
       await logIn(memberName.trim(), password);
-      await router.replace("/");
+      if (typeof window !== "undefined") window.location.href = "/";
     } catch {
       // Error already shown by auth lib
     }
