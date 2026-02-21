@@ -208,3 +208,26 @@ export const GET_COMMENTS = gql`
     }
   }
 `;
+
+export const GET_MY_BOARD_ARTICLES = gql`
+  query GetMyBoardArticles($input: BoardArticlesInquiry!) {
+    getMyBoardArticles(input: $input) {
+      list {
+        _id
+        articleCategory
+        articleTitle
+        articleContent
+        articleImage
+        articleViews
+        articleLikes
+        articleComments
+        memberId
+        createdAt
+        updatedAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;

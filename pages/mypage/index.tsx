@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Box, Stack, Typography, Button, Checkbox } from "@mui/material";
 import {
   ShoppingBagOutlined,
@@ -34,7 +34,7 @@ import {
   UPDATE_MEMBER,
   CREATE_BOARD_ARTICLE,
 } from "../../apollo/user/mutation";
-import { GET_DEALER_WATCHES, GET_MEMBER } from "../../apollo/user/query";
+import { GET_DEALER_WATCHES, GET_MEMBER, GET_MY_BOARD_ARTICLES } from "../../apollo/user/query";
 import { getJwtToken } from "../../libs/auth-token";
 import { updateUserInfo } from "../../libs/auth";
 import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
@@ -145,8 +145,18 @@ const MyPage = () => {
     onError: (err) =>
       sweetMixinErrorAlert(err?.message ?? "Failed to update profile."),
   });
+  const myBoardArticlesVars = {
+    input: { page: 1, limit: 500, search: {} },
+  };
+  const { data: myArticlesData } = useQuery(GET_MY_BOARD_ARTICLES, {
+    variables: myBoardArticlesVars,
+    skip: !user?._id,
+  });
   const [createBoardArticleMutation, { loading: createArticleLoading }] =
     useMutation(CREATE_BOARD_ARTICLE, {
+      refetchQueries: [
+        { query: GET_MY_BOARD_ARTICLES, variables: myBoardArticlesVars },
+      ],
       onError: (err) =>
         sweetMixinErrorAlert(err?.message ?? "Failed to add article."),
     });
@@ -385,80 +395,30 @@ const MyPage = () => {
     followersStartIndex + FOLLOWERS_PER_PAGE
   );
 
-  const articles: any[] = [
-    {
-      id: 1,
-      type: "Free board",
-      date: "June 11, 2025",
-      title: "Tips for maintaining your luxury watch collection",
-      content:
-        "Discover essential tips for cleaning, storing, and wearing your luxury watches to preserve their value and beauty over time.",
-      views: 35,
-      likes: 12,
-    },
-    {
-      id: 2,
-      type: "Recommendation",
-      date: "November 10, 2025",
-      title: "Our recommended dress watches for special occasions",
-      content:
-        "Explore our curated list of elegant dress watches that perfectly complement formal outfits for weddings, galas, and important meetings.",
-      views: 21,
-      likes: 8,
-    },
-    {
-      id: 3,
-      type: "News",
-      date: "November 9, 2025",
-      title: "New limited edition releases this season",
-      content:
-        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
-      views: 48,
-      likes: 19,
-    },
-    {
-      id: 4,
-      type: "News",
-      date: "November 9, 2025",
-      title: "New limited edition releases this season",
-      content:
-        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
-      views: 48,
-      likes: 19,
-    },
-    {
-      id: 5,
-      type: "News",
-      date: "November 9, 2025",
-      title: "New limited edition releases this season",
-      content:
-        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
-      views: 48,
-      likes: 19,
-    },
-    {
-      id: 6,
-      type: "News",
-      date: "November 9, 2025",
-      title: "New limited edition releases this season",
-      content:
-        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
-      views: 48,
-      likes: 19,
-    },
-    {
-      id: 7,
-      type: "News",
-      date: "November 9, 2025",
-      title: "New limited edition releases this season",
-      content:
-        "Stay up to date with the latest limited edition timepieces from top brands, featuring unique designs, rare materials, and exclusive movements.",
-      views: 48,
-      likes: 19,
-    },
-  ];
+  const categoryToType: Record<string, string> = {
+    FREE: "Free Board",
+    RECOMMEND: "Recommendation",
+    NEWS: "News",
+  };
+  const articlesList = useMemo(() => {
+    const list = myArticlesData?.getMyBoardArticles?.list ?? [];
+    return list.map((a: any) => ({
+      id: a._id,
+      type: categoryToType[String(a.articleCategory)] ?? "Free Board",
+      date:
+        a.createdAt &&
+        new Date(a.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      title: a.articleTitle ?? "",
+      content: a.articleContent ?? "",
+      views: a.articleViews ?? 0,
+      likes: a.articleLikes ?? 0,
+    }));
+  }, [myArticlesData]);
 
-  const [articlesList, setArticlesList] = useState(articles);
   const totalArticlePages = Math.ceil(articlesList.length / ARTICLES_PER_PAGE);
   const articleStartIndex = (articlePage - 1) * ARTICLES_PER_PAGE;
   const currentArticles = articlesList.slice(
@@ -477,17 +437,18 @@ const MyPage = () => {
     return words.slice(0, wordLimit).join(" ") + "...";
   };
 
-  const handleArticleLikeClick = (articleId: number) => {
-    const isLiked = !!articleLiked[articleId];
+  const handleArticleLikeClick = (articleId: string | number) => {
+    const key = String(articleId);
+    const isLiked = !!articleLiked[key];
 
     setArticleLiked((prev) => ({
       ...prev,
-      [articleId]: !isLiked,
+      [key]: !isLiked,
     }));
 
     setArticleLikes((prev) => ({
       ...prev,
-      [articleId]: (prev[articleId] ?? 0) + (isLiked ? -1 : 1),
+      [key]: (prev[key] ?? 0) + (isLiked ? -1 : 1),
     }));
   };
 
@@ -2642,6 +2603,8 @@ const MyPage = () => {
                         content: "",
                         articleType: "",
                       });
+                      setNewArticleImagePreview(null);
+                      setNewArticleImageFile(null);
                       setIsAddArticleOpen(false);
                     } catch {
                       // error already shown by mutation onError
