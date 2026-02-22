@@ -19,6 +19,10 @@ import { useReactiveVar } from "@apollo/client";
 import { useCart } from "@/libs/context/CartContext";
 import { userVar } from "@/apollo/store";
 import { getWatchStatus, setWatchStatus } from "@/libs/watchStatusStorage";
+import {
+  getArticleStatus,
+  setArticleStatus,
+} from "@/libs/articleStatusStorage";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 import { useQuery, useMutation } from "@apollo/client";
 import {
@@ -29,14 +33,8 @@ import {
   IMAGE_UPLOADER,
   UPDATE_MEMBER,
   CREATE_BOARD_ARTICLE,
-  UPDATE_BOARD_ARTICLE,
 } from "../../apollo/user/mutation";
-import {
-  GET_BOARD_ARTICLES,
-  GET_DEALER_WATCHES,
-  GET_MEMBER,
-  GET_MY_BOARD_ARTICLES,
-} from "../../apollo/user/query";
+import { GET_DEALER_WATCHES, GET_MEMBER, GET_MY_BOARD_ARTICLES } from "../../apollo/user/query";
 import { getJwtToken } from "../../libs/auth-token";
 import { updateUserInfo } from "../../libs/auth";
 import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
@@ -162,84 +160,6 @@ const MyPage = () => {
       onError: (err) =>
         sweetMixinErrorAlert(err?.message ?? "Failed to add article."),
     });
-  const communityBoardArticlesVars = {
-    input: { page: 1, limit: 500, search: {} },
-  };
-
-  const [updateBoardArticleMutation] = useMutation(UPDATE_BOARD_ARTICLE, {
-    refetchQueries: [
-      { query: GET_BOARD_ARTICLES, variables: communityBoardArticlesVars },
-    ],
-    update(cache, { data }) {
-      const updated = data?.updateBoardArticle;
-      if (!updated) return;
-
-      // Mypage list (GET_MY_BOARD_ARTICLES) — yangilash, reload kerak emas
-      const existing = cache.readQuery<{
-        getMyBoardArticles: { list: any[]; metaCounter: { total: number }[] };
-      }>({
-        query: GET_MY_BOARD_ARTICLES,
-        variables: myBoardArticlesVars,
-      });
-      if (!existing?.getMyBoardArticles) return;
-      const { list, metaCounter } = existing.getMyBoardArticles;
-      if (updated.articleStatus === "REMOVE") {
-        const newList = list.filter((a: any) => a._id !== updated._id);
-        const newTotal = Math.max(0, (metaCounter?.[0]?.total ?? 1) - 1);
-        cache.writeQuery({
-          query: GET_MY_BOARD_ARTICLES,
-          variables: myBoardArticlesVars,
-          data: {
-            getMyBoardArticles: {
-              list: newList,
-              metaCounter: [{ total: newTotal }],
-            },
-          },
-        });
-      } else {
-        const newList = list.map((a: any) =>
-          a._id === updated._id ? { ...a, articleStatus: updated.articleStatus } : a
-        );
-        cache.writeQuery({
-          query: GET_MY_BOARD_ARTICLES,
-          variables: myBoardArticlesVars,
-          data: {
-            getMyBoardArticles: {
-              list: newList,
-              metaCounter,
-            },
-          },
-        });
-      }
-
-      // Community list (GET_BOARD_ARTICLES) — delete/remove: cache dan olib tashlash (reload siz)
-      if (updated.articleStatus === "DELETE" || updated.articleStatus === "REMOVE") {
-        const communityData = cache.readQuery<{
-          getBoardArticles: { list: any[]; metaCounter: { total: number }[] };
-        }>({
-          query: GET_BOARD_ARTICLES,
-          variables: communityBoardArticlesVars,
-        });
-        if (communityData?.getBoardArticles) {
-          const { list: communityList, metaCounter: communityMeta } = communityData.getBoardArticles;
-          const newCommunityList = communityList.filter((a: any) => a._id !== updated._id);
-          const newTotal = Math.max(0, (communityMeta?.[0]?.total ?? 1) - 1);
-          cache.writeQuery({
-            query: GET_BOARD_ARTICLES,
-            variables: communityBoardArticlesVars,
-            data: {
-              getBoardArticles: {
-                list: newCommunityList,
-                metaCounter: [{ total: newTotal }],
-              },
-            },
-          });
-        }
-      }
-    },
-    onError: (err) =>
-      sweetMixinErrorAlert(err?.message ?? "Failed to update article status."),
-  });
   const [createWatchMutation, { loading: createWatchLoading }] = useMutation(
     CREATE_WATCH,
     {
@@ -494,8 +414,6 @@ const MyPage = () => {
         }),
       title: a.articleTitle ?? "",
       content: a.articleContent ?? "",
-      image: watchImageUrl(a.articleImage),
-      status: a.articleStatus ?? "PUBLISHING",
       views: a.articleViews ?? 0,
       likes: a.articleLikes ?? 0,
     }));
@@ -1491,7 +1409,7 @@ const MyPage = () => {
                           sx={{ cursor: "pointer" }}
                         >
                           <Typography className="mypage-article-title-text">
-                            {article.title}
+                            {article.title, }
                           </Typography>
                         </Box>
                         <Box className="mypage-article-excerpt">
@@ -1549,36 +1467,41 @@ const MyPage = () => {
                             <Box className="mypage-article-status-control">
                               <select
                                 className={`mypage-article-status-select${
-                                  article.status === "DELETE"
+                                  getArticleStatus(article.id)?.status ===
+                                  "deleted"
                                     ? " mypage-article-status-deleted"
                                     : ""
                                 }`}
                                 value={
-                                  article.status === "DELETE"
+                                  getArticleStatus(article.id)?.status ===
+                                  "deleted"
                                     ? "delete"
                                     : "publishing"
                                 }
-                                onChange={async (e) => {
+                                onChange={(e) => {
                                   const v = e.target.value;
-                                  const statusMap = {
-                                    publishing: "PUBLISHING",
-                                    delete: "DELETE",
-                                    remove: "REMOVE",
-                                  } as const;
-                                  const articleStatus = statusMap[v as keyof typeof statusMap];
-                                  if (!articleStatus) return;
-                                  try {
-                                    await updateBoardArticleMutation({
-                                      variables: {
-                                        input: {
-                                          _id: article.id,
-                                          articleStatus,
-                                        },
-                                      },
-                                    });
-                                  } catch {
-                                    // onError already shows alert
+                                  if (v === "delete") {
+                                    setArticleStatus(
+                                      article.id,
+                                      "deleted",
+                                      user?._id
+                                    );
+                                    setArticlesList((prev) => [...prev]);
+                                    return;
                                   }
+                                  if (v === "remove") {
+                                    setArticlesList((prev) =>
+                                      prev.filter((a) => a.id !== article.id)
+                                    );
+                                    setArticleStatus(
+                                      article.id,
+                                      "removed",
+                                      user?._id
+                                    );
+                                    return;
+                                  }
+                                  setArticleStatus(article.id, "publishing");
+                                  articlesList((prev) => [...prev]);
                                 }}
                               >
                                 <option value="publishing">Publishing</option>

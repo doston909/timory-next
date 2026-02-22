@@ -209,12 +209,42 @@ export const GET_COMMENTS = gql`
   }
 `;
 
+export const GET_BOARD_ARTICLES = gql`
+  query GetBoardArticles($input: BoardArticlesInquiry!) {
+    getBoardArticles(input: $input) {
+      list {
+        _id
+        articleCategory
+        articleTitle
+        articleContent
+        articleImage
+        articleViews
+        articleLikes
+        articleComments
+        memberId
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          memberName
+          memberPhoto
+          memberType
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
 export const GET_MY_BOARD_ARTICLES = gql`
   query GetMyBoardArticles($input: BoardArticlesInquiry!) {
     getMyBoardArticles(input: $input) {
       list {
         _id
         articleCategory
+        articleStatus
         articleTitle
         articleContent
         articleImage

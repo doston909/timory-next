@@ -11,10 +11,13 @@ import {
 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 import CommunityCard from "@/libs/components/community/CommunityCard";
 import { useCart } from "@/libs/context/CartContext";
+import { GET_BOARD_ARTICLES } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 import { getViewCount } from "@/libs/viewCountStorage";
 import { getDealerByName } from "@/libs/data/dealers";
 import { useTranslation } from "@/libs/context/useTranslation";
@@ -83,89 +86,51 @@ const Community: NextPage = () => {
     setViewCount(getViewCount(currentBestSeller?.id ?? 0));
   }, [currentBestSeller?.id]);
 
-  const articles = [
-    {
-      id: 1,
-      image: "/img/watch/asosiy1.webp",
-      author: "RAM M",
-      memberType: "Admin",
-      date: "MAY 30, 2022",
-      comments: 10,
-      title: "HOW TO BUILD WATCHES BY MACHINE",
-      description:
-        "Crese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
-      articleType: "Free Board",
+  const categoryToArticleType: Record<string, string> = {
+    FREE: "Free Board",
+    RECOMMEND: "Recommendation",
+    NEWS: "News",
+  };
+
+  const { data: boardArticlesData } = useQuery(GET_BOARD_ARTICLES, {
+    variables: {
+      input: { page: 1, limit: 500, search: {} },
     },
-    {
-      id: 2,
-      image: "/img/watch/rasm3.png",
-      author: "RAM M",
-      memberType: "Member",
-      date: "APRIL 2, 2022",
-      comments: 1,
-      title: "TRENDING FASHION WHITE WATCHES",
-      description:
-        "Erese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
-      articleType: "Recommendation",
-    },
-    {
-      id: 3,
-      image: "/img/watch/asosiy1.webp",
-      author: "RAM M",
-      memberType: "Dealer",
-      date: "APRIL 2, 2022",
-      comments: 1,
-      title: "THE CLASSIC DIAL MEN'S WATCHES",
-      description:
-        "Wrese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
-      articleType: "News",
-    },
-    {
-      id: 4,
-      image: "/img/watch/rasmm2.png",
-      author: "RAM M",
-      memberType: "Member",
-      date: "APRIL 2, 2022",
-      comments: 1,
-      title: "MADE OF 100% RECYCLED PLASTIC",
-      description:
-        "Prese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,...",
-      articleType: "Free Board",
-    },
-    {
-      id: 5,
-      image: "/img/watch/rasmm.png",
-      author: "RAM M",
-      memberType: "Admin",
-      date: "APRIL 2, 2022",
-      comments: 1,
-      title: "THE CLASSIC DIAL MEN'S WATCHES",
-      description:
-        "Wrese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,..",
-      articleType: "Recommendation",
-    },
-    {
-      id: 6,
-      image: "/img/watch/rasmm2.png",
-      author: "RAM M",
-      memberType: "Dealer",
-      date: "APRIL 2, 2022",
-      comments: 1,
-      title: "MADE OF 100% RECYCLED PLASTIC",
-      description:
-        "Prese aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id,...",
-      articleType: "News",
-    },
-  ];
+  });
+
+  const articles = useMemo(() => {
+    const list = boardArticlesData?.getBoardArticles?.list ?? [];
+    return list.map((a: any) => {
+      const content = a.articleContent ?? "";
+      const description = content.length > 80 ? content.slice(0, 80).trim() + ".." : content;
+      return {
+        id: a._id,
+        image: watchImageUrl(a.articleImage),
+        author: a.memberData?.memberName ?? "",
+        memberType: a.memberData?.memberType ?? "",
+        date:
+          a.createdAt &&
+          new Date(a.createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          }),
+        comments: a.articleComments ?? 0,
+        title: a.articleTitle ?? "",
+        description,
+        articleType: categoryToArticleType[String(a.articleCategory)] ?? "Free Board",
+      };
+    });
+  }, [boardArticlesData]);
 
   const typeFilteredArticles = selectedArticleType
-    ? articles.filter((a) => (a as { articleType?: string }).articleType === selectedArticleType)
+    ? articles.filter((a: { articleType?: string; }) => (a as { articleType?: string }).articleType === selectedArticleType)
     : articles;
 
   // Article title va author (dealer name) bo‘yicha qidiruv
   const searchLower = communitySearch.toLowerCase().trim();
   const filteredArticles = searchLower
-    ? typeFilteredArticles.filter((a) => {
+    ? typeFilteredArticles.filter((a: { title: any; author: any; }) => {
         const title = (a.title || "").toLowerCase();
         const author = (a.author || "").toLowerCase();
         return title.includes(searchLower) || author.includes(searchLower);
