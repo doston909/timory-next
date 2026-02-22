@@ -69,6 +69,52 @@ query GetWatches ($input: WatchesInquiry!) {
 }
 `;
 
+export const GET_FAVORITES = gql`
+  query GetFavorites($input: OrdinaryInquiry!) {
+    getFavorites(input: $input) {
+      list {
+        _id
+        watchModelName
+        watchImages
+        watchPrice
+        watchBrand
+        watchLikes
+        watchViews
+        watchComments
+        watchLimitedEdition
+        watchStatus
+        createdAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+export const GET_VISITED = gql`
+  query GetVisited($input: OrdinaryInquiry!) {
+    getVisited(input: $input) {
+      list {
+        _id
+        watchModelName
+        watchImages
+        watchPrice
+        watchBrand
+        watchLikes
+        watchViews
+        watchComments
+        watchLimitedEdition
+        watchStatus
+        createdAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
 export const GET_WATCH = gql`
   query GetWatch($watchId: String!) {
     getWatch(watchId: $watchId) {

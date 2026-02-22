@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Box, Stack, Typography, Button, Checkbox } from "@mui/material";
 import {
   ShoppingBagOutlined,
@@ -30,15 +30,21 @@ import {
   UPDATE_MEMBER,
   CREATE_BOARD_ARTICLE,
   UPDATE_BOARD_ARTICLE,
+  SUBSCRIBE,
+  UNSUBSCRIBE,
 } from "../../apollo/user/mutation";
 import {
   GET_BOARD_ARTICLES,
   GET_DEALER_WATCHES,
+  GET_FAVORITES,
+  GET_VISITED,
   GET_MEMBER,
   GET_MY_BOARD_ARTICLES,
+  GET_MEMBER_FOLLOWERS,
+  GET_MEMBER_FOLLOWINGS,
 } from "../../apollo/user/query";
 import { getJwtToken } from "../../libs/auth-token";
-import { updateUserInfo } from "../../libs/auth";
+import { updateUserInfo, logOut } from "../../libs/auth";
 import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
 import { BoardArticleCategory } from "../../libs/enums/board-article.enum";
 import { sweetMixinErrorAlert } from "../../libs/sweetAlert";
@@ -75,15 +81,10 @@ const MyPage = () => {
     if (token && !user?._id) updateUserInfo(token);
   }, [user?._id]);
 
-  // Asosiy dealer uchun Follow/Unfollow
-  const [isDealerFollowing, setIsDealerFollowing] = useState(false);
-  // Followers tab uchun umumiy son (asosiy Follow tugmasiga bog'langan)
-  const [totalFollowersCount, setTotalFollowersCount] = useState(6);
-  // Asosiy Follow bosgan user Followers ro'yxatida ko'rinsinmi-yo'qmi
-  const [isCurrentUserFollower, setIsCurrentUserFollower] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Watches");
   const [followersPage, setFollowersPage] = useState(1);
+  const [followingsPage, setFollowingsPage] = useState(1);
   const [watchesList, setWatchesList] = useState<DealerWatch[]>([]);
   const { data: dealerWatchesData, refetch: refetchDealerWatches } = useQuery(
     GET_DEALER_WATCHES,
@@ -125,6 +126,12 @@ const MyPage = () => {
   const displayPhoto = m?.memberPhoto ?? user?.memberPhoto;
   const displayType = m?.memberType ?? user?.memberType;
   const isDealer = String(displayType ?? "").toUpperCase() === "DEALER";
+  const initialTabSetRef = useRef(false);
+  useEffect(() => {
+    if (!m || initialTabSetRef.current) return;
+    initialTabSetRef.current = true;
+    setActiveTab(isDealer ? "Watches" : "Favorites");
+  }, [m, isDealer]);
   useEffect(() => {
     const list = dealerWatchesData?.getDealerWatches?.list;
     if (list) setWatchesList(list);
@@ -154,6 +161,51 @@ const MyPage = () => {
     variables: myBoardArticlesVars,
     skip: !user?._id,
   });
+  const { data: followersData, refetch: refetchFollowers } = useQuery(
+    GET_MEMBER_FOLLOWERS,
+    {
+      variables: {
+        input: {
+          page: followersPage,
+          limit: FOLLOWERS_PER_PAGE,
+          search: memberId ? { followingId: memberId } : {},
+        },
+      },
+      skip: !memberId || activeTab !== "Followers",
+    }
+  );
+  const followersList = followersData?.getMemberFollowers?.list ?? [];
+  const followersTotal =
+    followersData?.getMemberFollowers?.metaCounter?.[0]?.total ?? 0;
+  const totalFollowersPages = Math.max(
+    1,
+    Math.ceil(followersTotal / FOLLOWERS_PER_PAGE)
+  );
+
+  const { data: followingsData, refetch: refetchFollowings } = useQuery(
+    GET_MEMBER_FOLLOWINGS,
+    {
+      variables: {
+        input: {
+          page: followingsPage,
+          limit: FOLLOWERS_PER_PAGE,
+          search: memberId ? { followerId: memberId } : {},
+        },
+      },
+      skip: !memberId || activeTab !== "Followings",
+    }
+  );
+  const followingsList = followingsData?.getMemberFollowings?.list ?? [];
+  const followingsTotal =
+    followingsData?.getMemberFollowings?.metaCounter?.[0]?.total ?? 0;
+  const totalFollowingsPages = Math.max(
+    1,
+    Math.ceil(followingsTotal / FOLLOWERS_PER_PAGE)
+  );
+
+  const [subscribeMutation] = useMutation(SUBSCRIBE);
+  const [unsubscribeMutation] = useMutation(UNSUBSCRIBE);
+
   const [createBoardArticleMutation, { loading: createArticleLoading }] =
     useMutation(CREATE_BOARD_ARTICLE, {
       refetchQueries: [
@@ -315,7 +367,8 @@ const MyPage = () => {
   });
 
   useEffect(() => {
-    if (!isDealer && activeTab === "Watches") setActiveTab("Favorites");
+    if (!initialTabSetRef.current && !isDealer && activeTab === "Watches")
+      setActiveTab("Favorites");
   }, [isDealer, activeTab]);
 
   const totalPagesWatches = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
@@ -323,21 +376,12 @@ const MyPage = () => {
     if (currentPage > totalPagesWatches && totalPagesWatches > 0)
       setCurrentPage(1);
   }, [watchesList.length, currentPage, totalPagesWatches]);
-  // Followers / Followings tablari uchun alohida follow holatlari (tab + id bo'yicha)
   const [followersFollowing, setFollowersFollowing] = useState<{
     [key: string]: boolean;
   }>({});
-  // Har bir box uchun Followers soni (kalit: "followers-1", "followings-1", ...)
   const [followersCounts, setFollowersCounts] = useState<{
     [key: string]: number;
-  }>(() => {
-    const initial: { [key: string]: number } = {};
-    for (let i = 1; i <= 6; i += 1) {
-      initial[`followers-${i}`] = 10; // Followers tab uchun boshlang'ich qiymat
-      initial[`followings-${i}`] = 10; // Followings tab uchun boshlang'ich qiymat
-    }
-    return initial;
-  });
+  }>({});
   const [likedWatches, setLikedWatches] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -354,6 +398,20 @@ const MyPage = () => {
   const [articlePage, setArticlePage] = useState(1);
   const [favoritesPage, setFavoritesPage] = useState(1);
   const [recentlyVisitedPage, setRecentlyVisitedPage] = useState(1);
+
+  const { data: favoritesData } = useQuery(GET_FAVORITES, {
+    variables: {
+      input: { page: favoritesPage, limit: ITEMS_PER_PAGE },
+    },
+    skip: !user?._id,
+  });
+  const { data: visitedData } = useQuery(GET_VISITED, {
+    variables: {
+      input: { page: recentlyVisitedPage, limit: ITEMS_PER_PAGE },
+    },
+    skip: !user?._id,
+  });
+
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isAddWatchOpen, setIsAddWatchOpen] = useState(false);
   const [isWatchTypeOpen, setIsWatchTypeOpen] = useState(false);
@@ -439,13 +497,47 @@ const MyPage = () => {
     limitedEdition?: boolean;
     watchStatus?: boolean;
   };
-  const favorites: GridWatch[] = [];
-  const recentlyVisited: GridWatch[] = [];
+  const mapApiWatchToGridWatch = (w: {
+    _id: string;
+    watchModelName?: string;
+    watchImages?: string[];
+    watchPrice?: number;
+    watchBrand?: string;
+    watchLikes?: number;
+    watchViews?: number;
+    watchComments?: number;
+    watchLimitedEdition?: boolean;
+    watchStatus?: boolean;
+    createdAt?: string;
+  }): GridWatch => ({
+    id: w._id,
+    name: w.watchModelName ?? "",
+    image: watchImageUrl(w.watchImages?.[0]) ?? "",
+    price: `$ ${Number(w.watchPrice ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+    brand: w.watchBrand,
+    likes: w.watchLikes ?? 0,
+    views: w.watchViews ?? 0,
+    comments: w.watchComments ?? 0,
+    datePosted: w.createdAt ? new Date(w.createdAt).toLocaleDateString() : undefined,
+    limitedEdition: w.watchLimitedEdition,
+    watchStatus: w.watchStatus !== undefined ? Boolean(w.watchStatus) : undefined,
+  });
+  const favorites: GridWatch[] = useMemo(
+    () => (favoritesData?.getFavorites?.list ?? []).map(mapApiWatchToGridWatch),
+    [favoritesData?.getFavorites?.list]
+  );
+  const recentlyVisited: GridWatch[] = useMemo(
+    () => (visitedData?.getVisited?.list ?? []).map(mapApiWatchToGridWatch),
+    [visitedData?.getVisited?.list]
+  );
 
   const totalPages = Math.ceil(watchesList.length / ITEMS_PER_PAGE);
-  const totalFavoritesPages = Math.ceil(favorites.length / ITEMS_PER_PAGE);
-  const totalRecentlyVisitedPages = Math.ceil(
-    recentlyVisited.length / ITEMS_PER_PAGE
+  const totalFavoritesCount = favoritesData?.getFavorites?.metaCounter?.[0]?.total ?? 0;
+  const totalRecentlyVisitedCount = visitedData?.getVisited?.metaCounter?.[0]?.total ?? 0;
+  const totalFavoritesPages = Math.max(1, Math.ceil(totalFavoritesCount / ITEMS_PER_PAGE));
+  const totalRecentlyVisitedPages = Math.max(
+    1,
+    Math.ceil(totalRecentlyVisitedCount / ITEMS_PER_PAGE)
   );
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentWatches = watchesList.slice(
@@ -453,27 +545,30 @@ const MyPage = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
-  const favoritesStartIndex = (favoritesPage - 1) * ITEMS_PER_PAGE;
-  const currentFavorites = favorites.slice(
-    favoritesStartIndex,
-    favoritesStartIndex + ITEMS_PER_PAGE
-  );
+  const currentFavorites = favorites;
+  const currentRecentlyVisited = recentlyVisited;
 
-  const recentlyVisitedStartIndex = (recentlyVisitedPage - 1) * ITEMS_PER_PAGE;
-  const currentRecentlyVisited = recentlyVisited.slice(
-    recentlyVisitedStartIndex,
-    recentlyVisitedStartIndex + ITEMS_PER_PAGE
-  );
+  useEffect(() => {
+    const list = favoritesData?.getFavorites?.list ?? [];
+    if (list.length === 0) return;
+    setLikedWatches((prev) => {
+      const next = { ...prev };
+      list.forEach((w: { _id: string }) => {
+        next[w._id] = true;
+      });
+      return next;
+    });
+    setWatchLikes((prev) => {
+      const next = { ...prev };
+      list.forEach((w: { _id: string; watchLikes?: number }) => {
+        next[w._id] = w.watchLikes ?? 0;
+      });
+      return next;
+    });
+  }, [favoritesData?.getFavorites?.list]);
 
-  const followerBoxes = Array.from({ length: 6 }, (_, i) => i + 1);
-  const totalFollowersPages = Math.ceil(
-    followerBoxes.length / FOLLOWERS_PER_PAGE
-  );
-  const followersStartIndex = (followersPage - 1) * FOLLOWERS_PER_PAGE;
-  const currentFollowerBoxes = followerBoxes.slice(
-    followersStartIndex,
-    followersStartIndex + FOLLOWERS_PER_PAGE
-  );
+  const totalFollowersCount = m?.memberFollowers ?? 0;
+  const totalFollowingsCount = m?.memberFollowings ?? 0;
 
   const categoryToType: Record<string, string> = {
     FREE: "Free Board",
@@ -534,16 +629,29 @@ const MyPage = () => {
     }));
   };
 
-  const handleFollowerFollowToggle = (key: string) => {
-    const isCurrentlyFollowing = !!followersFollowing[key];
-
-    // Follow / Unfollow holatini almashtirish
-    setFollowersFollowing((prev) => ({
-      ...prev,
-      [key]: !isCurrentlyFollowing,
-    }));
-
-    // Followers sonini +1 / -1 ga o'zgartirish
+  const handleFollowMemberInList = (
+    key: string,
+    targetMemberId: string,
+    isCurrentlyFollowing: boolean
+  ) => {
+    if (isCurrentlyFollowing) {
+      unsubscribeMutation({
+        variables: { input: targetMemberId },
+        onCompleted: () => {
+          refetchFollowers?.();
+          refetchFollowings?.();
+        },
+      });
+    } else {
+      subscribeMutation({
+        variables: { input: targetMemberId },
+        onCompleted: () => {
+          refetchFollowers?.();
+          refetchFollowings?.();
+        },
+      });
+    }
+    setFollowersFollowing((prev) => ({ ...prev, [key]: !isCurrentlyFollowing }));
     setFollowersCounts((prev) => ({
       ...prev,
       [key]: (prev[key] ?? 0) + (isCurrentlyFollowing ? -1 : 1),
@@ -588,6 +696,19 @@ const MyPage = () => {
     `$ ${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
   const parsePrice = (s: string): number =>
     parseFloat(String(s).replace(/[^0-9.-]/g, "")) || 0;
+
+  const handleAddToCartGrid = (watch: GridWatch, e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      id: watch.id,
+      name: watch.name,
+      model: watch.name,
+      brand: watch.brand || "",
+      price: parsePrice(watch.price),
+      image: watch.image || "",
+      quantity: 1,
+    });
+  };
 
   return (
     <Stack className="mypage-page">
@@ -639,10 +760,7 @@ const MyPage = () => {
             </Button>
             <Button
               className="mypage-logout-button"
-              onClick={() => {
-                // Logout functionality
-                console.log("Logout clicked");
-              }}
+              onClick={() => logOut()}
             >
               Logout
             </Button>
@@ -691,7 +809,7 @@ const MyPage = () => {
           }`}
           onClick={() => setActiveTab("Followings")}
         >
-          Followings ({followerBoxes.length})
+          Followings ({totalFollowingsCount})
         </Box>
         <Box
           className={`mypage-tab${
@@ -938,7 +1056,7 @@ const MyPage = () => {
                       <Box className="mypage-watch-item-icons">
                         <Box
                           className="action-btn"
-                          onClick={(e) => handleAddToCart(watch, e)}
+                          onClick={(e) => handleAddToCartGrid(watch, e)}
                         >
                           <ShoppingBagOutlined
                             sx={{
@@ -1096,7 +1214,7 @@ const MyPage = () => {
                       <Box className="mypage-watch-item-icons">
                         <Box
                           className="action-btn"
-                          onClick={(e) => handleAddToCart(watch, e)}
+                          onClick={(e) => handleAddToCartGrid(watch, e)}
                         >
                           <ShoppingBagOutlined
                             sx={{
@@ -1234,69 +1352,33 @@ const MyPage = () => {
           <Typography className="mypage-watches-container-title">
             Followers
           </Typography>
-          {currentFollowerBoxes.length === 0 ? (
+          {followersList.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No Followers...
             </Typography>
           ) : (
             <>
               <Box className="mypage-followers-grid">
-                {isCurrentUserFollower && (
-                  <Box className="mypage-followers-box">
-                    <Box className="mypage-followers-box-part part-1">
-                      <img
-                        src="/img/profile/defaultUser.svg"
-                        alt="You"
-                        className="mypage-followers-avatar"
-                      />
-                    </Box>
-                    <Box className="mypage-followers-box-part part-2">
-                      <Typography className="mypage-followers-name">
-                        You
-                      </Typography>
-                      <Typography className="mypage-followers-role">
-                        User
-                      </Typography>
-                    </Box>
-                    <Box className="mypage-followers-box-part part-3">
-                      <Typography className="mypage-followers-label">
-                        Followers (10)
-                      </Typography>
-                    </Box>
-                    <Box className="mypage-followers-box-part part-4">
-                      <Typography className="mypage-followers-label">
-                        Followings (5)
-                      </Typography>
-                    </Box>
-                    <Box className="mypage-followers-box-part part-5">
-                      <Button
-                        className={`mypage-follow-button mypage-follow-button-active`}
-                        onClick={() =>
-                          setIsDealerFollowing((prev) => {
-                            setTotalFollowersCount(
-                              (count) => count + (prev ? -1 : 1)
-                            );
-                            setIsCurrentUserFollower(!prev);
-                            return !prev;
-                          })
-                        }
-                      >
-                        Unfollow
-                      </Button>
-                    </Box>
-                  </Box>
-                )}
-                {currentFollowerBoxes.map((id) => {
-                  const key = `followers-${id}`;
-                  const isFollowerFollowing = !!followersFollowing[key];
-                  const hasAvatar = true; // hozircha hamma uchun rasm bor deb olaylik
+                {followersList.map((item: any) => {
+                  const member = item.followerData;
+                  const key = `followers-${item.followerId ?? item._id}`;
+                  const isMe =
+                    user?._id != null &&
+                    String(item.followerId) === String(user._id);
+                  const isFollowerFollowing =
+                    followersFollowing[key] !== undefined
+                      ? !!followersFollowing[key]
+                      : !!item.meFollowed?.[0]?.myFollowing;
+                  const avatarUrl = member?.memberPhoto
+                    ? watchImageUrl(member.memberPhoto)
+                    : "";
                   return (
-                    <Box key={id} className="mypage-followers-box">
+                    <Box key={key} className="mypage-followers-box">
                       <Box className="mypage-followers-box-part part-1">
-                        {hasAvatar ? (
+                        {avatarUrl ? (
                           <img
-                            src="/img/profile/about1.jpeg"
-                            alt="Follower"
+                            src={avatarUrl}
+                            alt={member?.memberName ?? "Follower"}
                             className="mypage-followers-avatar"
                           />
                         ) : (
@@ -1305,33 +1387,45 @@ const MyPage = () => {
                       </Box>
                       <Box className="mypage-followers-box-part part-2">
                         <Typography className="mypage-followers-name">
-                          User name
+                          {member?.memberName ?? "—"}
+                          {isMe && " (You)"}
                         </Typography>
                         <Typography className="mypage-followers-role">
-                          Dealer
+                          User
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-3">
                         <Typography className="mypage-followers-label">
-                          Followers ({followersCounts[key] ?? 0})
+                          Followers (
+                          {followersCounts[key] ??
+                            member?.memberFollowers ??
+                            0})
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-4">
                         <Typography className="mypage-followers-label">
-                          Followings (5)
+                          Followings ({member?.memberFollowings ?? 0})
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-5">
-                        <Button
-                          className={`mypage-follow-button${
-                            isFollowerFollowing
-                              ? " mypage-follow-button-active"
-                              : ""
-                          }`}
-                          onClick={() => handleFollowerFollowToggle(key)}
-                        >
-                          {isFollowerFollowing ? "Unfollow" : "Follow"}
-                        </Button>
+                        {!isMe && (
+                          <Button
+                            className={`mypage-follow-button${
+                              isFollowerFollowing
+                                ? " mypage-follow-button-active"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              handleFollowMemberInList(
+                                key,
+                                String(item.followerId),
+                                isFollowerFollowing
+                              )
+                            }
+                          >
+                            {isFollowerFollowing ? "Unfollow" : "Follow"}
+                          </Button>
+                        )}
                       </Box>
                     </Box>
                   );
@@ -1367,24 +1461,33 @@ const MyPage = () => {
           <Typography className="mypage-watches-container-title">
             Followings
           </Typography>
-          {currentFollowerBoxes.length === 0 ? (
+          {followingsList.length === 0 ? (
             <Typography className="mypage-watches-empty-message">
               No Followings...
             </Typography>
           ) : (
             <>
               <Box className="mypage-followers-grid">
-                {currentFollowerBoxes.map((id) => {
-                  const key = `followings-${id}`;
-                  const isFollowerFollowing = !!followersFollowing[key];
-                  const hasAvatar = true;
+                {followingsList.map((item: any) => {
+                  const member = item.followingData;
+                  const key = `followings-${item.followingId ?? item._id}`;
+                  const isMe =
+                    user?._id != null &&
+                    String(item.followingId) === String(user._id);
+                  const isFollowerFollowing =
+                    followersFollowing[key] !== undefined
+                      ? !!followersFollowing[key]
+                      : !!item.meFollowed?.[0]?.myFollowing;
+                  const avatarUrl = member?.memberPhoto
+                    ? watchImageUrl(member.memberPhoto)
+                    : "";
                   return (
-                    <Box key={id} className="mypage-followers-box">
+                    <Box key={key} className="mypage-followers-box">
                       <Box className="mypage-followers-box-part part-1">
-                        {hasAvatar ? (
+                        {avatarUrl ? (
                           <img
-                            src="/img/profile/about1.jpeg"
-                            alt="Follower"
+                            src={avatarUrl}
+                            alt={member?.memberName ?? "User"}
                             className="mypage-followers-avatar"
                           />
                         ) : (
@@ -1393,50 +1496,62 @@ const MyPage = () => {
                       </Box>
                       <Box className="mypage-followers-box-part part-2">
                         <Typography className="mypage-followers-name">
-                          User name
+                          {member?.memberName ?? "—"}
+                          {isMe && " (You)"}
                         </Typography>
                         <Typography className="mypage-followers-role">
-                          Dealer
+                          User
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-3">
                         <Typography className="mypage-followers-label">
-                          Followers ({followersCounts[key] ?? 0})
+                          Followers (
+                          {followersCounts[key] ??
+                            member?.memberFollowers ??
+                            0})
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-4">
                         <Typography className="mypage-followers-label">
-                          Followings (5)
+                          Followings ({member?.memberFollowings ?? 0})
                         </Typography>
                       </Box>
                       <Box className="mypage-followers-box-part part-5">
-                        <Button
-                          className={`mypage-follow-button${
-                            isFollowerFollowing
-                              ? " mypage-follow-button-active"
-                              : ""
-                          }`}
-                          onClick={() => handleFollowerFollowToggle(key)}
-                        >
-                          {isFollowerFollowing ? "Unfollow" : "Follow"}
-                        </Button>
+                        {!isMe && (
+                          <Button
+                            className={`mypage-follow-button${
+                              isFollowerFollowing
+                                ? " mypage-follow-button-active"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              handleFollowMemberInList(
+                                key,
+                                String(item.followingId),
+                                isFollowerFollowing
+                              )
+                            }
+                          >
+                            {isFollowerFollowing ? "Unfollow" : "Follow"}
+                          </Button>
+                        )}
                       </Box>
                     </Box>
                   );
                 })}
               </Box>
-              {totalFollowersPages > 1 && (
+              {totalFollowingsPages > 1 && (
                 <Box className="mypage-watches-pagination">
-                  {Array.from({ length: totalFollowersPages }).map(
+                  {Array.from({ length: totalFollowingsPages }).map(
                     (_, index) => {
                       const page = index + 1;
                       return (
                         <button
                           key={page}
                           className={`mypage-watches-page-number${
-                            page === followersPage ? " active" : ""
+                            page === followingsPage ? " active" : ""
                           }`}
-                          onClick={() => setFollowersPage(page)}
+                          onClick={() => setFollowingsPage(page)}
                         >
                           {page}
                         </button>
