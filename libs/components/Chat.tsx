@@ -12,6 +12,7 @@ import { sweetErrorAlert } from "@/libs/sweetAlert";
 interface ChatMember {
   _id: string;
   memberName?: string;
+  memberFullName?: string;
   memberImage?: string;
 }
 
@@ -28,6 +29,18 @@ interface InfoPayload {
   action?: string;
 }
 
+function getChatWsUrl(): string {
+  if (typeof window === 'undefined') return '';
+  const fromEnv = process.env.NEXT_PUBLIC_CHAT_WS_URL;
+  if (fromEnv) return fromEnv;
+  const graphqlUrl = process.env.NEXT_PUBLIC_API_GRAPHQL_URL || '';
+  if (graphqlUrl) {
+    const base = graphqlUrl.replace(/^http/, 'ws').replace(/\/graphql\/?$/, '');
+    return `${base}/chat`;
+  }
+  return `ws://${window.location.hostname}:3000/chat`;
+}
+
 const Chat = () => {
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [messagesList, setMessagesList] = useState<MessagePayload[]>([]);
@@ -36,6 +49,20 @@ const Chat = () => {
   const [open, setOpen] = useState(false);
   const user = useReactiveVar(userVar);
   const socket = useReactiveVar(socketVar);
+
+  /** Chat WebSocket ulanishi (path /chat) */
+  useEffect(() => {
+    const url = getChatWsUrl();
+    if (!url) return;
+    const ws = new WebSocket(url);
+    ws.onopen = () => socketVar(ws);
+    ws.onclose = () => socketVar(undefined as any);
+    ws.onerror = () => socketVar(undefined as any);
+    return () => {
+      ws.close();
+      socketVar(undefined as any);
+    };
+  }, []);
 
   /** Xabarlar o'zgarganda pastga scroll */
   useEffect(() => {
@@ -93,7 +120,18 @@ const Chat = () => {
       sweetErrorAlert("Chat server is not connected.");
       return;
     }
-    socket.send(JSON.stringify({ event: "message", data: messageInput.trim() }));
+    const text = messageInput.trim();
+    const memberData = user
+      ? {
+          _id: String(user._id),
+          memberName: user.memberName,
+          memberFullName: user.memberFullName,
+          memberImage: user.memberPhoto,
+        }
+      : null;
+    socket.send(
+      JSON.stringify({ event: "message", data: { text, memberData } })
+    );
     setMessageInput("");
   };
 
@@ -104,7 +142,7 @@ const Chat = () => {
   };
 
   const displayName = (memberData: ChatMember | null) =>
-    memberData?.memberName || "User";
+    memberData?.memberFullName?.trim() || memberData?.memberName?.trim() || "User";
 
   return (
     <Stack className="chatting">
@@ -128,9 +166,24 @@ const Chat = () => {
                 <div className="msg-right">{text}</div>
               </Box>
             ) : (
-              <Box key={idx} sx={{ display: "flex", alignItems: "flex-end", gap: 1, mb: 0.5 }}>
-                <Avatar alt={displayName(memberData)} src={avatarSrc} sx={{ width: 32, height: 32 }} />
-                <div className="msg-left">{text}</div>
+              <Box key={idx} sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mb: 1 }}>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: 18,
+                    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                    color: "black",
+                    fontWeight:"500",
+                    mb: 0.25,
+                    pl: 0.5,
+                  }}
+                >
+                  {displayName(memberData)}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1, marginLeft:"30px"}}>
+                 
+                  <div className="msg-left">{text}</div>
+                </Box>
               </Box>
             );
           })}
