@@ -63,23 +63,37 @@ const AIChatBot = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        const retrySec = data.retryAfter;
-        const msg = res.status === 429
-          ? (retrySec
-              ? `So‘rovlar limiti. ${retrySec} soniyadan keyin qayta urinib ko‘ring.`
-              : data.error || "So‘rovlar limiti. Keyinroq qayta urinib ko‘ring.")
-          : (data.error || "AI xizmatida xatolik yuz berdi.");
-        throw new Error(msg);
+        const retrySec = data.retryAfter ?? 60;
+        const isLimit = res.status === 429;
+        const msg = isLimit
+          ? `Rate limit (free tier). Try again in ${retrySec} seconds or use another API key from Google AI Studio.`
+          : (data.error || "An error occurred with the AI service.");
+        if (isLimit) {
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", text: `⏳ ${msg}` },
+          ]);
+        }
+        const err = new Error(msg) as Error & { isLimit?: boolean };
+        err.isLimit = isLimit;
+        throw err;
       }
 
+      const replyText = data.reply ?? data.message ?? "";
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: data.reply || data.message || "" },
+        {
+          role: "assistant",
+          text: replyText || "Reply is empty. Try asking again or rephrase your question.",
+        },
       ]);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "AI xizmatida xatolik yuz berdi.";
-      sweetErrorAlert(msg);
-      setMessages((prev) => prev.slice(0, -1));
+      const e = err as Error & { isLimit?: boolean };
+      const msg = e?.message || "An error occurred with the AI service.";
+      if (!e?.isLimit) {
+        sweetErrorAlert(msg);
+        setMessages((prev) => prev.slice(0, -1));
+      }
     } finally {
       setLoading(false);
     }

@@ -5,7 +5,10 @@ interface HistoryItem {
   content: string;
 }
 
-/** Gemini API orqali AI javob olish */
+/** Bepul kvota ko‘proq bo‘lishi mumkin bo‘lgan model birinchi */
+const GEMINI_MODELS = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"] as const;
+
+/** Gemini API orqali AI javob olish (model topilmasa keyingi model sinanadi) */
 async function fetchGeminiReply(
   message: string,
   history: HistoryItem[],
@@ -20,8 +23,6 @@ async function fetchGeminiReply(
     { role: "user" as const, parts: [{ text: message.trim() }] },
   ];
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
   const body = {
     contents,
     generationConfig: {
@@ -30,39 +31,45 @@ async function fetchGeminiReply(
     },
   };
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  let lastError: Error | null = null;
+  for (const model of GEMINI_MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
 
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    const errMsg =
-      data?.error?.message || data?.error?.status || `Gemini API: ${res.status}`;
-    const isRateLimit =
-      res.status === 429 ||
-      /retry in \d/i.test(String(errMsg)) ||
-      /quota|rate limit/i.test(String(errMsg));
-    const e = new Error(errMsg) as Error & { statusCode?: number; retryAfter?: number };
-    e.statusCode = res.status;
-    if (isRateLimit) {
-      const match = String(errMsg).match(/retry in (\d+(?:\.\d+)?)\s*s/i);
-      e.retryAfter = match ? Math.ceil(Number(match[1])) : 30;
+    if (!res.ok) {
+      const errMsg =
+        data?.error?.message || data?.error?.status || `Gemini API: ${res.status}`;
+      const isModelNotFound = res.status === 404 || /not found|invalid model/i.test(String(errMsg));
+      if (isModelNotFound) {
+        lastError = new Error(errMsg);
+        continue;
+      }
+      const isRateLimit =
+        res.status === 429 ||
+        /retry in \d/i.test(String(errMsg)) ||
+        /quota|rate limit/i.test(String(errMsg));
+      const e = new Error(errMsg) as Error & { statusCode?: number; retryAfter?: number };
+      e.statusCode = res.status;
+      if (isRateLimit) {
+        const match = String(errMsg).match(/retry in (\d+(?:\.\d+)?)\s*s/i);
+        e.retryAfter = match ? Math.ceil(Number(match[1])) : 30;
+      }
+      throw e;
     }
-    throw e;
-  }
 
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
-
-  if (!text) {
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+    if (text) return text;
     const blockReason =
       data.candidates?.[0]?.finishReason || "Javob generatsiya qilinmadi.";
     throw new Error(blockReason);
   }
 
-  return text;
+  throw lastError || new Error("Gemini model topilmadi.");
 }
 
 export default async function handler(
@@ -81,7 +88,7 @@ export default async function handler(
     };
 
     if (!message || typeof message !== "string") {
-      return res.status(400).json({ error: "Message talab qilinadi." });
+      return res.status(400).json({ error: "Message is required." });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -89,7 +96,7 @@ export default async function handler(
     if (!apiKey) {
       return res.status(200).json({
         reply:
-          "AI xizmati hozircha yoqilmagan. Sozlash uchun .env.local faylida GEMINI_API_KEY ni belgilang. Google AI Studio (aistudio.google.com) orqali bepul API kalit olishingiz mumkin.",
+          "AI service is not configured. Set GEMINI_API_KEY in .env.local. You can get a free API key from Google AI Studio (aistudio.google.com).",
       });
     }
 
@@ -98,7 +105,7 @@ export default async function handler(
     return res.status(200).json({ reply });
   } catch (err: unknown) {
     const e = err as Error & { statusCode?: number; retryAfter?: number };
-    const msg = e?.message || "AI xizmatida xatolik.";
+    const msg = e?.message || "An error occurred with the AI service.";
     const isRateLimit = e?.statusCode === 429 || e?.retryAfter;
     const retrySec = e?.retryAfter ?? 30;
     console.error("[api/ai-chat]", msg, err);
@@ -106,7 +113,7 @@ export default async function handler(
     if (isRateLimit) {
       res.setHeader("Retry-After", String(retrySec));
       return res.status(429).json({
-        error: `So‘rovlar limiti. ${retrySec} soniyadan keyin qayta urinib ko‘ring.`,
+        error: `Rate limit. Try again in ${retrySec} seconds.`,
         reply: null,
         retryAfter: retrySec,
       });
