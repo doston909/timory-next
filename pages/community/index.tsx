@@ -13,10 +13,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, useReactiveVar } from "@apollo/client";
 import CommunityCard from "@/libs/components/community/CommunityCard";
 import { useCart } from "@/libs/context/CartContext";
-import { GET_BOARD_ARTICLES } from "@/apollo/user/query";
+import { userVar } from "@/apollo/store";
+import { GET_BOARD_ARTICLES, GET_WATCHES } from "@/apollo/user/query";
+import { LIKE_TARGET_BOARD_ARTICLE } from "@/apollo/user/mutation";
 import { watchImageUrl } from "@/libs/utils";
 import { getViewCount } from "@/libs/viewCountStorage";
 import { getDealerByName } from "@/libs/data/dealers";
@@ -58,33 +60,9 @@ const Community: NextPage = () => {
     setCommunitySearch("");
   };
 
-  const bestSellers = [
-    {
-      id: 1,
-      image: "/img/watch/rasmm.png",
-      title: "Golden Dial Analog",
-      price: "$ 3,600.00",
-    },
-    {
-      id: 2,
-      image: "/img/watch/rasm1.png",
-      title: "Silver Classic Watch",
-      price: "$ 2,800.00",
-    },
-    {
-      id: 3,
-      image: "/img/watch/rasm3.png",
-      title: "Premium Luxury Watch",
-      price: "$ 4,500.00",
-    },
-  ];
-
-  const currentBestSeller = bestSellers[bestSellerIndex];
-  const [viewCount, setViewCount] = useState(0);
-
-  useEffect(() => {
-    setViewCount(getViewCount(currentBestSeller?.id ?? 0));
-  }, [currentBestSeller?.id]);
+  const BEST_SELLER_VARS = {
+    input: { page: 1, limit: 24, sort: "createdAt", direction: "ASC" as const, search: {} },
+  };
 
   const categoryToArticleType: Record<string, string> = {
     FREE: "Free Board",
@@ -92,11 +70,41 @@ const Community: NextPage = () => {
     NEWS: "News",
   };
 
+  const user = useReactiveVar(userVar);
   const { data: boardArticlesData } = useQuery(GET_BOARD_ARTICLES, {
     variables: {
       input: { page: 1, limit: 500, search: {} },
     },
   });
+  const [likeTargetArticleMutation] = useMutation(LIKE_TARGET_BOARD_ARTICLE, {
+    refetchQueries: [
+      { query: GET_BOARD_ARTICLES, variables: { input: { page: 1, limit: 500, search: {} } } },
+    ],
+  });
+
+  const { data: bestSellersWatchesData } = useQuery(GET_WATCHES, {
+    variables: BEST_SELLER_VARS,
+  });
+  const bestSellersList = bestSellersWatchesData?.getWatches?.list ?? [];
+  const bestSellers = useMemo(() => {
+    const mapped = bestSellersList.map((w: any) => ({
+      id: w._id,
+      image: watchImageUrl(w.watchImages?.[0]),
+      title: [w.watchBrand, w.watchModelName].filter(Boolean).join(" ") || "—",
+      price: w.watchPrice != null ? `$ ${Number(w.watchPrice).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "$0.00",
+      watchLikes: w.watchLikes ?? 0,
+      watchViews: w.watchViews ?? 0,
+    }));
+    const byLikes = [...mapped].sort((a, b) => b.watchLikes - a.watchLikes);
+    const hasLikes = byLikes.length > 0 && byLikes[0].watchLikes > 0;
+    return (hasLikes ? byLikes.slice(0, 8) : mapped.slice(0, 8));
+  }, [bestSellersList]);
+  const currentBestSeller = bestSellers[bestSellerIndex];
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    setViewCount(getViewCount(currentBestSeller?.id ?? 0));
+  }, [currentBestSeller?.id]);
 
   const articles = useMemo(() => {
     const list = boardArticlesData?.getBoardArticles?.list ?? [];
@@ -119,6 +127,9 @@ const Community: NextPage = () => {
         title: a.articleTitle ?? "",
         description,
         articleType: categoryToArticleType[String(a.articleCategory)] ?? "Free Board",
+        articleLikes: a.articleLikes ?? 0,
+        articleViews: a.articleViews ?? 0,
+        meLiked: a.meLiked ?? [],
       };
     });
   }, [boardArticlesData]);
@@ -327,8 +338,8 @@ const Community: NextPage = () => {
             >
               <Box className="best-seller-image-wrapper">
                 <img
-                  src={bestSellers[bestSellerIndex].image}
-                  alt={bestSellers[bestSellerIndex].title}
+                  src={bestSellers[bestSellerIndex]?.image}
+                  alt={bestSellers[bestSellerIndex]?.title}
                   className="best-seller-image"
                 />
                 <Stack className="best-seller-icons">
@@ -346,21 +357,23 @@ const Community: NextPage = () => {
                     ) : (
                       <FavoriteBorderOutlined sx={{ fontSize: 28 }} />
                     )}
-                    <span className="icon-wrapper-count">{likeCounts[currentBestSeller?.id ?? 0] ?? 0}</span>
+                    <span className="icon-wrapper-count">
+                      {currentBestSeller?.watchLikes ?? likeCounts[currentBestSeller?.id ?? 0] ?? 0}
+                    </span>
                   </Box>
                   <Box className="icon-wrapper icon-wrapper-with-count">
                     <VisibilityOutlined sx={{ fontSize: 28 }} />
-                    {viewCount > 0 && (
-                      <span className="icon-wrapper-count">{viewCount}</span>
-                    )}
+                    <span className="icon-wrapper-count">
+                      {currentBestSeller?.watchViews ?? viewCount}
+                    </span>
                   </Box>
                 </Stack>
               </Box>
               <Typography className="best-seller-title">
-                {bestSellers[bestSellerIndex].title}
+                {bestSellers[bestSellerIndex]?.title}
               </Typography>
               <Typography className="best-seller-price">
-                {bestSellers[bestSellerIndex].price}
+                {bestSellers[bestSellerIndex]?.price}
               </Typography>
             </Box>
           </Box>
@@ -386,6 +399,12 @@ const Community: NextPage = () => {
         <CommunityCard
           articles={filteredArticles}
           onArticleClick={(id) => router.push(`/community/detail?id=${id}`)}
+          onLike={
+            user?._id
+              ? (articleId) =>
+                  likeTargetArticleMutation({ variables: { input: String(articleId) } })
+              : undefined
+          }
         />
       </Stack>
     </Stack>

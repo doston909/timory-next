@@ -248,6 +248,11 @@ export const GET_BOARD_ARTICLES = gql`
         memberId
         createdAt
         updatedAt
+        meLiked {
+          memberId
+          likeRefId
+          myFavorite
+        }
         memberData {
           _id
           memberName

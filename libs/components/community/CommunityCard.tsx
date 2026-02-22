@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 export type Article = {
-  id: number;
+  id: number | string;
   image: string;
   author: string;
   memberType?: string;
@@ -19,19 +19,23 @@ export type Article = {
   title: string;
   description: string;
   articleType?: string;
+  articleLikes?: number;
+  articleViews?: number;
+  meLiked?: { memberId?: string; likeRefId?: string; myFavorite?: boolean }[];
 };
 
 type CommunityCardProps = {
   articles: Article[];
   onArticleClick?: (id: number | string) => void;
+  onLike?: (articleId: number | string) => void;
 };
 
-const CommunityCard = ({ articles, onArticleClick }: CommunityCardProps) => {
+const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("newest");
-  const [likedArticles, setLikedArticles] = useState<Record<number, boolean>>({});
-  const [likeCounts, setLikeCounts] = useState<Record<number, number>>({});
+  const [likedArticles, setLikedArticles] = useState<Record<string, boolean>>({});
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const articlesPerPage = 4;
   
   // Sort qilingan articlelar
@@ -53,17 +57,20 @@ const CommunityCard = ({ articles, onArticleClick }: CommunityCardProps) => {
   const startIndex = (currentPage - 1) * articlesPerPage;
   const displayedArticles = sortedArticles.slice(startIndex, startIndex + articlesPerPage);
 
-  const handleLikeClick = (articleId: number, e: React.MouseEvent) => {
+  const handleLikeClick = (articleId: number | string, articleLikesFromDb: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    const currentlyLiked = likedArticles[articleId] ?? false;
+    const key = String(articleId);
+    const currentlyLiked = likedArticles[key] ?? false;
     const nextLiked = !currentlyLiked;
-    setLikedArticles((prev) => ({ ...prev, [articleId]: nextLiked }));
+    setLikedArticles((prev) => ({ ...prev, [key]: nextLiked }));
+    const baseCount = likeCounts[key] ?? articleLikesFromDb;
     setLikeCounts((counts) => ({
       ...counts,
-      [articleId]: nextLiked
-        ? (counts[articleId] ?? 0) + 1
-        : Math.max(0, (counts[articleId] ?? 0) - 1),
+      [key]: nextLiked ? baseCount + 1 : Math.max(0, baseCount - 1),
     }));
+    if (onLike) {
+      onLike(articleId);
+    }
   };
 
   const handleArticleClick = (articleId: number | string, e?: React.MouseEvent) => {
@@ -167,20 +174,22 @@ const CommunityCard = ({ articles, onArticleClick }: CommunityCardProps) => {
                   )}
                   <Stack className="article-image-icons" direction="column">
                     <Box
-                      className={`icon-wrapper icon-wrapper-with-count${likedArticles[article.id] ? " icon-wrapper-liked" : ""}`}
+                      className={`icon-wrapper icon-wrapper-with-count${(article.meLiked != null && article.meLiked.length > 0) || likedArticles[String(article.id)] ? " icon-wrapper-liked" : ""}`}
                       onClick={(e: React.MouseEvent) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleLikeClick(article.id, e);
+                        handleLikeClick(article.id, article.articleLikes ?? 0, e);
                       }}
                       component="span"
                     >
-                      {likedArticles[article.id] ? (
+                      {(article.meLiked != null && article.meLiked.length > 0) || likedArticles[String(article.id)] ? (
                         <Favorite sx={{ fontSize: 28 }} />
                       ) : (
                         <FavoriteBorderOutlined sx={{ fontSize: 28 }} />
                       )}
-                      <span className="icon-wrapper-count">{likeCounts[article.id] ?? 0}</span>
+                      <span className="icon-wrapper-count">
+                        {likeCounts[String(article.id)] ?? article.articleLikes ?? 0}
+                      </span>
                     </Box>
                     <Box
                       className="icon-wrapper icon-wrapper-with-count"
@@ -191,7 +200,7 @@ const CommunityCard = ({ articles, onArticleClick }: CommunityCardProps) => {
                       component="span"
                     >
                       <VisibilityOutlined sx={{ fontSize: 28 }} />
-                      <span className="icon-wrapper-count">0</span>
+                      <span className="icon-wrapper-count">{article.articleViews ?? 0}</span>
                     </Box>
                     <Box
                       className="icon-wrapper icon-wrapper-with-count"
