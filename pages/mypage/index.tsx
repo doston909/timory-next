@@ -944,11 +944,7 @@ const MyPage = () => {
                       <Typography className="mypage-watch-item-price">
                         {formatWatchPrice(watch.watchPrice)}
                       </Typography>
-                      {watch.createdAt && (
-                        <Typography className="mypage-watch-item-date">
-                          {watch.createdAt}
-                        </Typography>
-                      )}
+                     
                       <Box className="mypage-watch-status-control">
                         <select
                           className={`mypage-watch-status-select${
