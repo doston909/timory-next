@@ -140,6 +140,65 @@ export const GET_MEMBER = gql`
       deletedAt
       createdAt
       updatedAt
+      meFollowed {
+        followingId
+        followerId
+        myFollowing
+      }
+    }
+  }
+`;
+
+export const GET_MEMBER_FOLLOWERS = gql`
+  query GetMemberFollowers($input: FollowInquiry!) {
+    getMemberFollowers(input: $input) {
+      list {
+        _id
+        followerId
+        followingId
+        followerData {
+          _id
+          memberName
+          memberPhoto
+          memberFollowers
+          memberFollowings
+        }
+        meFollowed {
+          followingId
+          followerId
+          myFollowing
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+export const GET_MEMBER_FOLLOWINGS = gql`
+  query GetMemberFollowings($input: FollowInquiry!) {
+    getMemberFollowings(input: $input) {
+      list {
+        _id
+        followerId
+        followingId
+        followingData {
+          _id
+          memberName
+          memberPhoto
+          memberFollowers
+          memberFollowings
+        }
+        meFollowed {
+          followingId
+          followerId
+          myFollowing
+        }
+      }
+      metaCounter {
+        total
+      }
     }
   }
 `;
@@ -259,6 +318,29 @@ export const GET_BOARD_ARTICLES = gql`
           memberPhoto
           memberType
         }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+export const GET_DEALERS = gql`
+  query GetDealers($input: DealersInquiry!) {
+    getDealers(input: $input) {
+      list {
+        _id
+        memberName
+        memberPhoto
+        memberAddress
+        memberWatches
+        memberArticles
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        createdAt
       }
       metaCounter {
         total

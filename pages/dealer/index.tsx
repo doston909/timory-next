@@ -1,15 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
-import { dealers } from "@/libs/data/dealers";
+import { GET_DEALERS } from "@/apollo/user/query";
+import { watchImageUrl } from "@/libs/utils";
 
 const ITEMS_PER_PAGE = 9;
+
+type DealerItem = {
+  id: string;
+  name: string;
+  image: string;
+  goal: string;
+  original?: boolean;
+};
 
 const DealerPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
+
+  const { data: dealersData } = useQuery(GET_DEALERS, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 500,
+        sort: "memberRank",
+        direction: "DESC",
+        search: {},
+      },
+    },
+  });
+  const list = dealersData?.getDealers?.list ?? [];
+  const dealers: DealerItem[] = useMemo(
+    () =>
+      list.map((m: any, index: number) => ({
+        id: m._id,
+        name: m.memberName ?? "—",
+        image: watchImageUrl(m.memberPhoto),
+        goal: "Trusted dealer on Timory.",
+        original: index === 0,
+      })),
+    [list]
+  );
 
   const totalPages = Math.ceil(dealers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

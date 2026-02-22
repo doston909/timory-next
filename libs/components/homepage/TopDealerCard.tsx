@@ -8,9 +8,10 @@ import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export interface TopDealerCardProps {
-  id?: number;
+  id?: number | string;
   dealerName: string;
   logoUrl: string;
   rating: number;
@@ -57,7 +58,13 @@ const TopDealerCard = ({
     <Box className="top-dealer-card-new" onClick={handleCardClick} sx={{ cursor: "pointer" }}>
       {/* Image Box */}
       <Box className="dealer-image-box">
-        <img src="/img/dealer/doston.jpg" alt={dealerName} className="dealer-image" />
+        {logoUrl ? (
+          <img src={logoUrl} alt={dealerName} className="dealer-image" />
+        ) : (
+          <Box className="dealer-image" sx={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "action.hover" }}>
+            <PersonOutlineIcon sx={{ fontSize: 480, color: "action.disabled" }} />
+          </Box>
+        )}
         
         {/* Hover Overlay with Info */}
         <Box className="dealer-hover-overlay">
