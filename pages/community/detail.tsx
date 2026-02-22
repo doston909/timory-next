@@ -11,7 +11,18 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Close from "@mui/icons-material/Close";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef, useLayoutEffect, useMemo } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { GET_BOARD_ARTICLE, GET_COMMENTS } from "@/apollo/user/query";
+import {
+  LIKE_TARGET_BOARD_ARTICLE,
+  CREATE_COMMENT,
+  UPDATE_COMMENT,
+  REMOVE_COMMENT,
+} from "@/apollo/user/mutation";
+import { watchImageUrl } from "@/libs/utils";
 
 // Articles data - index.tsx dagi bilan bir xil
 const articles = [
@@ -82,29 +93,109 @@ const articles = [
 const CommunityDetail: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { id } = router.query;
+  const user = useReactiveVar(userVar);
+  const articleId = router.query.id || router.query.articleId;
+  const articleIdStr = typeof articleId === "string" ? articleId : Array.isArray(articleId) ? articleId[0] : undefined;
   const [article, setArticle] = useState<any>(null);
+  const isStaticId = typeof articleId === "string" && /^[1-6]$/.test(articleId);
+  const { data: articleData, error: articleError, refetch: refetchArticle } = useQuery(GET_BOARD_ARTICLE, {
+    variables: { articleId: articleIdStr ?? "" },
+    skip: !articleIdStr || isStaticId,
+  });
+  const { data: commentsData } = useQuery(GET_COMMENTS, {
+    variables: {
+      input: { page: 1, limit: 500, search: { commentRefId: articleIdStr ?? "" } },
+    },
+    skip: !articleIdStr || isStaticId,
+  });
+  const [likeTargetArticleMutation] = useMutation(LIKE_TARGET_BOARD_ARTICLE, {
+    refetchQueries: articleIdStr ? [{ query: GET_BOARD_ARTICLE, variables: { articleId: articleIdStr } }] : [],
+    update(cache, { data }) {
+      if (!data?.likeTargetBoardArticle || !articleIdStr) return;
+      cache.writeQuery({
+        query: GET_BOARD_ARTICLE,
+        variables: { articleId: articleIdStr },
+        data: { getBoardArticle: data.likeTargetBoardArticle },
+      });
+    },
+    onError(err) {
+      if (typeof window !== "undefined") console.error("likeTargetBoardArticle error:", err.message);
+    },
+  });
+  const [createCommentMutation] = useMutation(CREATE_COMMENT, {
+    refetchQueries:
+      articleIdStr
+        ? [
+            { query: GET_BOARD_ARTICLE, variables: { articleId: articleIdStr } },
+            { query: GET_COMMENTS, variables: { input: { page: 1, limit: 500, search: { commentRefId: articleIdStr } } } },
+          ]
+        : [],
+  });
+  const [updateCommentMutation] = useMutation(UPDATE_COMMENT, {
+    refetchQueries:
+      articleIdStr
+        ? [
+            { query: GET_BOARD_ARTICLE, variables: { articleId: articleIdStr } },
+            { query: GET_COMMENTS, variables: { input: { page: 1, limit: 500, search: { commentRefId: articleIdStr } } } },
+          ]
+        : [],
+  });
+  const [removeCommentMutation] = useMutation(REMOVE_COMMENT, {
+    refetchQueries:
+      articleIdStr
+        ? [
+            { query: GET_BOARD_ARTICLE, variables: { articleId: articleIdStr } },
+            { query: GET_COMMENTS, variables: { input: { page: 1, limit: 500, search: { commentRefId: articleIdStr } } } },
+          ]
+        : [],
+  });
+  const apiCommentsList = commentsData?.getComments?.list ?? [];
   const [likedComments, setLikedComments] = useState<number[]>([]);
   const [likeCounts, setLikeCounts] = useState<{ [key: number]: number }>({});
   const [newCommentText, setNewCommentText] = useState("");
   const [extraComments, setExtraComments] = useState<{ id: number; date: string; author: string; text: string }[]>([]);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const [openMenuCommentId, setOpenMenuCommentId] = useState<number | null>(null);
-  const [deletedCommentIds, setDeletedCommentIds] = useState<number[]>([]);
-  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const [editedCommentTexts, setEditedCommentTexts] = useState<Record<number, string>>({});
+  const [openMenuCommentId, setOpenMenuCommentId] = useState<number | string | null>(null);
+  const [deletedCommentIds, setDeletedCommentIds] = useState<(number | string)[]>([]);
+  const [editingCommentId, setEditingCommentId] = useState<number | string | null>(null);
+  const [editedCommentTexts, setEditedCommentTexts] = useState<Record<string, string>>({});
 
   // Refs for dynamic height calculation - HOOKS TEPADA BO'LISHI KERAK
   const commentsListRef = useRef<HTMLDivElement>(null);
   const commentItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Comments: article.comments dan + yangi qo'shilganlar (o'chirilganlarsiz)
-  const baseComments = communityComments.slice(0, article?.comments ?? 0);
-  const allComments = [...baseComments, ...extraComments].filter((c) => !deletedCommentIds.includes(c.id));
-  const sortedComments = [...allComments].reverse();
+  const isArticleFromApi = Boolean(articleIdStr && !isStaticId && article?.id);
+  const apiCommentsMapped = useMemo(() => {
+    if (!isArticleFromApi) return [];
+    return apiCommentsList.map((c: any) => {
+      const created = c.createdAt ? new Date(c.createdAt).getTime() : 0;
+      const updated = c.updatedAt ? new Date(c.updatedAt).getTime() : 0;
+      const isEdited =
+        (updated > 0 && updated > created) ||
+        (c.updatedAt != null && c.createdAt != null && String(c.updatedAt) !== String(c.createdAt));
+      return {
+        id: c._id,
+        date: c.createdAt
+          ? new Date(c.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+          : "",
+        author: c.memberData?.memberName ?? "—",
+        text: c.commentContent ?? "",
+        memberId: c.memberId ?? "",
+        isEdited,
+      };
+    });
+  }, [isArticleFromApi, apiCommentsList]);
+  const baseComments = isArticleFromApi ? [] : communityComments.slice(0, article?.comments ?? 0);
+  const allComments = isArticleFromApi
+    ? apiCommentsMapped
+    : [...baseComments, ...extraComments].filter((c) => !deletedCommentIds.includes(c.id));
+  const sortedComments = [...allComments];
   const commentsCount = allComments.length;
+  const isCommentAuthor = (memberId: string) => user?._id != null && String(user._id) === String(memberId);
+  const articleLikesCount = isArticleFromApi ? (article?.articleLikes ?? 0) : 0;
+  const isArticleLiked = isArticleFromApi && article?.meLiked?.[0]?.myFavorite === true;
 
-  const handleCommentMenuOpen = (event: React.MouseEvent<HTMLElement>, commentId: number) => {
+  const handleCommentMenuOpen = (event: React.MouseEvent<HTMLElement>, commentId: number | string) => {
     event.stopPropagation();
     setMenuAnchorEl(event.currentTarget);
     setOpenMenuCommentId(commentId);
@@ -115,11 +206,11 @@ const CommunityDetail: NextPage = () => {
     setOpenMenuCommentId(null);
   };
 
-  const handleEditComment = (commentId: number) => {
+  const handleEditComment = (commentId: number | string) => {
     handleCommentMenuClose();
     const comment = allComments.find((c) => c.id === commentId);
     if (comment) {
-      setNewCommentText(editedCommentTexts[commentId] ?? comment.text);
+      setNewCommentText(editedCommentTexts[String(commentId)] ?? comment.text);
       setEditingCommentId(commentId);
     }
   };
@@ -129,25 +220,67 @@ const CommunityDetail: NextPage = () => {
     setNewCommentText("");
   };
 
-  const handleDeleteComment = (commentId: number) => {
+  const handleDeleteComment = async (commentId: number | string) => {
+    if (isArticleFromApi && typeof commentId === "string") {
+      try {
+        await removeCommentMutation({ variables: { commentId } });
+      } catch (err) {
+        if (typeof window !== "undefined") console.error("removeComment error:", err);
+      }
+      handleCommentMenuClose();
+      return;
+    }
     setDeletedCommentIds((prev) => [...prev, commentId]);
     setExtraComments((prev) => prev.filter((c) => c.id !== commentId));
     handleCommentMenuClose();
   };
 
-  const handleSubmitComment = () => {
+  const handleSubmitComment = async () => {
     const text = newCommentText.trim();
     if (!text) return;
+    if (isArticleFromApi) {
+      if (editingCommentId !== null && typeof editingCommentId === "string") {
+        try {
+          await updateCommentMutation({
+            variables: { input: { _id: editingCommentId, commentContent: text.slice(0, 100) } },
+          });
+          setEditingCommentId(null);
+          setNewCommentText("");
+        } catch (err) {
+          if (typeof window !== "undefined") console.error("updateComment error:", err);
+        }
+        return;
+      }
+      if (!user?._id) {
+        if (typeof window !== "undefined") alert(t("commDetail.loginToComment") || t("detail.loginToComment") || "Comment yozish uchun tizimga kiring.");
+        return;
+      }
+      try {
+        await createCommentMutation({
+          variables: {
+            input: {
+              commentGroup: "ARTICLE",
+              commentContent: text.slice(0, 100),
+              commentRefId: articleIdStr,
+            },
+          },
+        });
+        setNewCommentText("");
+      } catch (err) {
+        if (typeof window !== "undefined") console.error("createComment error:", err);
+      }
+      return;
+    }
     if (editingCommentId !== null) {
       const baseCommentsList = communityComments.slice(0, article?.comments ?? 0);
       const comment = [...baseCommentsList, ...extraComments].find((c) => c.id === editingCommentId);
       const originalText = comment?.text ?? "";
       if (text !== originalText) {
-        setEditedCommentTexts((prev) => ({ ...prev, [editingCommentId]: text }));
+        setEditedCommentTexts((prev) => ({ ...prev, [String(editingCommentId)]: text }));
       } else {
         setEditedCommentTexts((prev) => {
           const next = { ...prev };
-          delete next[editingCommentId];
+          delete next[String(editingCommentId)];
           return next;
         });
       }
@@ -171,27 +304,40 @@ const CommunityDetail: NextPage = () => {
   };
 
   useEffect(() => {
-    if (router.isReady) {
-      const articleId = router.query.id || router.query.articleId;
-      console.log('Router ready:', router.isReady);
-      console.log('Query params:', router.query);
-      console.log('Article ID from query:', articleId);
-      
-      if (articleId) {
-        const idNum = parseInt(articleId as string, 10);
-        console.log('Parsed article ID:', idNum);
-        const foundArticle = articles.find((a) => a.id === idNum);
-        console.log('Found article:', foundArticle);
-        
-        if (foundArticle) {
-          setArticle(foundArticle);
-        } else {
-          console.log('Article not found, redirecting...');
-          router.push('/community');
-        }
-      }
+    if (!router.isReady || !articleId) return;
+    if (isStaticId) {
+      const idNum = parseInt(articleId as string, 10);
+      const foundArticle = articles.find((a) => a.id === idNum);
+      if (foundArticle) setArticle(foundArticle);
+      else router.push("/community");
+      return;
     }
-  }, [router.isReady, router.query]);
+    if (articleData?.getBoardArticle) {
+      const a = articleData.getBoardArticle;
+      setArticle({
+        id: a._id,
+        image: watchImageUrl(a.articleImage),
+        title: a.articleTitle ?? "",
+        content: a.articleContent ?? "",
+        date: a.createdAt
+          ? new Date(a.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "",
+        author: a.memberData?.memberName ?? "",
+        authorImage: watchImageUrl(a.memberData?.memberPhoto),
+        comments: a.articleComments ?? 0,
+        articleLikes: a.articleLikes ?? 0,
+        meLiked: a.meLiked,
+      });
+      return;
+    }
+    if (articleError || (articleData && !articleData.getBoardArticle)) {
+      router.push("/community");
+    }
+  }, [router.isReady, articleId, isStaticId, articleData, articleError]);
 
   // Calculate height for last 2 comments dynamically
   useLayoutEffect(() => {
@@ -239,6 +385,30 @@ const CommunityDetail: NextPage = () => {
                   {article.date}
                 </Typography>
               </Box>
+              {isArticleFromApi && (
+                <Box
+                  component="span"
+                  className="meta-item"
+                  onClick={async () => {
+                    if (!user?._id || !articleIdStr) return;
+                    try {
+                      await likeTargetArticleMutation({ variables: { input: articleIdStr } });
+                    } catch (e) {
+                      if (typeof window !== "undefined") console.error("Article like failed:", e);
+                    }
+                  }}
+                  sx={user?._id ? { cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 0.5 } : undefined}
+                >
+                  {isArticleLiked ? (
+                    <FavoriteIcon className="meta-icon" sx={{ color: "#c00", fontSize: 20 }} />
+                  ) : (
+                    <FavoriteBorderIcon className="meta-icon" sx={{ fontSize: 20 }} />
+                  )}
+                  <Typography component="span" className="meta-text">
+                    {articleLikesCount} {articleLikesCount !== 1 ? "Likes" : "Like"}
+                  </Typography>
+                </Box>
+              )}
               <Box component="span" className="meta-item">
                 <Comment className="meta-icon" />
                 <Typography component="span" className="meta-text">
@@ -319,7 +489,7 @@ const CommunityDetail: NextPage = () => {
                             </Typography>
                           </Box>
                         </Box>
-                        {editingCommentId !== comment.id && comment.author === "You" && (
+                        {editingCommentId !== comment.id && (comment.author === "You" || (isArticleFromApi && "memberId" in comment && isCommentAuthor(comment.memberId))) && (
                           <IconButton
                             className="comment-more-btn"
                             size="small"
@@ -333,7 +503,7 @@ const CommunityDetail: NextPage = () => {
                       <Box className="comment-text-wrapper">
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "20px", width: "100%" }}>
                           <Typography className="comment-text">
-                            {editedCommentTexts[comment.id] ?? comment.text}
+                            {editedCommentTexts[String(comment.id)] ?? comment.text}
                           </Typography>
                           <Box className="comment-actions">
                             <Box className="comment-reply-btn">
@@ -360,9 +530,9 @@ const CommunityDetail: NextPage = () => {
                             </Box>
                           </Box>
                         </Box>
-                        {editedCommentTexts[comment.id] && (
+                        {((isArticleFromApi && (comment as { isEdited?: boolean }).isEdited) || editedCommentTexts[String(comment.id)]) && (
                           <Typography className="comment-edited">
-                            edited
+                            {t("detail.edited") || "edited"}
                           </Typography>
                         )}
                       </Box>

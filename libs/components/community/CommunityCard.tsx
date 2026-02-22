@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export type Article = {
   id: number;
@@ -22,9 +23,10 @@ export type Article = {
 
 type CommunityCardProps = {
   articles: Article[];
+  onArticleClick?: (id: number | string) => void;
 };
 
-const CommunityCard = ({ articles }: CommunityCardProps) => {
+const CommunityCard = ({ articles, onArticleClick }: CommunityCardProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("newest");
@@ -64,13 +66,16 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
     }));
   };
 
-  const handleArticleClick = (articleId: number, e?: React.MouseEvent) => {
+  const handleArticleClick = (articleId: number | string, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    console.log('Navigating to article:', articleId);
-    router.push(`/community/detail?id=${articleId}`);
+    if (onArticleClick) {
+      onArticleClick(articleId);
+    } else {
+      router.push(`/community/detail?id=${articleId}`);
+    }
   };
 
   return (
@@ -140,64 +145,92 @@ const CommunityCard = ({ articles }: CommunityCardProps) => {
       </Box>
       
       <Stack className="articles-grid">
-        {displayedArticles.map((article) => (
-          <Box key={article.id} className="article-card">
-            <Box 
-              className="article-image"
-              onClick={(e) => handleArticleClick(article.id, e)}
-            >
-              <img src={article.image} alt={article.title} />
-              {article.articleType && (
-                <Typography className="article-type-label">{article.articleType}</Typography>
-              )}
-              <Stack className="article-image-icons" direction="column">
-                <Box
-                  className={`icon-wrapper icon-wrapper-with-count${likedArticles[article.id] ? " icon-wrapper-liked" : ""}`}
-                  onClick={(e) => handleLikeClick(article.id, e)}
-                >
-                  {likedArticles[article.id] ? (
-                    <Favorite sx={{ fontSize: 28 }} />
-                  ) : (
-                    <FavoriteBorderOutlined sx={{ fontSize: 28 }} />
-                  )}
-                  <span className="icon-wrapper-count">{likeCounts[article.id] ?? 0}</span>
-                </Box>
-                <Box className="icon-wrapper icon-wrapper-with-count">
-                  <VisibilityOutlined sx={{ fontSize: 28 }} />
-                  <span className="icon-wrapper-count">0</span>
-                </Box>
-                <Box className="icon-wrapper icon-wrapper-with-count">
-                  <CommentOutlined sx={{ fontSize: 28 }} />
-                  <span className="icon-wrapper-count">{article.comments}</span>
-                </Box>
-              </Stack>
-            </Box>
-            <Box className="article-content">
-              <Typography className="article-meta">
-                <Box component="span" className="article-author-wrapper">
-                  {article.memberType && (
-                    <Box component="span" className="article-member-type">
-                      ({article.memberType.toLowerCase()})
-                    </Box>
-                  )}
-                  <Box component="span" className="article-author">
-                 {article.author}
-                  </Box>
-                </Box>
-                <Box component="span">{article.date}</Box>
-              </Typography>
-              <Typography 
-                className="article-title"
-                onClick={(e) => handleArticleClick(article.id, e)}
+        {displayedArticles.map((article) => {
+          const detailHref = `/community/detail?id=${encodeURIComponent(String(article.id))}`;
+          return (
+            <Link key={article.id} href={detailHref} passHref legacyBehavior>
+              <Box
+                className="article-card"
+                component="a"
+                sx={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
               >
-                {article.title}
-              </Typography>
-              <Typography className="article-description">
-                {article.description}
-              </Typography>
-            </Box>
-          </Box>
-        ))}
+                <Box className="article-image">
+                  <img src={article.image} alt={article.title} />
+                  {article.articleType && (
+                    <Typography className="article-type-label">{article.articleType}</Typography>
+                  )}
+                  <Stack className="article-image-icons" direction="column">
+                    <Box
+                      className={`icon-wrapper icon-wrapper-with-count${likedArticles[article.id] ? " icon-wrapper-liked" : ""}`}
+                      onClick={(e: React.MouseEvent) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleLikeClick(article.id, e);
+                      }}
+                      component="span"
+                    >
+                      {likedArticles[article.id] ? (
+                        <Favorite sx={{ fontSize: 28 }} />
+                      ) : (
+                        <FavoriteBorderOutlined sx={{ fontSize: 28 }} />
+                      )}
+                      <span className="icon-wrapper-count">{likeCounts[article.id] ?? 0}</span>
+                    </Box>
+                    <Box
+                      className="icon-wrapper icon-wrapper-with-count"
+                      onClick={(e: React.MouseEvent) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      component="span"
+                    >
+                      <VisibilityOutlined sx={{ fontSize: 28 }} />
+                      <span className="icon-wrapper-count">0</span>
+                    </Box>
+                    <Box
+                      className="icon-wrapper icon-wrapper-with-count"
+                      onClick={(e: React.MouseEvent) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      component="span"
+                    >
+                      <CommentOutlined sx={{ fontSize: 28 }} />
+                      <span className="icon-wrapper-count">{article.comments}</span>
+                    </Box>
+                  </Stack>
+                </Box>
+                <Box className="article-content">
+                  <Typography className="article-meta">
+                    <Box component="span" className="article-author-wrapper">
+                      {article.memberType && (
+                        <Box component="span" className="article-member-type">
+                          ({article.memberType.toLowerCase()})
+                        </Box>
+                      )}
+                      <Box component="span" className="article-author">
+                        {article.author}
+                      </Box>
+                    </Box>
+                    <Box component="span">{article.date}</Box>
+                  </Typography>
+                  <Typography className="article-title">
+                    {article.title}
+                  </Typography>
+                  <Typography className="article-description">
+                    {article.description}
+                  </Typography>
+                </Box>
+              </Box>
+            </Link>
+          );
+        })}
       </Stack>
 
       {/* Pagination */}

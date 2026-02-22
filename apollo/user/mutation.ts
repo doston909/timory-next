@@ -367,6 +367,11 @@ export const LIKE_TARGET_BOARD_ARTICLE = gql`
         memberId
         createdAt
         updatedAt
+        meLiked {
+            memberId
+            likeRefId
+            myFavorite
+        }
     }
 }
 

@@ -383,7 +383,10 @@ const Community: NextPage = () => {
         </Stack>
 
         {/* Main Content */}
-        <CommunityCard articles={filteredArticles} />
+        <CommunityCard
+          articles={filteredArticles}
+          onArticleClick={(id) => router.push(`/community/detail?id=${id}`)}
+        />
       </Stack>
     </Stack>
   );

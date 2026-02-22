@@ -209,6 +209,30 @@ export const GET_COMMENTS = gql`
   }
 `;
 
+export const GET_BOARD_ARTICLE = gql`
+  query GetBoardArticle($articleId: String!) {
+    getBoardArticle(articleId: $articleId) {
+      _id
+      articleTitle
+      articleContent
+      articleImage
+      articleViews
+      articleLikes
+      articleComments
+      createdAt
+      memberData {
+        memberName
+        memberPhoto
+      }
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+    }
+  }
+`;
+
 export const GET_BOARD_ARTICLES = gql`
   query GetBoardArticles($input: BoardArticlesInquiry!) {
     getBoardArticles(input: $input) {
