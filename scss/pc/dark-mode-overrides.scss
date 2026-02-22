@@ -3,9 +3,16 @@
  * Loaded last so these override default light styles.
  */
 .theme-dark {
+  /* Sahifa chetlari ham bir xil fon bo‘lishi uchun (dealer va boshqa sahifalar) */
   &,
   body {
     background-color: #121212 !important;
+    min-height: 100vh;
+  }
+
+  #__next {
+    background-color: #1c222f !important;
+    min-height: 100vh;
   }
 
   /* AIChatBot.tsx — alohida dark mode */
@@ -609,6 +616,405 @@
     background-color: #1c222f !important;
     color: #e8e8e8;
     border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* pages/dealer/index.tsx — dealer list dark mode */
+  .dealer-page {
+    background-color: #1c222f;
+
+    .dealer-list-header {
+      .dealer-list-title {
+        color: #e4e4e4;
+      }
+      .dealer-list-subtitle {
+        color: #b0b0b0;
+      }
+    }
+
+    .dealer-card {
+      background: #263351 !important;
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        box-shadow: 0 0 40px rgba(240, 150, 32, 0.25);
+      }
+
+      .dealer-image-placeholder {
+        background-color: #2d2d2d;
+        .dealer-user-icon {
+          color: #555;
+        }
+      }
+
+      .dealer-card-content {
+        .dealer-name {
+          color: #e4e4e4;
+        }
+        .dealer-label {
+          color: #a0a0a0;
+        }
+        .dealer-goal {
+          color: #c9a86c;
+        }
+      }
+    }
+
+    .dealer-pagination {
+      .dealer-page-number {
+        color: #b0b0b0;
+        &:hover {
+          color: #f09620;
+        }
+        &.active {
+          color: #f09620;
+        }
+      }
+      .dealer-page-arrow {
+        color: #b0b0b0;
+        &:hover:not(:disabled) {
+          color: #f09620;
+        }
+      }
+    }
+  }
+
+  /* pages/dealer/detail.tsx — dealer detail dark mode (mypage bilan bir xil) */
+  .dealer-detail-page {
+    background-color: #1c222f !important;
+    color: #e4e4e4;
+
+    .dealer-detail-hero {
+      background-color: #263351 !important;
+
+      .dealer-detail-hero-bg {
+        filter: grayscale(1) brightness(0.4);
+        opacity: 0.9;
+      }
+
+      .dealer-avatar-wrapper {
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .dealer-profile-text {
+        .dealer-profile-name {
+          color: #000000 !important;
+        }
+
+        .dealer-profile-phone,
+        .dealer-profile-role {
+          color: #000000 !important;
+        }
+      }
+
+      .dealer-follow-button {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #fff !important;
+          border-color: #f09620 !important;
+        }
+      }
+
+      .dealer-follow-button-active {
+        background-color: #f09620 !important;
+        color: #fff !important;
+        border-color: #f09620 !important;
+      }
+    }
+
+    .dealer-detail-tabs {
+      background-color: #263351 !important;
+      border-top-color: rgba(255, 255, 255, 0.08) !important;
+
+      &::after {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    .dealer-tab {
+      color: #ffffff !important;
+
+      &.dealer-tab-active {
+        color: #f09620 !important;
+        border-bottom-color: #f09620 !important;
+      }
+    }
+
+    .dealer-watches-container {
+      background-color: #263351 !important;
+
+      .dealer-watches-grid {
+        background-color: transparent !important;
+      }
+
+      .dealer-watches-container-title {
+        color: #fff !important;
+      }
+
+      .dealer-watches-empty-message {
+        color: #b0b0b0 !important;
+      }
+
+      .dealer-watch-item {
+        background-color: #353e53 !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+
+        .dealer-watch-item-left .dealer-watch-item-image {
+          background-color: #263351 !important;
+        }
+
+        .dealer-watch-item-right {
+          .dealer-watch-item-brand,
+          .dealer-watch-item-name {
+            color: #fff !important;
+          }
+          .dealer-watch-item-price {
+            color: #b0b0b0 !important;
+          }
+          .dealer-watch-item-date {
+            color: #b0b0b0 !important;
+          }
+          .dealer-watch-item-status {
+            color: #fff !important;
+            background-color: #53bb68 !important;
+            border-color: #53bb68 !important;
+
+            &.dealer-watch-item-status-sold-out {
+              background-color: #444 !important;
+              border-color: #444 !important;
+              color: #e4e4e4 !important;
+            }
+          }
+        }
+
+        .dealer-watch-item-icons .action-btn {
+          background: rgba(255, 255, 255, 0.1) !important;
+          svg {
+            color: #fff !important;
+          }
+          &:hover {
+            background: #f09620 !important;
+            svg {
+              color: #fff !important;
+            }
+          }
+          &.action-btn-liked {
+            background: #f09620 !important;
+            svg {
+              color: #fff !important;
+            }
+          }
+        }
+      }
+
+      .dealer-watches-pagination .dealer-watches-page-number {
+        color: #ffffff !important;
+
+        &:hover {
+          color: #f09620 !important;
+        }
+
+        &.active {
+          color: #f09620 !important;
+          text-decoration-color: #f09620 !important;
+        }
+      }
+    }
+
+    .dealer-followers-container {
+      background-color: #263351 !important;
+      border: 1px solid #263351;
+
+      .dealer-watches-container-title {
+        color: #fff !important;
+      }
+
+      .dealer-watches-empty-message {
+        color: #b0b0b0 !important;
+      }
+
+      .dealer-follow-button {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #fff !important;
+          border-color: #f09620 !important;
+        }
+      }
+
+      .dealer-follow-button-active {
+        background-color: #f09620 !important;
+        color: #fff !important;
+        border-color: #f09620 !important;
+      }
+
+      .dealer-followers-box {
+        background-color: #263351 !important;
+        border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      .dealer-followers-box-part {
+        background-color: #263351 !important;
+        border-color: #263351 !important;
+      }
+
+      .dealer-followers-avatar-icon {
+        color: #b0b0b0 !important;
+      }
+
+      .dealer-followers-name {
+        color: #fff !important;
+      }
+
+      .dealer-followers-role {
+        color: #b0b0b0 !important;
+      }
+
+      .dealer-followers-label {
+        color: #fff !important;
+      }
+
+      .dealer-articles-box {
+        background-color: #263351 !important;
+        border-color: #263351 !important;
+        color: #e4e4e4;
+      }
+
+      .dealer-article-card {
+        background-color: #353e53 !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+
+        .dealer-article-header,
+        .dealer-article-body {
+          background-color: transparent !important;
+        }
+      }
+
+      .dealer-article-type {
+        background-color: #353e53 !important;
+        color: #fff !important;
+      }
+
+      .dealer-article-date {
+        color: #b0b0b0 !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .dealer-article-title-text {
+        background-color: #353e53 !important;
+        color: #fff !important;
+
+        &:hover {
+          color: #f09620 !important;
+        }
+      }
+
+      .dealer-article-excerpt-text {
+        background-color: #353e53 !important;
+        color: #b0b0b0 !important;
+      }
+
+      .dealer-article-read-more-text {
+        background-color: #353e53 !important;
+        color: #e4e4e4 !important;
+      }
+
+      .dealer-article-read-more-arrow {
+        background-color: #353e53 !important;
+        color: #e4e4e4 !important;
+      }
+
+      .dealer-article-read-more:hover .dealer-article-read-more-text,
+      .dealer-article-read-more:hover .dealer-article-read-more-arrow {
+        background-color: #353e53 !important;
+        color: #f09620 !important;
+      }
+
+      .dealer-article-actions-right {
+        color: #fff !important;
+
+        .dealer-article-action svg {
+          color: #fff !important;
+        }
+
+        .dealer-article-action-count {
+          color: #e0e0e0 !important;
+        }
+      }
+    }
+
+    /* dealer/detail.tsx — Contact Dealer tab (cs-contact-section) dark mode */
+    .cs-contact-section {
+      .cs-contact-title,
+      .cs-contact-form-title,
+      .cs-contact-info-title,
+      .cs-contact-info-heading {
+        color: #fff !important;
+      }
+
+      .cs-contact-info-text,
+      .cs-contact-info-line {
+        color: #b0b0b0 !important;
+      }
+
+      .cs-contact-container {
+        background-color: #263351 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .cs-contact-info {
+        background-color: #353e53 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+      }
+
+      .cs-contact-info-block {
+        border-top-color: rgba(255, 255, 255, 0.12) !important;
+      }
+
+      .cs-contact-label {
+        color: #e4e4e4 !important;
+      }
+
+      .cs-contact-input,
+      .cs-contact-textarea {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: #e4e4e4 !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+
+        &::placeholder {
+          color: #888 !important;
+        }
+
+        &:focus {
+          border-color: #f09620 !important;
+        }
+      }
+
+      .cs-contact-submit {
+        background-color: #353e53 !important;
+        color: #fff !important;
+        border: 1px solid #f09620 !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #fff !important;
+          border-color: #f09620 !important;
+        }
+
+        .cs-contact-submit-icon {
+          color: #fff !important;
+        }
+      }
+    }
   }
 
   /* pages/cs/index.tsx — cs-page dark mode */

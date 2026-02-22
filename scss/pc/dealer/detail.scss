@@ -493,6 +493,16 @@
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
+        /* No followers / No followings / The dealer did not load the article — Watches empty xabar bilan bir xil */
+        .dealer-watches-empty-message {
+          font-size: 30px;
+          font-weight: 500;
+          color: #585553;
+          text-align: center;
+          padding: 60px 20px;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
         /* Followers box ichidagi Follow/Unfollow tugmasi dizayni
            yuqoridagi .dealer-follow-button bilan bir xil bo'lsin */
         .dealer-follow-button {
