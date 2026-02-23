@@ -5,6 +5,69 @@ interface HistoryItem {
   content: string;
 }
 
+/**
+ * OpenAI Chat Completions orqali javob olish
+ */
+async function fetchOpenAIReply(
+  message: string,
+  history: HistoryItem[],
+  apiKey: string
+): Promise<string> {
+  const validHistory = history.filter((h) => h?.content?.trim());
+  const messages = [
+    ...validHistory.map((h) => ({
+      role: h.role === "assistant" ? "assistant" : "user",
+      content: String(h.content).trim(),
+    })),
+    { role: "user" as const, content: message.trim() },
+  ];
+
+  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  const url =
+    process.env.OPENAI_BASE_URL?.trim() ||
+    "https://api.openai.com/v1/chat/completions";
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature: 0.7,
+    }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const errMsg =
+      data?.error?.message ||
+      data?.error?.code ||
+      `OpenAI API: ${res.status}`;
+    const isRateLimit =
+      res.status === 429 || /quota|rate limit/i.test(String(errMsg));
+    const e = new Error(errMsg) as Error & {
+      statusCode?: number;
+      retryAfter?: number;
+    };
+    e.statusCode = res.status;
+    if (isRateLimit) {
+      const retryHeader = res.headers.get("Retry-After");
+      e.retryAfter = retryHeader ? Number(retryHeader) || 30 : 30;
+    }
+    throw e;
+  }
+
+  const text: string =
+    data?.choices?.[0]?.message?.content?.trim() ||
+    "";
+  if (text) return text;
+  throw new Error("OpenAI response was empty.");
+}
+
 /** Bepul kvota ko‘proq bo‘lishi mumkin bo‘lgan model birinchi */
 const GEMINI_MODELS = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"] as const;
 
@@ -91,16 +154,19 @@ export default async function handler(
       return res.status(400).json({ error: "Message is required." });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
 
-    if (!apiKey) {
+    if (!openaiKey && !geminiKey) {
       return res.status(200).json({
         reply:
-          "AI service is not configured. Set GEMINI_API_KEY in .env.local. You can get a free API key from Google AI Studio (aistudio.google.com).",
+          "AI service is not configured. Set OPENAI_API_KEY in .env.local. (Optional: set GEMINI_API_KEY for Google Gemini fallback).",
       });
     }
 
-    const reply = await fetchGeminiReply(message, history, apiKey);
+    const reply = openaiKey
+      ? await fetchOpenAIReply(message, history, openaiKey)
+      : await fetchGeminiReply(message, history, geminiKey as string);
 
     return res.status(200).json({ reply });
   } catch (err: unknown) {
