@@ -44,6 +44,12 @@ const AIWatchFinder = () => {
   };
 
   const handleFind = async () => {
+    // Require all select fields before calling AI
+    if (!form.gender || !form.style || !form.budget || !form.color) {
+      setError("Please select gender, style, budget, and color before searching for a watch.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResults([]);
@@ -165,19 +171,39 @@ const AIWatchFinder = () => {
         </Box>
 
         {results.length > 0 && (
-          <Box className="ai-watch-finder-results">
-            {results.map((watch, i) => (
-              <Box key={i} className="ai-watch-finder-card">
-                <Box className="ai-watch-finder-card-image">
-                  <img src={watch.image} alt={watch.model} />
+          <>
+            <Box className="ai-watch-finder-results-header">
+              <Button
+                className="ai-watch-finder-reset-btn"
+                onClick={() => {
+                  setResults([]);
+                  setError(null);
+                  setForm({
+                    gender: "",
+                    style: "",
+                    budget: "",
+                    color: "",
+                    thought: "",
+                  });
+                }}
+                disabled={loading}
+              >
+                Reset results
+              </Button>
+            </Box>
+            <Box className="ai-watch-finder-results">
+              {results.map((watch, i) => (
+                <Box key={i} className="ai-watch-finder-card">
+                  <Typography className="ai-watch-finder-card-brand">{watch.brand}</Typography>
+                  <Typography className="ai-watch-finder-card-model">{watch.model}</Typography>
+                  <Typography className="ai-watch-finder-card-price">{watch.price}</Typography>
+                  <Typography className="ai-watch-finder-card-desc">
+                    {watch.description}
+                  </Typography>
                 </Box>
-                <Typography className="ai-watch-finder-card-brand">{watch.brand}</Typography>
-                <Typography className="ai-watch-finder-card-model">{watch.model}</Typography>
-                <Typography className="ai-watch-finder-card-price">{watch.price}</Typography>
-                <Typography className="ai-watch-finder-card-reason">{watch.reason}</Typography>
-              </Box>
-            ))}
-          </Box>
+              ))}
+            </Box>
+          </>
         )}
       </Stack>
     </Stack>
