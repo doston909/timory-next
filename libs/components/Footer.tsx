@@ -70,7 +70,13 @@ const Footer = () => {
                 {t("footer.downloadApp")}
               </Box>
               <Stack className="footer-app-buttons" direction="column" spacing={1.5}>
-                <Box className="footer-app-button footer-app-button--play" component="a" href="#">
+              <Box
+                className="footer-app-button footer-app-button--play"
+                component="a"
+                href="https://play.google.com/store/apps"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                   <Box className="footer-app-icon footer-app-icon--play">
                     <img src="/img/logo/playstore.png" alt="Google Play" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </Box>
@@ -79,7 +85,13 @@ const Footer = () => {
                     <span className="footer-app-text-main">{t("footer.googlePlay")}</span>
                   </Box>
                 </Box>
-                <Box className="footer-app-button footer-app-button--store" component="a" href="#">
+                <Box
+                  className="footer-app-button footer-app-button--store"
+                  component="a"
+                  href="https://www.apple.com/app-store/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Box className="footer-app-icon footer-app-icon--store">
                     <img src="/img/logo/app-store.png" alt="App Store" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </Box>

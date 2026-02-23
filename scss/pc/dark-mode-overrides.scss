@@ -3323,10 +3323,24 @@
           color: #e57373 !important;
         }
       }
+
+      &:hover .text-box {
+        .brand,
+        .price {
+          color: #000000 !important;
+        }
+      }
     }
 
     .empty-text {
       color: #b0b0b0 !important;
+    }
+
+    /* BestSeller.tsx — best-seller carousel cards */
+    .best-watch-card {
+      &:hover .info .brand {
+        color: #000000 !important;
+      }
     }
   }
 

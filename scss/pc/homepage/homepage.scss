@@ -216,6 +216,13 @@
           color: var(--text-primary);
         }
       }
+
+      &:hover .text-box {
+        .brand,
+        .price {
+          color: #000000;
+        }
+      }
     }
 
     /* RESPONSIVE */
@@ -988,6 +995,10 @@
           color: #e04c4c;
           margin-top: 5px;
         }
+      }
+
+      &:hover .info .brand {
+        color: #000000;
       }
 
       .action-btn {

@@ -15,9 +15,9 @@ const HeroCarousel = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const slides = [
-    { id: 1, image: "/img/watch/home7.jpeg" },
+    { id: 1, image: "/img/watch/rolll.jpg" },
     { id: 2, image: "/img/watch/home55.jpg" },
-    { id: 3, image: "/img/watch/home11.jpg" },
+    { id: 3, image: "/img/watch/home7.jpeg" },
   ];
 
   return (
