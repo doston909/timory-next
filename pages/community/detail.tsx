@@ -36,7 +36,7 @@ import {
   UPDATE_COMMENT,
   REMOVE_COMMENT,
 } from "@/apollo/user/mutation";
-import { watchImageUrl } from "@/libs/utils";
+import { watchImageUrl, articleImageUrl } from "@/libs/utils";
 
 // Articles data - index.tsx dagi bilan bir xil
 
@@ -349,7 +349,7 @@ const CommunityDetail: NextPage = () => {
       const a = articleData.getBoardArticle;
       setArticle({
         id: a._id,
-        image: watchImageUrl(a.articleImage),
+        image: articleImageUrl(a.articleImage),
         title: a.articleTitle ?? "",
         content: a.articleContent ?? "",
         date: a.createdAt

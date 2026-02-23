@@ -6,6 +6,11 @@ export function watchImageUrl(path: string | undefined | null, fallback = "/img/
   const base = (process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "").replace(/\/graphql.*$/, "");
   return base ? `${base}/${path.replace(/^\//, "")}` : (path.startsWith("/") ? path : `/${path}`);
 }
+
+/** Article rasmlari uchun — soat fallback ishlatilmasin; bo‘sh bo‘lsa bo‘sh qaytariladi */
+export function articleImageUrl(path: string | undefined | null): string {
+  return watchImageUrl(path, "");
+}
 import { sweetMixinErrorAlert } from './sweetAlert';
 
 export const formatterStr = (value: number | undefined): string => {

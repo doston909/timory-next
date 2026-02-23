@@ -48,7 +48,7 @@ import { updateUserInfo, logOut } from "../../libs/auth";
 import { WatchType as WatchTypeEnum, WatchStatus as WatchStatusEnum } from "../../libs/enums/watch.enum";
 import { BoardArticleCategory } from "../../libs/enums/board-article.enum";
 import { sweetMixinErrorAlert } from "../../libs/sweetAlert";
-import { watchImageUrl } from "../../libs/utils";
+import { watchImageUrl, articleImageUrl } from "../../libs/utils";
 
 /** Dealer watch from API (getDealerWatches list item) */
 type DealerWatch = {
@@ -589,7 +589,7 @@ const MyPage = () => {
         }),
       title: a.articleTitle ?? "",
       content: a.articleContent ?? "",
-      image: watchImageUrl(a.articleImage),
+      image: articleImageUrl(a.articleImage),
       status: a.articleStatus ?? "PUBLISHING",
       views: a.articleViews ?? 0,
       likes: a.articleLikes ?? 0,

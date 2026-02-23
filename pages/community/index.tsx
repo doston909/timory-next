@@ -19,7 +19,7 @@ import { useCart } from "@/libs/context/CartContext";
 import { userVar } from "@/apollo/store";
 import { GET_BOARD_ARTICLES, GET_WATCHES } from "@/apollo/user/query";
 import { LIKE_TARGET_BOARD_ARTICLE } from "@/apollo/user/mutation";
-import { watchImageUrl } from "@/libs/utils";
+import { watchImageUrl, articleImageUrl } from "@/libs/utils";
 import { getViewCount } from "@/libs/viewCountStorage";
 import { getDealerByName } from "@/libs/data/dealers";
 import { useTranslation } from "@/libs/context/useTranslation";
@@ -113,7 +113,7 @@ const Community: NextPage = () => {
       const description = content.length > 80 ? content.slice(0, 80).trim() + ".." : content;
       return {
         id: a._id,
-        image: watchImageUrl(a.articleImage),
+        image: articleImageUrl(a.articleImage),
         author: a.memberData?.memberName ?? "",
         memberType: a.memberData?.memberType ?? "",
         date:
