@@ -168,17 +168,20 @@
       font-size: 14px;
       margin-left: auto;
       margin-bottom: 4px;
+    
     }
 
     .msg-left {
-      max-width: 75%;
+      max-width: 100%;
       padding: 8px 12px;
       border-radius: 16px;
       background: #f0f0f0;
       color: #000;
       font-family: $font, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       margin-bottom: 4px;
+      margin-left: 20px;
+     
     }
   }
 

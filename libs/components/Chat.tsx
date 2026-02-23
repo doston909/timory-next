@@ -184,8 +184,7 @@ const Chat = () => {
                 >
                   {displayName(memberData)}
                 </Typography>
-                <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1, marginLeft:"30px"}}>
-                 
+                <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1 }}>
                   <div className="msg-left">{text}</div>
                 </Box>
               </Box>
