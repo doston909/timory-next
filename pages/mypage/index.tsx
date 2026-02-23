@@ -2486,7 +2486,10 @@ const MyPage = () => {
                   className="mypage-add-watch-submit-button"
                   disabled={!isAddWatchValid || createWatchLoading}
                   onClick={async () => {
-                    if (!isAddWatchValid) return;
+                    if (!isAddWatchValid) {
+                      sweetMixinErrorAlert("Please fill in all fields.");
+                      return;
+                    }
                     const files = [newWatch.image1, newWatch.image2].filter(
                       (x): x is File => x != null
                     );
@@ -2746,6 +2749,10 @@ const MyPage = () => {
                     createArticleLoading
                   }
                   onClick={async () => {
+                    if (!newArticle.title?.trim() || !newArticle.content?.trim() || !newArticle.articleType) {
+                      sweetMixinErrorAlert("Please fill in all fields.");
+                      return;
+                    }
                     const articleCategoryMap: Record<string, BoardArticleCategory> = {
                       "Free Board": BoardArticleCategory.FREE,
                       Recommendation: BoardArticleCategory.RECOMMEND,

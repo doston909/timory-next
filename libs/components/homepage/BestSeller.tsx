@@ -21,6 +21,7 @@ import type { ApolloCache } from "@apollo/client";
 import { GET_WATCHES } from "@/apollo/user/query";
 import { LIKE_TARGET_WATCH } from "@/apollo/user/mutation";
 import { watchImageUrl } from "@/libs/utils";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -157,19 +158,11 @@ const BestSeller = () => {
 
   const handleLikeClick = (e: React.MouseEvent, w: BestSellerWatch) => {
     e.stopPropagation();
-    if (user?._id) {
-      likeTargetWatchMutation({ variables: { input: String(w.id) } });
+    if (!user?._id) {
+      sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
       return;
     }
-    const key = String(w.id);
-    setLikedWatches((prev) => {
-      const isLiked = !prev[key];
-      setLikeCounts((counts) => ({
-        ...counts,
-        [key]: isLiked ? (counts[key] ?? 0) + 1 : Math.max(w.likes, (counts[key] ?? 0) - 1),
-      }));
-      return { ...prev, [key]: isLiked };
-    });
+    likeTargetWatchMutation({ variables: { input: String(w.id) } });
   };
 
   const handleSeeAllClick = () => {

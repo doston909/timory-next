@@ -8,6 +8,7 @@ import {
 import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 export type Article = {
   id: number | string;
@@ -59,6 +60,10 @@ const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps)
 
   const handleLikeClick = (articleId: number | string, articleLikesFromDb: number, e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!onLike) {
+      sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
+      return;
+    }
     const key = String(articleId);
     const currentlyLiked = likedArticles[key] ?? false;
     const nextLiked = !currentlyLiked;
@@ -68,9 +73,7 @@ const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps)
       ...counts,
       [key]: nextLiked ? baseCount + 1 : Math.max(0, baseCount - 1),
     }));
-    if (onLike) {
-      onLike(articleId);
-    }
+    onLike(articleId);
   };
 
   const handleArticleClick = (articleId: number | string, e?: React.MouseEvent) => {

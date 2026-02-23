@@ -43,6 +43,7 @@ import CalendarToday from "@mui/icons-material/CalendarToday";
 import Person from "@mui/icons-material/Person";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Close from "@mui/icons-material/Close";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 const WatchDetail = () => {
   const device = useDeviceDetect();
@@ -241,8 +242,7 @@ const WatchDetail = () => {
     // Yangi comment — faqat login qilgan member yoza oladi
     if (!watchIdStr) return;
     if (!user?._id) {
-      if (typeof window !== "undefined")
-        alert(t("detail.loginToComment") || "Comment yozish uchun tizimga kiring.");
+      sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
       return;
     }
     try {
@@ -541,12 +541,23 @@ const WatchDetail = () => {
                   brand: "",
                   price: parseFloat(String(watch.price).replace(/[^0-9.-]+/g, "")) || 0,
                   quantity: 1,
+                  dealerId: apiWatch?.memberId ?? apiWatch?.memberData?._id,
                 });
               }}
             >
               {t("detail.addToWishlist")} <ArrowForward sx={{ ml: 1 }} />
             </Button>
-            <Button className="action-btn contact-dealer-btn">
+            <Button
+              className="action-btn contact-dealer-btn"
+              onClick={() => {
+                if (!user?._id) {
+                  sweetToastErrorAlert("Please login or sign up first.").then();
+                  return;
+                }
+                const dealerId = apiWatch?.memberId ?? apiWatch?.memberData?._id;
+                if (dealerId) router.push(`/dealer/detail?id=${dealerId}&tab=contact`);
+              }}
+            >
               {t("detail.contactDealer")} <ArrowForward sx={{ ml: 1 }} />
             </Button>
           </Box>
@@ -563,10 +574,14 @@ const WatchDetail = () => {
               className="metric-item"
               onClick={(e) => {
                 e.stopPropagation();
-                if (user?._id && watchIdStr)
+                if (!user?._id) {
+                  sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
+                  return;
+                }
+                if (watchIdStr)
                   likeTargetWatchMutation({ variables: { input: watchIdStr } });
               }}
-              sx={user?._id ? { cursor: "pointer" } : undefined}
+              sx={{ cursor: "pointer" }}
             >
               {isWatchLiked ? (
                 <FavoriteIcon className="metric-icon" sx={{ color: "#c00" }} />

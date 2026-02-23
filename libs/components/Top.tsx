@@ -21,6 +21,7 @@ import { useCart } from "@/libs/context/CartContext";
 import { useTheme } from "@/libs/context/ThemeContext";
 import { useLocale } from "@/libs/context/LocaleContext";
 import { useTranslation } from "@/libs/context/useTranslation";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 const Top = () => {
   const router = useRouter();
@@ -737,6 +738,20 @@ const Top = () => {
                               borderColor: "#1a1a1a",
                               color: "#1a1a1a",
                               textTransform: "none",
+                            }}
+                            onClick={() => {
+                              if (!user?._id) {
+                                sweetToastErrorAlert("Please login or sign up first.").then();
+                                return;
+                              }
+                              const dealerId = item.dealerId;
+                              if (dealerId) {
+                                setIsCartOpen(false);
+                                router.push(`/dealer/detail?id=${dealerId}&tab=contact`);
+                              } else {
+                                setIsCartOpen(false);
+                                router.push(`/watch/detail?id=${item.id}`);
+                              }
                             }}
                           >
                             Contact dealer

@@ -37,6 +37,7 @@ import {
   REMOVE_COMMENT,
 } from "@/apollo/user/mutation";
 import { watchImageUrl, articleImageUrl } from "@/libs/utils";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 // Articles data - index.tsx dagi bilan bir xil
 
@@ -267,12 +268,7 @@ const CommunityDetail: NextPage = () => {
         return;
       }
       if (!user?._id) {
-        if (typeof window !== "undefined")
-          alert(
-            t("commDetail.loginToComment") ||
-              t("detail.loginToComment") ||
-              "Comment yozish uchun tizimga kiring."
-          );
+        sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
         return;
       }
       try {

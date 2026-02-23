@@ -47,21 +47,25 @@ const requestJwtToken = async ({
 		const loginData = result?.data?.login;
 		const accessToken = loginData?.accessToken;
 		if (!accessToken) {
-			const msg = (result as any)?.errors?.[0]?.message ?? '';
-			if (msg) await sweetMixinErrorAlert(msg.includes('blocked') ? 'User has been blocked' : msg || 'Login failed');
-			else await sweetMixinErrorAlert('Invalid name or password, or account has been deleted');
+			const msg = ((result as any)?.errors?.[0]?.message ?? '').trim();
+			if (msg && msg.includes('blocked')) await sweetMixinErrorAlert('User has been blocked');
+			else if (msg && msg.toLowerCase().includes('deleted')) await sweetMixinErrorAlert('Account has been deleted.');
+			else await sweetMixinErrorAlert('Name or password does not match. Please check and try again.');
 			throw new Error('token error');
 		}
 		return { jwtToken: accessToken, member: loginData };
 	} catch (err: any) {
 		if (err?.message === 'token error') throw err;
-		const msg = err?.graphQLErrors?.[0]?.message ?? err?.networkError?.message ?? err?.message ?? '';
-		if (msg.includes('No member with that member nick!') || msg.includes('Wrong password')) {
-			await sweetMixinErrorAlert('Invalid name or password');
+		const msg = (err?.graphQLErrors?.[0]?.message ?? err?.networkError?.message ?? err?.message ?? '').trim();
+		const badRequest = /bad\s*request|badrequest/i.test(msg);
+		if (badRequest || msg.includes('No member with that member nick!') || msg.includes('Wrong password') || msg.includes('Invalid') || msg.includes('not match')) {
+			await sweetMixinErrorAlert('Name or password does not match. Please check and try again.');
 		} else if (msg.includes('blocked')) {
 			await sweetMixinErrorAlert('User has been blocked');
+		} else if (msg.includes('deleted')) {
+			await sweetMixinErrorAlert('Account has been deleted.');
 		} else {
-			await sweetMixinErrorAlert(msg || 'Login failed');
+			await sweetMixinErrorAlert(msg || 'Name or password does not match. Please check and try again.');
 		}
 		throw new Error('token error');
 	}

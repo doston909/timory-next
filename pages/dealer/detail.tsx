@@ -9,6 +9,7 @@ import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 import { GET_MEMBER, GET_WATCHES, GET_BOARD_ARTICLES, GET_MEMBER_FOLLOWERS, GET_MEMBER_FOLLOWINGS } from "@/apollo/user/query";
 import { SUBSCRIBE, UNSUBSCRIBE } from "@/apollo/user/mutation";
 import { watchImageUrl } from "@/libs/utils";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 type Watch = {
   id: number | string;
@@ -130,6 +131,12 @@ const DealerDetailPage = () => {
   const [isCurrentUserFollower, setIsCurrentUserFollower] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Watches");
+  const tabFromQuery = router.query.tab;
+  useEffect(() => {
+    if (router.isReady && tabFromQuery === "contact") {
+      setActiveTab("Contact Dealer");
+    }
+  }, [router.isReady, tabFromQuery]);
   const [followersPage, setFollowersPage] = useState(1);
   const [followingsPage, setFollowingsPage] = useState(1);
   const [followersFollowing, setFollowersFollowing] = useState<{ [key: string]: boolean }>({});
@@ -240,6 +247,7 @@ const DealerDetailPage = () => {
       brand: watch.brand || "",
       price: parseFloat(watch.price.replace(/[^0-9.-]+/g, "") || "0"),
       quantity: 1,
+      dealerId: dealerId,
     });
   };
 
@@ -338,7 +346,13 @@ const DealerDetailPage = () => {
           className={`dealer-tab${
             activeTab === "Contact Dealer" ? " dealer-tab-active" : ""
           }`}
-          onClick={() => setActiveTab("Contact Dealer")}
+          onClick={() => {
+            if (!user?._id) {
+              sweetToastErrorAlert("Please login or sign up first.").then();
+              return;
+            }
+            setActiveTab("Contact Dealer");
+          }}
         >
           Contact Dealer
         </Box>
@@ -801,7 +815,16 @@ const DealerDetailPage = () => {
                   />
                 </Box>
 
-                <Button className="cs-contact-submit">
+                <Button
+                  className="cs-contact-submit"
+                  onClick={() => {
+                    if (!user?._id) {
+                      sweetToastErrorAlert("Please login or sign up first.").then();
+                      return;
+                    }
+                    // TODO: send message logic
+                  }}
+                >
                   Send Message
                   <ArrowForward className="cs-contact-submit-icon" />
                 </Button>

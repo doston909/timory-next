@@ -8,6 +8,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import { useCart } from "@/libs/context/CartContext";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 export type PopularWatch = {
   id: string | number;
@@ -37,17 +38,11 @@ const PopularWatchesCard = ({ watch, homepageSectionId, onLike }: Props) => {
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (onLike) {
-      onLike(String(watch.id));
+    if (!onLike) {
+      sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
       return;
     }
-    setIsLikedLocal((prev) => {
-      const next = !prev;
-      setLikeCountLocal((count) =>
-        next ? count + 1 : Math.max((watch.likes ?? 0), count - 1)
-      );
-      return next;
-    });
+    onLike(String(watch.id));
   };
 
   const handleBagClick = (e: React.MouseEvent) => {

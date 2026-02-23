@@ -9,6 +9,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "@/libs/context/CartContext";
+import { sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 interface Watch {
   id: number | string;
@@ -69,17 +70,11 @@ const WatchCard = ({ watch, onLike }: WatchCardProps) => {
 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (onLike) {
-      onLike(String(watch.id));
+    if (!onLike) {
+      sweetToastErrorAlert("Please log in or sign up to like and comment.").then();
       return;
     }
-    setIsLikedLocal((prev) => {
-      const next = !prev;
-      setLikeCountLocal((count) =>
-        next ? count + 1 : Math.max((watch.likes ?? 0), count - 1)
-      );
-      return next;
-    });
+    onLike(String(watch.id));
   };
 
   const handleBagClick = (e: React.MouseEvent) => {

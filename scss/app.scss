@@ -35,6 +35,25 @@
   --text-subtle: #9a9a9a;
 }
 
+/* SweetAlert2 toast — tepa o‘ngdagi alertlar biroz kattaroq */
+.swal2-toast {
+  min-width: 340px !important;
+  max-width: 420px !important;
+  padding: 0.9rem 1.2rem !important;
+  font-size: 18px !important;
+
+  .swal2-title {
+    font-size: 18px !important;
+    padding: 0 0.4em !important;
+  }
+
+  .swal2-icon {
+    width: 2em !important;
+    height: 2em !important;
+    margin: 0 0.5em 0 0 !important;
+  }
+}
+
 /* All MUI MenuItems — font va hover */
 .MuiMenuItem-root {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;

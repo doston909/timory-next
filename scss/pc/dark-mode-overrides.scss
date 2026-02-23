@@ -708,14 +708,14 @@
       }
 
       .dealer-follow-button {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        color: #e4e4e4 !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: #000000 !important;
         border-color: rgba(255, 255, 255, 0.3) !important;
 
         &:hover {
-          background-color: #f09620 !important;
+          background-color: #000000 !important;
           color: #fff !important;
-          border-color: #f09620 !important;
+          border-color: #000000 !important;
         }
       }
 
@@ -2947,13 +2947,13 @@
       }
 
       .action-buttons .action-btn.add-to-cart-btn {
-        background-color: #252525 !important;
-        color: #e4e4e4;
+        background-color: white !important;
+        color: black;
         border-color: rgba(255, 255, 255, 0.3);
 
         &:hover {
           background-color: #f9a63b !important;
-          color: #1e1e1e;
+          color: black !important;
           border-color: #f9a63b;
         }
       }
@@ -2970,13 +2970,13 @@
       }
 
       .action-buttons .action-btn.contact-dealer-btn {
-        background-color: #252525 !important;
+        background-color: white !important;
         color: #e4e4e4;
         border-color: rgba(255, 255, 255, 0.3);
 
         &:hover {
           background-color: #f9a63b !important;
-          color: #000000;
+          color: black !important;
           border-color: #f9a63b;
         }
       }

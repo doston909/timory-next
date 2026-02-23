@@ -4,10 +4,16 @@ import { Messages } from './config';
 
 
 export const sweetErrorHandling = async (err: any) => {
-	await Swal.fire({
-		icon: 'error',
-		text: err.message,
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
 		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+	});
+	await Toast.fire({
+		icon: 'error',
+		title: err?.message ?? 'Error',
 	});
 };
 
@@ -69,20 +75,30 @@ export const sweetLoginConfirmAlert = (msg: string) => {
 };
 
 export const sweetErrorAlert = async (msg: string, duration: number = 3000) => {
-	await Swal.fire({
-		icon: 'error',
-		title: msg,
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
 		showConfirmButton: false,
 		timer: duration,
+		timerProgressBar: true,
+	});
+	await Toast.fire({
+		icon: 'error',
+		title: msg,
 	});
 };
 
 export const sweetMixinErrorAlert = async (msg: string, duration: number = 3000) => {
-	await Swal.fire({
-		icon: 'error',
-		title: msg,
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
 		showConfirmButton: false,
 		timer: duration,
+		timerProgressBar: true,
+	});
+	await Toast.fire({
+		icon: 'error',
+		title: msg,
 	});
 };
 
@@ -128,5 +144,20 @@ export const sweetTopSmallSuccessAlert = async (
 		if (enable_forward) {
 			window.location.reload();
 		}
+	});
+};
+
+/** Tepa o‘ng burchakda error toast — login qilmagan memberlar like bosganda */
+export const sweetToastErrorAlert = async (msg: string, duration: number = 3000) => {
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
+		showConfirmButton: false,
+		timer: duration,
+		timerProgressBar: true,
+	});
+	await Toast.fire({
+		icon: 'error',
+		title: msg,
 	});
 };
