@@ -100,7 +100,7 @@
   "home.thoughtsPlaceholder": "Write your thoughts — what kind of watch are you looking for?",
   "home.findMyWatch": "Find my watch",
   "home.loading": "Loading…",
-  "home.aiError": "Could not load recommendations. Please try again later.",
+  "home.aiError": "API limit reached.",
   "watch.searchPlaceholder": "Search...",
   "watch.sortBy": "Sort by",
   "watch.newest": "Newest",

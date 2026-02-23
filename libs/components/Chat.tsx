@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useReactiveVar } from "@apollo/client";
 import { socketVar, userVar } from "@/apollo/store";
 import { Messages } from "@/libs/config";
-import { sweetErrorAlert } from "@/libs/sweetAlert";
+import { sweetErrorAlert, sweetToastErrorAlert } from "@/libs/sweetAlert";
 
 /** Backend dan keladigan member ma'lumoti (xabar yuboruvchi) */
 interface ChatMember {
@@ -112,6 +112,10 @@ const Chat = () => {
   };
 
   const handleSend = () => {
+    if (!user?._id) {
+      sweetToastErrorAlert("Please login or sign up first.").then();
+      return;
+    }
     if (!messageInput.trim()) {
       sweetErrorAlert(Messages.error4);
       return;

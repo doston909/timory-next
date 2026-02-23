@@ -71,7 +71,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!apiKey) {
       return res.status(200).json({
         watches: [],
-        error: "AI xizmati sozlanmagan. .env.local da GEMINI_API_KEY o‘rnating.",
+        error: "AI service is not configured. Set GEMINI_API_KEY in .env.local.",
       });
     }
 
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!text) {
       return res.status(200).json({
         watches: [],
-        error: data.candidates?.[0]?.finishReason || "AI javob bermadi.",
+        error: data.candidates?.[0]?.finishReason || "AI did not respond.",
       });
     }
 
@@ -104,12 +104,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.warn("[api/ai-watch-recommend] Gemini response parse issue:", parseError, "Raw length:", text.length);
       return res.status(200).json({
         watches: [],
-        error: "AI javob formati noto‘g‘ri. Qayta urinib ko‘ring.",
+        error: "AI response format is invalid. Please try again.",
       });
     }
     return res.status(200).json({ watches });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : "Server xatosi";
+    const msg = err instanceof Error ? err.message : "Server error";
     console.error("[api/ai-watch-recommend]", msg, err);
     return res.status(500).json({ watches: [], error: msg });
   }
