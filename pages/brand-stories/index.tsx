@@ -24,7 +24,7 @@ const stories: BrandStory[] = [
     id: 1,
     brand: "Rolex",
     image1: "/img/profile/rol.png",
-    image2: "/img/watch/r1.jpg",
+    image2: "/img/watch/lay2.jpeg",
     image3: "/img/watch/r2.png",
     video: "/video/rolex.mp4",
     name: "Hans Wilsdorf",

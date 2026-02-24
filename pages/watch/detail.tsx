@@ -895,17 +895,6 @@ const WatchDetail = () => {
           )}
         </Box>
       </Box>
-
-      {/* Popular Watches Section */}
-      <Box className="popular-watches-section">
-        <h2 className="section-title">{t("detail.recommendedProducts")}</h2>
-
-        <Box className="popular-watches-grid">
-          {popularWatches.map((watch) => (
-            <PopularWatchesCard key={watch.id} watch={watch} />
-          ))}
-        </Box>
-      </Box>
     </Stack>
   );
 };
