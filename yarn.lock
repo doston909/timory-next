@@ -2,9 +2,22 @@
 # yarn lockfile v1
 
 
+"@apollo/client@^4.0.0":
+  version "4.1.6"
+  resolved "https://registry.npmjs.org/@apollo/client/-/client-4.1.6.tgz"
+  integrity sha512-ak8uzqmKeX3u9BziGf83RRyODAJKFkPG72hTNvEj4WjMWFmuKW2gGN1i3OfajKT6yuGjvo+n23ES2zqWDKFCZg==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    "@wry/caches" "^1.0.0"
+    "@wry/equality" "^0.5.6"
+    "@wry/trie" "^0.5.0"
+    graphql-tag "^2.12.6"
+    optimism "^0.18.0"
+    tslib "^2.3.0"
+
 "@apollo/client@~3.13.2":
   version "3.13.9"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.13.9.tgz#311e0df1734aaa5598e01a292bb7982df49cc062"
+  resolved "https://registry.npmjs.org/@apollo/client/-/client-3.13.9.tgz"
   integrity sha512-RStSzQfL1XwL6/NWd7W8avhGQYTgPCtJ+qHkkTTSj9Upp3VVm6Oppv81YWdXG1FgEpDPW4hvCrTUELdcC4inCQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
@@ -381,12 +394,12 @@
 
 "@next/swc-linux-arm64-gnu@14.2.1":
   version "14.2.1"
-  resolved "https://registry.yarnpkg.com/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-14.2.1.tgz#ede705718c316e65e3dd9ab31962824b8befb0cb"
+  resolved "https://registry.npmjs.org/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-14.2.1.tgz"
   integrity sha512-2ZctfnyFOGvTkoD6L+DtQtO3BfFz4CapoHnyLTXkOxbZkVRgg3TQBUjTD/xKrO1QWeydeo8AWfZRg8539qNKrg==
 
 "@next/swc-linux-arm64-musl@14.2.1":
   version "14.2.1"
-  resolved "https://registry.yarnpkg.com/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.2.1.tgz#ce50a5d94a7ba1f8e34a941f4ca076d8beebc79c"
+  resolved "https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.2.1.tgz"
   integrity sha512-jazZXctiaanemy4r+TPIpFP36t1mMwWCKMsmrTRVChRqE6putyAxZA4PDujx0SnfvZHosjdkx9xIq9BzBB5tWg==
 
 "@next/swc-linux-x64-gnu@14.2.1":
@@ -510,7 +523,7 @@
 
 "@react-oauth/google@^0.13.4":
   version "0.13.4"
-  resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.13.4.tgz#c462a651880162d43fd899ef91526a515ef60a78"
+  resolved "https://registry.npmjs.org/@react-oauth/google/-/google-0.13.4.tgz"
   integrity sha512-hGKyNEH+/PK8M0sFEuo3MAEk0txtHpgs94tDQit+s2LXg7b6z53NtzHfqDvoB2X8O6lGB+FRg80hY//X6hfD+w==
 
 "@swc/counter@^0.1.3":
@@ -545,6 +558,20 @@
   version "1.0.4"
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.4.tgz"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
+
+"@types/apollo-upload-client@^19.0.0":
+  version "19.0.0"
+  resolved "https://registry.npmjs.org/@types/apollo-upload-client/-/apollo-upload-client-19.0.0.tgz"
+  integrity sha512-PTl+2ZDeF2ZxCCLf1sQhiUqkBFhtpzBQzgJwaXhyo5ygDVi/398Z9LAXHaIQe0mmI9Hu2EtyYUUFNzfBhcuI0Q==
+  dependencies:
+    "@apollo/client" "^4.0.0"
+    "@types/extract-files" "*"
+    graphql "14 - 16"
+
+"@types/extract-files@*":
+  version "13.0.2"
+  resolved "https://registry.npmjs.org/@types/extract-files/-/extract-files-13.0.2.tgz"
+  integrity sha512-4sd7uDB0OVZmwH2wD6w7Qlpr2P5Pn8C9IGwnaq9aiiBDD3Lou7CwFjjkJTDYCDsEvk9zxAtmv9TaMg1lt/YJfA==
 
 "@types/jwt-decode@^3.1.0":
   version "3.1.0"
@@ -814,7 +841,7 @@ graphql-tag@^2.12.6:
   dependencies:
     tslib "^2.1.0"
 
-graphql@^15.5.0:
+"graphql@14 - 16", graphql@^15.5.0:
   version "15.10.1"
   resolved "https://registry.npmjs.org/graphql/-/graphql-15.10.1.tgz"
   integrity sha512-BL/Xd/T9baO6NFzoMpiMD7YUZ62R6viR5tp/MULVEnbYJXZA//kRNW7J0j1w/wXArgL0sCxhDfK5dczSKn3+cg==
