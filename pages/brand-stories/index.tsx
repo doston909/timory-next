@@ -25,7 +25,7 @@ const stories: BrandStory[] = [
     brand: "Rolex",
     image1: "/img/profile/rol.png",
     image2: "/img/watch/lay2.jpeg",
-    image3: "/img/watch/r1.png",
+    image3: "/img/watch/r1.jpg",
     video: "/video/rolex.mp4",
     name: "Hans Wilsdorf",
     year: "(1881-1960)",
