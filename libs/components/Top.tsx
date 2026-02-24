@@ -74,7 +74,7 @@ const Top = () => {
     setIsNotificationOpen(!isNotificationOpen);
   };
 
-  const handleRemoveItem = (id: number) => {
+  const handleRemoveItem = (id: string | number) => {
     removeFromCart(id);
   };
 

@@ -65,9 +65,11 @@ function updateWatchesCacheAfterLike(
 ) {
   [POPULAR_WATCHES_VARS, BEST_SELLER_VARS].forEach((vars) => {
     try {
-      const existing = cache.readQuery({ query: GET_WATCHES, variables: vars });
+      const existing = cache.readQuery({ query: GET_WATCHES, variables: vars }) as {
+        getWatches?: { list?: Array<{ _id: string; watchLikes?: number; meLiked?: unknown[] } & Record<string, unknown>> };
+      } | null;
       if (!existing?.getWatches?.list) return;
-      const newList = existing.getWatches.list.map((w: any) => {
+      const newList = existing.getWatches.list.map((w: { _id: string; watchLikes?: number; meLiked?: unknown[] } & Record<string, unknown>) => {
         if (w._id !== watchId) return w;
         return {
           ...w,
@@ -124,14 +126,14 @@ const BestSeller = () => {
       prevListKeyRef.current = listKey;
       const byLikes = [...mapped].sort((a, b) => b.likes - a.likes);
       const hasAnyLikes = byLikes.length > 0 && byLikes[0].likes > 0;
-      orderRef.current = (hasAnyLikes ? byLikes.slice(0, 8) : mapped.slice(0, 8)).map((w) =>
+      orderRef.current = (hasAnyLikes ? byLikes.slice(0, 8) : mapped.slice(0, 8)).map((w: BestSellerWatch) =>
         String(w.id)
       );
     }
   }
   const bestSellers: BestSellerWatch[] = orderRef.current
-    .map((id) => mapped.find((w) => String(w.id) === id))
-    .filter(Boolean) as BestSellerWatch[];
+    .map((id) => mapped.find((w: BestSellerWatch) => String(w.id) === id))
+    .filter((w): w is BestSellerWatch => w != null);
 
   const [likedWatches, setLikedWatches] = useState<Record<string, boolean>>({});
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>(

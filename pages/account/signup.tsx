@@ -269,7 +269,7 @@ const AccountSignup: NextPage = () => {
                   onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
                   onError={() => {}}
                   useOneTap={false}
-                  theme="outlined"
+                  theme="outline"
                   size="large"
                   width="100%"
                   text="continue_with"

@@ -41,9 +41,11 @@ function updateWatchesCacheAfterLike(
 ) {
   [POPULAR_WATCHES_VARS, BEST_SELLER_VARS].forEach((vars) => {
     try {
-      const existing = cache.readQuery({ query: GET_WATCHES, variables: vars });
+      const existing = cache.readQuery({ query: GET_WATCHES, variables: vars }) as {
+        getWatches?: { list?: Array<{ _id: string; watchLikes?: number; meLiked?: unknown[] } & Record<string, unknown>> };
+      } | null;
       if (!existing?.getWatches?.list) return;
-      const newList = existing.getWatches.list.map((w: any) => {
+      const newList = existing.getWatches.list.map((w: { _id: string; watchLikes?: number; meLiked?: unknown[] } & Record<string, unknown>) => {
         if (w._id !== watchId) return w;
         return {
           ...w,
@@ -104,13 +106,13 @@ const PopularWatches = () => {
       const hasAnyPopular =
         byPopularity.length > 0 && (byPopularity[0].likes > 0 || byPopularity[0].views > 0);
       orderRef.current = (hasAnyPopular ? byPopularity.slice(0, 4) : mapped.slice(0, 4)).map(
-        (w) => String(w.id)
+        (w: PopularWatch) => String(w.id)
       );
     }
   }
   const popularWatches: PopularWatch[] = orderRef.current
-    .map((id) => mapped.find((w) => String(w.id) === id))
-    .filter(Boolean) as PopularWatch[];
+    .map((id) => mapped.find((w: PopularWatch) => String(w.id) === id))
+    .filter((w): w is PopularWatch => w != null);
 
   const handleSeeAllClick = () => {
     saveHomepageSectionBeforeNav("popular-watches");

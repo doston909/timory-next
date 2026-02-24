@@ -1,6 +1,6 @@
 const STORAGE_KEY = "timory_view_count";
 
-export function getViewCount(watchId: number): number {
+export function getViewCount(watchId: string | number): number {
   if (typeof window === "undefined") return 0;
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -10,7 +10,7 @@ export function getViewCount(watchId: number): number {
   }
 }
 
-export function incrementViewCount(watchId: number): number {
+export function incrementViewCount(watchId: string | number): number {
   if (typeof window === "undefined") return 0;
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");

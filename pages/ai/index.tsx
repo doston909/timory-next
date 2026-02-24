@@ -9,7 +9,13 @@ export interface AiWatchResult {
   description: string;
 }
 
-const AiWatchResultCard = ({ item }: { item: AiWatchResult }) => {
+const AiWatchResultCard = ({ item }: { item?: AiWatchResult }) => {
+  if (!item) {
+    // When rendered as a standalone /ai page (no props),
+    // render nothing instead of crashing during prerender.
+    return null;
+  }
+
   return (
     <Stack className="ai-watch-card">
       <Box className="image-box">

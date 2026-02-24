@@ -1,9 +1,9 @@
-import decodeJWT from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { initializeApollo } from '../../apollo/client';
 import { userVar } from '../../apollo/store';
 import { CustomJwtPayload } from '../types/customJwtPayload';
 import { sweetMixinErrorAlert } from '../sweetAlert';
-import { LOGIN, LOGIN_WITH_GOOGLE, SIGN_UP } from '../../apollo/user/mutation';
+import { LOGIN, LOGIN_WITH_GOOGLE, SIGN_UP } from '@/apollo/user/mutation';
 import { getJwtToken as getStoredToken, setJwtToken as setStoredToken } from '../auth-token';
 
 export const getJwtToken = getStoredToken;
@@ -302,4 +302,8 @@ const deleteUserInfo = () => {
 		memberBlocks: 0,
 	});
 };
+
+function decodeJWT<T>(jwtToken: any): any {
+	throw new Error('Function not implemented.');
+}
 

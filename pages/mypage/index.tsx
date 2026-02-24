@@ -387,10 +387,10 @@ const MyPage = () => {
   );
   const [watchLikes, setWatchLikes] = useState<{ [key: string]: number }>({});
   // Articles uchun like holati va count
-  const [articleLiked, setArticleLiked] = useState<{ [key: number]: boolean }>(
+  const [articleLiked, setArticleLiked] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [articleLikes, setArticleLikes] = useState<{ [key: number]: number }>({
+  const [articleLikes, setArticleLikes] = useState<{ [key: string]: number }>({
     1: 12,
     2: 8,
     3: 19,
@@ -497,6 +497,19 @@ const MyPage = () => {
     limitedEdition?: boolean;
     watchStatus?: boolean;
   };
+
+  type MyPageArticle = {
+    id: string | number;
+    type: string;
+    date?: string;
+    title: string;
+    content: string;
+    image: string;
+    status: string;
+    views: number;
+    likes: number;
+  };
+
   const mapApiWatchToGridWatch = (w: {
     _id: string;
     watchModelName?: string;
@@ -575,7 +588,7 @@ const MyPage = () => {
     RECOMMEND: "Recommendation",
     NEWS: "News",
   };
-  const articlesList = useMemo(() => {
+  const articlesList: MyPageArticle[] = useMemo(() => {
     const list = myArticlesData?.getMyBoardArticles?.list ?? [];
     return list.map((a: any) => ({
       id: a._id,
@@ -736,7 +749,7 @@ const MyPage = () => {
                 {displayEmail || "—"}
               </Typography>
               <Typography className="mypage-profile-role">
-                {(displayType?.toUpperCase() === "DEALER" ? "Dealer" : "User") || "—"}
+                {displayType?.toUpperCase() === "DEALER" ? "Dealer" : "User"}
               </Typography>
             </Box>
           </Box>
