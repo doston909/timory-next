@@ -217,7 +217,7 @@ const CommunityDetail: NextPage = () => {
 
   const handleEditComment = (commentId: number | string) => {
     handleCommentMenuClose();
-    const comment = allComments.find((c) => c.id === commentId);
+    const comment = allComments.find((c: any) => c.id === commentId);
     if (comment) {
       setNewCommentText(editedCommentTexts[String(commentId)] ?? comment.text);
       setEditingCommentId(commentId);
@@ -335,10 +335,9 @@ const CommunityDetail: NextPage = () => {
   useEffect(() => {
     if (!router.isReady || !articleId) return;
     if (isStaticId) {
-      const idNum = parseInt(articleId as string, 10);
-      const foundArticle = articles.find((a) => a.id === idNum);
-      if (foundArticle) setArticle(foundArticle);
-      else router.push("/community");
+      // Old statik maqolalar ro'yxati olib tashlangan,
+      // statik id bo'lsa community sahifasiga qaytaramiz
+      router.push("/community");
       return;
     }
     if (articleData?.getBoardArticle) {
