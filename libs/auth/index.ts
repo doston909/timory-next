@@ -24,7 +24,7 @@ export const logIn = async (memberName: string, password: string): Promise<void>
 		}
 	} catch (err) {
 		console.warn('login err', err);
-		logOut();
+		throw err;
 	}
 };
 
