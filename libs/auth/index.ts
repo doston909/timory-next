@@ -3,7 +3,7 @@ import { initializeApollo } from '../../apollo/client';
 import { userVar } from '../../apollo/store';
 import { CustomJwtPayload } from '../types/customJwtPayload';
 import { sweetMixinErrorAlert } from '../sweetAlert';
-import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
+import { LOGIN, LOGIN_WITH_GOOGLE, SIGN_UP } from '../../apollo/user/mutation';
 import { getJwtToken as getStoredToken, setJwtToken as setStoredToken } from '../auth-token';
 
 export const getJwtToken = getStoredToken;
@@ -67,6 +67,35 @@ const requestJwtToken = async ({
 		} else {
 			await sweetMixinErrorAlert(msg || 'Name or password does not match. Please check and try again.');
 		}
+		throw new Error('token error');
+	}
+};
+
+export const loginWithGoogle = async (
+	googleIdToken: string,
+	memberType?: 'USER' | 'DEALER'
+): Promise<void> => {
+	try {
+		const apolloClient = await initializeApollo();
+		const result = await apolloClient.mutate({
+			mutation: LOGIN_WITH_GOOGLE,
+			variables: {
+				input: { googleIdToken, ...(memberType && { memberType }) },
+			},
+			fetchPolicy: 'network-only',
+		});
+		const data = result?.data?.loginWithGoogle;
+		const accessToken = data?.accessToken;
+		if (!accessToken) {
+			await sweetMixinErrorAlert('Google sign-in failed. Please try again.');
+			throw new Error('token error');
+		}
+		updateStorage({ jwtToken: accessToken });
+		updateUserInfo(accessToken, data);
+	} catch (err: any) {
+		if (err?.message === 'token error') throw err;
+		const msg = err?.graphQLErrors?.[0]?.message ?? err?.networkError?.message ?? err?.message ?? '';
+		await sweetMixinErrorAlert(msg || 'Google sign-in failed. Please try again.');
 		throw new Error('token error');
 	}
 };

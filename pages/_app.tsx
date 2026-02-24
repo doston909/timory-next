@@ -23,6 +23,7 @@ import {
 } from "@/libs/context/LocaleContext";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "@/apollo/client";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import "../scss/app.scss";
 import "../scss/pc/main.scss";
 
@@ -63,8 +64,10 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   const apolloClient = useApollo(pageProps.initialApolloState);
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 
   return (
+    <GoogleOAuthProvider clientId={googleClientId}>
     <ApolloProvider client={apolloClient}>
       <ThemeContext.Provider value={{ mode, setMode }}>
         <LocaleContext.Provider value={{ locale, setLocale }}>
@@ -80,5 +83,6 @@ export default function App({ Component, pageProps }: AppProps) {
         </LocaleContext.Provider>
       </ThemeContext.Provider>
     </ApolloProvider>
+    </GoogleOAuthProvider>
   );
 }

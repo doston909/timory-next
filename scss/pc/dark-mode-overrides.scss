@@ -1739,6 +1739,11 @@
     .account-footer .account-link-button:hover {
       color: #f09620 !important;
     }
+
+    .account-footer .account-link-button:focus-visible {
+      outline: 2px solid #f09620 !important;
+      outline-offset: 2px;
+    }
   }
 
   /* MUI Paper (TableContainer) theme override — inject stillar ustidan */

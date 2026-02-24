@@ -228,8 +228,9 @@
   }
 
   .account-oauth-button {
-    margin-top: -15px;
+    margin-top: 1px;
     height: 55px;
+     
     text-transform: none;
     font-family: $font;
     font-size: 16px;
@@ -261,7 +262,7 @@
   }
 
   .account-footer {
-    margin-top: 38px;
+    margin-top: 18px;
     text-align: left;
 
     .account-helper {
@@ -274,17 +275,24 @@
       font-family: $font;
       font-size: 16px;
       font-weight: 300;
-      padding: 0;
+      padding: 6px 10px;
+      margin: 6px 10px;
       min-width: auto;
       text-transform: none;
       color: #000000;
       text-decoration: underline;
       cursor: pointer !important;
+      border-radius: 4px;
 
       &:hover {
         color: rgb(89, 89, 255);
         cursor: pointer !important;
         text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgb(89, 89, 255);
+        outline-offset: 2px;
       }
 
       .MuiButton-root {

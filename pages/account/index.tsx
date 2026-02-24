@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { GoogleLogin } from "@react-oauth/google";
 import withLayoutBasic from "../../libs/components/layout/LayoutBasic";
 
 const AccountLogin: NextPage = () => {
@@ -39,6 +40,16 @@ const AccountLogin: NextPage = () => {
     try {
       const { logIn } = await import("../../libs/auth");
       await logIn(memberName.trim(), password);
+      if (typeof window !== "undefined") window.location.href = "/";
+    } catch {
+      // Error already shown by auth lib
+    }
+  };
+
+  const handleGoogleSuccess = async (credential: string) => {
+    try {
+      const { loginWithGoogle } = await import("../../libs/auth");
+      await loginWithGoogle(credential);
       if (typeof window !== "undefined") window.location.href = "/";
     } catch {
       // Error already shown by auth lib
@@ -118,20 +129,54 @@ const AccountLogin: NextPage = () => {
               <span></span>
             </div>
 
-            <Button
-              type="button"
-              fullWidth
-              variant="outlined"
-              className="account-oauth-button"
+            <Box
+              sx={{
+                position: "relative",
+                width: "100%",
+                display: "block",
+                minWidth: 0,
+                overflow: "hidden",
+              }}
             >
-              <img 
-                src="/img/brand/google.png" 
-                alt="Google" 
-                className="account-oauth-icon"
-                style={{ width: "24px", height: "24px", marginRight: "24px" }}
-              />
-              <span>Continue with Google</span>
-            </Button>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  opacity: 0,
+                  zIndex: 1,
+                  "& > div": { width: "100% !important", height: "100% !important" },
+                  "& iframe": { width: "100% !important", height: "100% !important" },
+                }}
+              >
+                <GoogleLogin
+                  onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
+                  onError={() => {}}
+                  useOneTap={false}
+                  theme="outlined"
+                  size="large"
+                  width="100%"
+                  text="continue_with"
+                  shape="rectangular"
+                />
+              </Box>
+              <Button
+                fullWidth
+                variant="outlined"
+                className="account-oauth-button"
+                sx={{ pointerEvents: "none", width: "100%", boxSizing: "border-box" }}
+              >
+                <img
+                  src="/img/brand/google.png"
+                  alt="Google"
+                  className="account-oauth-icon"
+                  style={{ width: "24px", height: "24px", marginRight: "24px" }}
+                />
+                <span>Continue with Google</span>
+              </Button>
+            </Box>
 
             <Button
               type="button"
@@ -150,12 +195,13 @@ const AccountLogin: NextPage = () => {
           </form>
 
           <Box className="account-footer">
-            <Typography className="account-helper">
+            <Typography className="account-helper" component="span" sx={{ display: "inline" }}>
               New to Timory?{" "}
               <Button
                 type="button"
                 className="account-link-button"
                 onClick={() => router.push("/account/signup")}
+                aria-label="Create a free account (go to signup)"
               >
                 Create a free account now
               </Button>
