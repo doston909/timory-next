@@ -98,14 +98,14 @@ const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps)
           flexDirection: 'row',
           justifyContent: 'flex-end', 
           alignItems: 'center',
-          marginBottom: '50px',
+          marginBottom: '30px',
           gap: '10px'
         }}
       >
         <Typography 
           className="sort-label"
           sx={{ 
-            fontSize: '22px',
+            fontSize: '18px',
             color: '#000000',
             fontWeight: 400,
             whiteSpace: 'nowrap',
@@ -123,10 +123,10 @@ const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps)
           className="sort-select"
           sx={{
             minWidth: '200px',
-            width: '200px',
-            height: '36px',
+            width: '180px',
+            height: '30px',
             borderRadius: '6px',
-            fontSize: '18px',
+            fontSize: '16px',
             fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
           }}
           MenuProps={{
@@ -232,10 +232,10 @@ const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps)
                     </Box>
                     <Box component="span">{article.date}</Box>
                   </Typography>
-                  <Typography className="article-title">
+                  <Typography className="article-title"  >
                     {article.title}
                   </Typography>
-                  <Typography className="article-description">
+                  <Typography className="article-description" >
                     {article.description}
                   </Typography>
                 </Box>

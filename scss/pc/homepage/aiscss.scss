@@ -12,19 +12,19 @@
 
       .ai-watch-finder-title {
         font-family: $font;
-        font-size: 42px;
-        font-weight: 600;
+        font-size: 40px;
+        font-weight: 500;
         color: #ffffff;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 12px;
+        margin-bottom: 1px;
       }
 
       .ai-watch-finder-subtitle {
         font-family: $font;
-        font-size: 18px;
+        font-size: 16px;
         color: rgba(255, 255, 255, 0.85);
-        margin-bottom: 80px;
+        margin-bottom: 60px;
         max-width: 560px;
         margin-left: auto;
         margin-right: auto;
@@ -32,8 +32,9 @@
 
       .ai-watch-finder-row {
         width: 100%;
-        max-width: 1400px;
+        max-width: $content-max-width;
         margin: 0 auto;
+        padding: 0 $content-padding;
         display: flex;
         flex-direction: row;
         gap: 40px;
@@ -44,10 +45,10 @@
 
       .ai-watch-finder-left-box {
         flex: 0 0 auto;
-        width: 560px;
+        width: 500px;
         max-width: 100%;
-        height: 720px;
-        min-height: 720px;
+        height: 680px;
+        min-height: 680px;
         position: relative;
         overflow: hidden;
         border-radius: 16px;
@@ -65,10 +66,10 @@
 
       .ai-watch-finder-form-wrap {
         flex: 0 0 auto;
-        width: 520px;
+        width: 480px;
         max-width: 100%;
-        height: 720px;
-        min-height: 720px;
+        height: 680px;
+        min-height: 680px;
         display: flex;
         flex-direction: column;
         flex-shrink: 0;
@@ -78,7 +79,7 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
-        margin-bottom: 120px;
+        margin-bottom: 118px;
         padding: 28px;
         min-width: 340px;
         width: 100%;
@@ -90,8 +91,8 @@
 
       .ai-watch-finder-select {
         font-family: $font;
-        margin-bottom: 20px;
-        font-size: 16px;
+        margin-bottom: 15px;
+        font-size: 15px;
         background: rgba(165, 165, 165, 0.08);
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -121,7 +122,7 @@
         width: 100%;
         box-sizing: border-box;
         font-family: $font;
-        font-size: 16px;
+        font-size: 14px;
         color: #ffffff;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -168,7 +169,7 @@
 
       .ai-watch-finder-error {
         font-family: $font;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 500;
         color: #fc3a3ae7!important;
       }
@@ -191,8 +192,8 @@
       }
 
       .ai-watch-finder-card {
-        width: 420px;
-        height: 400px;
+        width: 360px;
+        height: 380px;
         padding: 24px;
         background: rgba(255, 255, 255, 0.08);
         border-radius: 16px;
@@ -237,7 +238,7 @@
 
       .ai-watch-finder-card-desc {
         font-family: $font;
-        font-size: 18px;
+        font-size: 16px;
         color: rgba(255, 255, 255, 0.75);
         line-height: 1.4;
       }
@@ -249,7 +250,7 @@
         border: 1px solid rgba(255, 255, 255, 0.4);
         color: #ffffff;
         font-family: $font;
-        font-size: 18px;
+        font-size: 16px;
         text-transform: none;
 
         &:hover {

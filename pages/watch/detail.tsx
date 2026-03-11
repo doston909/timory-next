@@ -620,10 +620,10 @@ const WatchDetail = () => {
           "& .MuiTab-root": {
             fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
             fontWeight: 400,
-            fontSize: "24px !important",
+            fontSize: "19px !important",
             color: "#1a1a1a",
             textTransform: "none",
-            padding: "12px 24px",
+            padding: "8px 24px",
             minHeight: "50px",
             backgroundColor: "#ffffff",
             border: "1px solid #1a1a1a",
@@ -640,7 +640,7 @@ const WatchDetail = () => {
             },
 
             "&.Mui-selected": {
-              color: "#D4B890 !important",
+              color: "#f3a663 !important",
               backgroundColor: "#8C7360 !important",
               borderColor: "#8C7360 !important",
               fontWeight: 400,

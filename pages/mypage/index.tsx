@@ -1153,11 +1153,7 @@ const MyPage = () => {
                       <Typography className="mypage-watch-item-price">
                         {watch.price}
                       </Typography>
-                      {watch.datePosted && (
-                        <Typography className="mypage-watch-item-date">
-                          {watch.datePosted}
-                        </Typography>
-                      )}
+                    
                       {watch.watchStatus !== undefined && (
                         <Typography
                           className={`mypage-watch-item-status${
@@ -1311,11 +1307,6 @@ const MyPage = () => {
                       <Typography className="mypage-watch-item-price">
                         {watch.price}
                       </Typography>
-                      {watch.datePosted && (
-                        <Typography className="mypage-watch-item-date">
-                          {watch.datePosted}
-                        </Typography>
-                      )}
                       {watch.watchStatus !== undefined && (
                         <Typography
                           className={`mypage-watch-item-status${
@@ -2083,9 +2074,9 @@ const MyPage = () => {
                 </Box>
               </Box>
 
-              <Box className="mypage-add-watch-fields">
+              <Box className="mypage-add-watch-fields mypage-add-watch-fields-custom">
                 {/* Row 1: Model Name | Watch Brand */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-1">
                   <Box className="mypage-add-watch-field">
                     <Typography className="mypage-add-watch-label">
                       Model Name
@@ -2124,7 +2115,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Row 2: Watch Type | Price */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-2">
                   <Box className="mypage-add-watch-field mypage-add-watch-field-watch-type">
                     <Typography className="mypage-add-watch-label">
                       Watch Type
@@ -2187,7 +2178,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Row 3: Color | Case Shape */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-3">
                   <Box className="mypage-add-watch-field">
                     <Typography className="mypage-add-watch-label">
                       Color
@@ -2259,7 +2250,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Row 4: Case Size | Made In */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-4">
                   <Box className="mypage-add-watch-field mypage-add-watch-field-case-size">
                     <Typography className="mypage-add-watch-label">
                       Case Size
@@ -2328,7 +2319,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Row 5: Data | Water Resistance */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-5">
                   <Box className="mypage-add-watch-field">
                     <Typography className="mypage-add-watch-label">
                       Data
@@ -2367,7 +2358,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Row 6: Availability | Material */}
-                <Box className="mypage-add-watch-row">
+                <Box className="mypage-add-watch-row mypage-add-watch-row-6">
                   <Box className="mypage-add-watch-field">
                     <Typography className="mypage-add-watch-label">
                       Availability
@@ -2439,7 +2430,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* Last row: Limited Edition + Description full width */}
-                <Box className="mypage-add-watch-field mypage-add-watch-field-full">
+                <Box className="mypage-add-watch-field mypage-add-watch-field-full mypage-add-watch-row-description">
                   <Typography className="mypage-add-watch-label">
                     Description
                   </Typography>

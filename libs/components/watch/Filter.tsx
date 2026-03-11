@@ -165,7 +165,7 @@ const Filter = ({
             },
           }}
         >
-          <RefreshIcon sx={{ fontSize: "30px" }} />
+          <RefreshIcon sx={{ fontSize: "25px" }} />
         </IconButton>
       </Stack>
 
@@ -196,7 +196,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -210,7 +210,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowDownIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -278,7 +278,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' , marginBottom: '10px'}}>
               <KeyboardArrowUpIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -292,7 +292,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' , marginBottom: '10px'}}>
               <KeyboardArrowDownIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -358,7 +358,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -372,7 +372,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px'}}>
               <KeyboardArrowDownIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -438,7 +438,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -452,7 +452,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowDownIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -520,7 +520,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowUpIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -534,7 +534,7 @@ const Filter = ({
             <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', marginBottom: '10px' }}>
               <KeyboardArrowDownIcon 
                 sx={{ 
-                  fontSize: '35px', 
+                  fontSize: '30px', 
                   color: '#333333',
                   cursor: 'pointer',
                   transition: 'color 0.2s ease',
@@ -589,13 +589,13 @@ const Filter = ({
               }
               sx={{
                 '& .MuiSelect-select': {
-                  fontSize: '18px !important',
+                  fontSize: '16px !important',
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: 500,
                 },
                 '& .MuiInputBase-input': {
                   marginTop: '10px',
-                  fontSize: '19px !important',
+                  fontSize: '16px !important',
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: 500,
                 },
@@ -620,13 +620,13 @@ const Filter = ({
               }
               sx={{
                 '& .MuiSelect-select': {
-                  fontSize: '18px !important',
+                  fontSize: '16px !important',
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: 500,
                 },
                 '& .MuiInputBase-input': {
                   marginTop: '10px',
-                  fontSize: '19px !important',
+                  fontSize: '16px !important',
                   fontFamily: "'Poppins', sans-serif",
                   fontWeight: 500,
                 },

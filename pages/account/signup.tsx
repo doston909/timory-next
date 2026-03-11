@@ -183,8 +183,13 @@ const AccountSignup: NextPage = () => {
             </div>
 
             <div className="account-field">
-              <Stack direction="row" spacing={3} alignItems="center" style={{ flexWrap: "wrap" }}>
-                <Typography className="account-label" style={{ fontSize: "18px",fontWeight: 500, marginBottom: 0, marginRight: "68px", marginLeft: "40px" }}>
+              <Stack
+                direction="row"
+                spacing={3}
+                alignItems="center"
+                style={{ flexWrap: "nowrap" }}
+              >
+                <Typography className="account-label" style={{ fontSize: "16px",fontWeight: 500, marginBottom: 0, marginRight: "48px", marginLeft: "1px" }}>
                   I want to be registered as:
                 </Typography>
                 <FormControlLabel
@@ -224,7 +229,7 @@ const AccountSignup: NextPage = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    size="large"
+                    size="medium"
                     checked={agreeToTerms}
                     onChange={(e) => setAgreeToTerms(e.target.checked)}
                   />

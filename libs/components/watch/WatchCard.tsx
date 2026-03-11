@@ -120,9 +120,9 @@ const WatchCard = ({ watch, onLike }: WatchCardProps) => {
               left: 10,
               backgroundColor: '#f09620',
               color: '#ffffff',
-              padding: '4px 10px',
+              padding: '4px 8px',
               borderRadius: '4px',
-              fontSize: '12px',
+              fontSize: '10px',
               fontWeight: 600,
               zIndex: 10,
               textTransform: 'uppercase',
@@ -162,7 +162,7 @@ const WatchCard = ({ watch, onLike }: WatchCardProps) => {
           </div>
           <div className="action-btn action-btn-with-count">
             <VisibilityOutlinedIcon
-              sx={{ fontSize: 24, color: "#000", fontWeight: 300 }}
+              sx={{ fontSize: 22, color: "#000", fontWeight: 300 }}
             />
             <span className="action-count">{watch.views ?? 0}</span>
           </div>

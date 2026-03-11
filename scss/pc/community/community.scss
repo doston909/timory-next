@@ -18,9 +18,11 @@
   box-sizing: border-box;
 
   .community-container {
-    max-width: 1400px;
+    $content-max-width: 1280px;
+    max-width: $content-max-width;
+    width: 100%;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 24px;
     display: flex;
     flex-direction: row;
     gap: 50px;
@@ -30,20 +32,19 @@
 
     // Left Sidebar
     .community-sidebar {
-    margin-left: -140px;
-      width: 420px;
+      width: 360px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 50px;
+      gap: 30px;
 
       .sidebar-section {
         width: 100%;
 
         .sidebar-title {
        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 34px;
+          font-size: 24px;
           font-weight: 300;
            color: #111111;
           margin-top: 20px;
@@ -67,7 +68,7 @@
         // Partnership boxes text animation
         .partnership-box-text {
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 32px;
+          font-size: 25px;
           font-weight: 400;
           text-align: center;
           animation: partnershipPulse 3s ease-in-out infinite;
@@ -81,12 +82,12 @@
           overflow-x: auto;
 
           .tag-item {
-            padding: 12px 16px;
+            padding: 8px 10px;
             border: 1px solid #626262;
             border-radius: 8px;
             color: #000000;
             background: transparent;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 300;
             text-transform: none;
             letter-spacing: 1px;
@@ -111,7 +112,7 @@
 
         // Best Sellers
         .best-seller-card {
-            width: 390px;
+            width: 370px;
           background-color: #ffffff;
           border: 1px solid #dddddd;
           border-radius: 12px;
@@ -159,7 +160,7 @@
 
             .best-seller-icons {
               position: absolute;
-              top: 35%;
+              top: 28%;
               right: 15px;
               transform: translateY(-50%) translateX(20px);
               display: flex;
@@ -171,8 +172,8 @@
               z-index: 10;
 
               .icon-wrapper {
-                width: 48px;
-                height: 48px;
+                width: 40px;
+                height: 40px;
                 background: #edecec;
                 border-radius: 50%;
                 display: flex;
@@ -216,10 +217,10 @@
                     right: -8px;
                     background: #e8994a;
                     color: #ffffff;
-                    font-size: 12px;
+                    font-size: 10px;
                     font-weight: 500;
                     padding: 2px 6px;
-                    border-radius: 10px;
+                    border-radius: 50%;
                     min-width: 18px;
                     text-align: center;
                   }
@@ -284,6 +285,7 @@
         width: auto;
 
         .nav-arrow {
+          margin-right: -30px;
           width: 36px;
           height: 36px;
           border-radius: 50%;
@@ -374,7 +376,7 @@
               padding: 15px;
 
               .article-title {
-                font-size: 16px;
+                font-size: 18px;
               }
             }
           }

@@ -232,7 +232,7 @@ const Community: NextPage = () => {
                   },
                 }}
               >
-                <RefreshIcon sx={{ fontSize: "30px" }} />
+                <RefreshIcon sx={{ fontSize: "25px" }} />
               </IconButton>
             </Box>
             <Stack className="tags-list" direction="row" flexWrap="wrap" gap={1}>

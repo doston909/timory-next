@@ -47,8 +47,9 @@ const HeroCarousel = () => {
                   src={slide.image}
                   alt=""
                   fill
+                  sizes="100vw"
                   priority={slide.id === 1}
-                  style={{ objectFit: "cover" }}
+                  style={{ objectFit: "cover", objectPosition: "center" }}
                 />
                 <div className="slide-overlay"></div>
               </div>

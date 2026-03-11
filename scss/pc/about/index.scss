@@ -12,7 +12,7 @@
 
     .about-main-title {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 42px;
+      font-size: 36px;
       font-weight: 400;
       color: #c75214;
       text-align: left;
@@ -71,7 +71,7 @@
         align-items: center;
         justify-content: center;
         margin-top: 30px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
 
         .about-image {
           width: 100%;
@@ -95,7 +95,7 @@
 
         .about-text {
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-          font-size: 22px;
+          font-size: 18px;
           font-weight: 400;
           color: #222222;
           line-height: 1.9;
@@ -112,11 +112,11 @@
 
     .testimonial-section-title {
       width: 100%;
-      max-width: 1400px;
+      max-width: 1280px;
       margin: 100px auto 0;
       padding: 0;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 42px;
+      font-size: 35px;
       font-weight: 400;
       color: #1a1a1a;
       text-align: left;
@@ -125,7 +125,7 @@
 
     .testimonial-section {
       width: 100%;
-      max-width: 1400px;
+      max-width: 1280px;
       margin: 40px auto 0;
       padding: 10px 0;
       background-color: #f5f3f0;
@@ -138,7 +138,7 @@
       position: relative;
       overflow-x: auto;
       overflow-y: hidden;
-      min-height: 650px;
+      height: 600px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
 
@@ -174,8 +174,8 @@
             .testimonial-portrait {
               object-fit: cover;
               object-position: center center;
-              min-height: 650px;
-              max-height: 750px;
+              min-height: 600px;
+              max-height: 600px;
             }
           }
         }
@@ -191,11 +191,14 @@
           .testimonial-portrait {
             width: 100%;
             height: 100%;
-            min-height: 650px;
-            max-height: 750px;
+            min-height: 580px;
+            max-height: 580px;
             object-fit: cover;
-            object-position: center center;
-            border-radius: 20px;
+            object-position: top center;
+            /* Rasmni biroz "zoom‑out" qilish – box size o‘zgarmaydi */
+            transform: scale();
+            transform-origin: center;
+            border-radius: 35px;
           }
         }
 
@@ -226,7 +229,7 @@
 
             .testimonial-role {
               font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-              font-size: 18px;
+              font-size: 16px;
               font-weight: 400;
               color: #666666;
               margin: 0;
@@ -239,7 +242,7 @@
             font-family: var(--font-ng), ui-sans-serif, system-ui, sans-serif,
               "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
               "Noto Color Emoji";
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
             color: #1a1a1a;
             line-height: 1.4;
@@ -278,7 +281,7 @@
 
       .about-video {
         width: 100%;
-        height: 800px;
+        height: 700px;
         display: block;
         object-fit: cover;
         box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.4),
@@ -303,7 +306,7 @@
 
       .about-cta-title {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 500;
         color: #000000;
       }
@@ -317,7 +320,7 @@
       }
 
       .about-cta-button {
-        padding: 16px 36px;
+        padding: 10px 30px;
         border: 1px solid #901f03;
         border-radius: 8px;
         color: #901f03 ;

@@ -86,8 +86,8 @@ const About: NextPage = () => {
               {[
                 {
                   id: 1,
-                  image: "/img/profile/ceo.png",
-                  name: "Dostonbek ",
+                  image: "/img/profile/doston.jpg",
+                  name: "Dostonbek Ahmadaliev ",
                   role: "CEO & Founder",
                   quote:
                     "We believe time deserves meaning, not noise. At TIMORY, we build products that respect people’s time and help them choose with confidence. Technology is our tool — trust is our responsibility.",
@@ -131,13 +131,20 @@ const About: NextPage = () => {
                     key={testimonial.id}
                     className={`testimonial-card ${
                       testimonial.id === 3 ? "testimonial-card-id3" : ""
+                    }  ${testimonial.id === 1 ? "testimonial-card-id1" : ""
                     }`}
                   >
-                    <Box className="testimonial-image-left">
+                    <Box
+                      className={`testimonial-image-left ${
+                        testimonial.id === 1 ? "testimonial-image-left-id1" : ""
+                      }`}
+                    >
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="testimonial-portrait"
+                        className={`testimonial-portrait ${
+                          testimonial.id === 1 ? "testimonial-portrait-id1" : ""
+                        }`}
                       />
                     </Box>
 

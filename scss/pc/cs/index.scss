@@ -35,18 +35,18 @@
       margin-top: 0;
 
       .cs-title {
-        font-size: 52px;
+        font-size: 36px;
         font-weight: 700;
         color: #000000;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         margin: 0;
-        margin-top: 70px;
+        margin-top: 50px;
         margin-bottom: 2px;
         line-height: 1.2;
       }
 
       .cs-subtitle {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 400;
         color: #666666;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -75,14 +75,14 @@
         }
 
         .cs-button {
-          min-width: 300px;
-          height: 68px;
+          min-width: 220px;
+          height: 48px;
           border-radius: 8px;
-          font-size: 22px;
+          font-size: 18px;
           font-weight: 500;
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
           text-transform: none;
-          padding: 12px 24px;
+          padding: 8px 18px;
           transition: all 0.3s ease;
           border: 1px solid #000000;
 
@@ -99,7 +99,7 @@
 
           &.cs-button-faq {
             background-color: #8C6F5A;
-            color: #D4B890;
+            color: #f5b65e;
             border-color: #000000;
           }
 
@@ -128,7 +128,7 @@
     gap: 30px;
 
     .cs-notice-title {
-      font-size: 36px;
+      font-size: 30px;
       font-weight: 700;
       color: #000000;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -151,11 +151,11 @@
           border-bottom: 2px solid #e0e0e0;
 
           .cs-notice-header-cell {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
             color: #000000;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            padding: 30px 20px;
+            padding: 20px 20px;
             border: none;
 
             &.cs-notice-number-header {
@@ -189,11 +189,11 @@
           }
 
           .cs-notice-cell {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 400;
             color: #333333;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            padding: 25px 20px;
+            padding: 20px 20px;
             border: none;
 
             &.cs-notice-number-cell {
@@ -203,7 +203,7 @@
 
             &.cs-notice-title-cell {
               text-align: left;
-              font-size: 22px;
+              font-size: 18px;
               display: flex;
               align-items: center;
               gap: 8px;

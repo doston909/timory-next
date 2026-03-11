@@ -513,7 +513,7 @@ const CustomerService: NextPage = () => {
                   Last Updated: February 2026
                 </Typography>
 
-                <Typography className="cs-terms-paragraph" sx={{ fontSize: 20 }}>
+                <Typography className="cs-terms-paragraph" sx={{ fontSize: 18 }}>
                   Welcome to TIMORY. By accessing or using the TIMORY platform (the
                   &ldquo;Platform&rdquo;), you agree to comply with and be bound by
                   these Terms &amp; Conditions (&ldquo;Terms&rdquo;). If you do not

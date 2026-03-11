@@ -44,7 +44,7 @@ const ScrollToTop = () => {
       }}
       aria-label="Scroll to top"
     >
-      <img src="/img/logo/top.png" alt="Top" style={{ width: 80, height: 80, objectFit: "contain" }} />
+      <img src="/img/logo/top.png" alt="Top" style={{ width: 60, height: 60, objectFit: "contain" }} />
     </button>
   ) : null;
 };

@@ -275,7 +275,7 @@ const AIChatBot = () => {
 
         <Box className="ai-chat-content" ref={chatContentRef}>
           <div className="ai-welcome">
-            <span>Ask me anything 🤖</span>
+            <span>Ask me anything about watches 🤖</span>
             <p className="ai-welcome-subtitle">Powered by AI – get instant answers</p>
           </div>
           {messages.map((msg, idx) => (
