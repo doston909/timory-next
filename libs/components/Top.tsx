@@ -22,6 +22,7 @@ import { useTheme } from "@/libs/context/ThemeContext";
 import { useLocale } from "@/libs/context/LocaleContext";
 import { useTranslation } from "@/libs/context/useTranslation";
 import { sweetToastErrorAlert } from "@/libs/sweetAlert";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 
 const Top = () => {
   const router = useRouter();
@@ -31,6 +32,8 @@ const Top = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isSliding, setIsSliding] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobileUserOpen, setIsMobileUserOpen] = useState(false);
   const { mode, setMode } = useTheme();
   const { locale, setLocale } = useLocale();
   const { t } = useTranslation();
@@ -48,6 +51,9 @@ const Top = () => {
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef<number>(0);
   const originalSizeRef = useRef<{ width: number; height: number } | null>(null);
+
+  const device = useDeviceDetect();
+  const isMobile = device === "mobile";
 
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -209,11 +215,40 @@ const Top = () => {
 
   return (
     <>
+      {isMobile && (isMobileNavOpen || isMobileUserOpen || isLangMenuOpen) && (
+        <Box
+          component="div"
+          className="mobile-menu-backdrop"
+          aria-hidden
+          onClick={() => {
+            setIsMobileNavOpen(false);
+            setIsMobileUserOpen(false);
+            setIsLangMenuOpen(false);
+          }}
+        />
+      )}
       <Stack className={"navbar"}>
         <Stack 
           className={`container ${isScrolled ? "scrolled" : ""} ${!isVisible ? "hidden" : ""} ${isSliding ? "sliding" : ""}`}
           ref={containerRef}
+          onClick={() => isMobile && (setIsMobileNavOpen(false), setIsMobileUserOpen(false))}
         >
+          {isMobile && (
+            <button
+              type="button"
+              className="mobile-menu-toggle"
+              aria-label="Open menu"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMobileNavOpen((o) => !o);
+                setIsMobileUserOpen(false);
+              }}
+            >
+              <span className="line" />
+              <span className="line" />
+              <span className="line" />
+            </button>
+          )}
           <Box component={"div"} className={"logo-box"}>
             <Link href={"/"}>
               <img src="/img/logo/logoo.png" alt="Timory Logo" />
@@ -222,7 +257,7 @@ const Top = () => {
 
           <Box
             component={"div"}
-            className={"router-box"}
+            className={`router-box${isMobile && isMobileNavOpen ? " mobile-open" : ""}`}
             ref={routerBoxRef}
           >
             <div className="nav-item-wrapper">
@@ -287,11 +322,134 @@ const Top = () => {
             </div>
           </Box>
 
-          <Box component={"div"} className={"user-box"}>
+          {isMobile && (
+            <Box className="mobile-header-actions">
+              <IconButton
+                aria-label="Search"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSearchToggle();
+                }}
+                sx={{
+                  color: mode === "dark" ? "#e4e4e4" : "#000",
+                  p: 0,
+                  "&:hover": {
+                    color: "#f09620",
+                    backgroundColor: "transparent",
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                <Search fontSize="large" />
+              </IconButton>
+              <Box
+                className="lang-box lang-box-header"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                position: "relative",
+                cursor: "pointer",
+                marginRight: "4px",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLangMenuOpen((prev) => !prev);
+              }}
+              ref={langMenuRef}
+            >
+              <Language
+                sx={{
+                  color: mode === "dark" ? "#e4e4e4" : "#000",
+                  ...(isMobile
+                    ? {}
+                    : {
+                        "&:hover": { color: "#f09620", cursor: "pointer" },
+                      }),
+                }}
+              />
+              {isLangMenuOpen && (
+                <Box
+                  className="lang-menu-dropdown"
+                  onMouseLeave={() => setIsLangMenuOpen(false)}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Box
+                    className="lang-menu-item"
+                    onClick={() => {
+                      setLocale("en");
+                      setIsLangMenuOpen(false);
+                    }}
+                    sx={{
+                      backgroundColor: locale === "en" ? "#2196f3" : undefined,
+                      color: locale === "en" ? "#fff" : undefined,
+                    }}
+                  >
+                    ENG
+                  </Box>
+                  <Box
+                    className="lang-menu-item"
+                    onClick={() => {
+                      setLocale("ko");
+                      setIsLangMenuOpen(false);
+                    }}
+                    sx={{
+                      backgroundColor: locale === "ko" ? "#2196f3" : undefined,
+                      color: locale === "ko" ? "#fff" : undefined,
+                    }}
+                  >
+                    KOR
+                  </Box>
+                  <Box
+                    className="lang-menu-item"
+                    onClick={() => {
+                      setLocale("ru");
+                      setIsLangMenuOpen(false);
+                    }}
+                    sx={{
+                      backgroundColor: locale === "ru" ? "#2196f3" : undefined,
+                      color: locale === "ru" ? "#fff" : undefined,
+                    }}
+                  >
+                    RUS
+                  </Box>
+                </Box>
+              )}
+            </Box>
+            </Box>
+          )}
+
+          {isMobile && (
+            <button
+              type="button"
+              className="mobile-user-toggle"
+              aria-label="Open user menu"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMobileUserOpen((o) => !o);
+                setIsMobileNavOpen(false);
+              }}
+            >
+              {cartItems.length > 0 && (
+                <span className="mobile-cart-count">
+                  {cartItems.length}
+                </span>
+              )}
+              <span className="line" />
+              <span className="line" />
+              <span className="line" />
+            </button>
+          )}
+
+          <Box
+            component={"div"}
+            className={`user-box${isMobile && isMobileUserOpen ? " mobile-open" : ""}`}
+          >
             <>
               <div className="login-user">
                 {/* SEARCH */}
                 <IconButton
+                  className="search-btn-userbox"
                   aria-label="Search"
                   onClick={handleSearchToggle}
                   sx={{
@@ -396,12 +554,16 @@ const Top = () => {
                     cursor: "pointer",
                   }}
                   onClick={() => setIsLangMenuOpen((prev) => !prev)}
-                  ref={langMenuRef}
+                  ref={!isMobile ? langMenuRef : undefined}
                 >
                   <Language
                     sx={{
                       color: mode === "dark" ? "#e4e4e4" : "#000",
-                      "&:hover": { color: "#f09620", cursor: "pointer" },
+                      ...(isMobile
+                        ? {}
+                        : {
+                            "&:hover": { color: "#f09620", cursor: "pointer" },
+                          }),
                     }}
                   />
                   {isLangMenuOpen && (
@@ -457,7 +619,10 @@ const Top = () => {
                 <Box className="user-menu" sx={{ position: "relative" }}>
                   <IconButton
                     aria-label="User"
-                    onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsUserMenuOpen((prev) => !prev);
+                    }}
                     sx={{
                       color: mode === "dark" ? "#e4e4e4" : "#000",
                       p: 0,

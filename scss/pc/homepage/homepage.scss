@@ -13,7 +13,7 @@
       .section-title {
         font-size: 40px;
         font-weight: 500;
-          letter-spacing: 0.6px;
+        letter-spacing: 0.6px;
         color: var(--text-primary);
         margin-bottom: 50px;
         text-transform: uppercase;
@@ -194,6 +194,40 @@
           }
         }
       }
+
+      // MOBILE: hover logikasiz — actionlar doim ko'rinsin
+      @media (max-width: 768px) {
+        .image-box .watch-actions {
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          transform: translateY(-50%) translateX(0) !important;
+        }
+      }
+    }
+
+    // MOBILE: PopularWatches bo'limini moslash (toza va kuchli)
+    @media (max-width: 768px) {
+      #pc-wrap .home-page .popular-watches-section {
+        padding: 24px 0 12px 0; // balandlikni biroz kichraytirish
+      }
+
+      #pc-wrap .home-page .popular-watches-section .dealers-see-all-wrapper {
+        padding: 0 12px;
+        margin-top: 16px;
+      }
+
+      #pc-wrap .home-page .popular-watches-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        width: 100%;
+        padding: 0 12px;
+        gap: 18px;
+      }
+
+      #pc-wrap .home-page .popular-watch-card {
+        max-width: 100%;
+        padding: 18px 10px;
+      }
     }
 
       .text-box {
@@ -233,9 +267,7 @@
     /* RESPONSIVE — 1280px laptop standard */
     @media (max-width: $viewport-laptop) {
       .popular-watches-section .section-title,
-      .limited-spotlight-section .section-title,
       .top-dealers-section .section-title,
-      .best-seller-section .section-title,
       .watch-story-section .section-title {
         font-size: 36px;
       }
@@ -314,10 +346,57 @@
             .see-all-arrow {
               color: #e5c8a3;
               transform: translateX(15px);
-            }
-          }
-        }
       }
+    }
+  }
+}
+
+// FINAL MOBILE OVERRIDE: WatchStories.tsx section-title (faqat mobile)
+@media (max-width: 768px) {
+  .watch-story-section .section-title {
+    font-size: 20px !important;
+    margin-top: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase;
+  }
+}
+
+// FINAL MOBILE OVERRIDE: PopularWatches section-title (faqat homepage)
+@media (max-width: 768px) {
+  #pc-wrap .home-page .popular-watches-section .section-title {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+}
+
+// FINAL MOBILE OVERRIDE: BestSeller.tsx section-title/subtitle (≤1024px)
+@media (max-width: 1024px) {
+  .best-seller-section .section-title {
+    font-size: 26px !important;
+    text-transform: uppercase;
+  }
+
+  .best-seller-section .section-subtitle {
+    font-size: 14px !important;
+  }
+}
+
+// FINAL MOBILE OVERRIDE: LimitedEdition.tsx section-title (faqat mobile, faqat homepage)
+@media (max-width: 768px) {
+  #pc-wrap .home-page .limited-spotlight-section .section-title {
+    font-size: 22px !important;
+    line-height: 1.2;
+  }
+}
+
+// FINAL MOBILE OVERRIDE: BestSeller.tsx prev/next buttonlarini mobilda yashirish
+@media (max-width: 768px) {
+  .best-prev-btn,
+  .best-next-btn {
+    display: none !important;
+  }
+}
     }
 
     .spotlight-grid {
@@ -548,6 +627,22 @@
       }
     }
 
+    // MOBILE: TopBrands brand-card orasini va pastdagi OurGoal bilan bo'shliqni maksimal yaqinlashtirish
+    @media (max-width: 768px) {
+      .top-brands-section {
+        padding: 12px 0 0 0;
+      }
+
+      .top-brands-scroll {
+        gap: 24px !important;
+        padding: 0 16px !important;
+      }
+
+      .brand-card {
+        width: 120px;
+      }
+    }
+
     /* TOP DEALERS SECTION */
     .top-dealers-section {
       position: relative;
@@ -665,6 +760,34 @@
 
         :global(.swiper-slide) {
           height: auto;
+        }
+      }
+
+      // MOBILE: TopDealers.tsx — PopularWatches bilan bir xil heading va bitta ustunli layout
+      @media (max-width: 768px) {
+        #pc-wrap .home-page & {
+          padding: 24px 0 20px 0;
+
+          .section-title {
+            font-size: 26px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+
+          .dealers-see-all-wrapper {
+            padding: 0 12px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+          }
+
+          .top-dealers-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 100%;
+            width: 100%;
+            padding: 0 12px;
+            row-gap: 18px;
+          }
         }
       }
     }
@@ -993,6 +1116,13 @@
           transition: all 0.35s ease;
           z-index: 10;
         }
+
+        // MOBILE: BestSeller watch-actions ni biroz o'ng tomonga surish
+        @media (max-width: 768px) {
+          .watch-actions {
+            right: -10px;
+          }
+        }
       }
 
       .image-box:hover img {
@@ -1099,6 +1229,40 @@
             path {
               fill-opacity: 1;
             }
+          }
+        }
+      }
+
+      // MOBILE: BestSeller.tsx — PopularWatches layoutiga o'xshash (faqat homepage)
+      @media (max-width: 768px) {
+        #pc-wrap .home-page & {
+          padding: 24px 0 20px 0;
+
+          .section-title {
+            font-size: 26px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+
+          .section-subtitle {
+            font-size: 14px;
+            margin-top: -4px;
+            margin-bottom: 24px;
+          }
+
+          .best-seller-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 100%;
+            width: 100%;
+            padding: 0 12px;
+            row-gap: 18px;
+          }
+
+          /* Right/Left IconButton larni olib tashlab, oddiy scroll qoldirish */
+          .best-prev-btn,
+          .best-next-btn {
+            display: none;
           }
         }
       }
@@ -1413,7 +1577,7 @@
           }
 
           .story-content-box {
-            padding: 40px 30px;
+            padding: 60px 30px; // orani biroz kattaroq qilindi
 
             .story-title {
               font-size: 24px;
@@ -1424,6 +1588,39 @@
             }
           }
         }
+      }
+    }
+
+    /* MOBILE: WatchStories.tsx layout (faqat homepage) */
+    @media (max-width: 768px) {
+      #pc-wrap .home-page .watch-story-section {
+        padding: 24px 0 20px 0;
+      }
+
+      #pc-wrap .home-page .watch-story-section .section-title {
+        margin-top: 10px;
+        font-size: 20px;
+      }
+
+      #pc-wrap .home-page .watch-story-section .section-subtitle {
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      #pc-wrap .home-page .watch-story-section .watch-story-container {
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 16px; // mobile’da butun container’ni biroz pastga tushirish
+      }
+
+      #pc-wrap .home-page .watch-story-section .watch-story-content {
+        padding: 0 12px;
+      }
+
+      /* Left/Right buttonlarni ikki box orasidagi pastroqqa (ko'rinadigan o'rta qismga) joylash */
+      #pc-wrap .home-page .watch-story-section .scroll-arrow {
+        top: 75%;              /* oldin 50% edi, endi pastroqda */
+        transform: translateY(-50%);
       }
     }
 
@@ -1984,6 +2181,112 @@
     }
   }
 
+  // MOBILE: OurGoal section layout tweaks
+  @media (max-width: 768px) {
+    .our-goal-section {
+      padding: 0 0 24px 0;
+      margin-top: -12px;
+
+      .stats-section {
+        padding: 0 16px;
+        margin-bottom: 32px;
+
+        .stats-title {
+          font-size: 26px;
+          margin-bottom: 26px;
+        }
+
+        .stats-grid {
+          gap: 16px;
+
+          .stat-box {
+            padding: 18px 5px;
+            min-height: 0;
+
+            .stat-icon {
+              margin-top: -20px;
+              margin-bottom: -10px;
+              height: 120px;
+
+              img {
+                max-width: 110%;
+                max-height: 130%;
+              }
+            }
+
+            .stat-title {
+              font-size: 19px;
+            }
+
+            .stat-description {
+              font-size: 16px;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .protection-section {
+        padding: 0 16px;
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+
+        .protection-content {
+          padding: 24px 18px;
+          border-radius: 14px;
+          height: auto;
+
+          .protection-title {
+            font-size: 23px;
+            margin-bottom: 12px;
+          }
+
+          .features-list {
+            gap: 10px;
+            margin-bottom: 18px;
+
+            .feature-item {
+              gap: 8px;
+
+              .check-icon {
+                font-size: 18px;
+              }
+
+              .feature-text {
+                font-size: 16px;
+                line-height: 1.5;
+              }
+            }
+          }
+
+          .learn-more-btn {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+          }
+        }
+
+        .protection-image {
+          height: 270px;
+          border-radius: 14px;
+          border-top-left-radius: 14px;
+          border-bottom-left-radius: 14px;
+        }
+      }
+    }
+  }
+
+  // MOBILE: OurGoal ichidagi stat-box larni 2 tadan qatorga joylash
+  @media (max-width: 768px) {
+    .our-goal-section {
+      .stats-section {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+
   /* NEWS SECTION */
   .news-section {
     width: 100%;
@@ -2116,5 +2419,89 @@
         }
       }
     }
+  }
+
+  // GLOBAL MOBILE OVERRIDE: barcha watch-actions mobil ekranlarda doim ko'rinsin
+  @media (max-width: 768px) {
+    .watch-actions {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(-50%) translateX(0) !important;
+    }
+  }
+}
+
+// FINAL MOBILE OVERRIDE: PopularWatches.tsx (faqat homepage, mobile)
+@media (max-width: 768px) {
+  /* OurGoal va PopularWatches orasidagi bo'shliq */
+  #pc-wrap .home-page .our-goal-section {
+    padding-bottom: 35px;
+  }
+
+  #pc-wrap .home-page .popular-watches-section {
+    padding: 6px 0 4px 0; // pastki chegarani dealers-see-all ostigacha qisqartirish
+  }
+
+  /* Sarlavha o'lchami */
+  #pc-wrap .home-page .popular-watches-section .section-title {
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+
+  /* dealers-see-all-wrapper ni mobile’da tepaga yaqinlashtirish */
+  #pc-wrap .home-page .popular-watches-section .dealers-see-all-wrapper {
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* 1 ta karta gorizontalda, qolganlari chapga scroll */
+  #pc-wrap .home-page .popular-watches-section .popular-watches-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0 12px 12px 12px;
+    gap: 0;
+  }
+
+  #pc-wrap .home-page .popular-watches-section .popular-watch-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+    padding: 18px 10px;
+
+    /* Soat rasmi mobil uchun biroz kichikroq */
+    .image-box {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 70px; /* rasmni bir oz pastga tushirish uchun */
+
+      img {
+        width: 70%;
+      }
+    }
+
+    /* Mobile: PopularWatches ichidagi watch-actions pozitsiyasi */
+    .image-box .watch-actions {
+      top: 40%;
+      right: 15px;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* PopularWatches text-box ni mobile’da biroz pastroqqa tushirish */
+    .text-box {
+      margin-top: 65px;
+    }
+  }
+
+  /* PopularWatches.tsx va WatchStories.tsx orasidagi bo'shliqni kamaytirish */
+  #pc-wrap .home-page .watch-story-section {
+    padding-top: 28px;
   }
 }

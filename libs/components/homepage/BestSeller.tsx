@@ -187,8 +187,25 @@ const BestSeller = () => {
 
         <Swiper
           modules={[Navigation]}
-          slidesPerView={4} 
+          slidesPerView={4}
           spaceBetween={30}
+          breakpoints={{
+            // MOBILE: PopularWatches ga o'xshash — ekranda faqat 1 ta karta
+            0: {
+              slidesPerView: 1,
+              spaceBetween: 16,
+            },
+            // Tablet
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 24,
+            },
+            // Desktop (default)
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 30,
+            },
+          }}
           navigation={{
             nextEl: ".best-next-btn",
             prevEl: ".best-prev-btn",

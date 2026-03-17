@@ -396,12 +396,58 @@
       }
     }
 
-    .lang-box svg {
-      color: #e4e4e4;
+    // ============================
+    // MOBILE NAV (≤ 768px) COLORS
+    // ============================
+    @media (max-width: 768px) {
+      // Chap va o'ngdagi hamburger chiziqlar
+      .mobile-menu-toggle .line,
+      .mobile-user-toggle .line {
+        background: #f5f5f5 !important;
+      }
+
+      // User dropdown (Person menyusi)
+      .user-box .user-menu .user-menu-dropdown {
+        background-color: #263351 !important;
+        border-color: rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6) !important;
+      }
+
+      .user-box .user-menu .user-menu-dropdown .user-menu-item {
+        color: #ffffff !important;
+
+        &:hover {
+          background-color: #f09620 !important;
+          color: #121212 !important;
+        }
+      }
+
+      // User-box (o'ng tomondagi panel) — dropdown bilan bir xil dark fon
+      .user-box {
+        background: #263351 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6) !important;
+      }
+
+      .user-box .login-user button,
+      .user-box .login-user .MuiIconButton-root,
+      .user-box .login-user svg {
+        color: #f5f5f5 !important;
+      }
+
+      // router-box drop-down (mobil menyu)
+      .router-box {
+        background-color: #263351 !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
+      }
+
+      .router-box .nav-item {
+        color: #f5f5f5 !important;
+      }
     }
 
-    .lang-box svg:hover {
-      color: #f09620;
+    .lang-box svg {
+      color: #e4e4e4;
     }
 
     .lang-menu-dropdown {
@@ -2361,6 +2407,14 @@
 
     .stats-section .stats-title {
       color: #fbd7d7 !important;
+    }
+  }
+
+  /* MOBILE: our-goal-section bilan TopBrands orasidagi bo'shliqni kamaytirish (dark + light) */
+  @media (max-width: 768px) {
+    .our-goal-section {
+      padding-top: 10px !important;
+      margin-top: -12px !important;
     }
   }
 

@@ -918,6 +918,15 @@
         background: #6b5a51;
       }
 
+    // MOBILE: hover logikasiz — detail sahifada ham actionlar doim ko'rinsin
+    @media (max-width: 768px) {
+      .image-box .watch-actions {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: translateY(-50%) translateX(0) !important;
+      }
+    }
+
       svg {
         width: 28px;
         height: 28px;
@@ -1003,6 +1012,48 @@
         margin-top: 8px;
       }
     }
+  }
+
+  // MOBILE: PopularWatchesCard (detail page) — 1 ta karta, horizontal scroll
+  @media (max-width: 768px) {
+    .popular-watches-section .popular-watches-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0 12px 8px 12px;
+      gap: 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .popular-watches-section .popular-watch-card {
+      flex: 0 0 100%;
+      max-width: 100%;
+      scroll-snap-align: center;
+    }
+  }
+
+  // MOBILE: PopularWatchesCard.tsx ichidagi image-box ni kichiklashtirish
+  @media (max-width: 768px) {
+    .popular-watches-section .popular-watch-card .image-box {
+      height: 200px;
+    }
+
+    .popular-watches-section .popular-watch-card .image-box img {
+      width: 60%;
+    }
+  }
+}
+
+// GLOBAL MOBILE OVERRIDE: detail sahifadagi barcha watch-actions doim ko'rinsin
+@media (max-width: 768px) {
+  .watch-actions {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(-50%) translateX(0) !important;
   }
 }
 

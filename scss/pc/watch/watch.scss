@@ -340,12 +340,6 @@
         pointer-events: all;
       }
 
-      &:hover .watch-image-box .watch-actions {
-        opacity: 1;
-        pointer-events: all;
-        transform: translateY(-50%) translateX(0);
-      }
-
       .action-btn {
         width: 35px;
         height: 35px;
@@ -413,6 +407,15 @@
               fill-opacity: 1;
             }
           }
+        }
+      }
+
+      // MOBILE: hover logikasiz — actionlar doim ko'rinsin
+      @media (max-width: 768px) {
+        .watch-image-box .watch-actions {
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          transform: translateY(-50%) translateX(0) !important;
         }
       }
 
@@ -938,5 +941,14 @@
       max-height: 0;
       transform: translateY(-10px);
     }
+  }
+}
+
+// GLOBAL MOBILE OVERRIDE: watch sahifasidagi barcha watch-actions doim ko'rinsin
+@media (max-width: 768px) {
+  .watch-actions {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(-50%) translateX(0) !important;
   }
 }

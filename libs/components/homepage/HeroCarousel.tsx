@@ -49,7 +49,11 @@ const HeroCarousel = () => {
                   fill
                   sizes="100vw"
                   priority={slide.id === 1}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition:
+                      slide.id === 1 ? "right center" : "center",
+                  }}
                 />
                 <div className="slide-overlay"></div>
               </div>
