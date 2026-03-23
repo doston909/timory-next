@@ -243,3 +243,122 @@
     }
   }
 }
+
+/* Chat.tsx — faqat mobil */
+@media (max-width: 768px) {
+  .chatting {
+    bottom: max(100px, calc(88px + env(safe-area-inset-bottom, 0px)));
+    right: 10px;
+    z-index: 10003;
+
+    .chat-button {
+      width: 52px;
+      height: 52px;
+
+      &::before {
+        width: 44px;
+        height: 44px;
+        margin-left: -22px;
+        margin-top: -22px;
+        border-width: 5px;
+      }
+
+      svg {
+        font-size: 26px;
+      }
+    }
+
+    /* Oyna tepadan ochiladi (pastdan emas) */
+    .chat-frame {
+      position: fixed;
+      left: 8px;
+      right: 8px;
+      /* Tepadagi chetdan + safe-area + qo‘shimcha 20px past */
+      top: max(40px, calc(env(safe-area-inset-top, 0px) + 34px));
+      bottom: auto;
+      width: auto;
+      max-width: none;
+      height: min(520px, calc(100dvh - 76px));
+      max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 60px);
+      border-radius: 18px;
+      transform: translateY(calc(-100% - 16px));
+
+      &.open {
+        transform: translateY(0);
+      }
+    }
+
+    .chat-frame .chat-top {
+      height: auto;
+      min-height: 52px;
+      padding: 10px 12px;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .chat-content {
+      padding: 10px 12px;
+      min-height: 0;
+
+      .welcome {
+        padding: 28px 12px 24px;
+        font-size: 15px;
+        align-items: center;
+        text-align: center;
+
+        .welcome-subtitle {
+          font-size: 13px;
+          padding: 0 4px;
+        }
+      }
+
+      .msg-right,
+      .msg-left {
+        max-width: 88%;
+        font-size: 14px;
+        word-break: break-word;
+      }
+
+      .msg-left {
+        margin-left: 4px;
+      }
+    }
+
+    /* Chat.tsx dagi yuboruvchi ismi (MUI Typography) */
+    .chat-content .MuiTypography-root {
+      font-size: 14px !important;
+      padding-left: 4px !important;
+    }
+
+    .chat-bott {
+      padding: 12px 8px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .msg-input {
+      margin-left: 8px;
+      margin-right: 6px;
+      height: 44px;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 16px;
+      width: auto;
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .send-msg-btn {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      margin-right: 8px;
+      flex-shrink: 0;
+
+      svg {
+        font-size: 22px;
+      }
+    }
+  }
+}

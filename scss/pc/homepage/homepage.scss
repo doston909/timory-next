@@ -2419,6 +2419,100 @@
         }
       }
     }
+
+    /* News.tsx — faqat mobil */
+    @media (max-width: 768px) {
+      padding: 36px 16px 44px;
+      box-sizing: border-box;
+
+      .news-container {
+        max-width: 100%;
+        padding: 0 8px;
+      }
+
+      .news-icon-wrapper {
+        margin-bottom: 14px;
+
+        .news-envelope-icon {
+          width: 48px !important;
+          height: auto !important;
+          max-height: 72px;
+        }
+      }
+
+      .news-title {
+        font-size: 18px;
+        letter-spacing: 2px;
+        line-height: 1.35;
+        margin-bottom: 12px;
+        padding: 0 4px;
+      }
+
+      .news-description {
+        font-size: 14px;
+        margin-bottom: 22px;
+        line-height: 1.55;
+        padding: 0 2px;
+      }
+
+      .news-form {
+        gap: 20px;
+        width: 100%;
+        max-width: 100%;
+        align-items: stretch;
+      }
+
+      .news-email-input {
+        width: 100%;
+        max-width: 100%;
+        font-size: 16px;
+
+        :global(.MuiInputBase-input) {
+          padding: 14px 0 !important;
+          font-size: 16px !important;
+          text-align: center;
+
+          &::placeholder {
+            font-size: 16px !important;
+          }
+        }
+
+        input {
+          font-size: 16px !important;
+          text-align: center;
+
+          &::placeholder {
+            font-size: 16px !important;
+          }
+        }
+
+        :global(.MuiInput-underline:before) {
+          border-bottom-width: 1px;
+        }
+
+        :global(.MuiInput-underline:after) {
+          border-bottom-width: 2px;
+        }
+      }
+
+      .news-subscribe-btn {
+        justify-content: center;
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+        font-size: 15px;
+        padding: 8px 0;
+        min-height: 44px;
+
+        .news-subscribe-arrow {
+          font-size: 20px;
+        }
+
+        &:hover .news-subscribe-arrow {
+          transform: translateX(8px);
+        }
+      }
+    }
   }
 
   // GLOBAL MOBILE OVERRIDE: barcha watch-actions mobil ekranlarda doim ko'rinsin

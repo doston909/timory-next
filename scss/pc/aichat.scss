@@ -338,3 +338,150 @@
     }
   }
 }
+
+/* AIChatBot.tsx — faqat mobil */
+@media (max-width: 768px) {
+  /* Tugma: ekran bo‘yicha markaz (vertikal), o‘ng tomonda — desktop bilan bir xil mantiq */
+  .ai-chatbot {
+    top: 50%;
+    right: max(8px, env(safe-area-inset-right, 0px));
+    bottom: auto;
+    transform: translateY(-50%);
+    align-items: flex-end;
+
+    .ai-chat-button {
+      width: 58px;
+      height: 58px;
+
+      .ai-chat-avatar {
+        width: 58px;
+        height: 58px;
+      }
+
+      &::before {
+        width: 88px;
+        height: 88px;
+        margin-left: -44px;
+        margin-top: -44px;
+        border-width: 5px;
+      }
+    }
+  }
+
+  .ai-chat-backdrop {
+    z-index: 10000;
+  }
+
+  /* Chat.tsx mobil oyna bilan bir xil joy, o‘lcham, radius, soyya, animatsiya; ranglar — asosiy .ai-chat-frame qoidalaridan */
+  .ai-chat-frame {
+    left: 8px;
+    right: 8px;
+    top: max(40px, calc(env(safe-area-inset-top, 0px) + 34px));
+    bottom: auto;
+    width: auto;
+    max-width: none;
+    height: min(520px, calc(100dvh - 76px));
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 60px);
+    margin: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 -12px 40px rgba(0, 0, 0, 0.15),
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(0, 0, 0, 0.06);
+    transform: translateY(calc(-100% - 16px));
+    z-index: 10002;
+    box-sizing: border-box;
+
+    &.open {
+      transform: translateY(0);
+    }
+
+    /* Faqat tartib/o‘lcham (ranglarga tegmaymiz) */
+    .ai-chat-top {
+      height: auto;
+      min-height: 52px;
+      padding: 10px 12px;
+      font-size: 16px;
+      flex-wrap: wrap;
+      gap: 6px;
+
+      .ai-chat-top-avatar {
+        width: 40px;
+        height: 44px;
+      }
+
+      .ai-chat-top-title {
+        margin-left: 10px;
+        font-size: 16px;
+      }
+
+      .ai-chat-badge {
+        font-size: 12px;
+        padding: 3px 8px;
+      }
+
+      .ai-chat-close svg {
+        font-size: 24px;
+      }
+    }
+
+    .ai-chat-content {
+      padding: 10px 12px;
+      min-height: 0;
+
+      .ai-welcome {
+        padding: 24px 12px 28px;
+        align-items: center;
+        text-align: center;
+        font-size: 15px;
+
+        span {
+          line-height: 1.35;
+        }
+
+        .ai-welcome-subtitle {
+          font-size: 13px;
+          padding: 0 4px;
+        }
+      }
+
+      .ai-msg-right,
+      .ai-msg-left {
+        max-width: 88%;
+        font-size: 15px;
+        padding: 8px 10px;
+        word-break: break-word;
+      }
+    }
+
+    .ai-chat-bott {
+      padding: 12px 8px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+      gap: 6px;
+    }
+
+    .ai-msg-input {
+      margin-left: 8px;
+      margin-right: 6px;
+      height: 44px;
+      min-height: 44px;
+      padding: 10px 16px;
+      width: auto;
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .ai-send-btn {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      margin-right: 8px;
+      flex-shrink: 0;
+
+      svg {
+        font-size: 22px;
+      }
+    }
+  }
+}
