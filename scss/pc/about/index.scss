@@ -380,35 +380,4 @@
   }
 }
 
-@media (max-width: 768px) {
-  #pc-wrap {
-    .about-page {
-      padding: 80px 0 40px 0;
-
-      .about-content {
-        gap: 40px;
-
-        .about-text-content {
-          padding: 0 20px;
-        }
-
-        .about-image-wrapper {
-          border-radius: 8px;
-        }
-
-        .about-text-content {
-          gap: 25px;
-
-          .about-text {
-            font-size: 16px;
-            line-height: 1.7;
-          }
-        }
-      }
-    }
-
-    .our-goal-section {
-      margin-top: 60px;
-    }
-  }
-}
+@import "/scss/pc/about/about-mobile.scss";

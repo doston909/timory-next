@@ -1,0 +1,11 @@
+/* pages/brand/index.tsx — faqat mobil (faqat bu sahifadagi MUI Stack.container) */
+@media (max-width: 768px) {
+  #pc-wrap #main .MuiStack-root.container {
+    padding: 24px 16px !important;
+    min-height: 40vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+  }
+}

@@ -802,26 +802,4 @@
   }
 }
 
-@media (max-width: 768px) {
-  .community-detail-page {
-    padding: 80px 0;
-
-    .community-detail-container {
-      padding: 0 20px;
-
-      .article-main {
-        .article-header {
-          .article-title {
-            font-size: 28px;
-          }
-        }
-
-        .article-content {
-          .article-text {
-            font-size: 16px;
-          }
-        }
-      }
-    }
-  }
-}
+@import "/scss/pc/community/detail-mobile.scss";

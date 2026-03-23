@@ -1,0 +1,125 @@
+@media (max-width: 768px) {
+  .community-detail-page {
+    padding: 50px 0;
+
+    .community-detail-container {
+      padding: 0 10px;
+    }
+
+    /* Comments section (community/detail.tsx) - mobile (reviews-content bilan bir xil pattern) */
+    .comments-section {
+      width: 100% !important;
+      padding: 0 10px !important;
+      margin-top: 0 !important;
+      box-sizing: border-box;
+      height: auto !important;
+      max-height: none !important;
+      overflow-y: visible !important;
+
+      .comments-title-wrapper {
+        gap: 8px !important;
+        margin-bottom: 16px !important;
+
+        .comments-title-icon {
+          font-size: 20px !important;
+        }
+
+        .comments-title {
+          font-size: 18px !important;
+          letter-spacing: 0.6px !important;
+        }
+      }
+
+      .comments-list {
+        max-height: none !important;
+        overflow-y: visible !important;
+        margin-bottom: 20px !important;
+      }
+
+      .comments-list .comment-item {
+        margin-left: 0 !important;
+        padding: 12px !important;
+        border-radius: 12px !important;
+
+        .comment-number {
+          position: static !important;
+          margin-bottom: 8px;
+          font-size: 14px !important;
+        }
+
+        .comment-content .comment-meta {
+          gap: 8px !important;
+          margin-bottom: 10px !important;
+          padding-bottom: 10px !important;
+        }
+
+        .comment-content .comment-meta .comment-meta-item .comment-meta-text {
+          font-size: 15px !important;
+        }
+
+        .comment-text-wrapper {
+          margin-top: 8px !important;
+        }
+
+        .comment-text-wrapper .comment-text {
+          max-width: 100% !important;
+          font-size: 14px !important;
+          line-height: 1.6 !important;
+        }
+
+        .comment-text-wrapper .comment-actions .comment-like-btn .like-icon {
+          font-size: 22px !important;
+        }
+      }
+
+      .comment-form {
+        margin-top: 12px !important;
+
+        .comment-form-title {
+          font-size: 18px !important;
+          letter-spacing: 0.6px !important;
+        }
+
+        .comment-submit-wrapper {
+          margin-bottom: 14px !important;
+        }
+
+        .comment-textarea .MuiOutlinedInput-root {
+          min-height: 130px !important;
+          border-radius: 12px !important;
+        }
+
+        .comment-textarea .MuiInputBase-input,
+        .comment-textarea textarea {
+          min-height: 130px !important;
+          font-size: 14px !important;
+          padding: 12px !important;
+        }
+
+        .comment-submit-wrapper {
+          justify-content: center !important;
+        }
+
+        .comment-submit-button {
+          width: 100% !important;
+          max-width: 260px !important;
+          min-height: 40px !important;
+          font-size: 14px !important;
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+
+    .watch-back-wrapper {
+      margin-top: -10px !important;
+      margin-bottom: 20px !important;
+
+      .see-all-text {
+          font-size: 18px !important;
+      }
+    }
+  }
+}
+
+@import "/scss/pc/community/article-main-mobile.scss";
+

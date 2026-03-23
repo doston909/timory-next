@@ -9,6 +9,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { sweetToastErrorAlert } from "@/libs/sweetAlert";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 
 export type Article = {
   id: number | string;
@@ -33,11 +34,12 @@ type CommunityCardProps = {
 
 const CommunityCard = ({ articles, onArticleClick, onLike }: CommunityCardProps) => {
   const router = useRouter();
+  const device = useDeviceDetect();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState("newest");
   const [likedArticles, setLikedArticles] = useState<Record<string, boolean>>({});
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
-  const articlesPerPage = 4;
+  const articlesPerPage = device === "mobile" ? 5 : 4;
   
   // Sort qilingan articlelar
   const sortedArticles = useMemo(() => {

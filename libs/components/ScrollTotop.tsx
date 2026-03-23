@@ -24,6 +24,17 @@ const ScrollToTop = () => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // Some pages may have nested scrollable containers (e.g. tab/review sections).
+    // Reset them too so the page does not look "stuck" after returning top.
+    const nestedScrollables = document.querySelectorAll<HTMLElement>(
+      ".watch-detail-page, .watch-tabs-section, .tab-content, .reviews-content, .reviews-list"
+    );
+    nestedScrollables.forEach((el) => {
+      el.scrollTop = 0;
+    });
   };
 
   return showButton ? (

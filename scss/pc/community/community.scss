@@ -350,40 +350,5 @@
   }
 }
 
-@media (max-width: 768px) {
-  .community-page {
-    padding: 20px 0;
-
-    .community-container {
-      padding: 0 15px;
-      gap: 30px;
-
-      .community-sidebar {
-        flex-direction: column;
-        gap: 30px;
-
-        .sidebar-section {
-          min-width: auto;
-        }
-      }
-
-      .community-main {
-        .articles-grid {
-          gap: 20px;
-
-          .article-card {
-            .article-content {
-              padding: 15px;
-
-              .article-title {
-                font-size: 18px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 @import "/scss/pc/community/communityCard.scss";
+@import "/scss/pc/community/community-mobile.scss";

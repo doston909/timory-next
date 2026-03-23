@@ -1,0 +1,378 @@
+/* pages/cs/index.tsx + CS bloklari — faqat mobil */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .cs-page {
+      padding: 16px 12px 48px;
+      min-height: auto;
+
+      .cs-content {
+        max-width: 100%;
+      }
+
+      .cs-title {
+        font-size: 26px !important;
+        margin-top: 10px !important;
+        text-align: center;
+      }
+
+      .cs-subtitle {
+        font-size: 16px !important;
+        text-align: center;
+      }
+
+      .cs-buttons {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 10px !important;
+        margin-top: 24px !important;
+
+        .cs-button {
+          width: 100% !important;
+          min-height: 44px;
+          font-size: 16px !important;
+
+          .MuiButton-label {
+            font-size: 14px !important;
+          }
+        }
+      }
+
+      .cs-notice-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 4px;
+        box-sizing: border-box;
+      }
+
+      .cs-notice-title {
+        font-size: 20px !important;
+      }
+
+      .cs-notice-table-container {
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: calc(7 * 48px) !important;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .cs-notice-table {
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+        border-collapse: collapse;
+        margin-top: -10px !important;
+
+        .cs-notice-header-cell {
+          font-size: 14px !important;
+          padding: 12px 10px !important;
+        }
+
+        .cs-notice-header-cell.cs-notice-number-header {
+          width: 15% !important;
+          text-align: center !important;
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+        }
+
+        .cs-notice-header-cell.cs-notice-title-header {
+          width: 60% !important;
+          text-align: center !important;
+        }
+
+        .cs-notice-header-cell.cs-notice-date-header {
+          width: 25% !important;
+          text-align: center !important;
+          padding-left: 0 !important;
+        }
+
+        .cs-notice-cell {
+          font-size: 14px !important;
+          padding: 12px 10px !important;
+        }
+
+        .cs-notice-title-cell {
+          font-size: 14px !important;
+        }
+
+        .cs-notice-cell.cs-notice-title-cell {
+          text-align: center !important;
+          justify-content: center !important;
+        }
+
+        .cs-notice-cell.cs-notice-date-cell {
+          text-align: center !important;
+        }
+      }
+
+      .cs-terms-section,
+      .cs-privacy-section,
+      .cs-contact-section {
+        width: 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      /* pages/cs/index.tsx — Contact tab (mobil moslash) */
+      .cs-contact-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        margin-top: 40px !important;
+        padding-top: 0 !important;
+        padding-bottom: 40px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        .cs-contact-title {
+          font-size: 20px !important;
+          text-align: left !important;
+          width: 100% !important;
+          margin-top: 20px !important;
+          margin-bottom: 5px !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        .cs-contact-form-title {
+          font-size: 18px !important;
+          margin-top: -20px !important;
+          margin-bottom: -2px !important;
+        }
+      }
+
+      .cs-terms-paragraph,
+      .cs-privacy-paragraph {
+        font-size: 15px !important;
+        margin-top: 0 !important;
+      }
+
+      /* faqat Terms & Conditions ichidagi "Welcome to TIMORY..." paragrafi (direct child) */
+      .cs-terms-section > .cs-terms-paragraph {
+        margin-top: -30px !important;
+      }
+
+      .cs-terms-section-title,
+      .cs-privacy-section-title {
+        font-size: 18px !important;
+      }
+
+      .cs-terms-title {
+        font-size: 20px !important;
+      }
+
+      .cs-privacy-title {
+        font-size: 20px !important;
+      }
+
+      .cs-privacy-section > .cs-privacy-paragraph {
+        margin-top: -30px !important;
+      }
+
+      .cs-terms-section-title {
+        margin-top: -12px !important;
+      }
+
+      .cs-privacy-section-title {
+        margin-top: -12px !important;
+      }
+
+      .cs-terms-updated {
+        margin-top: -10px !important;
+      }
+
+      .cs-contact-container {
+        flex-direction: column !important;
+        gap: 24px;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .cs-contact-form,
+      .cs-contact-info {
+        width: 100% !important;
+        max-width: 100%;
+      }
+
+      .cs-contact-info {
+        flex: 1 !important;
+        box-sizing: border-box;
+        padding: 22px 10px 24px 10px !important;
+      }
+
+      .cs-contact-info-title {
+        font-size: 18px !important;
+        margin-top: 10px !important;
+      }
+
+      .cs-contact-info-text {
+        margin-top: -10px !important;
+      }
+
+      /* pages/cs/index.tsx — Contact Form mobil */
+      .cs-contact-form {
+        padding: 0 10px !important;
+        box-sizing: border-box;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+
+        .cs-contact-form-group {
+          gap: 4px !important;
+        }
+
+        .cs-contact-label {
+          font-size: 14px !important;
+        }
+
+        .cs-contact-input,
+        .cs-contact-textarea {
+          width: 100% !important;
+          font-size: 14px !important;
+          padding: 12px 12px !important;
+          border-radius: 10px !important;
+        }
+
+        .cs-contact-textarea {
+          min-height: 160px !important;
+        }
+
+        .cs-contact-submit {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 44px !important;
+          align-self: center !important;
+          margin-top: 10px !important;
+          font-size: 16px !important;
+        }
+      }
+    }
+
+    .faq-page {
+      padding: 0 4px 32px;
+      max-width: 100%;
+      padding-top: 0 !important;
+
+      .faq-title {
+        font-size: 20px !important;
+        text-align: left !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+        margin-bottom: 5px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .faq-tabs {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        margin-top: -10px !important; /* title bilan orasini yaqinroq qilish */
+        column-gap: 4px !important;
+        row-gap: 6px !important;
+        justify-content: center !important;
+        justify-items: center !important;
+        align-items: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-bottom: 6px !important;
+      }
+
+      .faq-tab {
+        width: 100% !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+        font-size: 14px !important;
+        font-weight: 600 !important; /* `active` bo'lganda width/position o'zgarmasin */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .faq-tab.active {
+        font-weight: 600 !important; /* layout o'zgarishini oldini oladi */
+      }
+
+      /* FAQ categories 7 ta bo'lgani uchun oxirgisi (7th) 3-qatorga tushadi.
+         Uni markazda ko'rsatish uchun 2-ustunga o'tkazamiz. */
+      .faq-tab:nth-child(7) {
+        grid-column: 2 !important;
+        justify-self: center !important;
+      }
+
+      .faq-tab-label {
+        font-size: 15px !important;
+        line-height: 1.2;
+      }
+
+      .faq-tab-count {
+        font-size: 14px !important;
+        line-height: 1.2;
+      }
+
+      .faq-list {
+        width: 100%;
+        margin-top: -14px !important; /* faq-tabs ostidagi bo'shliqni qisqartirish */
+        padding-top: 0 !important;
+
+        .faq-item-main {
+          padding: 14px 12px !important;
+          gap: 12px !important;
+          align-items: flex-start !important; /* question bir necha qator bo'lsa ham joyi buzilmasin */
+        }
+
+        .faq-icon-box {
+          width: 40px !important;
+          height: 40px !important;
+          flex-shrink: 0;
+        }
+
+        .faq-icon-letter {
+          font-size: 24px !important;
+        }
+
+        .faq-question {
+          font-size: 15px !important;
+          line-height: 1.25;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
+
+        .faq-toggle-arrow {
+          font-size: 20px !important;
+        }
+
+        .faq-answer {
+          padding: 0 12px 0 12px !important;
+          gap: 12px !important;
+          align-items: flex-start !important;
+        }
+
+        .faq-item.open .faq-answer {
+          padding: 14px 12px !important;
+          max-height: 420px !important;
+        }
+
+        .faq-icon-boxs {
+          width: 36px !important;
+          height: 36px !important;
+          flex-shrink: 0;
+        }
+
+        .faq-icon-letters {
+          font-size: 21px !important;
+        }
+
+        .faq-answer-text {
+          font-size: 15px !important;
+          line-height: 1.35 !important;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
+      }
+    }
+  }
+}

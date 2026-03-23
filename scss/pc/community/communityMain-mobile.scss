@@ -1,0 +1,173 @@
+@media (max-width: 768px) {
+  .community-main {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    align-self: center !important;
+    padding-right: 0 !important;
+    border-left: none !important;
+    display: block !important;
+    min-height: auto !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    justify-content: flex-start !important;
+
+    &::after {
+      display: none !important;
+    }
+
+    .community-header {
+      margin-bottom: 14px !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex-wrap: nowrap !important;
+      width: 100% !important;
+      justify-content: flex-end !important;
+
+      .sort-label {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        text-align: right !important;
+        margin-right: 10px !important;
+      }
+
+      .sort-select {
+        min-width: 120px !important;
+        height: 36px !important;
+
+        .MuiOutlinedInput-root {
+          height: 36px !important;
+          border-radius: 8px !important;
+        }
+
+        .MuiSelect-select {
+          padding: 8px 30px 8px 10px !important;
+          font-size: 13px !important;
+        }
+      }
+    }
+
+    .articles-grid {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      grid-auto-rows: max-content !important;
+      gap: 10px;
+      width: 100%;
+      align-content: start;
+      justify-items: stretch;
+      flex: 0 0 auto !important;
+      order: 3 !important;
+      margin-top: 0 !important;
+
+      .article-card {
+        width: 100% !important;
+        height: max-content !important;
+        min-height: unset !important;
+        max-height: none !important;
+        flex: 0 0 auto !important;
+
+        .article-image {
+          padding-bottom: 58% !important;
+          width: calc(100% - 8px) !important;
+          margin: 0 auto !important;
+          position: relative !important;
+          overflow: hidden !important;
+
+          img {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            transform: none !important;
+            object-fit: cover !important;
+            object-position: center !important;
+          }
+
+          &:hover img {
+            transform: none !important;
+          }
+        }
+
+        .article-content {
+          padding: 24px 10px 0 !important;
+          overflow: hidden !important;
+          margin-bottom: 0 !important;
+          margin-bottom: 0 !important;
+
+          .article-meta {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-bottom: 12px !important;
+            font-size: 14px !important;
+            letter-spacing: 0.04em !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex-wrap: nowrap !important;
+
+            .article-author,
+            > span {
+              font-size: 15px !important;
+            }
+          }
+
+          .article-title {
+            font-size: 16px;
+            margin-bottom: 6px !important;
+            line-height: 1.35 !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+          }
+
+          .article-description {
+            line-height: 1.45 !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            margin-bottom: 0 !important;
+            font-size: 15px !important;
+          }
+        }
+      }
+    }
+
+    /* Mobil: pagination-ni kartaning yuqorirog'iga chiqarish */
+    .pagination {
+      order: 4 !important;
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      flex-shrink: 0 !important;
+      margin-bottom: 0 !important;
+      position: static !important;
+      top: auto !important;
+      padding-bottom: 0 !important;
+
+      .watch-pagination {
+        margin-top: 0 !important;
+        padding: 0 !important;
+        gap: 8px !important;
+      }
+    }
+
+    /* Sort dropdown (Newest/Oldest) - mobilada fontni kichraytirish */
+    .sort-select-menu {
+      .MuiMenuItem-root {
+        font-size: 13px !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        line-height: 1.2 !important;
+      }
+    }
+  }
+}

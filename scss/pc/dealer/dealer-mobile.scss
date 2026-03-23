@@ -1,0 +1,102 @@
+/* pages/dealer/index.tsx + detail.tsx — faqat mobil */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .dealer-page {
+      padding: 24px 12px 40px !important;
+      max-width: 100%;
+
+      .dealer-list-header {
+        margin-left: 0 !important;
+        text-align: center;
+      }
+
+      .dealer-list-title {
+        font-size: 28px !important;
+      }
+
+      .dealer-list-subtitle {
+        font-size: 16px !important;
+      }
+
+      .dealer-grid {
+        grid-template-columns: 1fr !important;
+        grid-auto-rows: auto !important;
+        gap: 16px !important;
+      }
+
+      .dealer-card {
+        max-width: 100%;
+        height: auto !important;
+        min-height: 0;
+      }
+
+      .dealer-pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+    }
+
+    .dealer-detail-page {
+      .dealer-detail-hero {
+        width: 100% !important;
+        max-width: 100%;
+        margin-top: 72px !important;
+        height: auto !important;
+        min-height: 200px;
+        border-radius: 0 !important;
+      }
+
+      .dealer-detail-hero-content {
+        padding: 20px 16px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+      }
+
+      .dealer-detail-profile {
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+
+      .dealer-detail-tabs {
+        flex-wrap: wrap !important;
+        justify-content: center;
+        gap: 8px !important;
+        padding: 12px 8px !important;
+      }
+
+      .dealer-tab {
+        font-size: 13px !important;
+        padding: 10px 12px !important;
+      }
+
+      .dealer-watches-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+
+      .dealer-watch-item {
+        flex-direction: column !important;
+        height: auto !important;
+      }
+
+      .dealer-watch-item-left,
+      .dealer-watch-item-right {
+        width: 100% !important;
+      }
+
+      .dealer-followers-container {
+        padding: 16px 12px !important;
+      }
+
+      .dealer-followers-box {
+        flex-direction: column !important;
+      }
+
+      .cs-contact-container {
+        flex-direction: column !important;
+      }
+    }
+  }
+}

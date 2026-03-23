@@ -22,6 +22,7 @@ import { LIKE_TARGET_BOARD_ARTICLE } from "@/apollo/user/mutation";
 import { watchImageUrl, articleImageUrl } from "@/libs/utils";
 import { getViewCount } from "@/libs/viewCountStorage";
 import { useTranslation } from "@/libs/context/useTranslation";
+import useDeviceDetect from "@/libs/hooks/useDeviceDetect";
 
 
 
@@ -33,6 +34,7 @@ const COMMUNITY_TAG_KEYS: Record<string, string> = {
 
 const Community: NextPage = () => {
   const router = useRouter();
+  const device = useDeviceDetect();
   const { addToCart } = useCart();
   const { t } = useTranslation();
   const [bestSellerIndex, setBestSellerIndex] = useState(0);
@@ -378,20 +380,22 @@ const Community: NextPage = () => {
           </Box>
 
           {/* Navigation */}
-          <Stack className="best-seller-navigation" direction="row" gap={15}>
-            <Box
-              className="nav-arrow"
-              onClick={handlePrevBestSeller}
-            >
-              <ArrowBackIos sx={{ fontSize: 16 }} />
-            </Box>
-            <Box
-              className="nav-arrow"
-              onClick={handleNextBestSeller}
-            >
-              <ArrowForwardIos sx={{ fontSize: 16 }} />
-            </Box>
-          </Stack>
+          {device !== "mobile" && (
+            <Stack className="best-seller-navigation" direction="row" gap={15}>
+              <Box
+                className="nav-arrow"
+                onClick={handlePrevBestSeller}
+              >
+                <ArrowBackIos sx={{ fontSize: 16 }} />
+              </Box>
+              <Box
+                className="nav-arrow"
+                onClick={handleNextBestSeller}
+              >
+                <ArrowForwardIos sx={{ fontSize: 16 }} />
+              </Box>
+            </Stack>
+          )}
         </Stack>
 
         {/* Main Content */}
@@ -406,6 +410,22 @@ const Community: NextPage = () => {
           }
         />
       </Stack>
+      {device === "mobile" && (
+        <Stack className="best-seller-navigation" direction="row" gap={15}>
+          <Box
+            className="nav-arrow"
+            onClick={handlePrevBestSeller}
+          >
+            <ArrowBackIos sx={{ fontSize: 16 }} />
+          </Box>
+          <Box
+            className="nav-arrow"
+            onClick={handleNextBestSeller}
+          >
+            <ArrowForwardIos sx={{ fontSize: 16 }} />
+          </Box>
+        </Stack>
+      )}
     </Stack>
   );
 };

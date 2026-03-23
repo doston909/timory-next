@@ -253,7 +253,6 @@
     .MuiButton-root {
       cursor: pointer !important;
     }
-  }
 
     .account-oauth-icon {
       width: 18px;
@@ -301,4 +300,6 @@
       }
     }
   }
+}
 
+@import "/scss/pc/account/account-mobile.scss";

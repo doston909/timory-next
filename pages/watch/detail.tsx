@@ -263,6 +263,11 @@ const WatchDetail = () => {
 
   // Calculate height for last 2 reviews dynamically
   useLayoutEffect(() => {
+    if (device === "mobile") {
+      if (reviewsListRef.current) reviewsListRef.current.style.maxHeight = "none";
+      return;
+    }
+
     if (reviewsListRef.current && reviewItemsRef.current.length >= 2) {
       const firstReview = reviewItemsRef.current[0];
       const secondReview = reviewItemsRef.current[1];
@@ -280,7 +285,7 @@ const WatchDetail = () => {
         }px`;
       }
     }
-  }, [sortedReviews, reviewsCount]);
+  }, [sortedReviews, reviewsCount, device]);
 
   const defaultWatchData = {
     brand: "",
@@ -422,16 +427,6 @@ const WatchDetail = () => {
           <Button onClick={() => router.back()} sx={{ mt: 2 }}>
             Go back
           </Button>
-        </Box>
-      </Stack>
-    );
-  }
-
-  if (device === "mobile") {
-    return (
-      <Stack className="watch-detail-page">
-        <Box className="watch-detail-main" sx={{ p: 3, textAlign: "center" }}>
-          <Typography>WATCH DETAIL MOBILE</Typography>
         </Box>
       </Stack>
     );
@@ -616,24 +611,44 @@ const WatchDetail = () => {
         className="watch-tabs"
         sx={{
           display: "flex",
-          gap: "40px",
+          gap: { xs: "0px", md: "40px" },
+          "& .MuiTabs-flexContainer": {
+            flexWrap: { xs: "wrap", md: "nowrap" },
+            rowGap: { xs: "6px", md: 0 },
+            columnGap: { xs: "6px", md: 0 },
+          },
           "& .MuiTab-root": {
             fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
             fontWeight: 400,
-            fontSize: "19px !important",
+            fontSize: { xs: "17px !important", md: "19px !important" },
             color: "#1a1a1a",
             textTransform: "none",
-            padding: "8px 24px",
-            minHeight: "50px",
+            whiteSpace: { xs: "nowrap", md: "normal" },
+            padding: { xs: "6px 8px", md: "8px 24px" },
+            minHeight: { xs: "38px", md: "50px" },
             backgroundColor: "#ffffff",
             border: "1px solid #1a1a1a",
             borderRadius: "8px",
-            marginRight: "10px !important",
+            marginRight: { xs: "0 !important", md: "10px !important" },
             "&:last-of-type": {
               marginRight: "0 !important",
             },
             position: "relative",
-            flex: "0 0 auto",
+            flex: { xs: "0 0 calc(50% - 3px)", md: "0 0 auto" },
+            minWidth: { xs: 0, md: "auto" },
+            maxWidth: { xs: "calc(50% - 3px)", md: "none" },
+            "&:nth-of-type(1)": {
+              flex: { xs: "0 0 calc(38% - 3px)", md: "0 0 auto" },
+              maxWidth: { xs: "calc(38% - 3px)", md: "none" },
+            },
+            "&:nth-of-type(2)": {
+              flex: { xs: "0 0 calc(62% - 3px)", md: "0 0 auto" },
+              maxWidth: { xs: "calc(62% - 3px)", md: "none" },
+            },
+            "&:nth-of-type(3)": {
+              flex: { xs: "0 0 100%", md: "0 0 auto" },
+              maxWidth: { xs: "100%", md: "none" },
+            },
             "&:first-of-type": {
               borderTopLeftRadius: "8px",
               borderBottomLeftRadius: "8px",
@@ -711,7 +726,7 @@ const WatchDetail = () => {
               <Box
                 className="reviews-list"
                 ref={reviewsListRef}
-                sx={{ overflowY: "auto" }}
+                sx={{ overflowY: { xs: "visible", md: "auto" } }}
               >
                 {watchCommentsCount === 0 ? (
                   <Box className="no-reviews">
@@ -859,7 +874,6 @@ const WatchDetail = () => {
                     </IconButton>
                   )}
                 </Box>
-                <Box className="review-form-row"></Box>
                 <TextField
                   fullWidth
                   multiline

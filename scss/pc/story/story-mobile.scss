@@ -1,0 +1,88 @@
+/* pages/brand-stories/index.tsx — faqat mobil */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .brand-story-page {
+      padding: 72px 12px 40px !important;
+      align-items: stretch !important;
+
+      .brand-story-title,
+      .brand-story-history-title {
+        font-size: 26px !important;
+        margin-left: 0 !important;
+        text-align: center;
+        max-width: 100%;
+      }
+
+      .brand-story-section {
+        padding: 0 8px;
+      }
+
+      .brand-story-card {
+        flex-direction: column !important;
+      }
+
+      .brand-story-card .brand-story-content {
+        order: 2;
+        width: 100% !important;
+        padding: 16px 8px !important;
+      }
+
+      .brand-story-image-right {
+        order: 1;
+        width: 100% !important;
+        max-width: 100%;
+        margin: 0 auto !important;
+      }
+
+      .brand-story-portrait {
+        max-width: 100%;
+        height: auto !important;
+      }
+
+      .brand-story-quote {
+        font-size: 15px !important;
+      }
+
+      .brand-story-video-box {
+        width: 100% !important;
+        max-width: 100%;
+        padding: 0 8px;
+        margin: 16px auto;
+      }
+
+      .brand-story-video {
+        max-height: 50vh;
+      }
+
+      .watch-back-wrapper {
+        justify-content: center;
+        padding: 8px;
+      }
+
+      .brand-story-boxes {
+        padding: 0 8px;
+      }
+
+      .brand-story-boxes .brand-story-content {
+        display: flex;
+        flex-direction: column !important;
+        gap: 16px;
+      }
+
+      .brand-story-image,
+      .brand-story-image-right {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+      }
+
+      .brand-story-text-1,
+      .brand-story-text-2 {
+        margin-left: 0 !important;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+    }
+  }
+}

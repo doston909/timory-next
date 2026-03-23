@@ -1,0 +1,61 @@
+/* pages/account/* — faqat mobil */
+@media (max-width: 768px) {
+  #account-page {
+    padding: 76px 12px 48px;
+    min-height: auto;
+
+    .account-container,
+    .account-container-signup,
+    .account-container-reset {
+      height: auto !important;
+      min-height: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .account-card,
+    .account-card-signup,
+    .account-card-reset {
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 18px 16px 28px !important;
+      border-radius: 16px;
+    }
+
+    .account-title {
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .account-form {
+      gap: 8px;
+    }
+
+    .account-label {
+      font-size: 14px;
+    }
+
+    .account-options {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px;
+    }
+
+    .account-submit-button {
+      margin-top: 8px;
+    }
+
+    .account-oauth-button {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .account-footer {
+      text-align: center;
+
+      .account-link-button {
+        margin: 12px 4px !important;
+        display: inline-block;
+      }
+    }
+  }
+}

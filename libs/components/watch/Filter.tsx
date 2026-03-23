@@ -137,6 +137,26 @@ const Filter = ({
     setOpenSections(new Set());
   };
 
+  /** Mobil (≤768px): narx ro‘yxati ~6 qator, qolgani scroll */
+  const watchPriceSelectMenuProps = {
+    PaperProps: {
+      className: "watch-price-select-menu",
+      sx: {
+        "@media (max-width: 768px)": {
+          maxHeight: 236,
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          "& .MuiMenuItem-root": {
+            fontSize: "15px",
+            minHeight: 32,
+            paddingTop: 2,
+            paddingBottom: 2,
+          },
+        },
+      },
+    },
+  };
+
   return (
     <Stack className="filter-main">
       {/* Find Your Watch */}
@@ -587,6 +607,7 @@ const Filter = ({
               onChange={(e) =>
                 setWatchPrice({ ...watchPrice, start: Number(e.target.value) })
               }
+              MenuProps={watchPriceSelectMenuProps}
               sx={{
                 '& .MuiSelect-select': {
                   fontSize: '16px !important',
@@ -618,6 +639,7 @@ const Filter = ({
               onChange={(e) =>
                 setWatchPrice({ ...watchPrice, end: Number(e.target.value) })
               }
+              MenuProps={watchPriceSelectMenuProps}
               sx={{
                 '& .MuiSelect-select': {
                   fontSize: '16px !important',

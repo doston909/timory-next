@@ -1,0 +1,239 @@
+/* pages/about/index.tsx — faqat mobil (≤768px) */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .about-page {
+      padding: 64px 12px 36px !important;
+      box-sizing: border-box;
+      overflow-x: hidden;
+
+      .about-main-title {
+        white-space: normal !important;
+        text-align: center;
+        font-size: 22px !important;
+        margin-top: 0 !important;
+        margin-bottom: 4px;
+        padding: 0 8px;
+        line-height: 1.35;
+      }
+
+      .about-content {
+        gap: 28px !important;
+
+        .about-image-wrapper {
+          margin-top: 16px !important;
+          margin-bottom: 16px !important;
+          border-radius: 8px;
+          max-height: 42vh;
+
+          .about-image {
+            max-height: 42vh;
+            object-fit: cover;
+          }
+        }
+
+        .about-text-content {
+          max-width: 100%;
+          padding: 0 12px !important;
+          gap: 18px !important;
+
+          .about-text {
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+            padding: 12px 14px !important;
+            text-indent: 12px;
+          }
+        }
+      }
+
+      .testimonial-section-title {
+        max-width: 100%;
+        margin: 48px auto 0 !important;
+        padding: 0 12px;
+        font-size: 22px !important;
+        text-align: center;
+      }
+
+      .testimonial-section {
+        max-width: 100%;
+        margin: 20px 12px 32px !important;
+        height: auto !important;
+        min-height: 0;
+        flex-direction: column;
+        border-radius: 16px;
+        padding: 8px 0;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .testimonial-card {
+        flex-direction: column !important;
+        min-height: 0;
+        width: 100% !important;
+        min-width: 0 !important;
+        flex: 0 0 auto !important;
+
+        .testimonial-image-left {
+          flex: none !important;
+          width: 100%;
+          padding: 12px 12px 0 !important;
+
+          .testimonial-portrait {
+            min-height: 220px !important;
+            max-height: 280px !important;
+            border-radius: 16px !important;
+            width: 100%;
+          }
+        }
+
+        .testimonial-content {
+          flex: none !important;
+          width: 100%;
+          padding: 20px 16px 24px !important;
+          gap: 16px !important;
+
+          .testimonial-name {
+            font-size: 17px !important;
+          }
+
+          .testimonial-role {
+            font-size: 14px !important;
+          }
+
+          .testimonial-quote {
+            font-size: 13px !important;
+            line-height: 1.45 !important;
+          }
+        }
+
+        .testimonial-image-right {
+          display: none !important;
+        }
+
+        &.testimonial-card-id3 .testimonial-image-left .testimonial-portrait {
+          min-height: 220px !important;
+          max-height: 280px !important;
+        }
+      }
+
+      /* OurGoal.tsx (homepage) mobil bilan bir xil ko‘rinish */
+      .our-goal-section {
+        width: 100%;
+        box-sizing: border-box;
+        background: var(--bg-section);
+        padding: 0 0 24px 0 !important;
+        margin-top: -12px !important;
+
+        .stats-section {
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 16px !important;
+          margin-bottom: 32px !important;
+          text-align: center;
+
+          .stats-title {
+            font-size: 26px !important;
+            margin-bottom: 26px !important;
+          }
+
+          .stats-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+            max-width: 100%;
+            margin: 0 auto;
+            align-items: stretch;
+
+            .stat-box {
+              border: 2px solid #ababab;
+              border-radius: 12px;
+              padding: 18px 5px !important;
+              background: var(--bg-section);
+              min-height: 0 !important;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 5px;
+              width: 100%;
+              box-sizing: border-box;
+              position: relative;
+              overflow: hidden;
+
+              .stat-icon {
+                margin-top: -20px !important;
+                margin-bottom: -10px !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 120px !important;
+                width: 100%;
+
+                img {
+                  max-width: 110% !important;
+                  max-height: 130% !important;
+                  object-fit: contain;
+                }
+              }
+
+              .stat-title {
+                font-size: 19px !important;
+                font-weight: 500;
+                color: var(--text-heading, #1a1a1a);
+                margin: 0;
+                text-align: center;
+                font-family: $font;
+              }
+
+              .stat-description {
+                font-size: 16px !important;
+                line-height: 1.5;
+                color: var(--text-secondary, #666666);
+                margin: 0 !important;
+                margin-bottom: 0 !important;
+                text-align: center;
+                font-family: $font;
+              }
+            }
+          }
+        }
+      }
+
+      .about-video-section {
+        margin-top: 40px !important;
+        margin-bottom: 40px !important;
+        padding: 0 12px;
+
+        .about-video {
+          height: 220px !important;
+          border-radius: 8px;
+        }
+      }
+
+      .about-cta-section {
+        width: 100% !important;
+        max-width: 100%;
+        margin: 32px 0 24px !important;
+        padding: 40px 16px 48px !important;
+        box-sizing: border-box;
+        border-radius: 16px;
+
+        .about-cta-title {
+          font-size: 22px !important;
+        }
+
+        .about-cta-subtitle {
+          font-size: 16px !important;
+          margin-top: 0 !important;
+          padding: 0 8px;
+        }
+
+        .about-cta-button {
+          width: 100%;
+          max-width: 280px;
+          font-size: 16px !important;
+          padding: 12px 20px !important;
+        }
+      }
+    }
+  }
+}

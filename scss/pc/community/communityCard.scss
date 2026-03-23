@@ -326,20 +326,4 @@
   }
 }
 
-@media (max-width: 768px) {
-  .community-main {
-    .articles-grid {
-      gap: 20px;
-
-      .article-card {
-        .article-content {
-          padding: 15px;
-
-          .article-title {
-            font-size: 16px;
-          }
-        }
-      }
-    }
-  }
-}
+@import "/scss/pc/community/communityCard-mobile.scss";

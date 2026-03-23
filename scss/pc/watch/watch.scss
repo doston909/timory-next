@@ -340,6 +340,12 @@
         pointer-events: all;
       }
 
+      &:hover .watch-image-box .watch-actions {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(-50%) translateX(0);
+      }
+
       .action-btn {
         width: 35px;
         height: 35px;

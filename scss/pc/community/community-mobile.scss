@@ -1,0 +1,149 @@
+@media (max-width: 768px) {
+  .community-page {
+    padding: 30px 0;
+
+    .community-container {
+      padding: 0 15px;
+      gap: 30px;
+      display: flex;
+      flex-direction: column;
+
+      > .community-sidebar {
+        display: contents;
+      }
+
+      > .community-main {
+        order: 2;
+      }
+
+      .community-sidebar {
+        flex-direction: column;
+        gap: 30px;
+
+        .sidebar-section {
+          min-width: auto;
+          width: 100%;
+          padding: 14px 12px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 12px;
+          background: #ffffff;
+          box-sizing: border-box;
+
+          .sidebar-title {
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-top: 0;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+          }
+
+          .tags-list {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            overflow-x: auto;
+            align-items: center !important;
+            align-content: flex-start !important;
+
+            .tag-item {
+              font-size: 13px;
+              padding: 7px 9px;
+              height: auto !important;
+              min-height: 32px !important;
+              max-height: 32px !important;
+              line-height: 1 !important;
+              white-space: nowrap;
+              align-self: center !important;
+            }
+          }
+
+          .best-seller-card {
+            width: 100%;
+            border-radius: 10px;
+
+            .best-seller-image-wrapper {
+              height: 260px;
+            }
+
+            .best-seller-title {
+              padding: 18px 12px 6px;
+              font-size: 16px;
+              min-height: auto;
+            }
+
+            .best-seller-price {
+              padding: 0 12px 18px;
+              font-size: 14px;
+              min-height: auto;
+            }
+          }
+
+          .partnership-box-text {
+            font-size: 20px;
+          }
+
+          /* pages/community/index.tsx dagi partnership box balandliklarini kichraytirish */
+          > .MuiStack-root > .MuiBox-root:first-of-type {
+            height: 260px !important;
+          }
+
+          > .MuiStack-root > .MuiBox-root:last-of-type {
+            height: 210px !important;
+          }
+        }
+
+        /* Business Partnership sidebar-section (2-chi) ga margin-top */
+        .sidebar-section:nth-of-type(2) {
+          margin-top: 48px !important;
+        }
+
+        .sidebar-section:nth-of-type(1) {
+          order: 1;
+        }
+
+        .sidebar-section:nth-of-type(2) {
+          order: 3;
+        }
+
+        .sidebar-section:nth-of-type(3) {
+          order: 4;
+        }
+      }
+
+      .community-main {
+        .articles-grid {
+          gap: 20px;
+
+          .article-card {
+            .article-content {
+              padding: 15px;
+
+              .article-title {
+                font-size: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    > .best-seller-navigation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      margin: 16px auto 0;
+
+      .nav-arrow {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid #030303;
+        background: rgba(241, 239, 239, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}

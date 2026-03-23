@@ -1,6 +1,6 @@
 import { Stack, Box, Select, MenuItem, IconButton, OutlinedInput, InputAdornment, Typography } from "@mui/material";
 import { NextPage } from "next";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -92,7 +92,20 @@ const WatchList: NextPage = () => {
 
   const [searchText, setSearchText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const watchGridRef = useRef<HTMLDivElement | null>(null);
+  const didInitPageRef = useRef(false);
+  /** Mobil (≤768px) ro‘yxatda 5 ta/sahifa — 5 dan ortiq soatda pagination */
+  const [isWatchPageMobile, setIsWatchPageMobile] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    const sync = () => setIsWatchPageMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
   // Open watch page with brand/watchType from URL (e.g. search tags: Rolex, Omega, Sport Watches)
@@ -210,11 +223,33 @@ const WatchList: NextPage = () => {
     return 0; // Default - o'zgartirmaslik
   });
   
-  const itemsPerPage = viewMode === "list" ? 6 : 9; // List view'da 6 ta, Grid view'da 9 ta
+  const itemsPerPage = isWatchPageMobile
+    ? 5
+    : viewMode === "list"
+      ? 6
+      : 9;
   const totalPages = Math.ceil(filteredWatches.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentWatches = filteredWatches.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    if (filteredWatches.length === 0) {
+      if (currentPage !== 1) setCurrentPage(1);
+      return;
+    }
+    const tp = Math.ceil(filteredWatches.length / itemsPerPage);
+    if (currentPage > tp) setCurrentPage(tp);
+  }, [filteredWatches.length, itemsPerPage, currentPage]);
+
+  useEffect(() => {
+    if (!isWatchPageMobile) return;
+    if (!didInitPageRef.current) {
+      didInitPageRef.current = true;
+      return;
+    }
+    watchGridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentPage, isWatchPageMobile]);
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -334,6 +369,13 @@ const WatchList: NextPage = () => {
                           sx: {
                             '& .MuiMenuItem-root': {
                               fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                              /* mobil: .sort-label (Sort by) bilan bir xil — watch-list-mobile.scss $watch-list-header-fs */
+                              "@media (max-width: 768px)": {
+                                fontSize: "12px",
+                                "& .MuiTypography-root": {
+                                  fontSize: "12px",
+                                },
+                              },
                               '&:hover': {
                                 backgroundColor: '#f5f5f5',
                               },
@@ -358,7 +400,7 @@ const WatchList: NextPage = () => {
 
                 {/* Watch Grid */}
                 {currentWatches.length > 0 ? (
-                  <Box className={`watch-grid ${viewMode}`}>
+                  <Box ref={watchGridRef} className={`watch-grid ${viewMode}`}>
                     {currentWatches.map((watch) => (
                       <WatchCard
                         key={watch.id}

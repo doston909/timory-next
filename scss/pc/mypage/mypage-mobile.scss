@@ -1,0 +1,89 @@
+/* pages/mypage/index.tsx — faqat mobil */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .mypage-page {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .mypage-hero {
+      min-height: 0;
+    }
+
+    .mypage-hero-content {
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center;
+      padding: 24px 16px 20px !important;
+    }
+
+    .mypage-profile {
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 16px;
+    }
+
+    .mypage-profile-text {
+      align-items: center;
+    }
+
+    .mypage-tabs {
+      flex-wrap: wrap !important;
+      justify-content: center;
+      gap: 8px !important;
+      padding: 12px 8px !important;
+    }
+
+    .mypage-tab {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 13px !important;
+      padding: 10px 8px !important;
+    }
+
+    .mypage-watches-container,
+    .mypage-articles-container,
+    .mypage-followers-container {
+      padding: 16px 12px !important;
+    }
+
+    .mypage-watches-header {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px;
+    }
+
+    .mypage-watches-grid {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+
+    .mypage-watch-item {
+      flex-direction: column !important;
+      height: auto !important;
+    }
+
+    .mypage-watch-item-left,
+    .mypage-watch-item-right {
+      width: 100% !important;
+    }
+
+    .mypage-watch-item-image {
+      max-height: 220px;
+      object-fit: contain;
+    }
+
+    .mypage-edit-profile-modal-content {
+      max-width: calc(100vw - 24px) !important;
+      width: 100% !important;
+      margin: 12px;
+      max-height: calc(100dvh - 24px);
+      overflow-y: auto;
+    }
+
+    .mypage-edit-profile-form,
+    .mypage-add-watch-form {
+      padding: 12px 10px !important;
+    }
+  }
+}

@@ -1,0 +1,90 @@
+/* libs/components/homepage AI watch finder (home-page) — faqat mobil */
+@media (max-width: 768px) {
+  #pc-wrap {
+    .home-page {
+      .ai-watch-finder-section {
+        padding: 48px 12px 56px !important;
+
+        .ai-watch-finder-title {
+          font-size: 22px !important;
+          padding: 0 8px;
+        }
+
+        .ai-watch-finder-subtitle {
+          font-size: 14px !important;
+          margin-bottom: 28px !important;
+          padding: 0 12px;
+        }
+
+        .ai-watch-finder-row {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          padding: 0 12px !important;
+          gap: 20px !important;
+        }
+
+        .ai-watch-finder-left-box,
+        .ai-watch-finder-form-wrap {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          min-height: 500px !important;
+        }
+
+        .ai-watch-finder-form-wrap {
+          min-height: 0 !important;
+        }
+
+        .ai-watch-finder-form {
+          min-width: 0 !important;
+          padding: 18px 14px !important;
+          margin-bottom: 24px !important;
+        }
+
+        .ai-watch-finder-video {
+          /* Mobile’da video kadrini qirqib yubormaslik uchun */
+          object-fit: cover !important;
+          object-position: center !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        .ai-watch-finder-results {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          min-width: 0 !important;
+        }
+
+        .ai-watch-finder-card {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          min-height: 0;
+        }
+      }
+    }
+
+    /* pages/ai — ai-watch-card (homepage.scss asosiy stillar) */
+    .ai-watch-card {
+      width: 100% !important;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 18px 14px !important;
+
+      .image-box {
+        height: 220px !important;
+      }
+
+      .info {
+        .model {
+          font-size: 20px !important;
+        }
+
+        .brand,
+        .price {
+          font-size: 17px !important;
+        }
+      }
+    }
+  }
+}
