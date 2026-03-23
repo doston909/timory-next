@@ -21,7 +21,6 @@ import { GET_BOARD_ARTICLES, GET_WATCHES } from "@/apollo/user/query";
 import { LIKE_TARGET_BOARD_ARTICLE } from "@/apollo/user/mutation";
 import { watchImageUrl, articleImageUrl } from "@/libs/utils";
 import { getViewCount } from "@/libs/viewCountStorage";
-import { getDealerByName } from "@/libs/data/dealers";
 import { useTranslation } from "@/libs/context/useTranslation";
 
 
