@@ -1,0 +1,164 @@
+/**
+ * pages/watch/index.tsx — faqat mobil (≤768px)
+ * Desktop watch.scss ga tegilmaydi.
+ */
+@media (max-width: 768px) {
+  #pc-wrap .watch-list-page {
+    width: 100%;
+    max-width: 100%;
+    padding: 80px 12px 28px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    .watch-list-content {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+    }
+
+    .watch-filter-sidebar {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex-shrink: 0;
+      order: 1;
+    }
+
+    .watch-list-main {
+      order: 2;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .watch-list-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+
+      .view-mode-toggle {
+        align-self: flex-start;
+      }
+
+      .filter-dropdown {
+        width: 100%;
+        min-width: 0;
+        flex-direction: column;
+        align-items: stretch;
+
+        form {
+          width: 100%;
+        }
+
+        .filter-search-input {
+          min-width: 0 !important;
+          width: 100% !important;
+          max-width: 100%;
+          font-size: 16px;
+        }
+      }
+
+      .sort-dropdown {
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+
+        .sort-label {
+          font-size: 15px;
+        }
+
+        .sort-select {
+          width: 100% !important;
+          max-width: 100%;
+          min-width: 0 !important;
+        }
+      }
+    }
+
+    .watch-grid {
+      width: 100% !important;
+      max-width: 100% !important;
+      grid-template-columns: 1fr !important;
+      gap: 14px;
+      min-height: 0 !important;
+      grid-auto-rows: auto;
+      padding: 0;
+      margin-bottom: 12px;
+
+      .watch-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0;
+
+        .watch-image-box {
+          height: 240px;
+        }
+
+        .watch-info {
+          .watch-name {
+            font-size: 17px;
+          }
+
+          .watch-price {
+            font-size: 16px;
+          }
+        }
+      }
+
+      &.list {
+        grid-template-columns: 1fr !important;
+        min-height: 0 !important;
+        height: auto !important;
+        gap: 14px;
+
+        .watch-card {
+          flex-direction: column !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+
+          .watch-image-box {
+            width: 100% !important;
+            height: 220px;
+            min-height: 200px;
+          }
+
+          .watch-info {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+
+    .watch-not-found {
+      min-height: 220px;
+      padding: 40px 16px;
+
+      .not-found-text {
+        font-size: 16px;
+      }
+    }
+
+    .watch-pagination {
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 12px 0 8px;
+
+      .pagination-number {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+      }
+    }
+
+    .filter-main {
+      position: relative !important;
+      top: auto !important;
+      padding: 14px 12px;
+    }
+  }
+}
