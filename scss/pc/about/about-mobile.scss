@@ -55,7 +55,7 @@
 
       .testimonial-section {
         max-width: 100%;
-        margin: 20px 12px 32px !important;
+        margin: 20px 8px 32px !important;
         height: auto !important;
         min-height: 0;
         flex-direction: column;
@@ -113,6 +113,32 @@
         &.testimonial-card-id3 .testimonial-image-left .testimonial-portrait {
           min-height: 220px !important;
           max-height: 280px !important;
+        }
+      }
+
+      /* Har bir testimonial (id) orasiga chiziq */
+      .testimonial-card + .testimonial-card {
+        border-top: 1px solid rgba(140, 111, 90, 0.35) !important;
+        margin-top: 10px !important;
+        padding-top: 10px !important;
+      }
+
+      /* Faqat id:1 (doston.jpg) rasmini mobileda kattaroq ko'rsatish */
+      .testimonial-card-id1 {
+        .testimonial-image-left-id1 {
+          .testimonial-portrait-id1 {
+            min-height: 360px !important;
+            max-height: 460px !important;
+          }
+        }
+      }
+
+      /* Faqat id:4 (Julia) rasmini mobileda biroz tepaga surish */
+      .testimonial-card:nth-of-type(4) {
+        .testimonial-image-left {
+          .testimonial-portrait {
+            object-position: center 20% !important;
+          }
         }
       }
 
@@ -199,13 +225,22 @@
       }
 
       .about-video-section {
-        margin-top: 40px !important;
-        margin-bottom: 40px !important;
-        padding: 0 12px;
+        margin-top: -10px !important; /* tepaga yaqinroq qilish */
+        margin-bottom: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 12px !important;
 
         .about-video {
-          height: 220px !important;
-          border-radius: 8px;
+          width: 100% !important;
+          height: 100% !important;
+          border-radius: 0 !important;
+          object-fit: contain !important; /* chekkalar qirqilmasin, video to'liq ko'rinsin */
+          object-position: center !important;
+          background: #000;
         }
       }
 
