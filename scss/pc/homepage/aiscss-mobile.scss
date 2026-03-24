@@ -4,6 +4,7 @@
     .home-page {
       .ai-watch-finder-section {
         padding: 48px 12px 56px !important;
+        margin-top: -50px !important;
 
         .ai-watch-finder-title {
           font-size: 22px !important;
@@ -39,6 +40,10 @@
           min-width: 0 !important;
           padding: 18px 14px !important;
           margin-bottom: 24px !important;
+        }
+
+        .ai-watch-finder-select {
+          margin-bottom: -5px !important;
         }
 
         .ai-watch-finder-video {
