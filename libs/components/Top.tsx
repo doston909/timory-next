@@ -525,7 +525,10 @@ const Top = () => {
                 {/* DARK MODE */}
                 <IconButton
                   aria-label={mode === "dark" ? "Light mode" : "Dark mode"}
-                  onClick={() => setMode((prev) => (prev === "dark" ? "light" : "dark"))}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMode((prev) => (prev === "dark" ? "light" : "dark"));
+                  }}
                   sx={{
                     color: mode === "dark" ? "#ffffff" : "#000",
                     p: 0,

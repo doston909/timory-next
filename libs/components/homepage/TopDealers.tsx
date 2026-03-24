@@ -73,8 +73,14 @@ const TopDealers = () => {
 
         <Swiper
           modules={[Navigation]}
-          slidesPerView={3}
-          spaceBetween={30}
+          slidesPerView={1}
+          spaceBetween={12}
+          breakpoints={{
+            769: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }}
           navigation={{
             nextEl: ".dealer-next-btn",
             prevEl: ".dealer-prev-btn",
