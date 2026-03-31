@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
-import { ApolloClient, ApolloLink, InMemoryCache, split, from, NormalizedCacheObject, createHttpLink } from '@apollo/client';
+import { ApolloClient, ApolloLink, InMemoryCache, from, NormalizedCacheObject, createHttpLink } from '@apollo/client';
 import { createUploadLink } from "apollo-upload-client";
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
 import { getJwtToken } from '../libs/auth-token';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
@@ -26,34 +24,6 @@ const tokenRefreshLink = new TokenRefreshLink({
 		return null;
 	},
 });
-// Custom WebSocket client
-class LoggingWebSocket {
-	private socket: WebSocket;
-
-	constructor(url: string) {
-		this.socket = new WebSocket(url);
-
-		this.socket.onopen = () => {
-			console.log('WebSocket connection ');
-		};
-
-		this.socket.onmessage = (msg) => {
-			console.log('WebSocket message:', msg.data);
-		};
-
-		this.socket.onerror = (error) => {
-			console.log('WebSocket Xato:', error);
-		};
-	}
-
-	send(data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView) {
-		this.socket.send(data);
-	}
-
-	close() {
-		this.socket.close();
-	}
-}
 
 function createIsomorphicLink() {
 	const uri = process.env.NEXT_PUBLIC_API_GRAPHQL_URL || "http://localhost:3000/graphql";
@@ -102,19 +72,6 @@ function createIsomorphicLink() {
 		uri,
 	});
 
-	/* WEBSOCKET SUBSCRIPTION LINK */
-	const wsLink = new WebSocketLink({
-		uri: process.env.NEXT_PUBLIC_WS_URL || `ws://localhost:3000`,
-		options: {
-			reconnect: false,
-			timeout: 30000,
-			connectionParams: () => {
-				return { headers: getHeaders() };
-			},
-		},
-		webSocketImpl: LoggingWebSocket,
-	});
-
 	const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 		if (graphQLErrors) {
 			graphQLErrors.map(({ message, locations, path, extensions }) => {
@@ -130,16 +87,7 @@ function createIsomorphicLink() {
 		}
 	});
 
-	const splitLink = split(
-		({ query }) => {
-			const definition = getMainDefinition(query);
-			return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
-		},
-		wsLink,
-		authLink.concat(link),
-	);
-
-	return from([errorLink, tokenRefreshLink, splitLink]);
+	return from([errorLink, tokenRefreshLink, authLink.concat(link)]);
 }
 
 function createApolloClient() {
